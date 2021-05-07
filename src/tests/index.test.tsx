@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen } from "@testing-library/react";
 
-import App from '../pages/index';
+import App from "../pages/index";
 
-describe('App', () => {
-  it('renders without crashing', () => {
+describe("App", () => {
+  it("renders without crashing", () => {
     render(<App />);
-    expect(screen.getByText('Liikunta-Helsinki')).toBeInTheDocument();
+    expect(screen.getByText("Liikunta-Helsinki")).toBeInTheDocument();
   });
 });
