@@ -1,8 +1,12 @@
 module.exports = {
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  testPathIgnorePatterns: [
+    "<rootDir>/.next/",
+    "<rootDir>/node_modules/",
+    "<rootdir>/src/server/server.js",
+  ],
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
-    '\\.(css|less|scss|sass)$': '<rootDir>/.jest/identity-obj-proxy-esm.js',
+    "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+    "\\.(css|less|scss|sass)$": "<rootDir>/.jest/identity-obj-proxy-esm.js",
   },
 };

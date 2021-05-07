@@ -39,6 +39,8 @@ USER appuser
 # copy all files
 COPY --chown=appuser:appuser . .
 
+# Copy start.js and server.js files
+
 # Build application
 RUN yarn build
 
@@ -58,8 +60,11 @@ COPY --chown=appuser:appuser public package.json yarn.lock /app/
 # Copy public folder
 COPY --chown=appuser:appuser public /app/public
 
+# Copy start.js and server.js files
+COPY --chown=appuser:appuser src/start.js src/server.js /app/src/
+
 # Expose port
-EXPOSE 3000
+EXPOSE 80
 
 # Start ssr server
 CMD ["yarn", "start"]
