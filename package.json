@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node src/start.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node src/start.js",
     "test": "jest",
     "lint": "eslint --ext js,ts,tsx src"
   },
@@ -16,6 +16,9 @@
     "@types/jest": "^26.0.23",
     "hds-design-tokens": "^1.0.0",
     "hds-react": "^1.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "jsdom": "^16.5.3",
     "next": "10.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
