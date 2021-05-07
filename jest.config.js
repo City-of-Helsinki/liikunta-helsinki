@@ -2,7 +2,7 @@ module.exports = {
   testPathIgnorePatterns: [
     "<rootDir>/.next/",
     "<rootDir>/node_modules/",
-    "<rootdir>/src/server/server.js",
+    "<rootdir>/src/server.js",
   ],
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   transform: {
