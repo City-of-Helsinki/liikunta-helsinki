@@ -59,7 +59,7 @@ COPY --chown=appuser:appuser public package.json yarn.lock /app/
 COPY --chown=appuser:appuser public /app/public
 
 # Expose port
-EXPOSE 80
+EXPOSE 3000
 
 # Start ssr server
 CMD ["yarn", "start"]
