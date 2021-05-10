@@ -1,12 +1,24 @@
+import React, { ReactElement } from "react";
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
+import NextLink from "next/link";
 
+import { NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
+
+const Link = ({ href, children, ...rest }) => {
+  return (
+    <NextLink href={href}>
+      <a {...rest}>{children}</a>
+    </NextLink>
+  );
+};
 
 type Props = {
   mainContentId: string;
+  navigationItems: NavigationItem[];
 };
 
-function Navigation({ mainContentId }: Props) {
+function Navigation({ mainContentId, navigationItems }: Props) {
   return (
     <HDSNavigation
       className={styles.Navigation}
@@ -16,10 +28,14 @@ function Navigation({ mainContentId }: Props) {
       skipToContentLabel="Siirry suoraan sisältöön"
     >
       <HDSNavigation.Row variant="inline">
-        <HDSNavigation.Item label="Haku" active />
-        <HDSNavigation.Item label="Liikuntapaikat" />
-        <HDSNavigation.Item label="Liikuntatunnit" />
-        <HDSNavigation.Item label="Ryhmät" />
+        {navigationItems.map((navigationItem) => (
+          <HDSNavigation.Item
+            key={navigationItem.id}
+            as={Link}
+            label={navigationItem.title}
+            href={navigationItem.url}
+          />
+        ))}
       </HDSNavigation.Row>
       <HDSNavigation.Actions>
         <HDSNavigation.User

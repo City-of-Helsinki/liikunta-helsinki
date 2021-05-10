@@ -1,16 +1,23 @@
 import DefaultLayout from "../layout/Layout";
 import PageMeta, { Props as PageMetaProps } from "../meta/PageMeta";
+import { LayoutComponent } from "../layout/types";
 
 type Props = PageMetaProps & {
-  layout?: (props: { children: React.ReactNode }) => JSX.Element;
   children: React.ReactNode;
+  layoutComponent?: LayoutComponent;
+  layout: React.ComponentProps<LayoutComponent>;
 };
 
-function Page({ layout: Layout = DefaultLayout, children, ...rest }: Props) {
+function Page({
+  children,
+  layout,
+  layoutComponent: Layout = DefaultLayout,
+  ...rest
+}: Props) {
   return (
     <>
       <PageMeta {...rest} />
-      <Layout>{children}</Layout>
+      <Layout {...layout}>{children}</Layout>
     </>
   );
 }
