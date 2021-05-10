@@ -9,9 +9,16 @@ import styles from "./navigation.module.scss";
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
-const Link = ({ href, children, ...rest }) => {
+type LinkProps = {
+  href: string;
+  locale?: React.ComponentProps<typeof NextLink>["locale"];
+  lang?: string;
+  children?: React.ReactNode;
+};
+
+const Link = ({ href, children, locale, ...rest }: LinkProps) => {
   return (
-    <NextLink href={href}>
+    <NextLink href={href} locale={locale}>
       <a {...rest}>{children}</a>
     </NextLink>
   );
@@ -24,7 +31,7 @@ type Props = {
 };
 
 function Navigation({ mainContentId, navigationItems, languages }: Props) {
-  const { locale } = useRouter();
+  const { locale, route } = useRouter();
 
   return (
     <HDSNavigation
@@ -72,11 +79,12 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
           {languages.map((language) => (
             <HDSNavigation.Item
               key={language.id}
-              as="a"
-              href="#"
+              as={Link}
               label={language.name}
               lang={language.slug}
-              onClick={noop}
+              // Target current route with another locale
+              locale={language.slug}
+              href={route}
             />
           ))}
         </HDSNavigation.LanguageSelector>
