@@ -22,6 +22,7 @@ env:
   K8S_REPLICACOUNT: 2
   K8S_LIVENESS_PATH: /api/healthz
   K8S_READINESS_PATH: /api/readiness
+  NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.hkih.production.geniem.io/graphql
 
 jobs:
   build:
@@ -33,6 +34,7 @@ jobs:
         uses: andersinno/kolga-build-action@v2
         env:
           DOCKER_IMAGE_NAME: ${{ env.REPO_NAME }}-staging
+          DOCKER_BUILD_ARG_NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT }}
 
   staging:
     runs-on: ubuntu-latest
@@ -50,3 +52,4 @@ jobs:
           K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STAGING }}
           ENVIRONMENT_URL: https://${{ secrets.ENVIRONMENT_URL_STAGING }}
           DOCKER_IMAGE_NAME: ${{ env.REPO_NAME }}-staging
+          K8S_SECRET_NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT }}

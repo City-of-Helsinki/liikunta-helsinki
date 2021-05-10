@@ -33,6 +33,8 @@ CMD ["yarn", "dev"]
 FROM appbase as staticbuilder
 # ===================================
 
+ARG NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT
+
 # Use non-root user
 USER appuser
 
@@ -53,23 +55,17 @@ RUN yarn install --production
 FROM helsinkitest/node:12-slim AS production
 # ==========================================
 
+ENV PATH $PATH:/app/node_modules/.bin
+
 # Use non-root user
 USER appuser
 
-# Copy build folder from stage 1
+# Copy build and production dependencies
 COPY --from=staticbuilder --chown=appuser:appuser /app/.next /app/.next
-
-# Copy production dependencies
 COPY --from=staticbuilder --chown=appuser:appuser /app/node_modules /app/node_modules
-
-# Copy public package.json and yarn.lock files
-COPY --chown=appuser:appuser public package.json yarn.lock /app/
-
-# Copy public folder
-COPY --chown=appuser:appuser public /app/public
 
 # Expose port
 EXPOSE 80
 
 # Start ssr server
-CMD ["yarn", "start"]
+CMD ["next", "start"]
