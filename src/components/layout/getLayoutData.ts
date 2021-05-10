@@ -3,15 +3,6 @@ import { GetStaticPropsContext } from "next";
 import { NavigationItem } from "../../types";
 import menuItems from "./tmp/menuItems";
 
-type MenuItem = {
-  id: string;
-  order: number;
-  path: string;
-  target: string;
-  title: string;
-  url: string;
-};
-
 type LayoutData = {
   languages: Array<{
     id: string;

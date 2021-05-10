@@ -1,3 +1,5 @@
+import React from "react";
+
 import { NavigationItem } from "../../types";
 
 export type LayoutComponentProps = {

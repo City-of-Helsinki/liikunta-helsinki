@@ -1,4 +1,13 @@
-export default [
+type MenuItem = {
+  id: string;
+  order: number;
+  path: string;
+  target: string;
+  title: string;
+  url: string;
+};
+
+const menuItems: MenuItem[] = [
   {
     id: "1",
     order: 0,
@@ -32,3 +41,5 @@ export default [
     url: "/ryhmat",
   },
 ];
+
+export default menuItems;

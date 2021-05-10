@@ -1,3 +1,5 @@
+import React from "react";
+
 import DefaultLayout from "../layout/Layout";
 import PageMeta, { Props as PageMetaProps } from "../meta/PageMeta";
 import { LayoutComponent } from "../layout/types";

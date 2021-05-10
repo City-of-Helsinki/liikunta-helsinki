@@ -1,9 +1,12 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
 import NextLink from "next/link";
 
 import { NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
 
 const Link = ({ href, children, ...rest }) => {
   return (
@@ -42,14 +45,14 @@ function Navigation({ mainContentId, navigationItems }: Props) {
           authenticated={true}
           buttonAriaLabel=""
           label=""
-          onSignIn={() => {}}
+          onSignIn={noop}
           userName="Liza Liikkuja"
         >
           <HDSNavigation.Item
             as="a"
             href="#"
             label="Link"
-            onClick={() => {}}
+            onClick={noop}
             variant="secondary"
           />
           <HDSNavigation.Item
@@ -57,28 +60,23 @@ function Navigation({ mainContentId, navigationItems }: Props) {
             href="#"
             icon={<IconSignout aria-hidden />}
             label="Sign out"
-            onClick={() => {}}
+            onClick={noop}
             variant="supplementary"
           />
         </HDSNavigation.User>
         <HDSNavigation.LanguageSelector label="FI">
-          <HDSNavigation.Item
-            as="a"
-            href="#"
-            label="Suomeksi"
-            onClick={() => {}}
-          />
+          <HDSNavigation.Item as="a" href="#" label="Suomeksi" onClick={noop} />
           <HDSNavigation.Item
             as="a"
             href="#"
             label="På svenska"
-            onClick={() => {}}
+            onClick={noop}
           />
           <HDSNavigation.Item
             as="a"
             href="#"
             label="In English"
-            onClick={() => {}}
+            onClick={noop}
           />
         </HDSNavigation.LanguageSelector>
       </HDSNavigation.Actions>

@@ -1,5 +1,4 @@
 import Navigation from "../navigation/Navigation";
-import { MenuItem } from "./getLayoutData";
 import { LayoutComponentProps } from "./types";
 import styles from "./layout.module.scss";
 
