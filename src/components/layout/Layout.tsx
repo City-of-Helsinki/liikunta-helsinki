@@ -1,6 +1,6 @@
-const MAIN_CONTENT_ID = "main-content";
+import Navigation from "../navigation/Navigation";
 
-const Navigation = () => <header>Navigation</header>;
+const MAIN_CONTENT_ID = "main-content";
 
 const Footer = () => <footer>Footer</footer>;
 
@@ -11,7 +11,7 @@ type Props = {
 function AppLayout({ children }: Props) {
   return (
     <>
-      <Navigation />
+      <Navigation mainContentId={MAIN_CONTENT_ID} />
       <main id={MAIN_CONTENT_ID}>{children}</main>
       <Footer />
     </>
