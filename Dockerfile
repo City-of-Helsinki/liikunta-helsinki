@@ -57,6 +57,9 @@ COPY --from=staticbuilder --chown=appuser:appuser /app/.next /app/.next
 # Copy public package.json and yarn.lock files
 COPY --chown=appuser:appuser public package.json yarn.lock /app/
 
+# Install production dependencies
+RUN yarn install --production
+
 # Copy public folder
 COPY --chown=appuser:appuser public /app/public
 
