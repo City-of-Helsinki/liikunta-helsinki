@@ -1,4 +1,5 @@
 import Navigation from "../navigation/Navigation";
+import styles from "./layout.module.scss";
 
 const MAIN_CONTENT_ID = "main-content";
 
@@ -10,11 +11,11 @@ type Props = {
 
 function AppLayout({ children }: Props) {
   return (
-    <>
+    <div className={styles.Layout}>
       <Navigation mainContentId={MAIN_CONTENT_ID} />
       <main id={MAIN_CONTENT_ID}>{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }
 

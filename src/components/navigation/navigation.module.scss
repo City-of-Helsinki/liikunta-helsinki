@@ -1,7 +1,15 @@
+@use "breakpoints";
+
 .Navigation {
   // Apply yellow theme for Navigation.
   // This approach is used instead of the prop in the <Navigation /> component
   // because it results in classNames which are not stable between the server
   // and client.
   --header-background-color: var(--color-engel) !important;
+
+  // Span all columns
+  grid-column: 1 / -1 !important;
+  // Unset width so that navigation does not break the application's grid
+  // layout.
+  width: unset;
 }
