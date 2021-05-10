@@ -64,6 +64,7 @@ describe("App", () => {
               ],
               languages,
             },
+            languages,
           }}
         />
       </RouterContext.Provider>
