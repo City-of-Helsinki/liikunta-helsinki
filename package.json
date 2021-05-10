@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node src/start.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "NODE_ENV=production node src/start.js",
+    "start": "next start",
     "test": "jest",
     "lint": "eslint --ext js,ts,tsx src"
   },
