@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 
 import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
@@ -23,6 +24,8 @@ type Props = {
 };
 
 function Navigation({ mainContentId, navigationItems, languages }: Props) {
+  const { locale } = useRouter();
+
   return (
     <HDSNavigation
       className={styles.Navigation}
@@ -65,7 +68,7 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
             variant="supplementary"
           />
         </HDSNavigation.User>
-        <HDSNavigation.LanguageSelector label="FI">
+        <HDSNavigation.LanguageSelector label={locale.toUpperCase()}>
           {languages.map((language) => (
             <HDSNavigation.Item
               key={language.id}
