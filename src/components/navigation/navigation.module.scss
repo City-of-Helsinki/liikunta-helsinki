@@ -1,0 +1,7 @@
+.Navigation {
+  // Apply yellow theme for Navigation.
+  // This approach is used instead of the prop in the <Navigation /> component
+  // because it results in classNames which are not stable between the server
+  // and client.
+  --header-background-color: var(--color-engel) !important;
+}

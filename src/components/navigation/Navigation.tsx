@@ -1,5 +1,7 @@
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
 
+import styles from "./navigation.module.scss";
+
 type Props = {
   mainContentId: string;
 };
@@ -7,10 +9,7 @@ type Props = {
 function Navigation({ mainContentId }: Props) {
   return (
     <HDSNavigation
-      // Use yellow colour
-      theme={{
-        "--header-background-color": "var(--color-engel)",
-      }}
+      className={styles.Navigation}
       title="Liikunta Helsinki"
       menuToggleAriaLabel="menu"
       skipTo={`#${mainContentId}`}
