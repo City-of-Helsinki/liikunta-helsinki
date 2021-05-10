@@ -6,12 +6,17 @@ const MAIN_CONTENT_ID = "main-content";
 
 const Footer = () => <footer>Footer</footer>;
 
-function AppLayout({ children, navigationItems }: LayoutComponentProps) {
+function AppLayout({
+  children,
+  navigationItems,
+  languages,
+}: LayoutComponentProps) {
   return (
     <div className={styles.Layout}>
       <Navigation
         mainContentId={MAIN_CONTENT_ID}
         navigationItems={navigationItems}
+        languages={languages}
       />
       <main id={MAIN_CONTENT_ID}>{children}</main>
       <Footer />

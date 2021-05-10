@@ -2,7 +2,7 @@ import React from "react";
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
 import NextLink from "next/link";
 
-import { NavigationItem } from "../../types";
+import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -19,9 +19,10 @@ const Link = ({ href, children, ...rest }) => {
 type Props = {
   mainContentId: string;
   navigationItems: NavigationItem[];
+  languages: Language[];
 };
 
-function Navigation({ mainContentId, navigationItems }: Props) {
+function Navigation({ mainContentId, navigationItems, languages }: Props) {
   return (
     <HDSNavigation
       className={styles.Navigation}
@@ -65,19 +66,16 @@ function Navigation({ mainContentId, navigationItems }: Props) {
           />
         </HDSNavigation.User>
         <HDSNavigation.LanguageSelector label="FI">
-          <HDSNavigation.Item as="a" href="#" label="Suomeksi" onClick={noop} />
-          <HDSNavigation.Item
-            as="a"
-            href="#"
-            label="På svenska"
-            onClick={noop}
-          />
-          <HDSNavigation.Item
-            as="a"
-            href="#"
-            label="In English"
-            onClick={noop}
-          />
+          {languages.map((language) => (
+            <HDSNavigation.Item
+              key={language.id}
+              as="a"
+              href="#"
+              label={language.name}
+              lang={language.slug}
+              onClick={noop}
+            />
+          ))}
         </HDSNavigation.LanguageSelector>
       </HDSNavigation.Actions>
     </HDSNavigation>

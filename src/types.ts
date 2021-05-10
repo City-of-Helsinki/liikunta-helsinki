@@ -13,3 +13,11 @@ export type InferDataGetterResult<T> = T extends (
 ) => PromiseLike<infer U>
   ? U
   : T;
+
+export type Language = {
+  id: string;
+  name: string;
+  slug: string;
+  code: string;
+  locale: string;
+};

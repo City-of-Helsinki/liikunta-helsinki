@@ -1,16 +1,11 @@
 import { GetStaticPropsContext } from "next";
 
-import { NavigationItem } from "../../types";
+import { Language, NavigationItem } from "../../types";
+import LanguageApi from "../../api/languageApi";
 import menuItems from "./tmp/menuItems";
 
 type LayoutData = {
-  languages: Array<{
-    id: string;
-    name: string;
-    slug: string;
-    code: string;
-    locale: string;
-  }>;
+  languages: Language[];
   navigationItems: NavigationItem[];
 };
 
@@ -21,7 +16,7 @@ async function getLayoutData(
   const navigationItems = sortedMenuItems.map(({ order, ...rest }) => rest);
 
   return {
-    languages: [],
+    languages: await LanguageApi.get(),
     navigationItems,
   };
 }
