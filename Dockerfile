@@ -39,8 +39,6 @@ USER appuser
 # copy all files
 COPY --chown=appuser:appuser . .
 
-# Copy start.js and server.js files
-
 # Build application
 RUN yarn build
 
@@ -64,7 +62,7 @@ RUN yarn install --production
 COPY --chown=appuser:appuser public /app/public
 
 # Copy start.js and server.js files
-COPY --chown=appuser:appuser src/start.js src/server.js /app/src/
+COPY --chown=appuser:appuser src/start.js /app/src/
 
 # Expose port
 EXPOSE 80
