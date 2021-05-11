@@ -18,7 +18,7 @@ function Page({
 }: Props) {
   return (
     <>
-      <PageMeta {...rest} />
+      <PageMeta {...rest} languages={layout.languages} />
       <Layout {...layout}>{children}</Layout>
     </>
   );
