@@ -42,6 +42,13 @@ COPY --chown=appuser:appuser . .
 # Build application
 RUN yarn build
 
+# Clean all depencies...
+RUN rm -rf node_modules
+RUN yarn cache clean
+
+# ... and install only production dependencies
+RUN yarn install --production
+
 # ==========================================
 FROM helsinkitest/node:12-slim AS production
 # ==========================================
@@ -51,6 +58,9 @@ USER appuser
 
 # Copy build folder from stage 1
 COPY --from=staticbuilder --chown=appuser:appuser /app/.next /app/.next
+
+# Copy production dependencies
+COPY --from=staticbuilder --chown=appuser:appuser /app/node_modules /app/node_modules
 
 # Copy public package.json and yarn.lock files
 COPY --chown=appuser:appuser public package.json yarn.lock /app/
