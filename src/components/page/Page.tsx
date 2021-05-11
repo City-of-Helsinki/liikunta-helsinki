@@ -7,7 +7,7 @@ import { LayoutComponent } from "../layout/types";
 type Props = PageMetaProps & {
   children: React.ReactNode;
   layoutComponent?: LayoutComponent;
-  layout: React.ComponentProps<LayoutComponent>;
+  layout: Omit<React.ComponentProps<LayoutComponent>, "children">;
 };
 
 function Page({
