@@ -11,8 +11,8 @@ env:
   CONTAINER_REGISTRY_REPO: ghcr.io/city-of-helsinki/${{ github.event.repository.name }}
   REPO_NAME: ${{ github.event.repository.name }}
   KUBECONFIG_RAW: ${{ secrets.KUBECONFIG_RAW_STAGING }}
-  BUILD_ARTIFACT_FOLDER: 'build_artifacts'
-  SERVICE_ARTIFACT_FOLDER: 'service_artifacts'
+  BUILD_ARTIFACT_FOLDER: "build_artifacts"
+  SERVICE_ARTIFACT_FOLDER: "service_artifacts"
   BASE_DOMAIN: ${{ secrets.BASE_DOMAIN_STAGING }}
   SERVICE_PORT: 80
   K8S_REQUEST_CPU: 50m
@@ -45,7 +45,7 @@ jobs:
       - name: Deploy
         uses: andersinno/kolga-deploy-action@v2
         with:
-          track: 'staging'
+          track: "staging"
         env:
           K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STAGING }}
           ENVIRONMENT_URL: https://${{ secrets.ENVIRONMENT_URL_STAGING }}
