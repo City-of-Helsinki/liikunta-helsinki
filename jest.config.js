@@ -5,4 +5,12 @@ module.exports = {
     "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
     "\\.(css|less|scss|sass)$": "<rootDir>/.jest/identity-obj-proxy-esm.js",
   },
+  transformIgnorePatterns: [
+    "/node_modules/",
+    "^.+\\.module\\.(css|sass|scss)$",
+  ],
+  moduleNameMapper: {
+    "^.+\\.module\\.(css|sass|scss)$":
+      "<rootDir>/.jest/identity-obj-proxy-esm.js",
+  },
 };
