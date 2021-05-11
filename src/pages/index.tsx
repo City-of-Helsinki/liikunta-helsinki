@@ -1,15 +1,22 @@
-import Head from "next/head";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 
-export default function Home() {
+import Page from "../components/page/Page";
+import getPageData from "../components/page/getPageData";
+
+export default function Home({
+  page,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <div>
-      <Head>
-        <title>Liikunta-helsinki</title>
-        <meta name="description" content="Liikunta-helsinki" />
-      </Head>
-      <main>
-        <h1>Liikunta-Helsinki</h1>
-      </main>
-    </div>
+    <Page title="Liikunta-Helsinki" description="Liikunta-helsinki" {...page}>
+      <h1>Liikunta-Helsinki</h1>
+    </Page>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      page: await getPageData(context),
+    },
+  };
 }
