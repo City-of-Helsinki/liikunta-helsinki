@@ -20,6 +20,8 @@ env:
   K8S_LIMIT_CPU: 400m
   K8S_LIMIT_RAM: 400Mi
   K8S_REPLICACOUNT: 2
+  K8S_LIVENESS_PATH: /api/healthz
+  K8S_READINESS_PATH: /api/readiness
 
 jobs:
   build:
