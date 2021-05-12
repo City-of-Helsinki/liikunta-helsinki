@@ -1,8 +1,9 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { useRouter } from "next/dist/client/router";
+import { gql } from "@apollo/client";
 
+import cmsClient from "../api/apolloCmsClient";
 import Page from "../components/page/Page";
-import getPageData from "../components/page/getPageData";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
 import Card from "../components/card/Card";
@@ -10,7 +11,7 @@ import Hero from "../components/hero/Hero";
 import { Item } from "../types";
 
 export default function Home({
-  page,
+  global,
   recommendations,
   landingPage,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -30,7 +31,7 @@ export default function Home({
   );
 
   return (
-    <Page title="Liikunta-Helsinki" description="Liikunta-helsinki" {...page}>
+    <Page title="Liikunta-Helsinki" description="Liikunta-helsinki" {...global}>
       <Hero {...landingPage} />
       <Section title="Suosittua juuri nyt">
         <List component={Card} items={recommendationItems} />
@@ -40,9 +41,22 @@ export default function Home({
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
+  const { data } = await cmsClient.pageQuery({
+    nextContext: context,
+    query: gql`
+      query LandingPageQuery {
+        landingPages {
+          nodes {
+            title
+          }
+        }
+      }
+    `,
+  });
+
   return {
     props: {
-      page: await getPageData(context),
+      ...data,
       recommendations: mockRecommendations,
       landingPage: mockLandingPage,
     },
