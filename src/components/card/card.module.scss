@@ -1,0 +1,199 @@
+@use "breakpoints";
+@import "variables";
+
+.card {
+  --height-image: 8rem;
+  --height-image-desktop: 14.5rem;
+  --width-image: 6.375rem;
+
+  display: grid;
+  grid-template-columns: var(--width-image) 1fr auto;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "bg keywords cta"
+    "bg text cta";
+  height: 100%;
+  width: 100%;
+
+  color: var(--color-black);
+  text-decoration: none;
+
+  background-color: var(--color-white);
+
+  @include breakpoints.respond-above(m) {
+    grid-template-columns: none;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "bg"
+      "text"
+      "cta";
+    margin-bottom: 0;
+  }
+
+  // Focus styles
+  &:focus-within {
+    outline: 2px solid $color-black;
+  }
+  .mainLink:focus {
+    text-decoration: underline;
+  }
+  &:focus-within .mainLink:focus {
+    text-decoration: none;
+    outline: none;
+  }
+  & .text:focus-within ~ .cta {
+    outline: 2px solid $color-black;
+  }
+
+  // Visual order
+  @include breakpoints.respond-above(m) {
+    .image {
+      order: 0;
+    }
+    .text {
+      order: 1;
+    }
+  }
+
+  // Grid positions
+  .image {
+    grid-area: bg;
+  }
+
+  .keywords {
+    grid-area: keywords;
+  }
+
+  .text {
+    grid-area: text;
+  }
+
+  .cta {
+    grid-area: cta;
+  }
+
+  @include breakpoints.respond-above(m) {
+    .image,
+    .keywords {
+      grid-area: bg;
+    }
+  }
+
+  // Component styles
+  .image {
+    min-height: var(--height-image);
+    display: flex;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    text-decoration: none;
+
+    @include breakpoints.respond-above(m) {
+      min-height: var(--height-image-desktop);
+      max-height: var(--height-image-desktop);
+    }
+
+    img {
+      display: block;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .keywords {
+    margin: 0;
+    margin-bottom: inherit;
+    padding: $spacing-xs;
+    padding-bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+
+    @include breakpoints.respond-above(m) {
+      padding: $spacing-s;
+    }
+
+    .keyword {
+      list-style-type: none;
+    }
+  }
+
+  .text {
+    padding: $spacing-s;
+    // Use a grid so that spacing can be applied with gap
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: $spacing-xs;
+
+    & > * {
+      margin-bottom: 0;
+    }
+
+    // Show pre before title, but retain title as first in the DOM order
+    .pre {
+      order: 1;
+    }
+    & > * {
+      order: 2;
+    }
+
+    .pre {
+      font-weight: 500;
+    }
+
+    .mainLink {
+      color: $color-black;
+      text-decoration: none;
+    }
+
+    .aws {
+      color: $color-black;
+      text-decoration: none;
+    }
+
+    .infoLines {
+      display: inherit;
+      grid-template-columns: inherit;
+      grid-gap: inherit;
+
+      & > *:not(:last-child) {
+        display: none;
+
+        @include breakpoints.respond-above(m) {
+          display: initial;
+        }
+      }
+    }
+  }
+
+  .cta {
+    align-self: center;
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 0;
+    margin: 0 $spacing-xs 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--color-black);
+
+    background-color: var(--color-copper-light);
+    border-color: var(--color-copper-light);
+
+    @include breakpoints.respond-above(m) {
+      margin: 0 0 $spacing-s $spacing-s;
+      align-self: flex-end;
+    }
+
+    svg {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+
+    &:focus {
+      outline: 2px solid var(--color-black);
+    }
+  }
+}

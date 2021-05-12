@@ -21,3 +21,19 @@ export type Language = {
   code: string;
   locale: string;
 };
+
+type Keyword = {
+  label: string;
+  isHighlighted?: boolean;
+  onClick: () => void;
+};
+
+export type Item = {
+  id: string;
+  title: string;
+  pre: string;
+  infoLines: string[];
+  keywords: Keyword[];
+  href: string;
+  image: string;
+};

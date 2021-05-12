@@ -66,6 +66,20 @@ describe("App", () => {
             },
             languages,
           }}
+          recommendations={[
+            {
+              id: "1",
+              keywords: ["Tänään"],
+              pre: "12.5.2021, klo 19.00",
+              title: "Karanteeniteatteri: Naurua kolmannella (stream)",
+              infoLines: [
+                "Tiivistämö, Sörnäisten rantatie 22 / Kaasutehtaankatu 1, Helsinki",
+                "12€ + palvelumaksu",
+              ],
+              href: `/event/1`,
+              image: "https://api.hel.fi/linkedevents/media/images/naurua3.jpg",
+            },
+          ]}
         />
       </RouterContext.Provider>
     );

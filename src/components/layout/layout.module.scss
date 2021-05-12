@@ -2,8 +2,11 @@
 @import "variables";
 
 .Layout {
+  // Custom non-HDS compliant max width for content. Breaks alignment with
+  // for instance Navigation.
+  --liikunta-width: 100rem; // 1600px
   --spacing: #{$spacing-layout-2-xs};
-  --content-width: calc(var(--breakpoint-xl) - 2 * #{$spacing-layout-xs});
+  --content-width: calc(var(--liikunta-width) - 2 * #{$spacing-layout-xs});
 
   display: grid;
   // Set a three column layout where the middle column is the content column
@@ -22,5 +25,16 @@
 
   @include breakpoints.respond-above(m) {
     --spacing: #{$spacing-layout-xs};
+  }
+
+  .main {
+    grid-column: 1 / -1;
+
+    display: inherit;
+    grid-template-columns: inherit;
+
+    & > * {
+      grid-column: 2;
+    }
   }
 }
