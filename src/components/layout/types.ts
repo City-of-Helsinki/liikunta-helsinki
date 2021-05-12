@@ -4,7 +4,7 @@ import { Language, NavigationItem } from "../../types";
 
 export type LayoutComponentProps = {
   children: React.ReactNode;
-  navigationItems: NavigationItem[];
+  menuItems: NavigationItem[];
   languages: Language[];
 };
 

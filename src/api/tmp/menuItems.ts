@@ -1,11 +1,4 @@
-type MenuItem = {
-  id: string;
-  order: number;
-  path: string;
-  target: string;
-  title: string;
-  url: string;
-};
+import { MenuItem } from "../../types";
 
 const menuItems: MenuItem[] = [
   {

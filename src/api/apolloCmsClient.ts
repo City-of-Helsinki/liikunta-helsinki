@@ -1,8 +1,9 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { InMemoryCache } from "@apollo/client";
 
 import Config from "../config";
+import LiikuntaApolloClient from "./LiikuntaApolloClient";
 
-const cmsClient = new ApolloClient({
+const cmsClient = new LiikuntaApolloClient({
   uri: Config.cmsGraphqlEndpoint,
   cache: new InMemoryCache(),
 });

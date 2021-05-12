@@ -1,25 +1,28 @@
 import React from "react";
 
 import DefaultLayout from "../layout/Layout";
-import PageMeta, { Props as PageMetaProps } from "../meta/PageMeta";
 import { LayoutComponent } from "../layout/types";
+import PageMeta from "../meta/PageMeta";
 
-type Props = PageMetaProps & {
-  children: React.ReactNode;
-  layoutComponent?: LayoutComponent;
-  layout: Omit<React.ComponentProps<LayoutComponent>, "children">;
-};
+type Props = React.ComponentProps<typeof PageMeta> &
+  Omit<React.ComponentProps<LayoutComponent>, "children"> & {
+    children: React.ReactNode;
+    layoutComponent?: LayoutComponent;
+  };
 
 function Page({
   children,
-  layout,
   layoutComponent: Layout = DefaultLayout,
+  menuItems,
+  languages,
   ...rest
 }: Props) {
   return (
     <>
-      <PageMeta {...rest} languages={layout.languages} />
-      <Layout {...layout}>{children}</Layout>
+      <PageMeta {...rest} languages={languages} />
+      <Layout menuItems={menuItems} languages={languages}>
+        {children}
+      </Layout>
     </>
   );
 }

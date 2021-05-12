@@ -44,26 +44,23 @@ describe("App", () => {
     render(
       <RouterContext.Provider value={mockRouter}>
         <App
-          page={{
-            layout: {
-              navigationItems: [
-                {
-                  id: "1",
-                  path: "/haku",
-                  target: "",
-                  title: "Haku",
-                  url: "/haku",
-                },
-                {
-                  id: "3",
-                  path: "/liikuntatunnit",
-                  target: "",
-                  title: "Liikuntatunnit",
-                  url: "/liikuntatunnit",
-                },
-              ],
-              languages,
-            },
+          global={{
+            menuItems: [
+              {
+                id: "1",
+                path: "/haku",
+                target: "",
+                title: "Haku",
+                url: "/haku",
+              },
+              {
+                id: "3",
+                path: "/liikuntatunnit",
+                target: "",
+                title: "Liikuntatunnit",
+                url: "/liikuntatunnit",
+              },
+            ],
             languages,
           }}
           landingPage={{
