@@ -1,0 +1,48 @@
+@use "breakpoints";
+@import "variables";
+
+.text {
+  color: $color-black-90;
+}
+.text:last-child {
+  margin-bottom: 0;
+}
+
+.h1 {
+  margin: 0 0 $spacing-s 0;
+
+  font-size: $fontsize-heading-l;
+  line-height: $lineheight-l;
+
+  @include breakpoints.respond-above(s) {
+    font-size: $fontsize-heading-xl;
+  }
+}
+
+.h2 {
+  margin: 0 0 $spacing-s 0;
+
+  font-size: $fontsize-heading-l;
+}
+
+.h3 {
+  margin: 0 0 $spacing-s 0;
+
+  font-size: $fontsize-heading-m;
+}
+
+.h4 {
+  margin: 0 0 $spacing-s 0;
+
+  font-size: $fontsize-heading-s;
+}
+
+.body-l {
+  margin: 0 0 $spacing-m 0;
+
+  font-size: $fontsize-body-l;
+}
+
+.body {
+  font-size: $fontsize-body-m;
+}

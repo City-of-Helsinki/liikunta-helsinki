@@ -18,7 +18,9 @@ function AppLayout({
         navigationItems={navigationItems}
         languages={languages}
       />
-      <main id={MAIN_CONTENT_ID}>{children}</main>
+      <main id={MAIN_CONTENT_ID} className={styles.main}>
+        {children}
+      </main>
       <Footer />
     </div>
   );

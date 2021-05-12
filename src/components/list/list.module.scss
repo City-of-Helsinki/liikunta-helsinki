@@ -1,0 +1,23 @@
+@use "breakpoints";
+@import "variables";
+
+.list {
+  --base-list-item-width: 22rem; // 352px
+
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--base-list-item-width), 1fr)
+  );
+  grid-gap: $spacing-xs;
+
+  @include breakpoints.respond-above(m) {
+    grid-gap: $spacing-layout-m;
+  }
+
+  .item {
+    list-style-type: none;
+  }
+}
