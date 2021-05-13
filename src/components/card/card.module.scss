@@ -19,6 +19,7 @@
   text-decoration: none;
 
   background-color: var(--color-white);
+  cursor: pointer;
 
   @include breakpoints.respond-above(m) {
     grid-template-columns: none;
