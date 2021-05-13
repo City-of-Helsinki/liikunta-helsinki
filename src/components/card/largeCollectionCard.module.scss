@@ -1,0 +1,48 @@
+@use "breakpoints";
+@import "variables";
+
+.largeCollectionCard {
+  --width-content: #{$container-width-s};
+
+  // Override default content padding
+  --content-padding: #{$spacing-m};
+
+  @include breakpoints.respond-above(m) {
+    --content-padding: #{$spacing-3-xl};
+  }
+
+  grid-template-columns: auto;
+  grid-template-rows: var(--image-height) 1fr auto;
+  grid-template-areas:
+    "bg"
+    "keywords"
+    "text"
+    "cta";
+
+  @include breakpoints.respond-above(m) {
+    grid-template-columns: var(--width-content) 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "keywords bg"
+      "text bg"
+      "cta bg";
+  }
+
+  .image {
+    grid-area: bg;
+  }
+  .keywords {
+    grid-area: keywords;
+  }
+
+  .text {
+    @include breakpoints.respond-above(m) {
+      align-self: center;
+    }
+  }
+
+  .cta {
+    margin-left: var(--content-padding);
+    margin-bottom: var(--content-padding);
+  }
+}

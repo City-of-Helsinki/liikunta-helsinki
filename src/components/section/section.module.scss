@@ -5,15 +5,12 @@
   display: inherit;
   grid-template-columns: inherit;
   grid-template-rows: inherit;
+  row-gap: $spacing-layout-m;
   padding: $spacing-layout-m 0;
 
   background: $color-black-5;
 
   & > * {
     grid-column: 2;
-  }
-
-  .title {
-    margin-bottom: $spacing-layout-m;
   }
 }

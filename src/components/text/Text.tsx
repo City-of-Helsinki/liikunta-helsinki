@@ -2,7 +2,7 @@ import React, { ReactNode, HTMLAttributes } from "react";
 
 import styles from "./text.module.scss";
 
-type TextVariant = "h1" | "h2" | "h3" | "h4" | "body" | "body-l";
+type TextVariant = "h1" | "h2" | "h3" | "h4" | "body" | "body-l" | "body-xl";
 
 type Props = {
   as?: string | React.ComponentType<HTMLAttributes<HTMLElement>>;

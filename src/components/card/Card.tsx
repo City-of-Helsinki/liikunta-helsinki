@@ -1,13 +1,175 @@
-import React, { useRef } from "react";
+import React, { ReactNode, RefObject, useContext, useRef } from "react";
 import Link from "next/link";
 import { IconArrowRight } from "hds-react";
+import classNames from "classnames";
 
-import { Item } from "../../types";
+import { Keyword as KeywordType } from "../../types";
 import Text from "../text/Text";
 import Keyword from "../keyword/Keyword";
 import styles from "./card.module.scss";
 
-function Card({ id, title, infoLines, keywords, pre, href, image }: Item) {
+type CardContextType = {
+  linkRef: RefObject<HTMLAnchorElement>;
+  id: string;
+};
+
+const CardContext = React.createContext<CardContextType>({
+  linkRef: null,
+  id: null,
+});
+
+type CardTitleProps = Partial<React.ComponentProps<typeof Text>> & {
+  href: string;
+  title: string;
+};
+
+function CardTitle({ href, title, ...textProps }: CardTitleProps) {
+  const { id, linkRef } = useContext(CardContext);
+
+  return (
+    <Text as="h3" variant="body-l" className={styles.title} {...textProps}>
+      <Link href={href}>
+        {/* <Link /> applies the href prop to <a> */}
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a
+          ref={linkRef}
+          className={styles.mainLink}
+          aria-describedby={`cta:${id}`}
+        >
+          {title}
+        </a>
+      </Link>
+    </Text>
+  );
+}
+
+type CardPreProps = {
+  children: ReactNode;
+};
+
+function CardPre({ children }: CardPreProps) {
+  return (
+    <Text variant="body-l" className={styles.pre}>
+      {children}
+    </Text>
+  );
+}
+
+type CardInfoLinesProps = Partial<React.ComponentProps<typeof Text>> & {
+  infoLines: string[];
+};
+
+function CardInfoLines({ infoLines, ...textProps }: CardInfoLinesProps) {
+  return (
+    <div className={styles.infoLines}>
+      {infoLines.map((infoLine) => (
+        <Text
+          key={infoLine}
+          variant="body"
+          className={styles.infoLine}
+          {...textProps}
+        >
+          {infoLine}
+        </Text>
+      ))}
+    </div>
+  );
+}
+
+type CardContentChildrenProps =
+  | CardTitleProps
+  | CardInfoLinesProps
+  | CardPreProps;
+
+type CardContentProps = {
+  children:
+    | React.ReactElement<CardContentChildrenProps>
+    | React.ReactElement<CardContentChildrenProps>[];
+  className?: string;
+};
+
+function CardContent({ children, className }: CardContentProps) {
+  return <div className={classNames(styles.text, className)}>{children}</div>;
+}
+
+type CardCtaProps = {
+  className?: string;
+};
+
+// This is a visual only guide that tells visual users that this card
+// is clickable. It has a label so that visual screen reader users
+// can interact with the element.
+function CardCta({ className }: CardCtaProps) {
+  const { id } = useContext(CardContext);
+
+  return (
+    <span
+      className={classNames(styles.cta, className)}
+      aria-hidden="true"
+      aria-label="Siirry sisältöön"
+      id={`cta:${id}`}
+    >
+      <IconArrowRight />
+    </span>
+  );
+}
+
+type CardKeywordsProps = {
+  keywords: KeywordType[];
+  className?: string;
+};
+
+// This is a visual only guide that tells visual users that this card
+// is clickable. It has a label so that visual screen reader users
+// can interact with the element.
+function CardKeywords({ keywords, className }: CardKeywordsProps) {
+  return (
+    <ul className={classNames(styles.keywords, className)}>
+      {keywords.map(({ label, onClick, isHighlighted }) => (
+        <li key={label} className={styles.keyword}>
+          <Keyword
+            keyword={label}
+            onClick={() => {
+              onClick();
+            }}
+            color={isHighlighted ? "tramLight20" : undefined}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+type CardImageProps = {
+  image: string;
+};
+
+// This is a visual only guide that tells visual users that this card
+// is clickable. It has a label so that visual screen reader users
+// can interact with the element.
+function CardImage({ image }: CardImageProps) {
+  return (
+    <div className={styles.image}>
+      <img src={image} alt="" />
+    </div>
+  );
+}
+
+type CardChildrenProps =
+  | CardContentProps
+  | CardCtaProps
+  | CardKeywordsProps
+  | CardImageProps;
+
+type CardProps = {
+  children:
+    | React.ReactElement<CardChildrenProps>
+    | React.ReactElement<CardChildrenProps>[];
+  id: string;
+  className?: string;
+};
+
+function Card({ children, id, className }: CardProps) {
   const linkRef = useRef(null);
   const downRef = useRef<Date>(null);
 
@@ -29,71 +191,31 @@ function Card({ id, title, infoLines, keywords, pre, href, image }: Item) {
 
   return (
     // These listeners allow us to provide a better UX for mouse while not
-    // hampering the UX for keybord or screen reader users.
+    // hampering the UX for keyboard or screen reader users.
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <article
       onMouseDown={handleWrapperMouseDown}
       onMouseUp={handleWrapperMouseUp}
-      className={styles.card}
+      className={classNames(styles.card, className)}
     >
-      <div className={styles.text}>
-        <Text as="h3" variant="body-l" className={styles.title}>
-          <Link href={href}>
-            {/* <Link /> applies the href prop to <a> */}
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a
-              ref={linkRef}
-              className={styles.mainLink}
-              aria-describedby={`cta:${id}`}
-            >
-              {title}
-            </a>
-          </Link>
-        </Text>
-        <Text variant="body-l" className={styles.pre}>
-          {pre}
-        </Text>
-        <div className={styles.infoLines}>
-          {infoLines.map((infoLine) => (
-            <Text key={infoLine} variant="body" className={styles.infoLine}>
-              {infoLine}
-            </Text>
-          ))}
-        </div>
-      </div>
-      {/* This is a visual only guide that tells visual users that this card */}
-      {/* is clickable. It has a label so that visual screen reader users */}
-      {/* can interact with the element. */}
-      <span
-        className={styles.cta}
-        aria-hidden="true"
-        aria-label="Siirry sisältöön"
-        id={`cta:${id}`}
+      <CardContext.Provider
+        value={{
+          linkRef,
+          id,
+        }}
       >
-        <IconArrowRight />
-      </span>
-      <ul className={styles.keywords}>
-        {keywords.map((keyword) => {
-          const label = keyword.label;
-
-          return (
-            <li key={label} className={styles.keyword}>
-              <Keyword
-                keyword={label}
-                onClick={() => {
-                  keyword.onClick();
-                }}
-                color={keyword.isHighlighted ? "tramLight20" : undefined}
-              />
-            </li>
-          );
-        })}
-      </ul>
-      <div className={styles.image}>
-        <img src={image} alt="" />
-      </div>
+        {children}
+      </CardContext.Provider>
     </article>
   );
 }
+
+Card.Title = CardTitle;
+Card.Pre = CardPre;
+Card.InfoLines = CardInfoLines;
+Card.Content = CardContent;
+Card.Cta = CardCta;
+Card.Keywords = CardKeywords;
+Card.Image = CardImage;
 
 export default Card;

@@ -11,9 +11,7 @@ type Props = {
 function Section({ title, children }: Props) {
   return (
     <section className={styles.section}>
-      <Text variant="h2" className={styles.title}>
-        {title}
-      </Text>
+      <Text variant="h2">{title}</Text>
       {children}
     </section>
   );
