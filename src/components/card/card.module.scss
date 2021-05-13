@@ -3,12 +3,18 @@
 
 .card {
   --height-image: 8rem;
-  --height-image-desktop: 14.5rem;
   --width-image: 6.375rem;
+  --content-padding: #{$spacing-xs};
+  --content-padding-s: #{$spacing-xs};
+
+  @include breakpoints.respond-above(m) {
+    --height-image: 14.5rem;
+    --content-padding: #{$spacing-s};
+  }
 
   display: grid;
   grid-template-columns: var(--width-image) 1fr auto;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: min-content auto;
   grid-template-areas:
     "bg keywords cta"
     "bg text cta";
@@ -23,7 +29,7 @@
 
   @include breakpoints.respond-above(m) {
     grid-template-columns: none;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: var(--height-image) auto 1fr;
     grid-template-areas:
       "bg"
       "text"
@@ -82,17 +88,11 @@
 
   // Component styles
   .image {
-    min-height: var(--height-image);
     display: flex;
     box-sizing: border-box;
     overflow: hidden;
 
     text-decoration: none;
-
-    @include breakpoints.respond-above(m) {
-      min-height: var(--height-image-desktop);
-      max-height: var(--height-image-desktop);
-    }
 
     img {
       display: block;
@@ -104,14 +104,14 @@
   .keywords {
     margin: 0;
     margin-bottom: inherit;
-    padding: $spacing-xs;
+    padding: var(--content-padding);
     padding-bottom: 0;
     display: flex;
     align-items: flex-end;
     position: relative;
 
     @include breakpoints.respond-above(m) {
-      padding: $spacing-s;
+      padding-bottom: var(--content-padding);
     }
 
     .keyword {
@@ -120,11 +120,12 @@
   }
 
   .text {
-    padding: $spacing-s;
+    align-self: flex-start;
+    padding: var(--content-padding);
     // Use a grid so that spacing can be applied with gap
     display: grid;
     grid-template-columns: auto;
-    grid-gap: $spacing-xs;
+    grid-gap: var(--content-padding-s);
 
     & > * {
       margin-bottom: 0;
@@ -173,7 +174,7 @@
     height: 2.5rem;
     width: 2.5rem;
     padding: 0;
-    margin: 0 $spacing-xs 0 0;
+    margin: 0 var(--content-padding) 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -184,7 +185,7 @@
     border-color: var(--color-copper-light);
 
     @include breakpoints.respond-above(m) {
-      margin: 0 0 $spacing-s $spacing-s;
+      margin: 0 0 var(--content-padding) var(--content-padding);
       align-self: flex-end;
     }
 

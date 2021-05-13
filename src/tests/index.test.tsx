@@ -85,6 +85,7 @@ describe("App", () => {
               image: "https://api.hel.fi/linkedevents/media/images/naurua3.jpg",
             },
           ]}
+          collections={[]}
         />
       </RouterContext.Provider>
     );

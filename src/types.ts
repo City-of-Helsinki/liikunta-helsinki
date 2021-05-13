@@ -31,7 +31,7 @@ export type Language = {
   locale: string;
 };
 
-type Keyword = {
+export type Keyword = {
   label: string;
   isHighlighted?: boolean;
   onClick: () => void;

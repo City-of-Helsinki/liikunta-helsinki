@@ -7,10 +7,9 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(var(--base-list-item-width), 1fr)
-  );
+  grid-template-columns:
+    [column-start] repeat(auto-fit, minmax(var(--base-list-item-width), 1fr))
+    [column-end];
   grid-gap: $spacing-xs;
 
   @include breakpoints.respond-above(m) {
@@ -19,5 +18,24 @@
 
   .item {
     list-style-type: none;
+  }
+}
+
+.collection-grid {
+  --large-card-height: 37.5rem; // 600px
+
+  & > *:first-child {
+    grid-column: 1 / -1;
+  }
+
+  @include breakpoints.respond-above(m) {
+    grid-template-rows: var(--large-card-height) repeat(auto-fit, 1fr);
+  }
+
+  @include breakpoints.respond-above(l) {
+    & > *:nth-child(2),
+    & > *:last-child {
+      grid-column: span 2;
+    }
   }
 }

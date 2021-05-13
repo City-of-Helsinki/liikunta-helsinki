@@ -6,7 +6,9 @@ import cmsClient from "../api/apolloCmsClient";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
-import Card from "../components/card/Card";
+import Card from "../components/card/DefaultCard";
+import LargeCollectionCard from "../components/card/LargeCollectionCard";
+import CollectionCard from "../components/card/CollectionCard";
 import Hero from "../components/hero/Hero";
 import { Item } from "../types";
 
@@ -14,6 +16,7 @@ export default function Home({
   global,
   recommendations,
   landingPage,
+  collections,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
 
@@ -30,11 +33,40 @@ export default function Home({
     })
   );
 
+  const collectionItems: Item[] = collections.map((collection) => ({
+    id: collection.id,
+    title: collection.title,
+    infoLines: [collection.description],
+    href: `/collections/${collection.id}`,
+    keywords: [
+      {
+        label: "120 kpl",
+      },
+    ],
+    image: collection.image,
+  }));
+
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki" {...global}>
       <Hero {...landingPage} />
+      <Section title="Suosittelemme">
+        <List
+          variant="collection-grid"
+          items={collectionItems.map((item, i) =>
+            i === 0 ? (
+              <LargeCollectionCard key={item.id} {...item} />
+            ) : (
+              <CollectionCard key={item.id} {...item} />
+            )
+          )}
+        />
+      </Section>
       <Section title="Suosittua juuri nyt">
-        <List component={Card} items={recommendationItems} />
+        <List
+          items={recommendationItems.map((item) => (
+            <Card key={item.id} {...item} />
+          ))}
+        />
       </Section>
     </Page>
   );
@@ -45,18 +77,29 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     nextContext: context,
     query: gql`
       query LandingPageQuery {
-        landingPages {
-          nodes {
-            title
+        collections(first: 7, where: { language: FI }) {
+          edges {
+            node {
+              id
+              title
+              description
+              image
+            }
           }
         }
       }
     `,
   });
+  const collections = data.collections.edges.map(({ node }) => node);
 
   return {
     props: {
       ...data,
+      // The CMS has incomplete data so use it to generate more
+      collections: Array.from({ length: 7 }, (_, index) => ({
+        ...collections[0],
+        id: `${collections[0]}-${index}`,
+      })),
       recommendations: mockRecommendations,
       landingPage: mockLandingPage,
     },
