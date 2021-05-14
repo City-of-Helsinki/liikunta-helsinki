@@ -49,7 +49,13 @@ export default function Home({
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki" {...global}>
       <Hero {...landingPage} />
-      <Section title="Suosittelemme">
+      <Section
+        title="Suosittelemme"
+        cta={{
+          label: "Katso kaikki kokoelmat",
+          href: "/collections",
+        }}
+      >
         <List
           variant="collection-grid"
           items={collectionItems.map((item, i) =>

@@ -1,3 +1,4 @@
+@use "breakpoints";
 @import "variables";
 
 .section {
@@ -12,5 +13,32 @@
 
   & > * {
     grid-column: 2;
+    margin-bottom: 0;
+  }
+
+  .sectionHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @include breakpoints.respond-above(m) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    & > * {
+      margin-bottom: 0;
+    }
+
+    & > a {
+      display: flex;
+      align-items: center;
+
+      color: $color-black-90;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: $fontsize-body-l;
+    }
   }
 }
