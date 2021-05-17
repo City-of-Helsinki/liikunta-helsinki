@@ -95,15 +95,17 @@ export default function Home() {
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
       {landingPage && (
-        <Hero
-          title={landingPage.title}
-          description={landingPage.description}
-          desktopImageUri={landingPage.desktopImage?.mediaItemUrl}
-          cta={{
-            label: landingPage.heroLink[0],
-            href: landingPage.heroLink[1],
-          }}
-        />
+        <Section>
+          <Hero
+            title={landingPage.title}
+            description={landingPage.description}
+            desktopImageUri={landingPage.desktopImage?.mediaItemUrl}
+            cta={{
+              label: landingPage.heroLink[0],
+              href: landingPage.heroLink[1],
+            }}
+          />
+        </Section>
       )}
       <Section
         title="Suosittelemme"
