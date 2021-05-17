@@ -22,44 +22,47 @@
   }
 
   .box {
-    color: $color-white;
-    background-color: rgba($color-black, 80%);
+    background-color: rgba($color-black-80, 80%);
     width: 20rem;
     height: 15rem;
-    margin-top: var(--spacing-xl);
-    padding: var(--spacing-m);
-
-    p {
-      margin-bottom: $spacing-s;
-    }
-
-    h1 {
-      font-size: $fontsize-heading-l;
-      margin-top: 0;
-      padding-top: 0;
-    }
+    margin-top: $spacing-xl;
+    padding: $spacing-m;
 
     @include breakpoints.respond-above(m) {
-      h1 {
-        font-size: $fontsize-heading-xl;
-      }
       width: 30rem;
       height: 18rem;
     }
   }
 
-  .button {
+  .boxHelper {
+    color: $color-white;
+    margin-bottom: $spacing-s;
+  }
+
+  .boxTitle {
+    font-size: $fontsize-heading-l;
+    margin-top: 0;
+    padding-top: 0;
+    color: $color-white;
+    line-height: $lineheight-s;
+    margin-bottom: $spacing-2-xl;
+
+    @include breakpoints.respond-above(m) {
+      font-size: $fontsize-heading-xl;
+    }
+  }
+
+  .link {
     background-color: $color-coat-of-arms;
     border-color: $color-coat-of-arms !important;
-    height: 1rem;
+    padding: $spacing-xs;
+    text-decoration: none;
+    color: $color-white;
+    margin-top: $spacing-s;
 
     &:hover {
       background-color: $color-bus;
       border-color: $color-bus !important;
-    }
-
-    @include breakpoints.respond-above(m) {
-      height: 3rem;
     }
   }
   // Modifying koros height is really cumbersome, instead
@@ -82,6 +85,7 @@
     }
   }
 
+  // 85px is the default height for koros
   .block {
     background-color: $color-white;
     width: 100%;
