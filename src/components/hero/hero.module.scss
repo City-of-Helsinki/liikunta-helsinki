@@ -1,94 +1,92 @@
 @use "breakpoints";
 @import "variables";
 
-.hero {
-  grid-column: 1 / -1 !important;
+.backgroundImage {
+  --height: 30rem;
 
-  width: 100%;
-  height: 30rem;
-  display: inherit;
+  display: block;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: calc(var(--height) + var(--section-padding));
+  margin-top: calc(-1 * var(--section-padding));
+
   background-repeat: no-repeat;
   background-size: cover;
 
-  grid-template-columns: inherit;
-  grid-template-rows: inherit;
-
-  & > * {
-    grid-column: 2;
+  @include breakpoints.respond-above(m) {
+    --height: 40rem;
   }
+}
+
+.box {
+  grid-row: 1;
+  background-color: rgba($color-black-80, 80%);
+  width: 20rem;
+  height: 15rem;
+  margin-top: $spacing-xl;
+  padding: $spacing-m;
 
   @include breakpoints.respond-above(m) {
-    height: 40rem;
+    width: 30rem;
+    height: 18rem;
   }
+}
 
-  .box {
-    background-color: rgba($color-black-80, 80%);
-    width: 20rem;
-    height: 15rem;
-    margin-top: $spacing-xl;
-    padding: $spacing-m;
+.boxHelper {
+  color: $color-white;
+  margin-bottom: $spacing-s;
+}
 
-    @include breakpoints.respond-above(m) {
-      width: 30rem;
-      height: 18rem;
-    }
+.boxTitle {
+  font-size: $fontsize-heading-l;
+  margin-top: 0;
+  padding-top: 0;
+  color: $color-white;
+  line-height: $lineheight-s;
+  margin-bottom: $spacing-2-xl;
+
+  @include breakpoints.respond-above(m) {
+    font-size: $fontsize-heading-xl;
   }
+}
 
-  .boxHelper {
-    color: $color-white;
-    margin-bottom: $spacing-s;
+.linkButton {
+  background-color: $color-coat-of-arms;
+  border-color: $color-coat-of-arms !important;
+  padding: $spacing-xs;
+  text-decoration: none;
+  color: $color-white;
+  margin-top: $spacing-s;
+
+  &:hover {
+    background-color: $color-bus;
+    border-color: $color-bus !important;
   }
+}
+// Modifying koros height is really cumbersome, instead
+// "extend" the koros with empty div
+.korosBlock {
+  grid-row: 1;
+  grid-column: 1 / -1 !important;
+  align-self: flex-end;
+  bottom: 0;
+  left: 0;
+  height: 12rem;
+  width: 100%;
+}
 
-  .boxTitle {
-    font-size: $fontsize-heading-l;
-    margin-top: 0;
-    padding-top: 0;
-    color: $color-white;
-    line-height: $lineheight-s;
-    margin-bottom: $spacing-2-xl;
+.koros {
+  fill: $color-white;
+  visibility: hidden;
 
-    @include breakpoints.respond-above(m) {
-      font-size: $fontsize-heading-xl;
-    }
+  @include breakpoints.respond-above(m) {
+    visibility: visible;
   }
+}
 
-  .linkButton {
-    background-color: $color-coat-of-arms;
-    border-color: $color-coat-of-arms !important;
-    padding: $spacing-xs;
-    text-decoration: none;
-    color: $color-white;
-    margin-top: $spacing-s;
-
-    &:hover {
-      background-color: $color-bus;
-      border-color: $color-bus !important;
-    }
-  }
-  // Modifying koros height is really cumbersome, instead
-  // "extend" the koros with empty div
-  .korosBlock {
-    grid-column: 1 / -1 !important;
-    align-self: flex-end;
-    bottom: 0;
-    left: 0;
-    height: 12rem;
-    width: 100%;
-  }
-
-  .koros {
-    fill: $color-white;
-    visibility: hidden;
-
-    @include breakpoints.respond-above(m) {
-      visibility: visible;
-    }
-  }
-
-  // 85px is the default height for koros
-  .block {
-    background-color: $color-white;
-    width: 100%;
-    height: calc(100% - 85px);
-  }
+// 85px is the default height for koros
+.block {
+  background-color: $color-white;
+  width: 100%;
+  height: calc(100% - 85px);
 }

@@ -6,7 +6,7 @@ import Text from "../text/Text";
 import styles from "./section.module.scss";
 
 type Props = {
-  title: string;
+  title?: string;
   children: React.ReactNode;
   cta?: {
     label: string;
@@ -19,8 +19,8 @@ function Section({ title, children, cta }: Props) {
 
   return (
     <section className={styles.section}>
-      {!cta && titleComponent}
-      {cta && (
+      {!cta && title && titleComponent}
+      {cta && title && (
         <header className={styles.sectionHeader}>
           {titleComponent}
           <Link href={cta.href}>

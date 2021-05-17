@@ -16,10 +16,11 @@ type Props = {
 
 function Hero({ title, description, desktopImageUri, cta }: Props) {
   return (
-    <div
-      className={styles.hero}
-      style={{ backgroundImage: `url(${desktopImageUri})` }}
-    >
+    <>
+      <span
+        className={styles.backgroundImage}
+        style={{ backgroundImage: `url(${desktopImageUri})` }}
+      />
       <div className={styles.box}>
         <Text variant="body" className={styles.boxHelper}>
           {description}
@@ -36,7 +37,7 @@ function Hero({ title, description, desktopImageUri, cta }: Props) {
         <Koros className={styles.koros} />
         <div className={styles.block} />
       </div>
-    </div>
+    </>
   );
 }
 

@@ -2,12 +2,14 @@
 @import "variables";
 
 .section {
+  --section-padding: #{$spacing-layout-m};
+
   grid-column: 1 / -1 !important;
   display: inherit;
   grid-template-columns: inherit;
   grid-template-rows: inherit;
   row-gap: $spacing-layout-m;
-  padding: $spacing-layout-m 0;
+  padding: var(--section-padding) 0;
 
   background: $color-black-5;
 
