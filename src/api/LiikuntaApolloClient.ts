@@ -46,21 +46,6 @@ const GLOBAL_QUERY = gql`
   }
 `;
 
-function getNavigationItems(menuItemsConnection: { nodes: MenuItem[] }) {
-  let menuItems = menuItemsConnection.nodes;
-
-  if (menuItems.length === 0) {
-    menuItems = mockMenuItems;
-  }
-
-  const sortedMenuItems = [...menuItems].sort((a, b) => a.order - b.order);
-
-  return {
-    __typename: "MenuItems",
-    nodes: sortedMenuItems,
-  };
-}
-
 function getSupportedLanguages(
   languages: Language[],
   context: GetStaticPropsContext
@@ -103,7 +88,14 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
           data.globalLanguages,
           nextContext
         ),
-        globalMenuItems: getNavigationItems(data.globalMenuItems),
+        globalMenuItems: {
+          ...data.globalMenuItems,
+          nodes:
+            // Use mock data until menu items are defined in the CMS
+            data.globalMenuItems.nodes.length === 0
+              ? mockMenuItems
+              : data.globalMenuItems.nodes,
+        },
       },
     });
 
