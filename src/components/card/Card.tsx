@@ -119,9 +119,6 @@ type CardKeywordsProps = {
   className?: string;
 };
 
-// This is a visual only guide that tells visual users that this card
-// is clickable. It has a label so that visual screen reader users
-// can interact with the element.
 function CardKeywords({ keywords, className }: CardKeywordsProps) {
   return (
     <ul className={classNames(styles.keywords, className)}>
@@ -144,9 +141,6 @@ type CardImageProps = {
   image: string;
 };
 
-// This is a visual only guide that tells visual users that this card
-// is clickable. It has a label so that visual screen reader users
-// can interact with the element.
 function CardImage({ image }: CardImageProps) {
   return (
     <div className={styles.image}>
