@@ -1,8 +1,10 @@
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
-import { useRouter } from "next/dist/client/router";
-import { gql } from "@apollo/client";
+import { GetStaticPropsContext } from "next";
+import { NextRouter, useRouter } from "next/dist/client/router";
+import { gql, useQuery } from "@apollo/client";
 
+import { Collection, Connection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../api/cmsApolloClient";
+import { getNodes } from "../api/utils";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
@@ -10,30 +12,53 @@ import Card from "../components/card/DefaultCard";
 import LargeCollectionCard from "../components/card/LargeCollectionCard";
 import CollectionCard from "../components/card/CollectionCard";
 import Hero from "../components/hero/Hero";
-import { Item } from "../types";
 
-export default function Home({
-  global,
-  recommendations,
-  landingPage,
-  collections,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter();
+export const LANDING_PAGE_QUERY = gql`
+  query LandingPageQuery {
+    collections(first: 7, where: { language: FI }) {
+      edges {
+        node {
+          id
+          title
+          description
+          image
+        }
+      }
+    }
+  }
+`;
 
-  const recommendationItems: Item[] = recommendations?.map(
-    (recommendation) => ({
-      ...recommendation,
-      keywords: recommendation.keywords.map((keyword) => ({
-        label: keyword,
-        onClick: () => {
-          router.push(`keywords/${encodeURIComponent(keyword)}`);
-        },
-        isHighlighted: keyword === "Maksuton",
-      })),
-    })
-  );
+function getRecommendationsAsItems(
+  recommendations: Recommendation[],
+  router: NextRouter
+): Item[] {
+  return recommendations.map((recommendation) => ({
+    ...recommendation,
+    keywords: recommendation.keywords.map((keyword) => ({
+      label: keyword,
+      onClick: () => {
+        router.push(`keywords/${encodeURIComponent(keyword)}`);
+      },
+      isHighlighted: keyword === "Maksuton",
+    })),
+  }));
+}
 
-  const collectionItems: Item[] = collections.map((collection) => ({
+function getCollectionsAsItems(
+  collectionConnection: Connection<Collection> | null
+): Item[] {
+  if (!collectionConnection) {
+    return [];
+  }
+
+  const collections = getNodes<Collection>(collectionConnection);
+  // The CMS has one collection. Get it, and make 6 copies of it.
+  const extendedCollections = Array.from({ length: 7 }, (_, index) => ({
+    ...collections[0],
+    id: `${collections[0]}-${index}`,
+  }));
+
+  return extendedCollections.map((collection) => ({
     id: collection.id,
     title: collection.title,
     infoLines: [collection.description],
@@ -41,13 +66,28 @@ export default function Home({
     keywords: [
       {
         label: "120 kpl",
+        onClick: () => {
+          // pass
+        },
       },
     ],
     image: collection.image,
   }));
+}
+
+export default function Home() {
+  const router = useRouter();
+  const { data } = useQuery(LANDING_PAGE_QUERY);
+
+  const recommendationItems: Item[] = getRecommendationsAsItems(
+    mockRecommendations,
+    router
+  );
+  const landingPage = mockLandingPage;
+  const collectionItems: Item[] = getCollectionsAsItems(data?.collections);
 
   return (
-    <Page title="Liikunta-Helsinki" description="Liikunta-helsinki" {...global}>
+    <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
       <Hero {...landingPage} />
       <Section
         title="Suosittelemme"
@@ -80,35 +120,16 @@ export default function Home({
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const cmsClient = initializeCmsApollo();
-  const { data } = await cmsClient.pageQuery({
+
+  await cmsClient.pageQuery({
     nextContext: context,
-    query: gql`
-      query LandingPageQuery {
-        collections(first: 7, where: { language: FI }) {
-          edges {
-            node {
-              id
-              title
-              description
-              image
-            }
-          }
-        }
-      }
-    `,
+    query: LANDING_PAGE_QUERY,
   });
-  const collections = data.collections.edges.map(({ node }) => node);
 
   return {
     props: {
-      ...data,
-      // The CMS has incomplete data so use it to generate more
-      collections: Array.from({ length: 7 }, (_, index) => ({
-        ...collections[0],
-        id: `${collections[0]}-${index}`,
-      })),
-      recommendations: mockRecommendations,
-      landingPage: mockLandingPage,
+      initialApolloState: cmsClient.cache.extract(),
+      revalidate: 1,
     },
   };
 }
@@ -122,7 +143,7 @@ const mockLandingPage = {
   link: "/tips/uimarannat",
 };
 
-const mockRecommendations = [
+const mockRecommendations: Recommendation[] = [
   {
     id: "1",
     keywords: ["Tänään"],

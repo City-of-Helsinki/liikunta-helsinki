@@ -25,7 +25,7 @@ function RouteMeta({ languages }: Props) {
   const canonical = getLanguageAwarePath(locale, defaultLocale, asPath);
   const currentLanguageAndLocale = languages.find(
     (language) => language.slug === locale
-  ).locale;
+  )?.locale;
 
   return (
     <Head>
