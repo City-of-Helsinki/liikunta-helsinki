@@ -28,6 +28,10 @@ export const LANDING_PAGE_QUERY = gql`
   }
 `;
 
+const emptyConnection = {
+  edges: [],
+};
+
 function getRecommendationsAsItems(
   recommendations: Recommendation[],
   router: NextRouter
@@ -47,10 +51,6 @@ function getRecommendationsAsItems(
 function getCollectionsAsItems(
   collectionConnection: Connection<Collection> | null
 ): Item[] {
-  if (!collectionConnection) {
-    return [];
-  }
-
   const collections = getNodes<Collection>(collectionConnection);
   // The CMS has one collection. Get it, and make 6 copies of it.
   const extendedCollections = Array.from({ length: 7 }, (_, index) => ({
@@ -84,7 +84,9 @@ export default function Home() {
     router
   );
   const landingPage = mockLandingPage;
-  const collectionItems: Item[] = getCollectionsAsItems(data?.collections);
+  const collectionItems: Item[] = getCollectionsAsItems(
+    data?.collections ?? emptyConnection
+  );
 
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
