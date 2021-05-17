@@ -11,7 +11,7 @@ type Props = {
 function List({ items, component: Component }: Props) {
   return (
     <ul className={styles.list}>
-      {items.map((item) => (
+      {items?.map((item) => (
         <li key={item.id} className={styles.item}>
           <Component key={item.id} {...item} />
         </li>

@@ -6,28 +6,32 @@ import getPageData from "../components/page/getPageData";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
 import Card from "../components/card/Card";
+import Hero from "../components/hero/Hero";
 import { Item } from "../types";
 
 export default function Home({
   page,
   recommendations,
+  landingPage,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
 
-  const recommendationItems: Item[] = recommendations.map((recommendation) => ({
-    ...recommendation,
-    keywords: recommendation.keywords.map((keyword) => ({
-      label: keyword,
-      onClick: () => {
-        router.push(`keywords/${encodeURIComponent(keyword)}`);
-      },
-      isHighlighted: keyword === "Maksuton",
-    })),
-  }));
+  const recommendationItems: Item[] = recommendations?.map(
+    (recommendation) => ({
+      ...recommendation,
+      keywords: recommendation.keywords.map((keyword) => ({
+        label: keyword,
+        onClick: () => {
+          router.push(`keywords/${encodeURIComponent(keyword)}`);
+        },
+        isHighlighted: keyword === "Maksuton",
+      })),
+    })
+  );
 
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki" {...page}>
-      <h1>Liikunta-Helsinki</h1>
+      <Hero {...landingPage} />
       <Section title="Suosittua juuri nyt">
         <List component={Card} items={recommendationItems} />
       </Section>
@@ -40,9 +44,19 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     props: {
       page: await getPageData(context),
       recommendations: mockRecommendations,
+      landingPage: mockLandingPage,
     },
   };
 }
+
+const mockLandingPage = {
+  title: "Kesän parhaat uimarannat",
+  desktopImage: {
+    uri:
+      "https://finna.fi/Cover/Show?id=hkm.HKMS000005:km00390n&size=master&index=0",
+  },
+  link: "/tips/uimarannat",
+};
 
 const mockRecommendations = [
   {

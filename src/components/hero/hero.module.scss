@@ -1,0 +1,90 @@
+@use "breakpoints";
+@import "variables";
+
+.hero {
+  grid-column: 1 / -1 !important;
+
+  width: 100%;
+  height: 30rem;
+  display: inherit;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  grid-template-columns: inherit;
+  grid-template-rows: inherit;
+
+  & > * {
+    grid-column: 2;
+  }
+
+  @include breakpoints.respond-above(m) {
+    height: 40rem;
+  }
+
+  .box {
+    color: $color-white;
+    background-color: rgba($color-black, 80%);
+    width: 20rem;
+    height: 15rem;
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-m);
+
+    p {
+      margin-bottom: $spacing-s;
+    }
+
+    h1 {
+      font-size: $fontsize-heading-l;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    @include breakpoints.respond-above(m) {
+      h1 {
+        font-size: $fontsize-heading-xl;
+      }
+      width: 30rem;
+      height: 18rem;
+    }
+  }
+
+  .button {
+    background-color: $color-coat-of-arms;
+    border-color: $color-coat-of-arms !important;
+    height: 1rem;
+
+    &:hover {
+      background-color: $color-bus;
+      border-color: $color-bus !important;
+    }
+
+    @include breakpoints.respond-above(m) {
+      height: 3rem;
+    }
+  }
+  // Modifying koros height is really cumbersome, instead
+  // "extend" the koros with empty div
+  .korosBlock {
+    grid-column: 1 / -1 !important;
+    align-self: flex-end;
+    bottom: 0;
+    left: 0;
+    height: 12rem;
+    width: 100%;
+  }
+
+  .koros {
+    fill: $color-white;
+    visibility: hidden;
+
+    @include breakpoints.respond-above(m) {
+      visibility: visible;
+    }
+  }
+
+  .block {
+    background-color: $color-white;
+    width: 100%;
+    height: calc(100% - 85px);
+  }
+}

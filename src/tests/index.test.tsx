@@ -66,6 +66,14 @@ describe("App", () => {
             },
             languages,
           }}
+          landingPage={{
+            title: "Kesän parhaat uimarannat",
+            desktopImage: {
+              uri:
+                "https://finna.fi/Cover/Show?id=hkm.HKMS000005:km00390n&size=master&index=0",
+            },
+            link: "/tips/uimarannat",
+          }}
           recommendations={[
             {
               id: "1",
@@ -83,6 +91,6 @@ describe("App", () => {
         />
       </RouterContext.Provider>
     );
-    expect(screen.getByText("Liikunta-Helsinki")).toBeInTheDocument();
+    expect(screen.getByText("Kesän parhaat uimarannat")).toBeInTheDocument();
   });
 });
