@@ -1,5 +1,5 @@
 import { GetStaticPropsContext } from "next";
-import { NextRouter, useRouter } from "next/dist/client/router";
+import { NextRouter, useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 
 import { Collection, Connection, Item, Recommendation } from "../types";
