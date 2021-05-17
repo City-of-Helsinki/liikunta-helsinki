@@ -42,19 +42,12 @@ function getSupportedLanguages(
   return supportedLanguages;
 }
 
-type WithPageGlobals<T> = T & {
-  global: {
-    language: Language[];
-    menuItems: MenuItem[];
-  };
-};
-
 class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
   async pageQuery<T = any, TVariables = OperationVariables>(
     options: QueryOptions<TVariables, T> & {
       nextContext: GetStaticPropsContext;
     }
-  ): Promise<ApolloQueryResult<WithPageGlobals<T>>> {
+  ): Promise<ApolloQueryResult<T>> {
     const { nextContext, query, ...apolloOptions } = options;
     const globalData = gql`
       {
@@ -96,10 +89,8 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
       // @ts-ignore
       data: {
         ...restOfData,
-        global: {
-          languages: getSupportedLanguages(globalLanguages, nextContext),
-          menuItems: getNavigationItems(globalMenuItems),
-        },
+        globalLanguages: getSupportedLanguages(globalLanguages, nextContext),
+        globalMenuItems: getNavigationItems(globalMenuItems),
       },
     };
   }

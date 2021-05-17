@@ -1,5 +1,3 @@
-import { GetStaticPropsContext } from "next";
-
 export type NavigationItem = {
   id: string;
   path: string;
@@ -16,12 +14,6 @@ export type MenuItem = {
   title: string;
   url: string;
 };
-
-export type InferDataGetterResult<T> = T extends (
-  context: GetStaticPropsContext
-) => PromiseLike<infer U>
-  ? U
-  : T;
 
 export type Language = {
   id: string;
@@ -40,7 +32,7 @@ export type Keyword = {
 export type Item = {
   id: string;
   title: string;
-  pre: string;
+  pre?: string;
   infoLines: string[];
   keywords: Keyword[];
   href: string;
@@ -53,4 +45,30 @@ export type LandingPage = {
     uri: string;
   };
   link: string;
+};
+
+export type Recommendation = {
+  id: string;
+  keywords: string[];
+  pre: string;
+  title: string;
+  infoLines: string[];
+  href: string;
+  image: string;
+};
+
+export type Node<T> = {
+  cursor: string;
+  node: T;
+};
+
+export type Connection<T> = {
+  edges: Node<T>[];
+};
+
+export type Collection = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
 };
