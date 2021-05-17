@@ -15,6 +15,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.16",
     "@types/jest": "^26.0.23",
+    "classnames": "^2.3.1",
     "graphql": "^15.5.0",
     "hds-design-tokens": "^1.0.0",
     "hds-react": "^1.0.0",
