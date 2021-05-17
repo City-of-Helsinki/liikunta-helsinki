@@ -60,10 +60,11 @@ ENV PATH $PATH:/app/node_modules/.bin
 # Use non-root user
 USER appuser
 
-# Copy build, production dependencies and next configs
+# Copy build, production dependencies, next configs and public files
 COPY --from=staticbuilder --chown=appuser:appuser /app/.next /app/.next
 COPY --from=staticbuilder --chown=appuser:appuser /app/node_modules /app/node_modules
 COPY --from=staticbuilder --chown=appuser:appuser /app/next.config.js /app/next.config.js
+COPY --from=staticbuilder --chown=appuser:appuser /app/public /app/public
 
 # Expose port
 EXPOSE 80
