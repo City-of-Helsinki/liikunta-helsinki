@@ -55,7 +55,10 @@ function getNavigationItems(menuItemsConnection: { nodes: MenuItem[] }) {
 
   const sortedMenuItems = [...menuItems].sort((a, b) => a.order - b.order);
 
-  return { nodes: sortedMenuItems };
+  return {
+    __typename: "MenuItems",
+    nodes: sortedMenuItems,
+  };
 }
 
 function getSupportedLanguages(
