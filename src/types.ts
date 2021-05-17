@@ -37,3 +37,11 @@ export type Item = {
   href: string;
   image: string;
 };
+
+export type LandingPage = {
+  title: string;
+  desktopImage: {
+    uri: string;
+  };
+  link: string;
+};
