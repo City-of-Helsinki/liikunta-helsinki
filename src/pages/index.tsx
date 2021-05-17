@@ -2,7 +2,7 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import { gql } from "@apollo/client";
 
-import cmsClient from "../api/apolloCmsClient";
+import initializeCmsApollo from "../api/cmsApolloClient";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
@@ -79,6 +79,7 @@ export default function Home({
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
+  const cmsClient = initializeCmsApollo();
   const { data } = await cmsClient.pageQuery({
     nextContext: context,
     query: gql`
