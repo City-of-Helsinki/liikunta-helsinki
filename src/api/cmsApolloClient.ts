@@ -3,13 +3,26 @@ import { useMemo } from "react";
 
 import Config from "../config";
 import LiikuntaApolloClient from "./LiikuntaApolloClient";
+import { sortMenuItems } from "./utils";
 
 let cmsApolloClient: LiikuntaApolloClient;
 
 function createCmsApolloClient() {
   return new LiikuntaApolloClient({
     uri: Config.cmsGraphqlEndpoint,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        MenuItems: {
+          fields: {
+            nodes: {
+              read(nodes) {
+                return sortMenuItems(nodes);
+              },
+            },
+          },
+        },
+      },
+    }),
   });
 }
 
