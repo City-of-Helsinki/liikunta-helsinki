@@ -1,18 +1,14 @@
 class Config {
-  private static getEnvOrError(variableName: string) {
-    const variableValue = process.env[variableName];
-
-    if (!variableValue) {
-      throw Error(
-        `Environment variable with name ${variableName} was not found`
-      );
+  private static getEnvOrError(variable?: string) {
+    if (!variable) {
+      throw Error(`Environment variable with name ${variable} was not found`);
     }
 
-    return variableValue;
+    return variable;
   }
 
   static get cmsGraphqlEndpoint() {
-    return Config.getEnvOrError("NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT");
+    return Config.getEnvOrError(process.env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT);
   }
 }
 
