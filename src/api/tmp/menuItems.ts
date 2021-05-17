@@ -1,7 +1,8 @@
 import { MenuItem } from "../../types";
 
-const menuItems: MenuItem[] = [
+const menuItems: (MenuItem & { __typename: string })[] = [
   {
+    __typename: "MenuItem",
     id: "1",
     order: 0,
     path: "/haku",
@@ -10,6 +11,7 @@ const menuItems: MenuItem[] = [
     url: "/haku",
   },
   {
+    __typename: "MenuItems",
     id: "3",
     order: 2,
     path: "/liikuntatunnit",
@@ -18,6 +20,7 @@ const menuItems: MenuItem[] = [
     url: "/liikuntatunnit",
   },
   {
+    __typename: "MenuItems",
     id: "2",
     order: 1,
     path: "/liikuntapaikat",
@@ -26,6 +29,7 @@ const menuItems: MenuItem[] = [
     url: "/liikuntapaikat",
   },
   {
+    __typename: "MenuItems",
     id: "4",
     order: 3,
     path: "/ryhmat",
