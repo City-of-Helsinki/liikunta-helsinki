@@ -61,13 +61,8 @@ function getCollectionsAsItems(
   collectionConnection: Connection<Collection> | null
 ): Item[] {
   const collections = getNodes<Collection>(collectionConnection);
-  // The CMS has one collection. Get it, and make 6 copies of it.
-  const extendedCollections = Array.from({ length: 7 }, (_, index) => ({
-    ...collections[0],
-    id: `${collections[0]}-${index}`,
-  }));
 
-  return extendedCollections.map((collection) => ({
+  return collections.map((collection) => ({
     id: collection.id,
     title: collection.title,
     infoLines: [collection.description],
@@ -142,9 +137,28 @@ export default function Home() {
 export async function getStaticProps(context: GetStaticPropsContext) {
   const cmsClient = initializeCmsApollo();
 
-  await cmsClient.pageQuery({
+  const { data } = await cmsClient.pageQuery({
     nextContext: context,
     query: LANDING_PAGE_QUERY,
+  });
+
+  cmsClient.writeQuery({
+    query: LANDING_PAGE_QUERY,
+    data: {
+      ...data,
+      // landingPageBy: mockLandingPage,
+      // The CMS has one collection. Get it, and make 6 copies of it.
+      collections: {
+        ...data.collections,
+        edges: Array.from({ length: 7 }, (_, index) => ({
+          ...data.collections.edges[0],
+          node: {
+            ...data.collections.edges[0].node,
+            id: `${data.collections.edges[0].node.id}-${index}`,
+          },
+        })),
+      },
+    },
   });
 
   return {
