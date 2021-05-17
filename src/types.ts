@@ -1,11 +1,3 @@
-export type NavigationItem = {
-  id: string;
-  path: string;
-  target: string;
-  title: string;
-  url: string;
-};
-
 export type MenuItem = {
   id: string;
   order: number;
@@ -14,6 +6,8 @@ export type MenuItem = {
   title: string;
   url: string;
 };
+
+export type NavigationItem = MenuItem;
 
 export type Language = {
   id: string;

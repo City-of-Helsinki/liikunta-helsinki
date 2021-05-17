@@ -13,6 +13,32 @@ import { GetStaticPropsContext } from "next";
 import { Language, MenuItem } from "../types";
 import mockMenuItems from "./tmp/menuItems";
 
+type GlobalData = {
+  globalLanguages: Language[];
+  globalMenuItems: { nodes: MenuItem[] };
+};
+
+const GLOBAL_QUERY = gql`
+  {
+    globalLanguages: languages {
+      id
+      name
+      slug
+      code
+      locale
+    }
+    globalMenuItems: menuItems {
+      nodes {
+        id
+        order
+        target
+        title
+        url
+      }
+    }
+  }
+`;
+
 function getNavigationItems(menuItemsConnection: { nodes: MenuItem[] }) {
   let menuItems = menuItemsConnection.nodes;
 
@@ -21,9 +47,8 @@ function getNavigationItems(menuItemsConnection: { nodes: MenuItem[] }) {
   }
 
   const sortedMenuItems = [...menuItems].sort((a, b) => a.order - b.order);
-  const navigationItems = sortedMenuItems.map(({ order, ...rest }) => rest);
 
-  return navigationItems;
+  return { nodes: sortedMenuItems };
 }
 
 function getSupportedLanguages(
@@ -49,26 +74,7 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
     }
   ): Promise<ApolloQueryResult<T>> {
     const { nextContext, query, ...apolloOptions } = options;
-    const globalData = gql`
-      {
-        globalLanguages: languages {
-          id
-          name
-          slug
-          code
-          locale
-        }
-        globalMenuItems: menuItems {
-          nodes {
-            id
-            order
-            target
-            title
-            url
-          }
-        }
-      }
-    `;
+    const globalData = GLOBAL_QUERY;
 
     // @ts-ignore
     query.definitions[0].selectionSet.selections = [
@@ -78,21 +84,25 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
       ...globalData.definitions[0].selectionSet.selections,
     ];
 
-    const {
-      // @ts-ignore
-      data: { globalLanguages, globalMenuItems, ...restOfData },
-      ...rest
-    } = await super.query({ query, ...apolloOptions });
+    const { data, ...rest } = await super.query<T & GlobalData>({
+      query,
+      ...apolloOptions,
+    });
 
-    return {
-      ...rest,
-      // @ts-ignore
+    this.writeQuery({
+      query,
+      variables: apolloOptions.variables,
       data: {
-        ...restOfData,
-        globalLanguages: getSupportedLanguages(globalLanguages, nextContext),
-        globalMenuItems: getNavigationItems(globalMenuItems),
+        ...data,
+        globalLanguages: getSupportedLanguages(
+          data.globalLanguages,
+          nextContext
+        ),
+        globalMenuItems: getNavigationItems(data.globalMenuItems),
       },
-    };
+    });
+
+    return { data: this.readQuery({ query, ...apolloOptions }), ...rest };
   }
 }
 
