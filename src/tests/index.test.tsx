@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { RouterContext } from "next/dist/next-server/lib/router-context";
 import { NextRouter } from "next/router";
 import { MockedProvider } from "@apollo/client/testing";
@@ -6,6 +6,7 @@ import { act } from "react-dom/test-utils";
 
 import App, { LANDING_PAGE_QUERY } from "../pages/index";
 import { PAGE_QUERY } from "../components/page/Page";
+import mockLandingPage from "./mockData/landingPage";
 
 const getMocks = () => [
   {
@@ -15,6 +16,7 @@ const getMocks = () => [
     result: {
       data: {
         collections: { edges: [] },
+        landingPageBy: mockLandingPage,
       },
     },
   },
@@ -62,12 +64,12 @@ const mockRouter: NextRouter = {
   route: "/",
   asPath: "/",
   query: {},
-  push: jest.fn(),
-  replace: jest.fn(),
-  reload: jest.fn(),
-  back: jest.fn(),
-  prefetch: jest.fn(),
-  beforePopState: jest.fn(),
+  push: jest.fn(() => Promise.resolve(true)),
+  prefetch: jest.fn(() => Promise.resolve()),
+  replace: jest.fn(() => Promise.resolve(true)),
+  back: jest.fn(() => Promise.resolve(true)),
+  reload: jest.fn(() => Promise.resolve(true)),
+  beforePopState: jest.fn(() => Promise.resolve(true)),
   events: {
     on: jest.fn(),
     off: jest.fn(),
@@ -93,6 +95,8 @@ describe("App", () => {
       );
     });
 
-    expect(screen.getByText("Kesän parhaat uimarannat")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText("Kesän parhaat uimarannat")).toBeInTheDocument()
+    );
   });
 });

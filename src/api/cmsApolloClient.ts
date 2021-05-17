@@ -21,6 +21,18 @@ function createCmsApolloClient() {
             },
           },
         },
+        MediaItem: {
+          fields: {
+            mediaItemUrl: {
+              // For some reason the GraphQL endpoint isn't able to return image
+              // data.
+              read() {
+                // eslint-disable-next-line max-len
+                return "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg";
+              },
+            },
+          },
+        },
       },
     }),
   });

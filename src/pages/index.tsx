@@ -25,6 +25,14 @@ export const LANDING_PAGE_QUERY = gql`
         }
       }
     }
+    landingPageBy(landingPageId: 44) {
+      title
+      description
+      heroLink
+      desktopImage {
+        mediaItemUrl
+      }
+    }
   }
 `;
 
@@ -83,14 +91,24 @@ export default function Home() {
     mockRecommendations,
     router
   );
-  const landingPage = mockLandingPage;
+  const landingPage = data?.landingPageBy;
   const collectionItems: Item[] = getCollectionsAsItems(
     data?.collections ?? emptyConnection
   );
 
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
-      <Hero {...landingPage} />
+      {landingPage && (
+        <Hero
+          title={landingPage.title}
+          description={landingPage.description}
+          desktopImageUri={landingPage.desktopImage?.mediaItemUrl}
+          cta={{
+            label: landingPage.heroLink[0],
+            href: landingPage.heroLink[1],
+          }}
+        />
+      )}
       <Section
         title="Suosittelemme"
         cta={{
@@ -135,15 +153,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     },
   };
 }
-
-const mockLandingPage = {
-  title: "Kesän parhaat uimarannat",
-  desktopImage: {
-    uri:
-      "https://finna.fi/Cover/Show?id=hkm.HKMS000005:km00390n&size=master&index=0",
-  },
-  link: "/tips/uimarannat",
-};
 
 const mockRecommendations: Recommendation[] = [
   {
