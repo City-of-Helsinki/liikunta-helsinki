@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-explicit-any */
-
 import {
   ApolloClient,
   ApolloQueryResult,
+  DocumentNode,
   gql,
   NormalizedCacheObject,
   OperationVariables,
   QueryOptions,
 } from "@apollo/client";
+import { OperationDefinitionNode, SelectionNode } from "graphql";
 import { GetStaticPropsContext } from "next";
 
 import { Language, MenuItem } from "../types";
@@ -17,6 +17,13 @@ type GlobalData = {
   globalLanguages: Language[];
   globalMenuItems: { nodes: MenuItem[] };
 };
+
+function getSelectionSet(documentNode: DocumentNode): SelectionNode[] {
+  return documentNode.definitions.find(
+    (node): node is OperationDefinitionNode =>
+      node.kind === "OperationDefinition"
+  )?.selectionSet?.selections as SelectionNode[];
+}
 
 const GLOBAL_QUERY = gql`
   {
@@ -68,21 +75,16 @@ function getSupportedLanguages(
 }
 
 class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async pageQuery<T = any, TVariables = OperationVariables>(
     options: QueryOptions<TVariables, T> & {
       nextContext: GetStaticPropsContext;
     }
   ): Promise<ApolloQueryResult<T>> {
     const { nextContext, query, ...apolloOptions } = options;
-    const globalData = GLOBAL_QUERY;
+    const globalDataInjectedFields = getSelectionSet(GLOBAL_QUERY);
 
-    // @ts-ignore
-    query.definitions[0].selectionSet.selections = [
-      // @ts-ignore
-      ...query.definitions[0].selectionSet.selections,
-      // @ts-ignore
-      ...globalData.definitions[0].selectionSet.selections,
-    ];
+    getSelectionSet(query).push(...globalDataInjectedFields);
 
     const { data, ...rest } = await super.query<T & GlobalData>({
       query,
