@@ -50,15 +50,5 @@
     & > * {
       margin-bottom: 0;
     }
-
-    & > a {
-      display: flex;
-      align-items: center;
-
-      color: $color-black-90;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: $fontsize-body-l;
-    }
   }
 }
