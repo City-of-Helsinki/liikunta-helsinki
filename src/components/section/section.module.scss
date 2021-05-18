@@ -11,6 +11,11 @@
 
   background: $color-black-5;
 
+  &:last-child {
+    // even out footer koros margin
+    padding-bottom: $spacing-layout-m + 1rem;
+  }
+
   & > * {
     grid-column: 2;
     margin-bottom: 0;

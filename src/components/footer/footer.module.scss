@@ -1,0 +1,29 @@
+@use "breakpoints";
+@import "variables";
+
+.footer {
+  --footer-background: #{$color-engel-medium-light} !important;
+  grid-column: 1 / -1 !important;
+
+  // koros stuff
+  margin-top: -1rem;
+  > div > svg {
+    width: 100%;
+  }
+
+  // fix "back to top" button positioning being slightly off
+  @include breakpoints.respond-above(s) {
+    > div > div > div > button {
+      top: -3px;
+    }
+  }
+
+  // align utility links to right also now when there are no SoMe items
+  @include breakpoints.respond-above(m) {
+    > div > div:nth-child(2) {
+      display: grid;
+      justify-items: end;
+      justify-content: unset;
+    }
+  }
+}
