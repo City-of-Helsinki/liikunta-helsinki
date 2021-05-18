@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React from "react";
 import classNames from "classnames";
-import { IconAngleRight } from "hds-react";
 
 import Text from "../text/Text";
+import SecondaryLink from "../link/SecondaryLink";
 import styles from "./section.module.scss";
 
 type Props = {
@@ -34,12 +34,8 @@ function Section({
       {cta && title && (
         <header className={styles.sectionHeader}>
           {titleComponent}
-          <Link href={cta.href}>
-            {/* <Link /> applies href */}
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a>
-              {cta.label} <IconAngleRight size="s" />
-            </a>
+          <Link href={cta.href} passHref>
+            <SecondaryLink>{cta.label}</SecondaryLink>
           </Link>
         </header>
       )}

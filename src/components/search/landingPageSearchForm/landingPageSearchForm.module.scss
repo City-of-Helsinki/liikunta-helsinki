@@ -1,0 +1,24 @@
+@import "variables";
+
+.searchForm {
+  display: grid;
+  grid-template-columns: minmax(max-content, 1fr) 4fr 2fr 1fr;
+  column-gap: $spacing-l;
+  row-gap: $spacing-xs;
+  align-items: flex-end;
+  padding: $spacing-layout-m $spacing-layout-m $spacing-layout-s;
+
+  background-color: #464646;
+
+  & * {
+    --label-color-default: $color-white;
+
+    color: $color-white;
+  }
+
+  & > a {
+    grid-column: 4;
+    grid-row: 2;
+    justify-self: flex-end;
+  }
+}

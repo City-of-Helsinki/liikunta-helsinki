@@ -3,10 +3,11 @@
 
 .box {
   grid-row: 1;
+  align-self: center;
   background-color: rgba($color-black, 70%);
   width: 20rem;
   height: 15rem;
-  margin-top: $spacing-xl;
+  margin-bottom: 10rem;
   padding: $spacing-m;
 
   @include breakpoints.respond-above(m) {

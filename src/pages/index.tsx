@@ -111,6 +111,10 @@ export default function Home() {
           </Section>
         </>
       )}
+      <Section color="transparent">
+        <LandingPageSearchForm />
+        <div>Categories</div>
+      </Section>
       <Section
         title="Suosittelemme"
         cta={{
