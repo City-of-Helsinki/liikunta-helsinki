@@ -3,10 +3,9 @@ import React from "react";
 import Navigation from "../navigation/Navigation";
 import { LayoutComponentProps } from "./types";
 import styles from "./layout.module.scss";
+import Footer from "../footer/Footer";
 
 const MAIN_CONTENT_ID = "main-content";
-
-const Footer = () => <footer>Footer</footer>;
 
 function Layout({ children, languages, menuItems }: LayoutComponentProps) {
   return (
@@ -19,7 +18,7 @@ function Layout({ children, languages, menuItems }: LayoutComponentProps) {
       <main id={MAIN_CONTENT_ID} className={styles.main}>
         {children}
       </main>
-      <Footer />
+      <Footer navigationItems={menuItems} />
     </div>
   );
 }
