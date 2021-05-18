@@ -70,3 +70,14 @@
     border: none !important;
   }
 }
+
+.searchForm .hdsButtonOverrides {
+  --background-color: #{$color-success};
+  --background-color-hover: #{$color-success-dark};
+  --background-color-focus: #{$color-success};
+  --background-color-hover-focus: #{$color-success-dark};
+  --border-color: #{$color-success};
+  --border-color-hover: #{$color-success-dark};
+  --border-color-focus: #{$color-success};
+  --border-color-hover-focus: #{$color-success-dark};
+}

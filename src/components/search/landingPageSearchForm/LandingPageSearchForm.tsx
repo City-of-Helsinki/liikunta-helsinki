@@ -24,7 +24,11 @@ function LandingPageSearchForm() {
       >
         <IconSearch aria-hidden="true" />
       </TextInput>
-      <Button type="submit" iconLeft={<IconSearch />}>
+      <Button
+        type="submit"
+        iconLeft={<IconSearch />}
+        className={styles.hdsButtonOverrides}
+      >
         Hae
       </Button>
       <Link href="/search" passHref>
