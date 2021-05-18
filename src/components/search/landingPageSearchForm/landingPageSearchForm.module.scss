@@ -76,12 +76,15 @@
 }
 
 .searchForm .hdsButtonOverrides {
-  --background-color: #{$color-success};
-  --background-color-hover: #{$color-success-dark};
-  --background-color-focus: #{$color-success};
-  --background-color-hover-focus: #{$color-success-dark};
-  --border-color: #{$color-success};
-  --border-color-hover: #{$color-success-dark};
-  --border-color-focus: #{$color-success};
-  --border-color-hover-focus: #{$color-success-dark};
+  --hds-button-override-color: #{$color-coat-of-arms};
+  --hds-button-override-color-dark: #{$color-coat-of-arms-dark};
+
+  --background-color: var(--hds-button-override-color);
+  --background-color-hover: var(--hds-button-override-color-dark);
+  --background-color-focus: var(--hds-button-override-color);
+  --background-color-hover-focus: var(--hds-button-override-color-dark);
+  --border-color: var(--hds-button-override-color);
+  --border-color-hover: var(--hds-button-override-color-dark);
+  --border-color-focus: var(--hds-button-override-color);
+  --border-color-hover-focus: var(--hds-button-override-color-dark);
 }
