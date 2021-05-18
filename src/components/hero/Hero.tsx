@@ -1,4 +1,3 @@
-import { Koros } from "hds-react";
 import Link from "next/link";
 
 import Text from "../text/Text";
@@ -7,20 +6,15 @@ import styles from "./hero.module.scss";
 type Props = {
   title: string;
   description: string;
-  desktopImageUri: string;
   cta: {
     label: string;
     href: string;
   };
 };
 
-function Hero({ title, description, desktopImageUri, cta }: Props) {
+function Hero({ title, description, cta }: Props) {
   return (
     <>
-      <span
-        className={styles.backgroundImage}
-        style={{ backgroundImage: `url(${desktopImageUri})` }}
-      />
       <div className={styles.box}>
         <Text variant="body" className={styles.boxHelper}>
           {description}
@@ -32,10 +26,6 @@ function Hero({ title, description, desktopImageUri, cta }: Props) {
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a className={styles.linkButton}>{cta.label}</a>
         </Link>
-      </div>
-      <div className={styles.korosBlock}>
-        <Koros className={styles.koros} />
-        <div className={styles.block} />
       </div>
     </>
   );

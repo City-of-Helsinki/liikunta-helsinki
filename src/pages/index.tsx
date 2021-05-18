@@ -13,6 +13,8 @@ import Card from "../components/card/DefaultCard";
 import LargeCollectionCard from "../components/card/LargeCollectionCard";
 import CollectionCard from "../components/card/CollectionCard";
 import Hero from "../components/hero/Hero";
+import HeroImage from "../components/hero/HeroImage";
+import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
 
 export const LANDING_PAGE_QUERY = gql`
   query LandingPageQuery {
@@ -95,17 +97,19 @@ export default function Home() {
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
       {landingPage && (
-        <Section>
-          <Hero
-            title={landingPage.title}
-            description={landingPage.description}
-            desktopImageUri={landingPage.desktopImage?.mediaItemUrl}
-            cta={{
-              label: landingPage.heroLink[0],
-              href: landingPage.heroLink[1],
-            }}
-          />
-        </Section>
+        <>
+          <HeroImage desktopImageUri={landingPage.desktopImage?.mediaItemUrl} />
+          <Section variant="contained" color="transparent">
+            <Hero
+              title={landingPage.title}
+              description={landingPage.description}
+              cta={{
+                label: landingPage.heroLink[0],
+                href: landingPage.heroLink[1],
+              }}
+            />
+          </Section>
+        </>
       )}
       <Section
         title="Suosittelemme"
