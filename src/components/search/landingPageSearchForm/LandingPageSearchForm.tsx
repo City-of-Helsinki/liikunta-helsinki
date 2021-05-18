@@ -8,7 +8,7 @@ import styles from "./landingPageSearchForm.module.scss";
 function LandingPageSearchForm() {
   return (
     <form role="search" className={styles.searchForm}>
-      <Text as="h2" variant="h3">
+      <Text as="h2" variant="h3" className={styles.title}>
         Löydä liikuntaa
       </Text>
       <TextInput

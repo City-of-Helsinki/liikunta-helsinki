@@ -2,7 +2,7 @@
 @import "variables";
 
 .section {
-  --section-padding: #{$spacing-layout-m};
+  --section-padding: #{$spacing-layout-l};
   --section-background: #{$color-black-5};
 
   grid-column: 1 / -1 !important;

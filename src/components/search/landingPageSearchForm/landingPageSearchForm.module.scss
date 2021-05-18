@@ -1,14 +1,28 @@
+@use "breakpoints";
 @import "variables";
 
 .searchForm {
-  display: grid;
-  grid-template-columns: minmax(max-content, 1fr) 4fr 2fr 1fr;
-  column-gap: $spacing-l;
-  row-gap: $spacing-xs;
-  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
   padding: $spacing-layout-m $spacing-layout-m $spacing-layout-s;
 
   background-color: #464646;
+
+  & > *:not(:last-child) {
+    margin-bottom: $spacing-m;
+  }
+
+  @include breakpoints.respond-above(l) {
+    display: grid;
+    align-items: flex-end;
+    column-gap: $spacing-l;
+    row-gap: $spacing-xs;
+    grid-template-columns: minmax(max-content, 1fr) 4fr 2fr 1fr;
+
+    & > *:not(:last-child) {
+      margin-bottom: unset;
+    }
+  }
 
   & * {
     --label-color-default: $color-white;
@@ -17,8 +31,16 @@
   }
 
   & > a {
-    grid-column: 4;
+    grid-column: 3 / span 2;
     grid-row: 2;
     justify-self: flex-end;
+    align-self: flex-end;
+  }
+}
+
+.title {
+  @include breakpoints.respond-above(l) {
+    // Force line height of button and input
+    line-height: 3.5rem;
   }
 }
