@@ -1,0 +1,41 @@
+@use "breakpoints";
+@import "variables";
+
+.heroImage {
+  --height: 30rem;
+
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: var(--height);
+
+  & + * {
+    // Force next element on the same row as the hero image so that the next
+    // element will be rendered on top of the hero image.
+    grid-row: 1 !important;
+  }
+
+  & + * + * {
+    // Force the element after that to overlap the hero image.
+    padding-top: 0;
+    margin-top: -10rem;
+  }
+
+  @include breakpoints.respond-above(m) {
+    --height: 48rem;
+  }
+
+  .image {
+    display: block;
+    width: 100%;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  & > div {
+    fill: $color-white;
+    margin-top: -1rem;
+  }
+}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import classNames from "classnames";
 import { IconAngleRight } from "hds-react";
 
 import Text from "../text/Text";
@@ -12,13 +13,23 @@ type Props = {
     label: string;
     href: string;
   };
+  color?: "grey" | "white" | "transparent";
+  variant?: "default" | "contained";
 };
 
-function Section({ title, children, cta }: Props) {
+function Section({
+  title,
+  children,
+  cta,
+  color = "grey",
+  variant = "default",
+}: Props) {
   const titleComponent = <Text variant="h2">{title}</Text>;
 
   return (
-    <section className={styles.section}>
+    <section
+      className={classNames(styles.section, styles[color], styles[variant])}
+    >
       {!cta && title && titleComponent}
       {cta && title && (
         <header className={styles.sectionHeader}>
