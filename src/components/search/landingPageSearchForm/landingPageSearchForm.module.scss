@@ -27,7 +27,7 @@
   }
 
   & * {
-    --label-color-default: $color-white;
+    --label-color-default: #{$color-white};
 
     color: $color-white;
   }
@@ -37,6 +37,24 @@
     grid-row: 2;
     justify-self: flex-end;
     align-self: flex-end;
+  }
+}
+
+.inputWithIcon {
+  position: relative;
+
+  & > div > input {
+    padding-left: calc((2 * #{$spacing-s}) + 1.5rem) !important;
+  }
+
+  & > div > svg {
+    position: absolute;
+    left: $spacing-layout-2-xs;
+    bottom: $spacing-layout-2-xs;
+
+    & * {
+      color: $color-black-90;
+    }
   }
 }
 

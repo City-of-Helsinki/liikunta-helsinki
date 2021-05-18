@@ -12,11 +12,14 @@ function LandingPageSearchForm() {
         Löydä liikuntaa
       </Text>
       <TextInput
+        className={styles.inputWithIcon}
         name="q"
         id="q"
         label="Mitä etsit?"
         placeholder="Aloita kirjoittamalla tähän, esim. uimahalli tai jooga"
-      />
+      >
+        <IconSearch aria-hidden="true" />
+      </TextInput>
       <Button type="submit" iconLeft={<IconSearch />}>
         Hae
       </Button>
