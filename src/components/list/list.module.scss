@@ -39,3 +39,10 @@
     }
   }
 }
+
+.tight {
+  --base-list-item-width: 16rem;
+
+  row-gap: $spacing-s;
+  column-gap: $spacing-3-xl;
+}
