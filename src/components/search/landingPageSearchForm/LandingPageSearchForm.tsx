@@ -1,5 +1,6 @@
 import { TextInput, Button, IconSearch } from "hds-react";
 import Link from "next/link";
+import classNames from "classnames";
 
 import Text from "../../text/Text";
 import SecondaryLink from "../../link/SecondaryLink";
@@ -12,7 +13,10 @@ function LandingPageSearchForm() {
         Löydä liikuntaa
       </Text>
       <TextInput
-        className={styles.inputWithIcon}
+        className={classNames(
+          styles.inputWithIcon,
+          styles.hdsTextInputOverrides
+        )}
         name="q"
         id="q"
         label="Mitä etsit?"

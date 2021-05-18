@@ -64,3 +64,9 @@
     line-height: 3.5rem;
   }
 }
+
+.hdsTextInputOverrides {
+  & > div > input {
+    border: none !important;
+  }
+}
