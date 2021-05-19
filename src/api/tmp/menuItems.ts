@@ -11,7 +11,7 @@ const menuItems: (MenuItem & { __typename: string })[] = [
     url: "/haku",
   },
   {
-    __typename: "MenuItems",
+    __typename: "MenuItem",
     id: "3",
     order: 2,
     path: "/liikuntatunnit",
@@ -20,7 +20,7 @@ const menuItems: (MenuItem & { __typename: string })[] = [
     url: "/liikuntatunnit",
   },
   {
-    __typename: "MenuItems",
+    __typename: "MenuItem",
     id: "2",
     order: 1,
     path: "/liikuntapaikat",
@@ -29,7 +29,7 @@ const menuItems: (MenuItem & { __typename: string })[] = [
     url: "/liikuntapaikat",
   },
   {
-    __typename: "MenuItems",
+    __typename: "MenuItem",
     id: "4",
     order: 3,
     path: "/ryhmat",

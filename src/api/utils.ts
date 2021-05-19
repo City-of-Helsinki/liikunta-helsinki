@@ -13,3 +13,11 @@ export function sortMenuItems(menuItemsConnection: { nodes: MenuItem[] }) {
     nodes: sortedMenuItems,
   };
 }
+
+export function getQlLanguage(language: string) {
+  return {
+    fi: "FI",
+    sv: "SV",
+    en: "EN",
+  }[language];
+}

@@ -25,7 +25,7 @@ const getMocks = () => [
       query: PAGE_QUERY,
     },
     response: {
-      languages: [
+      pageLanguages: [
         {
           id: "1",
           name: "English",
@@ -34,7 +34,7 @@ const getMocks = () => [
           locale: "en_US",
         },
       ],
-      menuItems: {
+      pageMenuItems: {
         nodes: [
           {
             id: "1",

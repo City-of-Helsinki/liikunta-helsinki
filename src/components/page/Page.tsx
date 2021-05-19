@@ -1,20 +1,24 @@
 import { useQuery, gql } from "@apollo/client";
+import { useRouter } from "next/router";
 import React from "react";
 
+import { getQlLanguage } from "../../api/utils";
 import DefaultLayout from "../layout/Layout";
 import { LayoutComponent } from "../layout/types";
 import PageMeta from "../meta/PageMeta";
 
-export const PAGE_QUERY = gql`
-  query PageQuery {
-    languages {
+export const PAGE_FRAGMENT = gql`
+  fragment PageFragment on RootQuery {
+    pageLanguages: languages {
       id
       name
       slug
       code
       locale
     }
-    menuItems {
+    pageMenuItems: menuItems(
+      where: { location: PRIMARY, language: $language }
+    ) {
       nodes {
         id
         order
@@ -23,6 +27,14 @@ export const PAGE_QUERY = gql`
         url
       }
     }
+  }
+`;
+
+export const PAGE_QUERY = gql`
+  ${PAGE_FRAGMENT}
+  query PageQuery($language: LanguageCodeFilterEnum) {
+    ...PageFragment
+    __typename
   }
 `;
 
@@ -40,10 +52,15 @@ function Page({
   layoutComponent: Layout = DefaultLayout,
   ...rest
 }: Props) {
-  const { data } = useQuery(PAGE_QUERY);
+  const { locale } = useRouter();
+  const { data } = useQuery(PAGE_QUERY, {
+    variables: {
+      language: getQlLanguage(locale),
+    },
+  });
 
-  const menuItems = data?.menuItems.nodes ?? [];
-  const languages = data?.languages ?? [];
+  const menuItems = data?.pageMenuItems?.nodes ?? [];
+  const languages = data?.pageLanguages ?? [];
 
   return (
     <>
