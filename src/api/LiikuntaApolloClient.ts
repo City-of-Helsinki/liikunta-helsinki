@@ -1,48 +1,23 @@
 import {
   ApolloClient,
   ApolloQueryResult,
-  DocumentNode,
   gql,
   NormalizedCacheObject,
   OperationVariables,
   QueryOptions,
 } from "@apollo/client";
-import { OperationDefinitionNode, SelectionNode } from "graphql";
 import { GetStaticPropsContext } from "next";
 
-import { Language, MenuItem } from "../types";
+import { Language } from "../types";
 import mockMenuItems from "./tmp/menuItems";
-
-type GlobalData = {
-  globalLanguages: Language[];
-  globalMenuItems: { nodes: MenuItem[] };
-};
-
-function getSelectionSet(documentNode: DocumentNode): SelectionNode[] {
-  return documentNode.definitions.find(
-    (node): node is OperationDefinitionNode =>
-      node.kind === "OperationDefinition"
-  )?.selectionSet?.selections as SelectionNode[];
-}
+import { getQlLanguage } from "./utils";
+import { PAGE_FRAGMENT } from "../components/page/Page";
 
 const GLOBAL_QUERY = gql`
-  {
-    globalLanguages: languages {
-      id
-      name
-      slug
-      code
-      locale
-    }
-    globalMenuItems: menuItems {
-      nodes {
-        id
-        order
-        target
-        title
-        url
-      }
-    }
+  ${PAGE_FRAGMENT}
+  query PageQuery($language: LanguageCodeFilterEnum) {
+    ...PageFragment
+    __typename
   }
 `;
 
@@ -69,37 +44,40 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
       nextContext: GetStaticPropsContext;
     }
   ): Promise<ApolloQueryResult<T>> {
-    const { nextContext, query, ...apolloOptions } = options;
-    const globalDataInjectedFields = getSelectionSet(GLOBAL_QUERY);
+    const { nextContext, ...apolloOptions } = options;
 
-    getSelectionSet(query).push(...globalDataInjectedFields);
+    const globalQueryOptions = {
+      query: GLOBAL_QUERY,
+      variables: {
+        language: getQlLanguage(
+          nextContext.locale ?? nextContext.defaultLocale
+        ),
+      },
+    };
 
-    const { data, ...rest } = await super.query<T & GlobalData>({
-      query,
-      ...apolloOptions,
-    });
+    const { data: globalData } = await super.query(globalQueryOptions);
 
     this.writeQuery({
-      query,
-      variables: apolloOptions.variables,
+      ...globalQueryOptions,
       data: {
-        ...data,
-        globalLanguages: getSupportedLanguages(
-          data.globalLanguages,
+        ...globalData,
+        // Only use languages that this project supports
+        pageLanguages: getSupportedLanguages(
+          globalData.pageLanguages,
           nextContext
         ),
-        globalMenuItems: {
-          ...data.globalMenuItems,
+        pageMenuItems: {
+          ...globalData.pageMenuItems,
           nodes:
             // Use mock data until menu items are defined in the CMS
-            data.globalMenuItems.nodes.length === 0
+            globalData.pageMenuItems.nodes.length === 0
               ? mockMenuItems
-              : data.globalMenuItems.nodes,
+              : globalData.pageMenuItems.nodes,
         },
       },
     });
 
-    return { data: this.readQuery({ query, ...apolloOptions }), ...rest };
+    return super.query(apolloOptions);
   }
 }
 

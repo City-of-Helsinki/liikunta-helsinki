@@ -12,6 +12,9 @@ function createCmsApolloClient() {
     uri: Config.cmsGraphqlEndpoint,
     cache: new InMemoryCache({
       typePolicies: {
+        RootQuery: {
+          queryType: true,
+        },
         MenuItems: {
           fields: {
             nodes: {
