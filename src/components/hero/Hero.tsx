@@ -14,20 +14,18 @@ type Props = {
 
 function Hero({ title, description, cta }: Props) {
   return (
-    <>
-      <div className={styles.box}>
-        <Text variant="body" className={styles.boxHelper}>
-          {description}
-        </Text>
-        <Text variant="h1" className={styles.boxTitle}>
-          {title}
-        </Text>
-        <Link href={cta.href}>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a className={styles.linkButton}>{cta.label}</a>
-        </Link>
-      </div>
-    </>
+    <div className={styles.box}>
+      <Text variant="body" className={styles.boxHelper}>
+        {description}
+      </Text>
+      <Text variant="h1" className={styles.boxTitle}>
+        {title}
+      </Text>
+      <Link href={cta.href}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a className={styles.linkButton}>{cta.label}</a>
+      </Link>
+    </div>
   );
 }
 

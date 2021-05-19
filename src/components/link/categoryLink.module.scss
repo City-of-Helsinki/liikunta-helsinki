@@ -11,7 +11,7 @@
     color: $color-black-90;
     text-decoration: none;
     background-color: white;
-    font-size: var(--fontsize-body-l);
+    font-size: $fontsize-body-l;
     font-weight: 500;
 
     border: none;
@@ -35,7 +35,7 @@
     }
 
     &:focus {
-      outline: 2px solid var(--color-black);
+      outline: 2px solid $color-black;
       outline-offset: 0.25rem;
     }
   }
