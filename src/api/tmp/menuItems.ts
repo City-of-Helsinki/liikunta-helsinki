@@ -5,10 +5,10 @@ const menuItems: (MenuItem & { __typename: string })[] = [
     __typename: "MenuItem",
     id: "1",
     order: 0,
-    path: "/haku",
+    path: "/search",
     target: "",
     title: "Haku",
-    url: "/haku",
+    url: "/search",
   },
   {
     __typename: "MenuItems",

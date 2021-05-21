@@ -1,0 +1,82 @@
+@use "breakpoints";
+@import "variables";
+
+.searchArea {
+  padding-top: $spacing-m;
+  grid-column: 1 / -1 !important;
+
+  display: inherit;
+  grid-template-columns: inherit;
+  grid-template-rows: inherit;
+
+  & > * {
+    grid-column: 2;
+    margin-bottom: 0;
+  }
+
+  background-color: $color-engel;
+}
+
+.form {
+  margin: $spacing-m 0 $spacing-4-xl;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: $spacing-m;
+
+
+  @include breakpoints.respond-above(m) {
+    grid-template-columns: repeat(4, 1fr);
+
+    // Span two first fields across two columns
+    > div:nth-child(1) {
+      grid-column: 1 / span 2;
+    }
+
+    > div:nth-child(2) {
+      grid-column: 3 / span 2;
+    }
+
+    // Place checkboxes on third row
+    > div:nth-child(6) {
+      grid-column: 1;
+    }
+
+    // Span filters across 3 columns
+    > div:nth-child(10) {
+      grid-column: 1 / span 3;
+    }
+  }
+
+  // Remove border from all the select inputs
+  & > * > div  {
+    border: none !important;
+  }
+
+  > button {
+    grid-column: 4;
+  }
+
+
+  .inputWithIcon {
+    position: relative;
+
+    & > div > input {
+      border: none !important;
+      padding-left: calc((2 * #{$spacing-s}) + 1.5rem) !important;
+    }
+
+    & > div > svg {
+      position: absolute;
+      left: $spacing-layout-2-xs;
+      bottom: $spacing-layout-2-xs;
+
+      & * {
+        color: $color-black-90;
+      }
+    }
+  }
+}
+
+
+
+
