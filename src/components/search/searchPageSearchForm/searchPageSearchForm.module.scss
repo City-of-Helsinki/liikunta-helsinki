@@ -23,7 +23,6 @@
   grid-template-columns: 1fr;
   grid-gap: $spacing-m;
 
-
   @include breakpoints.respond-above(m) {
     grid-template-columns: repeat(4, 1fr);
 
@@ -48,14 +47,13 @@
   }
 
   // Remove border from all the select inputs
-  & > * > div  {
+  & > * > div {
     border: none !important;
   }
 
   > button {
     grid-column: 4;
   }
-
 
   .inputWithIcon {
     position: relative;
@@ -76,7 +74,3 @@
     }
   }
 }
-
-
-
-
