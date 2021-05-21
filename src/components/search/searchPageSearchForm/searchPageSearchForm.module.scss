@@ -36,7 +36,7 @@
       grid-column: 3 / span 2;
     }
 
-    // Place checkboxes on third row
+    // Place checkboxes on third row because we are missing date selector
     > div:nth-child(6) {
       grid-column: 1;
     }

@@ -8,57 +8,22 @@ import {
 } from "hds-react";
 
 import Text from "../../text/Text";
+import {
+  mockSportTypes,
+  mockArea,
+  mockPrice,
+  mockCategory,
+} from "./tmp/mockedData";
 import styles from "./searchPageSearchForm.module.scss";
 
 function SearchPageSearchForm() {
-  const mockCategory = [
-    {
-      label: "Maauimalat ja uimarannat",
-      value: "swimswim",
-    },
-  ];
-
-  const mockSportTypes = [
-    {
-      label: "Uinti",
-      value: "uinti",
-    },
-    {
-      label: "Lenkkeily",
-      value: "lenkkeily",
-    },
-  ];
-
-  const mockArea = [
-    {
-      label: "Helsinki",
-      value: "helsinki",
-    },
-    {
-      label: "Espoo",
-      value: "espoo",
-    },
-    {
-      label: "Vantaa",
-      value: "vantaa",
-    },
-  ];
-
-  const mockPrice = [
-    {
-      label: "Ilmainen",
-      value: "ilmainen",
-    },
-    {
-      label: "Maksullinen",
-      value: "maksullinen",
-    },
-  ];
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <div className={styles.searchArea}>
       <Text variant="h1">Mitä etsit?</Text>
-      <form role="search" className={styles.form}>
+      <form role="search" className={styles.form} onSubmit={handleSubmit}>
         <TextInput
           placeholder="Kirjoita hakusana, esim. uimahalli tai jooga"
           id="text"
@@ -69,17 +34,9 @@ function SearchPageSearchForm() {
         </TextInput>
         <Select
           label=""
-          multiselect
           id="place"
           placeholder="Valitse paikka"
           options={mockCategory}
-          clearable={false}
-          clearButtonAriaLabel="asd"
-          selectedItemRemoveButtonAriaLabel="Remove element {value}"
-          selectedItemSrLabel="Selected element {value}"
-          getA11yRemovalMessage={({ removedSelectedItem }) =>
-            `${removedSelectedItem.label} was removed`
-          }
         />
         <Select
           label=""
