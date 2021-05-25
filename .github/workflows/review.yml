@@ -19,6 +19,7 @@ env:
   K8S_LIVENESS_PATH: /api/healthz
   K8S_READINESS_PATH: /api/readiness
   NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.hkih.production.geniem.io/graphql
+  NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
 
 jobs:
   build:
@@ -31,6 +32,7 @@ jobs:
         env:
           DOCKER_IMAGE_NAME: ${{ env.REPO_NAME }}-review
           DOCKER_BUILD_ARG_NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT }}
+          DOCKER_BUILD_ARG_NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT }}
 
   review:
     runs-on: ubuntu-latest
@@ -46,6 +48,7 @@ jobs:
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
           DOCKER_IMAGE_NAME: ${{ env.REPO_NAME }}-review
           K8S_SECRET_NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT }}
+          K8S_SECRET_NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT }}
 
       - name: Setup kubectl
         run: |
