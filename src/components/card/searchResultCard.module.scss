@@ -1,0 +1,41 @@
+@use "breakpoints";
+@import "variables";
+
+.searchResultCard {
+  .button {
+    display: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    align-self: flex-start;
+    object-fit: cover;
+  }
+
+  .keywords {
+    grid-area: keywords;
+    align-self: start;
+    flex-wrap: wrap;
+  }
+
+  @include breakpoints.respond-above(m) {
+    --width-image: 31rem;
+
+    grid-template-columns: minmax(auto, var(--width-image)) 1fr max-content;
+    grid-template-rows: auto min-content;
+    grid-template-areas:
+      "bg keywords keywords"
+      "bg text cta";
+    margin-bottom: 0;
+    justify-items: start;
+
+    .button {
+      display: initial;
+      grid-area: cta;
+      height: 3.5rem;
+      align-self: end;
+      margin: var(--content-padding);
+    }
+  }
+}

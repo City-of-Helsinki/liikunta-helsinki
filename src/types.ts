@@ -66,3 +66,19 @@ export type Collection = {
   description: string;
   image: string;
 };
+
+export type LocalizedString = {
+  fi: string;
+  sv: string;
+  en: string;
+};
+
+export type Venue = {
+  id: string;
+  name: LocalizedString;
+  description: LocalizedString;
+};
+
+export type SearchResult = {
+  venue: Venue;
+};

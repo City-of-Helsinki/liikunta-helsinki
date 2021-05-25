@@ -9,6 +9,7 @@ type Props = {
   variant: TextVariant;
   children: ReactNode;
   className?: string;
+  role?: string;
 };
 
 function getElement(variant: TextVariant) {

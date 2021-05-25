@@ -5,7 +5,7 @@ import styles from "./list.module.scss";
 
 type Props = {
   items: React.ReactElement[];
-  variant?: "default" | "collection-grid" | "tight";
+  variant?: "default" | "collection-grid" | "tight" | "searchResult";
 };
 
 function List({ items, variant = "default" }: Props) {
