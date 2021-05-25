@@ -46,3 +46,7 @@
   row-gap: $spacing-s;
   column-gap: $spacing-3-xl;
 }
+
+.searchResult {
+  grid-template-columns: 1fr;
+}
