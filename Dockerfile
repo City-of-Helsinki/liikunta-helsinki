@@ -34,6 +34,7 @@ FROM appbase as staticbuilder
 # ===================================
 
 ARG NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT
+ARG NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT
 
 # Use non-root user
 USER appuser
