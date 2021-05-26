@@ -12,6 +12,12 @@ import styles from "./searchPageSearchForm.module.scss";
 import searchApolloClient from "../../../api/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../api/utils";
 
+function getURLSearchParamsFromAsPath(asPath: string): URLSearchParams {
+  const [, searchParams] = asPath.split("?");
+
+  return new URLSearchParams(searchParams);
+}
+
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
     unifiedSearchCompletionSuggestions(
@@ -29,7 +35,7 @@ const SUGGESTION_QUERY = gql`
 function SearchPageSearchForm() {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string>(
-    (router.query?.q as string) ?? ""
+    getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
   );
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
