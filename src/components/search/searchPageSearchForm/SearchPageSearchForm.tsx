@@ -1,37 +1,78 @@
-import { Button, TextInput, IconSearch } from "hds-react";
-import React, { useState } from "react";
+import { Button } from "hds-react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/dist/client/router";
+import { gql, useLazyQuery } from "@apollo/client";
+import debounce from "lodash/debounce";
 
 import Text from "../../text/Text";
+import SuggestionInput, {
+  Suggestion,
+} from "../../suggestionInput/SuggestionInput";
 import styles from "./searchPageSearchForm.module.scss";
+import searchApolloClient from "../../../api/searchApolloClient";
+
+const SUGGESTION_QUERY = gql`
+  query SuggestionQuery($prefix: String) {
+    unifiedSearchCompletionSuggestions(prefix: $prefix, index: "location") {
+      suggestions {
+        label
+      }
+    }
+  }
+`;
 
 function SearchPageSearchForm() {
   const router = useRouter();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
+  const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
+    client: searchApolloClient,
+  });
+  const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    router.push({ query: searchText ? { q: searchText } : "" }, undefined, {
+  const doSearch = (q?: string) => {
+    router.push({ query: q ? { q } : "" }, undefined, {
       shallow: true,
     });
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    doSearch(e.target.q.value);
+  };
+
+  const handleChange = (value: string) => {
+    setSearchText(value);
+    debouncedFindSuggestions.current({
+      variables: {
+        prefix: value,
+      },
+    });
+  };
+
+  const handleSelectSuggestion = (suggestion: Suggestion) => {
+    doSearch(suggestion.label);
+  };
+
+  const suggestions =
+    data?.unifiedSearchCompletionSuggestions?.suggestions ?? [];
 
   return (
     <div className={styles.searchArea}>
       <Text variant="h1">Mitä etsit?</Text>
       <form role="search" className={styles.form} onSubmit={handleSubmit}>
-        <TextInput
+        <SuggestionInput
+          name="q"
+          id="q"
           label="Haku"
-          hideLabel
           placeholder="Kirjoita hakusana, esim. uimahalli tai jooga"
-          id="text"
-          name="text"
-          className={styles.inputWithIcon}
           value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        >
-          <IconSearch aria-hidden="true" />
-        </TextInput>
+          onChange={handleChange}
+          onSelectedItemChange={handleSelectSuggestion}
+          suggestions={suggestions.map((suggestion) => ({
+            id: suggestion.label,
+            label: suggestion.label,
+          }))}
+        />
         <Button type="submit">Hae</Button>
       </form>
     </div>
