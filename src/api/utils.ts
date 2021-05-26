@@ -21,3 +21,10 @@ export function getQlLanguage(language: string) {
     en: "EN",
   }[language];
 }
+export function getUnifiedSearchLanguage(language: string) {
+  return {
+    fi: "FINNISH",
+    sv: "SWEDISH",
+    en: "ENGLISH",
+  }[language];
+}
