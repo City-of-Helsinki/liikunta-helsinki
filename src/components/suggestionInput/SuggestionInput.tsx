@@ -59,7 +59,18 @@ function DropdownCombobox({
         <label {...getLabelProps()}>{label}</label>
         <div {...getComboboxProps()}>
           <TextInput
-            {...getInputProps()}
+            {...getInputProps({
+              onKeyDown: (event) => {
+                // When the user presses the enter key while not highlighting
+                // any option.
+                if (event.key === "Enter" && highlightedIndex === -1) {
+                  // Prevent Downshift's default 'Enter' behavior.
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  event.nativeEvent.preventDownshiftDefault = true;
+                }
+              },
+            })}
             className={styles.suggestionInput}
             {...rest}
           >
