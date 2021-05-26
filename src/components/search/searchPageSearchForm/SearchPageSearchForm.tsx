@@ -1,6 +1,6 @@
 import { Button, IconSearch } from "hds-react";
 import React, { useState, useRef } from "react";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 
