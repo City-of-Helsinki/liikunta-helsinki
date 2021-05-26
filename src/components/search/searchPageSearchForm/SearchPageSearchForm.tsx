@@ -1,4 +1,4 @@
-import { Button } from "hds-react";
+import { Button, IconSearch } from "hds-react";
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/dist/client/router";
 import { gql, useLazyQuery } from "@apollo/client";
@@ -73,7 +73,9 @@ function SearchPageSearchForm() {
             label: suggestion.label,
           }))}
         />
-        <Button type="submit">Hae</Button>
+        <Button type="submit" iconLeft={<IconSearch />}>
+          Hae
+        </Button>
       </form>
     </div>
   );
