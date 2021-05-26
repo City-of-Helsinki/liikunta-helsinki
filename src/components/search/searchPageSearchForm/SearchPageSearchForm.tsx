@@ -10,10 +10,15 @@ import SuggestionInput, {
 } from "../../suggestionInput/SuggestionInput";
 import styles from "./searchPageSearchForm.module.scss";
 import searchApolloClient from "../../../api/searchApolloClient";
+import { getUnifiedSearchLanguage } from "../../../api/utils";
 
 const SUGGESTION_QUERY = gql`
-  query SuggestionQuery($prefix: String) {
-    unifiedSearchCompletionSuggestions(prefix: $prefix, index: "location") {
+  query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
+    unifiedSearchCompletionSuggestions(
+      prefix: $prefix
+      index: "location"
+      languages: [$language]
+    ) {
       suggestions {
         label
       }
@@ -47,6 +52,9 @@ function SearchPageSearchForm() {
     debouncedFindSuggestions.current({
       variables: {
         prefix: value,
+        language: getUnifiedSearchLanguage(
+          router.locale || router.defaultLocale
+        ),
       },
     });
   };
