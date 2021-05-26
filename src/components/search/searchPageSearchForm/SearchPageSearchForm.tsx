@@ -23,7 +23,9 @@ const SUGGESTION_QUERY = gql`
 
 function SearchPageSearchForm() {
   const router = useRouter();
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>(
+    (router.query?.q as string) ?? ""
+  );
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
