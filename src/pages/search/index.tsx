@@ -1,8 +1,8 @@
+import React, { useRef, useState } from "react";
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
-import React from "react";
-import { LoadingSpinner, Koros } from "hds-react";
+import { Koros } from "hds-react";
 
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
@@ -10,17 +10,27 @@ import searchApolloClient from "../../api/searchApolloClient";
 import styles from "./search.module.scss";
 import { Connection, Item, Keyword, SearchResult } from "../../types";
 import { getNodes } from "../../api/utils";
-import List from "../../components/list/List";
-import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
+import SearchList from "../../components/list/SearchList";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
+const BLOCK_SIZE = 10;
+
 export const SEARCH_QUERY = gql`
-  query SearchQuery($q: String) {
-    unifiedSearch(q: $q, index: "location", ontology: "Liikunta") {
+  query SearchQuery($q: String, $first: Int) {
+    unifiedSearch(
+      q: $q
+      index: "location"
+      ontology: "Liikunta"
+      first: $first
+    ) {
+      count
+      pageInfo {
+        hasNextPage
+      }
       edges {
         node {
           venue {
@@ -63,38 +73,57 @@ function getSearchResultsAsItems(
 }
 
 export default function Search() {
+  const [blockCount, setBlockCount] = useState(1);
   const {
     query: { q: searchText },
   } = useRouter();
 
-  const { data, loading } = useQuery(SEARCH_QUERY, {
+  const { data, loading, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
-    variables: { q: searchText ?? "*" },
+    ssr: false,
+    variables: { q: searchText ?? "*", first: BLOCK_SIZE },
   });
 
   const searchResultItems: Item[] = getSearchResultsAsItems(
     data?.unifiedSearch ?? emptyConnection
   );
 
+  const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);
+
+  const onLoadMore = () => {
+    const newBlockCount = blockCount + 1;
+    fetchMore({
+      variables: {
+        first: newBlockCount * BLOCK_SIZE,
+      },
+    }).then(() => {
+      setBlockCount(newBlockCount);
+      moreResultsAnnouncerRef.current &&
+        moreResultsAnnouncerRef.current.focus();
+    });
+  };
+
+  const count = data?.unifiedSearch?.count;
+  const pageInfo = data?.unifiedSearch?.pageInfo;
+
   return (
     <Page title="Search" description="Search">
       <SearchPageSearchForm />
       <Koros className={styles.koros} />
-      {loading ? (
-        <LoadingSpinner className={styles.spinner} />
-      ) : (
-        <Section variant="contained">
-          <Text variant="h2" className={styles.resultCount} role="status">
-            {searchResultItems.length} hakutulosta
-          </Text>
-          <List
-            variant="searchResult"
-            items={searchResultItems.map((item) => (
-              <SearchResultCard key={item.id} {...item} />
-            ))}
-          />
-        </Section>
-      )}
+
+      <Section variant="contained">
+        <SearchList
+          ref={moreResultsAnnouncerRef}
+          loading={loading}
+          onLoadMore={onLoadMore}
+          count={count}
+          blockSize={BLOCK_SIZE}
+          hasNext={pageInfo?.hasNextPage}
+          items={searchResultItems.map((item) => (
+            <SearchResultCard key={item.id} {...item} />
+          ))}
+        />
+      </Section>
     </Page>
   );
 }

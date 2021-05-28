@@ -6,7 +6,20 @@ import {
 
 import Config from "../config";
 
-const cache: InMemoryCache = new InMemoryCache({});
+const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        unifiedSearch: {
+          keyArgs: [],
+          merge(existing = {}, incoming) {
+            return { ...existing, ...incoming };
+          },
+        },
+      },
+    },
+  },
+});
 
 const searchApolloClient: ApolloClient<NormalizedCacheObject> = new ApolloClient(
   {
