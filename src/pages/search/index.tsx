@@ -105,7 +105,7 @@ export default function Search() {
   };
 
   const onRefetch = (q) => {
-    refetch({ q, first: 10 }).then(() => {
+    refetch({ q: q ?? "*", first: 10 }).then(() => {
       setBlockCount(1);
     });
   };
