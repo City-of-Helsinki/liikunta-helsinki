@@ -11,7 +11,7 @@ const cache: InMemoryCache = new InMemoryCache({
     Query: {
       fields: {
         unifiedSearch: {
-          keyArgs: [],
+          keyArgs: false,
           merge(existing = {}, incoming) {
             return { ...existing, ...incoming };
           },

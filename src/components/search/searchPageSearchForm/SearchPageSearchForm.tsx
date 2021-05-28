@@ -5,7 +5,11 @@ import { useRouter } from "next/dist/client/router";
 import Text from "../../text/Text";
 import styles from "./searchPageSearchForm.module.scss";
 
-function SearchPageSearchForm() {
+type Props = {
+  refetch: (q: string) => void;
+};
+
+function SearchPageSearchForm({ refetch }: Props) {
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
 
@@ -14,6 +18,7 @@ function SearchPageSearchForm() {
     router.push({ query: searchText ? { q: searchText } : "" }, undefined, {
       shallow: true,
     });
+    refetch(searchText);
   };
 
   return (

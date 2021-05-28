@@ -78,7 +78,7 @@ export default function Search() {
     query: { q: searchText },
   } = useRouter();
 
-  const { data, loading, fetchMore } = useQuery(SEARCH_QUERY, {
+  const { data, loading, refetch, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
     ssr: false,
     variables: { q: searchText ?? "*", first: BLOCK_SIZE },
@@ -94,6 +94,7 @@ export default function Search() {
     const newBlockCount = blockCount + 1;
     fetchMore({
       variables: {
+        q: searchText ?? "*",
         first: newBlockCount * BLOCK_SIZE,
       },
     }).then(() => {
@@ -103,12 +104,18 @@ export default function Search() {
     });
   };
 
+  const onRefetch = (q) => {
+    refetch({ q, first: 10 }).then(() => {
+      setBlockCount(1);
+    });
+  };
+
   const count = data?.unifiedSearch?.count;
   const pageInfo = data?.unifiedSearch?.pageInfo;
 
   return (
     <Page title="Search" description="Search">
-      <SearchPageSearchForm />
+      <SearchPageSearchForm refetch={onRefetch} />
       <Koros className={styles.koros} />
 
       <Section variant="contained">

@@ -7,10 +7,10 @@ import Text from "../text/Text";
 
 type Props = {
   items: React.ReactElement[];
-  onLoadMore?: () => void;
-  hasNext?: boolean;
-  loading?: boolean;
-  count?: number;
+  onLoadMore: () => void;
+  hasNext: boolean;
+  loading: boolean;
+  count: number;
   blockSize: number;
 };
 
