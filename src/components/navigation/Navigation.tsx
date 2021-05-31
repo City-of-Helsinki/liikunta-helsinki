@@ -31,7 +31,7 @@ type Props = {
 };
 
 function Navigation({ mainContentId, navigationItems, languages }: Props) {
-  const { locale, route } = useRouter();
+  const { locale, route, push } = useRouter();
 
   return (
     <HDSNavigation
@@ -40,6 +40,7 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
       menuToggleAriaLabel="menu"
       skipTo={`#${mainContentId}`}
       skipToContentLabel="Siirry suoraan sisältöön"
+      onTitleClick={() => push("/")}
     >
       <HDSNavigation.Row variant="inline">
         {navigationItems.map((navigationItem) => (
