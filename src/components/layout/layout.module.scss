@@ -24,7 +24,7 @@
   }
 
   @include breakpoints.respond-above(m) {
-    --spacing: #{$spacing-layout-xs};
+    --spacing: #{$spacing-layout-xl};
   }
 
   .main {
