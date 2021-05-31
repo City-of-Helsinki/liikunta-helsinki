@@ -41,6 +41,7 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
       skipTo={`#${mainContentId}`}
       skipToContentLabel="Siirry suoraan sisältöön"
       onTitleClick={() => push("/")}
+      logoLanguage={locale === "sv" ? "sv" : "fi"}
     >
       <HDSNavigation.Row variant="inline">
         {navigationItems.map((navigationItem) => (
