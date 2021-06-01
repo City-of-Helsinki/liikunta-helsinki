@@ -36,12 +36,21 @@ function getSupportedLanguages(
   return supportedLanguages;
 }
 
+type CustomQueryOptions<TVariables, T> = Omit<
+  QueryOptions<TVariables, T>,
+  "query"
+> & {
+  // Allow passing of next context in order to use locale and other data
+  nextContext: GetStaticPropsContext;
+  // Allow query to be left undefined. In this case only the global query is
+  // fired.
+  query?: QueryOptions<TVariables, T>["query"];
+};
+
 class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async pageQuery<T = any, TVariables = OperationVariables>(
-    options: QueryOptions<TVariables, T> & {
-      nextContext: GetStaticPropsContext;
-    }
+    options: CustomQueryOptions<TVariables, T>
   ): Promise<ApolloQueryResult<T>> {
     const { nextContext, ...apolloOptions } = options;
 
@@ -68,7 +77,14 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
       },
     });
 
-    return super.query(apolloOptions);
+    const query = apolloOptions.query;
+
+    if (query) {
+      return super.query({
+        ...apolloOptions,
+        query,
+      });
+    }
   }
 }
 
