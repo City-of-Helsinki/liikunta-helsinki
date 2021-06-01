@@ -20,12 +20,13 @@ const noop = () => {};
 const BLOCK_SIZE = 10;
 
 export const SEARCH_QUERY = gql`
-  query SearchQuery($q: String, $first: Int) {
+  query SearchQuery($q: String, $first: Int, $after: String) {
     unifiedSearch(
       q: $q
       index: "location"
       ontology: "Liikunta"
       first: $first
+      after: $after
     ) {
       count
       pageInfo {
@@ -89,6 +90,9 @@ export default function Search() {
   );
 
   const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);
+  const count = data?.unifiedSearch?.count;
+  const pageInfo = data?.unifiedSearch?.pageInfo;
+  const after = pageInfo?.endCursor;
 
   const onLoadMore = () => {
     const newBlockCount = blockCount + 1;
@@ -96,6 +100,7 @@ export default function Search() {
       variables: {
         q: searchText ?? "*",
         first: newBlockCount * BLOCK_SIZE,
+        after: after,
       },
     }).then(() => {
       setBlockCount(newBlockCount);
@@ -109,9 +114,6 @@ export default function Search() {
       setBlockCount(1);
     });
   };
-
-  const count = data?.unifiedSearch?.count;
-  const pageInfo = data?.unifiedSearch?.pageInfo;
 
   return (
     <Page title="Search" description="Search">

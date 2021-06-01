@@ -51,12 +51,16 @@ const SearchList = forwardRef(
         </ul>
         <LoadingSpinner hidden={!loading} className={styles.spinner} />
 
-        {hasNext && !loading ? (
-          <Button onClick={onLoadMore} className={styles.loadMore}>
-            Näytä lisää sijainteja ({resultsLeft})
-          </Button>
-        ) : (
-          <Text variant="body">Ei enempää hakutuloksia</Text>
+        {!loading && (
+          <>
+            {hasNext ? (
+              <Button onClick={onLoadMore} className={styles.loadMore}>
+                Näytä lisää sijainteja ({resultsLeft})
+              </Button>
+            ) : (
+              <Text variant="body">Ei enempää hakutuloksia</Text>
+            )}
+          </>
         )}
       </>
     );
