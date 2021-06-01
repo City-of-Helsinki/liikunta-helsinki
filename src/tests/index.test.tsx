@@ -12,6 +12,10 @@ const getMocks = () => [
   {
     request: {
       query: LANDING_PAGE_QUERY,
+      variables: {
+        languageCode: "EN",
+        languageCodeFilter: "EN",
+      },
     },
     result: {
       data: {

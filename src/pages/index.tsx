@@ -4,7 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 
 import { Collection, Connection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../api/cmsApolloClient";
-import { getNodes } from "../api/utils";
+import { getNodes, getQlLanguage } from "../api/utils";
 import mockRecommendations from "../api/tmp/mockRecommendations";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
@@ -19,8 +19,11 @@ import mockCategories from "../api/tmp/mockCategories";
 import CategoryLink from "../components/link/CategoryLink";
 
 export const LANDING_PAGE_QUERY = gql`
-  query LandingPageQuery {
-    collections(first: 7, where: { language: FI }) {
+  query LandingPageQuery(
+    $languageCode: LanguageCodeEnum!
+    $languageCodeFilter: LanguageCodeFilterEnum!
+  ) {
+    collections(first: 7, where: { language: $languageCodeFilter }) {
       edges {
         node {
           id
@@ -32,7 +35,7 @@ export const LANDING_PAGE_QUERY = gql`
     }
     landingPage(id: "root", idType: SLUG) {
       id
-      translation(language: FI) {
+      translation(language: $languageCode) {
         title
         description
         heroLink
@@ -88,7 +91,13 @@ function getCollectionsAsItems(
 
 export default function Home() {
   const router = useRouter();
-  const { data } = useQuery(LANDING_PAGE_QUERY);
+  const language = getQlLanguage(router.locale ?? router.defaultLocale);
+  const { data } = useQuery(LANDING_PAGE_QUERY, {
+    variables: {
+      languageCode: language,
+      languageCodeFilter: language,
+    },
+  });
 
   const recommendationItems: Item[] = getRecommendationsAsItems(
     mockRecommendations,
@@ -162,10 +171,15 @@ export default function Home() {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const cmsClient = initializeCmsApollo();
+  const language = getQlLanguage(context.locale ?? context.defaultLocale);
 
   const { data } = await cmsClient.pageQuery({
     nextContext: context,
     query: LANDING_PAGE_QUERY,
+    variables: {
+      languageCode: language,
+      languageCodeFilter: language,
+    },
   });
 
   cmsClient.writeQuery({
