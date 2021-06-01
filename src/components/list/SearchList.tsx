@@ -27,7 +27,7 @@ const SearchList = forwardRef(
       <>
         {!loading && (
           <Text variant="h2" className={styles.resultCount} role="status">
-            {items.length} hakutulosta
+            {count} hakutulosta
           </Text>
         )}
         <ul className={classNames(styles.list, styles.searchResult)}>
