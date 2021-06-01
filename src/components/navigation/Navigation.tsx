@@ -6,6 +6,10 @@ import { useRouter } from "next/router";
 import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
 
+function persistLanguageChoice(language: string) {
+  document.cookie = `NEXT_LOCALE=${language}`;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
@@ -32,6 +36,12 @@ type Props = {
 
 function Navigation({ mainContentId, navigationItems, languages }: Props) {
   const { locale, route, push } = useRouter();
+
+  const handleLanguageClick = (event) => {
+    const lang = event.target.lang;
+
+    persistLanguageChoice(lang);
+  };
 
   return (
     <HDSNavigation
@@ -92,6 +102,7 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
               // Target current route with another locale
               locale={language.slug}
               href={route}
+              onClick={handleLanguageClick}
             />
           ))}
         </HDSNavigation.LanguageSelector>
