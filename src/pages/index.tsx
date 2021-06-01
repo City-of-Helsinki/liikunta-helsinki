@@ -30,12 +30,15 @@ export const LANDING_PAGE_QUERY = gql`
         }
       }
     }
-    landingPageBy(landingPageId: 44) {
-      title
-      description
-      heroLink
-      desktopImage {
-        mediaItemUrl
+    landingPage(id: "root", idType: SLUG) {
+      id
+      translation(language: FI) {
+        title
+        description
+        heroLink
+        desktopImage {
+          mediaItemUrl
+        }
       }
     }
   }
@@ -91,7 +94,7 @@ export default function Home() {
     mockRecommendations,
     router
   );
-  const landingPage = data?.landingPageBy;
+  const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(
     data?.collections ?? emptyConnection
   );

@@ -16,7 +16,10 @@ const getMocks = () => [
     result: {
       data: {
         collections: { edges: [] },
-        landingPageBy: mockLandingPage,
+        landingPage: {
+          id: "sdkjfn1",
+          translation: mockLandingPage,
+        },
       },
     },
   },
