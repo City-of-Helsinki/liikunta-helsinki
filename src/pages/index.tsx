@@ -16,7 +16,7 @@ import Hero from "../components/hero/Hero";
 import HeroImage from "../components/hero/HeroImage";
 import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
 import mockCategories from "../api/tmp/mockCategories";
-import CategoryLink from "../components/link/CategoryLink";
+import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
 
 export const LANDING_PAGE_QUERY = gql`
   query LandingPageQuery {
@@ -116,16 +116,12 @@ export default function Home() {
       )}
       <Section color="transparent">
         <LandingPageSearchForm />
-        <List
-          variant="tight"
-          items={categories.map((category, i) => (
-            <CategoryLink
-              key={`${category.label}-${i}`}
-              label={category.label}
-              icon={category.icon}
-              href={`/search?category=${category.label.toLocaleLowerCase()}`}
-            />
-          ))}
+        <SearchShortcuts
+          shortcuts={categories.map((category, i) => ({
+            id: i.toString(),
+            label: category.label,
+            icon: category.icon,
+          }))}
         />
       </Section>
       <Section
