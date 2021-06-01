@@ -21,10 +21,24 @@ export function getQlLanguage(language: string) {
     en: "EN",
   }[language];
 }
+
 export function getUnifiedSearchLanguage(language: string) {
   return {
     fi: "FINNISH",
     sv: "SWEDISH",
     en: "ENGLISH",
   }[language];
+}
+
+export function getMenuLocationFromLanguage(language: string) {
+  switch (language) {
+    case "fi":
+      return "PRIMARY";
+    case "sv":
+      return "PRIMARY___SV";
+    case "en":
+      return "PRIMARY___EN";
+    default:
+      return "PRIMARY";
+  }
 }

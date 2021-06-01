@@ -6,7 +6,7 @@ import NextLink from "next/link";
 import styles from "./footer.module.scss";
 import { NavigationItem } from "../../types";
 
-type LinkProps = {
+type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
   href: string;
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
@@ -39,7 +39,8 @@ function Footer({ navigationItems }: Props) {
           <HDSFooter.Item
             key={navigationItem.id}
             as={Link}
-            label={navigationItem.title}
+            label={navigationItem.label}
+            title={navigationItem.title}
             href={navigationItem.url}
           />
         ))}

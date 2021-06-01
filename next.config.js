@@ -10,4 +10,16 @@ module.exports = {
     // Will be used for non-localized paths
     defaultLocale: "fi",
   },
+  async rewrites() {
+    return [
+      {
+        source: "/haku",
+        destination: "/search",
+      },
+      {
+        source: "/sok",
+        destination: "/search",
+      },
+    ];
+  },
 };
