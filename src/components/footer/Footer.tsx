@@ -8,7 +8,7 @@ import mockCategories from "../../api/tmp/mockCategories";
 import SearchShortcuts from "../../components/searchShortcuts/SearchShortcuts";
 import styles from "./footer.module.scss";
 
-type LinkProps = {
+type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
   href: string;
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
@@ -53,7 +53,8 @@ function Footer({ navigationItems }: Props) {
           <HDSFooter.Item
             key={navigationItem.id}
             as={Link}
-            label={navigationItem.title}
+            label={navigationItem.label}
+            title={navigationItem.title}
             href={navigationItem.url}
           />
         ))}

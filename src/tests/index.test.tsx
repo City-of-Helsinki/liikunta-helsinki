@@ -7,6 +7,7 @@ import { act } from "react-dom/test-utils";
 import App, { LANDING_PAGE_QUERY } from "../pages/index";
 import { PAGE_QUERY } from "../components/page/Page";
 import mockLandingPage from "./mockData/landingPage";
+import mockMenus from "./mockData/mockMenus";
 
 const getMocks = () => [
   {
@@ -30,6 +31,9 @@ const getMocks = () => [
   {
     request: {
       query: PAGE_QUERY,
+      variables: {
+        menuLocation: "PRIMARY",
+      },
     },
     response: {
       pageLanguages: [
@@ -41,26 +45,7 @@ const getMocks = () => [
           locale: "en_US",
         },
       ],
-      pageMenuItems: {
-        nodes: [
-          {
-            id: "1",
-            path: "/haku",
-            target: "",
-            title: "Haku",
-            url: "/haku",
-            order: 1,
-          },
-          {
-            id: "3",
-            path: "/liikuntatunnit",
-            target: "",
-            title: "Liikuntatunnit",
-            url: "/liikuntatunnit",
-            order: 2,
-          },
-        ],
-      },
+      pageMenus: mockMenus,
     },
   },
 ];

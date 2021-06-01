@@ -9,7 +9,7 @@ import styles from "./navigation.module.scss";
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
-type LinkProps = {
+type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
   href: string;
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
@@ -47,8 +47,11 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
         {navigationItems.map((navigationItem) => (
           <HDSNavigation.Item
             key={navigationItem.id}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             as={Link}
-            label={navigationItem.title}
+            label={navigationItem.label}
+            title={navigationItem.title}
             href={navigationItem.url}
           />
         ))}
@@ -81,6 +84,8 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
           {languages.map((language) => (
             <HDSNavigation.Item
               key={language.id}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               as={Link}
               label={language.name}
               lang={language.slug}

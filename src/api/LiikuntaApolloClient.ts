@@ -9,13 +9,12 @@ import {
 import { GetStaticPropsContext } from "next";
 
 import { Language } from "../types";
-import mockMenuItems from "./tmp/menuItems";
-import { getQlLanguage } from "./utils";
+import { getMenuLocationFromLanguage } from "./utils";
 import { PAGE_FRAGMENT } from "../components/page/Page";
 
 const GLOBAL_QUERY = gql`
   ${PAGE_FRAGMENT}
-  query PageQuery($language: LanguageCodeFilterEnum) {
+  query PageQuery($menuLocation: MenuLocationEnum!) {
     ...PageFragment
     __typename
   }
@@ -49,7 +48,7 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
     const globalQueryOptions = {
       query: GLOBAL_QUERY,
       variables: {
-        language: getQlLanguage(
+        menuLocation: getMenuLocationFromLanguage(
           nextContext.locale ?? nextContext.defaultLocale
         ),
       },
@@ -66,14 +65,6 @@ class LiikuntaApolloClient extends ApolloClient<NormalizedCacheObject> {
           globalData.pageLanguages,
           nextContext
         ),
-        pageMenuItems: {
-          ...globalData.pageMenuItems,
-          nodes:
-            // Use mock data until menu items are defined in the CMS
-            globalData.pageMenuItems.nodes.length === 0
-              ? mockMenuItems
-              : globalData.pageMenuItems.nodes,
-        },
       },
     });
 

@@ -5,6 +5,7 @@ export type MenuItem = {
   target: string;
   title: string;
   url: string;
+  label: string;
 };
 
 export type NavigationItem = MenuItem;
