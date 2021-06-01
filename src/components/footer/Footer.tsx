@@ -3,8 +3,10 @@ import React from "react";
 import { useRouter } from "next/dist/client/router";
 import NextLink from "next/link";
 
-import styles from "./footer.module.scss";
 import { NavigationItem } from "../../types";
+import mockCategories from "../../api/tmp/mockCategories";
+import SearchShortcuts from "../../components/searchShortcuts/SearchShortcuts";
+import styles from "./footer.module.scss";
 
 type LinkProps = {
   href: string;
@@ -28,12 +30,24 @@ type Props = {
 function Footer({ navigationItems }: Props) {
   const { locale } = useRouter();
   const logoLanguage: LogoLanguage = locale === "sv" ? "sv" : "fi";
+  const categories = mockCategories;
+
   return (
     <HDSFooter
       title="Liikunta"
       className={styles.footer}
       logoLanguage={logoLanguage}
     >
+      <div className={styles.searchShortcuts}>
+        <hr className={styles.hr} aria-hidden="true" />
+        <SearchShortcuts
+          shortcuts={categories.map((category, i) => ({
+            id: i.toString(),
+            label: category.label,
+            icon: category.icon,
+          }))}
+        />
+      </div>
       <HDSFooter.Navigation>
         {navigationItems.map((navigationItem) => (
           <HDSFooter.Item
