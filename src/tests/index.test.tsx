@@ -13,8 +13,8 @@ const getMocks = () => [
     request: {
       query: LANDING_PAGE_QUERY,
       variables: {
-        languageCode: "EN",
-        languageCodeFilter: "EN",
+        languageCode: "FI",
+        languageCodeFilter: "FI",
       },
     },
     result: {
@@ -86,7 +86,7 @@ const mockRouter: NextRouter = {
   isLocaleDomain: true,
   isPreview: false,
   isReady: true,
-  locale: "en",
+  locale: "fi",
   defaultLocale: "fi",
 };
 
