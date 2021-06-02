@@ -2,7 +2,7 @@
 @import "variables";
 
 .list {
-  --base-list-item-width: 22rem; // 352px
+  --base-list-item-width: 22rem; // 256px
 
   margin: 0;
   padding: 0;
@@ -13,7 +13,12 @@
   grid-gap: $spacing-xs;
 
   @include breakpoints.respond-above(m) {
+    --base-list-item-width: 16rem;
     grid-gap: $spacing-layout-m;
+  }
+
+  @include breakpoints.respond-above(xll) {
+    --base-list-item-width: 18rem; // 288px
   }
 
   .item {
@@ -41,10 +46,14 @@
 }
 
 .tight {
-  --base-list-item-width: 16rem;
+  --base-list-item-width: 10rem;
 
   row-gap: $spacing-s;
   column-gap: $spacing-3-xl;
+
+  @include breakpoints.respond-above(xll) {
+    --base-list-item-width: 14rem;
+  }
 }
 
 .searchResult {
