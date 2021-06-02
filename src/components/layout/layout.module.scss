@@ -23,11 +23,15 @@
     grid-column: 2;
   }
 
-  @include breakpoints.respond-above(s) {
-    --spacing: #{$spacing-layout-s};
+  @include breakpoints.respond-above(m) {
+    --spacing: #{$spacing-layout-xs};
   }
 
-  @include breakpoints.respond-above(l) {
+  @include breakpoints.respond-above(xl) {
+    --spacing: #{$spacing-layout-l};
+  }
+
+  @include breakpoints.respond-above(xxl) {
     --spacing: #{$spacing-layout-xl};
   }
 
