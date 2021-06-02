@@ -20,16 +20,17 @@ const noop = () => {};
 const BLOCK_SIZE = 10;
 
 export const SEARCH_QUERY = gql`
-  query SearchQuery($q: String, $first: Int, $after: String) {
+  query SearchQuery($q: String, $first: Int, $cursor: String) {
     unifiedSearch(
       q: $q
       index: "location"
       ontology: "Liikunta"
       first: $first
-      after: $after
+      after: $cursor
     ) {
       count
       pageInfo {
+        endCursor
         hasNextPage
       }
       edges {
@@ -82,7 +83,7 @@ export default function Search() {
   const { data, loading, refetch, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
     ssr: false,
-    variables: { q: searchText ?? "*", first: BLOCK_SIZE },
+    variables: { q: searchText ?? "*", first: BLOCK_SIZE, after: "" },
   });
 
   const searchResultItems: Item[] = getSearchResultsAsItems(
@@ -92,15 +93,15 @@ export default function Search() {
   const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);
   const count = data?.unifiedSearch?.count;
   const pageInfo = data?.unifiedSearch?.pageInfo;
-  const after = pageInfo?.endCursor;
+  const cursor = pageInfo?.endCursor;
 
   const onLoadMore = () => {
     const newBlockCount = blockCount + 1;
     fetchMore({
       variables: {
         q: searchText ?? "*",
-        first: newBlockCount * BLOCK_SIZE,
-        after: after,
+        first: BLOCK_SIZE,
+        cursor: cursor,
       },
     }).then(() => {
       setBlockCount(newBlockCount);
@@ -110,7 +111,7 @@ export default function Search() {
   };
 
   const onRefetch = (q) => {
-    refetch({ q: q ?? "*", first: 10 }).then(() => {
+    refetch({ q: q ?? "*", first: BLOCK_SIZE }).then(() => {
       setBlockCount(1);
     });
   };
