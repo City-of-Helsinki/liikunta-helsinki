@@ -114,7 +114,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      revalidate: 1,
     },
+    revalidate: 10,
   };
 }
