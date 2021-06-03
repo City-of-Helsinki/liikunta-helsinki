@@ -7,7 +7,7 @@ $breakpoints: (
   l: $breakpoint-l,
   xl: $breakpoint-xl,
   // xxl => 1568px
-  xll: $breakpoint-xl + $breakpoint-xs,
+  xxl: $breakpoint-xl + $breakpoint-xs,
 );
 
 @mixin respond-above($breakpoint) {

@@ -17,7 +17,7 @@
     grid-gap: $spacing-layout-m;
   }
 
-  @include breakpoints.respond-above(xll) {
+  @include breakpoints.respond-above(xxl) {
     --base-list-item-width: 18rem; // 288px
   }
 
@@ -51,7 +51,19 @@
   row-gap: $spacing-s;
   column-gap: $spacing-3-xl;
 
-  @include breakpoints.respond-above(xll) {
+  @include breakpoints.respond-above(s) {
+    --base-list-item-width: 14rem;
+  }
+
+  @include breakpoints.respond-above(m) {
+    --base-list-item-width: 8rem;
+  }
+
+  @include breakpoints.respond-above(xl) {
+    --base-list-item-width: 11rem;
+  }
+
+  @include breakpoints.respond-above(xxl) {
     --base-list-item-width: 14rem;
   }
 }
