@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
@@ -75,7 +75,6 @@ function getSearchResultsAsItems(
 }
 
 export default function Search() {
-  const [blockCount, setBlockCount] = useState(1);
   const {
     query: { q: searchText },
   } = useRouter();
@@ -96,7 +95,6 @@ export default function Search() {
   const cursor = pageInfo?.endCursor;
 
   const onLoadMore = () => {
-    const newBlockCount = blockCount + 1;
     fetchMore({
       variables: {
         q: searchText ?? "*",
@@ -104,16 +102,13 @@ export default function Search() {
         cursor: cursor,
       },
     }).then(() => {
-      setBlockCount(newBlockCount);
       moreResultsAnnouncerRef.current &&
         moreResultsAnnouncerRef.current.focus();
     });
   };
 
   const onRefetch = (q) => {
-    refetch({ q: q ?? "*", first: BLOCK_SIZE }).then(() => {
-      setBlockCount(1);
-    });
+    refetch({ q: q ?? "*", first: BLOCK_SIZE });
   };
 
   return (
