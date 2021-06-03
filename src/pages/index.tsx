@@ -169,31 +169,12 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const cmsClient = initializeCmsApollo();
   const language = getQlLanguage(context.locale ?? context.defaultLocale);
 
-  const { data } = await cmsClient.pageQuery({
+  await cmsClient.pageQuery({
     nextContext: context,
     query: LANDING_PAGE_QUERY,
     variables: {
       languageCode: language,
       languageCodeFilter: language,
-    },
-  });
-
-  cmsClient.writeQuery({
-    query: LANDING_PAGE_QUERY,
-    data: {
-      ...data,
-      // landingPageBy: mockLandingPage,
-      // The CMS has one collection. Get it, and make 6 copies of it.
-      collections: {
-        ...data.collections,
-        edges: Array.from({ length: 7 }, (_, index) => ({
-          ...data.collections.edges[0],
-          node: {
-            ...data.collections.edges[0].node,
-            id: `${data.collections.edges[0].node.id}-${index}`,
-          },
-        })),
-      },
     },
   });
 
