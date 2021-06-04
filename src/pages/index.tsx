@@ -4,7 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 
 import { Collection, Connection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../api/cmsApolloClient";
-import { getNodes } from "../api/utils";
+import { getNodes, getQlLanguage } from "../api/utils";
 import mockRecommendations from "../api/tmp/mockRecommendations";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
@@ -16,11 +16,14 @@ import Hero from "../components/hero/Hero";
 import HeroImage from "../components/hero/HeroImage";
 import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
 import mockCategories from "../api/tmp/mockCategories";
-import CategoryLink from "../components/link/CategoryLink";
+import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
 
 export const LANDING_PAGE_QUERY = gql`
-  query LandingPageQuery {
-    collections(first: 7, where: { language: FI }) {
+  query LandingPageQuery(
+    $languageCode: LanguageCodeEnum!
+    $languageCodeFilter: LanguageCodeFilterEnum!
+  ) {
+    collections(first: 7, where: { language: $languageCodeFilter }) {
       edges {
         node {
           id
@@ -30,12 +33,15 @@ export const LANDING_PAGE_QUERY = gql`
         }
       }
     }
-    landingPageBy(landingPageId: 44) {
-      title
-      description
-      heroLink
-      desktopImage {
-        mediaItemUrl
+    landingPage(id: "root", idType: SLUG) {
+      id
+      translation(language: $languageCode) {
+        title
+        description
+        heroLink
+        desktopImage {
+          mediaItemUrl
+        }
       }
     }
   }
@@ -85,13 +91,19 @@ function getCollectionsAsItems(
 
 export default function Home() {
   const router = useRouter();
-  const { data } = useQuery(LANDING_PAGE_QUERY);
+  const language = getQlLanguage(router.locale ?? router.defaultLocale);
+  const { data } = useQuery(LANDING_PAGE_QUERY, {
+    variables: {
+      languageCode: language,
+      languageCodeFilter: language,
+    },
+  });
 
   const recommendationItems: Item[] = getRecommendationsAsItems(
     mockRecommendations,
     router
   );
-  const landingPage = data?.landingPageBy;
+  const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(
     data?.collections ?? emptyConnection
   );
@@ -116,16 +128,12 @@ export default function Home() {
       )}
       <Section color="transparent">
         <LandingPageSearchForm />
-        <List
-          variant="tight"
-          items={categories.map((category, i) => (
-            <CategoryLink
-              key={`${category.label}-${i}`}
-              label={category.label}
-              icon={category.icon}
-              href={`/search?category=${category.label.toLocaleLowerCase()}`}
-            />
-          ))}
+        <SearchShortcuts
+          shortcuts={categories.map((category, i) => ({
+            id: i.toString(),
+            label: category.label,
+            icon: category.icon,
+          }))}
         />
       </Section>
       <Section
@@ -159,35 +167,21 @@ export default function Home() {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const cmsClient = initializeCmsApollo();
+  const language = getQlLanguage(context.locale ?? context.defaultLocale);
 
-  const { data } = await cmsClient.pageQuery({
+  await cmsClient.pageQuery({
     nextContext: context,
     query: LANDING_PAGE_QUERY,
-  });
-
-  cmsClient.writeQuery({
-    query: LANDING_PAGE_QUERY,
-    data: {
-      ...data,
-      // landingPageBy: mockLandingPage,
-      // The CMS has one collection. Get it, and make 6 copies of it.
-      collections: {
-        ...data.collections,
-        edges: Array.from({ length: 7 }, (_, index) => ({
-          ...data.collections.edges[0],
-          node: {
-            ...data.collections.edges[0].node,
-            id: `${data.collections.edges[0].node.id}-${index}`,
-          },
-        })),
-      },
+    variables: {
+      languageCode: language,
+      languageCodeFilter: language,
     },
   });
 
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      revalidate: 1,
     },
+    revalidate: 10,
   };
 }

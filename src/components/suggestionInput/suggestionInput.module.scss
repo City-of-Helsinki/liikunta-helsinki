@@ -1,0 +1,81 @@
+@import "variables";
+
+.suggestionControl {
+  position: relative;
+
+  & > label {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .suggestionInput {
+    position: relative;
+
+    & > div > input {
+      border-color: transparent;
+      padding-left: calc((2 * #{$spacing-s}) + 1rem) !important;
+    }
+
+    & > div > *:not(input) {
+      position: absolute;
+      bottom: $spacing-layout-2-xs;
+
+      &:nth-child(2) {
+        left: calc(#{$spacing-layout-2-xs} + 2px);
+      }
+
+      &:nth-child(3) {
+        right: $spacing-layout-2-xs;
+      }
+    }
+
+    & > div > svg {
+      & * {
+        color: $color-black-90;
+      }
+    }
+
+    & > div > button {
+      display: flex;
+
+      border: none;
+      background: none;
+    }
+  }
+}
+
+.suggestions {
+  &.open {
+    position: absolute;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    left: 2px;
+    right: 2px;
+    z-index: 100;
+
+    background: $color-white;
+    // border: 2px solid $color-black-90;
+    border-top: 1px solid $color-black-20;
+    transform: translateY(-2px);
+
+    & > li {
+      padding: $spacing-xs $spacing-s;
+      min-height: calc(#{$spacing-3-xl} - 4px);
+
+      font-size: $fontsize-body-l;
+      line-height: $lineheight-l;
+
+      &.selected {
+        color: $color-white;
+
+        background-color: $color-bus;
+      }
+    }
+  }
+}

@@ -6,10 +6,14 @@ import { useRouter } from "next/router";
 import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
 
+function persistLanguageChoice(language: string) {
+  document.cookie = `NEXT_LOCALE=${language}`;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
-type LinkProps = {
+type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
   href: string;
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
@@ -31,7 +35,13 @@ type Props = {
 };
 
 function Navigation({ mainContentId, navigationItems, languages }: Props) {
-  const { locale, route } = useRouter();
+  const { locale, route, push } = useRouter();
+
+  const handleLanguageClick = (event) => {
+    const lang = event.target.lang;
+
+    persistLanguageChoice(lang);
+  };
 
   return (
     <HDSNavigation
@@ -40,13 +50,18 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
       menuToggleAriaLabel="menu"
       skipTo={`#${mainContentId}`}
       skipToContentLabel="Siirry suoraan sisältöön"
+      onTitleClick={() => push("/")}
+      logoLanguage={locale === "sv" ? "sv" : "fi"}
     >
       <HDSNavigation.Row variant="inline">
         {navigationItems.map((navigationItem) => (
           <HDSNavigation.Item
             key={navigationItem.id}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             as={Link}
-            label={navigationItem.title}
+            label={navigationItem.label}
+            title={navigationItem.title}
             href={navigationItem.url}
           />
         ))}
@@ -79,12 +94,15 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
           {languages.map((language) => (
             <HDSNavigation.Item
               key={language.id}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               as={Link}
               label={language.name}
               lang={language.slug}
               // Target current route with another locale
               locale={language.slug}
               href={route}
+              onClick={handleLanguageClick}
             />
           ))}
         </HDSNavigation.LanguageSelector>

@@ -13,6 +13,7 @@ import { getNodes } from "../../api/utils";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
+import initializeCmsApollo from "../../api/cmsApolloClient";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -133,8 +134,21 @@ export default function Search() {
   );
 }
 
-export function getStaticProps(context: GetStaticPropsContext) {
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const cmsClient = initializeCmsApollo();
+
+  // We still need to initialize the application with data from the CMS. The
+  // data includes things like menus and languages. If we don't initialize, this
+  // data will be missing when the application is accessed through the search
+  // view.
+  await cmsClient.pageQuery({
+    nextContext: context,
+  });
+
   return {
-    props: {},
+    props: {
+      initialApolloState: cmsClient.cache.extract(),
+    },
+    revalidate: 10,
   };
 }
