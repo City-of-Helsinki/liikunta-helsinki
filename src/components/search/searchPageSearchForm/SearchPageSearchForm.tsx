@@ -32,7 +32,11 @@ const SUGGESTION_QUERY = gql`
   }
 `;
 
-function SearchPageSearchForm() {
+type Props = {
+  refetch: (q: string) => void;
+};
+
+function SearchPageSearchForm({ refetch }: Props) {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string>(
     getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
@@ -63,6 +67,7 @@ function SearchPageSearchForm() {
         ),
       },
     });
+    refetch(searchText);
   };
 
   const handleSelectSuggestion = (suggestion: Suggestion) => {
