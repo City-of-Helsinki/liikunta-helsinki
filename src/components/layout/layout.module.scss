@@ -27,6 +27,14 @@
     --spacing: #{$spacing-layout-xs};
   }
 
+  @include breakpoints.respond-above(xl) {
+    --spacing: #{$spacing-layout-l};
+  }
+
+  @include breakpoints.respond-above(xxl) {
+    --spacing: #{$spacing-layout-xl};
+  }
+
   .main {
     grid-column: 1 / -1;
 
