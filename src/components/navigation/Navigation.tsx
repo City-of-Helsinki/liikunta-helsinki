@@ -35,7 +35,7 @@ type Props = {
 };
 
 function Navigation({ mainContentId, navigationItems, languages }: Props) {
-  const { locale, route, push } = useRouter();
+  const { locale, push, asPath } = useRouter();
 
   const handleLanguageClick = (event) => {
     const lang = event.target.lang;
@@ -101,7 +101,7 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
               lang={language.slug}
               // Target current route with another locale
               locale={language.slug}
-              href={route}
+              href={asPath}
               onClick={handleLanguageClick}
             />
           ))}
