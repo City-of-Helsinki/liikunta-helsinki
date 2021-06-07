@@ -1,0 +1,134 @@
+@use "breakpoints";
+@import "variables";
+
+.wrapper {
+  display: inherit;
+  grid-column: 1 / -1 !important;
+  grid-template-columns: 1fr;
+
+  @include breakpoints.respond-above(m) {
+    grid-template-columns: minmax($spacing-xs, 1fr) 5.5rem minmax(auto, 83rem) minmax(
+        $spacing-xs,
+        1fr
+      );
+
+    & > * {
+      grid-column: 3;
+    }
+  }
+}
+
+.backToSearch {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: $spacing-m;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: $color-black;
+
+  background: $color-white;
+  border-radius: 0;
+  border: none;
+
+  @include breakpoints.respond-above(m) {
+    grid-column: 2 !important;
+  }
+}
+
+.header {
+  display: inherit;
+  grid-column: 1 / -1;
+  grid-template-columns: inherit;
+
+  @include breakpoints.respond-above(m) {
+    background-color: #ccf7ed;
+  }
+
+  & > * {
+    grid-column: 3;
+  }
+
+  .headerContent {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    @include breakpoints.respond-above(m) {
+      flex-direction: row;
+
+      & > * {
+        width: 50%;
+      }
+    }
+
+    .image {
+      max-width: 100vw;
+
+      @include breakpoints.respond-above(m) {
+        max-height: 31rem;
+        object-fit: cover;
+      }
+    }
+    .content {
+      --spacing-h: #{$spacing-xs};
+      --spacing-v: #{$spacing-m};
+
+      padding: var(--spacing-h) var(--spacing-v);
+      display: flex;
+      flex-direction: column;
+
+      & > *:not(:last-child) {
+        margin-bottom: var(--spacing-v);
+      }
+
+      @include breakpoints.respond-above(m) {
+        --spacing-h: #{$spacing-layout-l};
+        --spacing-v: #{$spacing-layout-s};
+
+        & > *:not(:last-child) {
+          margin-bottom: $spacing-m;
+        }
+
+        & > h2:not(:last-child) {
+          margin-bottom: $spacing-2-xl;
+        }
+      }
+
+      @include breakpoints.respond-above(l) {
+        --spacing-h: #{$spacing-layout-xl};
+        --spacing-v: #{$spacing-layout-m};
+      }
+    }
+
+    .keywords {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .headerInfoLines {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+
+      & > *:not(:last-child) {
+        margin-bottom: $spacing-xs;
+      }
+
+      .headerInfoLine {
+        display: flex;
+        align-items: center;
+
+        & > svg {
+          margin-right: $spacing-xs;
+        }
+      }
+    }
+  }
+}
