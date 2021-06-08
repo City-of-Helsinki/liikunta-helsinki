@@ -103,10 +103,10 @@ export default function EntityPage() {
               name="Paikka"
               contents={[
                 <InfoBlock.List
-                  key="address"
+                  id="address"
                   items={["Eiran uimaranta", "Eiranranta 3", "Helsinki"]}
                 />,
-                <InfoBlock.Link key="link" href="" label="Avaa kartta" />,
+                <InfoBlock.Link id="map-link" href="" label="Avaa kartta" />,
               ]}
             />
             <InfoBlock
@@ -114,17 +114,17 @@ export default function EntityPage() {
               name="Muut tiedot"
               contents={[
                 <InfoBlock.List
-                  key="address"
+                  id="contact-details"
                   items={["040 123 4567", "email@email.com"]}
                 />,
                 <InfoBlock.List
-                  key="address"
+                  id="social-media-links"
                   items={[
-                    <InfoBlock.Link key="web" href="" label="Verkkosivu" />,
-                    <InfoBlock.Link key="fb" href="" label="Facebook" />,
-                    <InfoBlock.Link key="yt" href="" label="Youtube" />,
-                    <InfoBlock.Link key="ig" href="" label="Instagram" />,
-                    <InfoBlock.Link key="tw" href="" label="Twitter" />,
+                    <InfoBlock.Link id="web" href="" label="Verkkosivu" />,
+                    <InfoBlock.Link id="fb" href="" label="Facebook" />,
+                    <InfoBlock.Link id="yt" href="" label="Youtube" />,
+                    <InfoBlock.Link id="ig" href="" label="Instagram" />,
+                    <InfoBlock.Link id="tw" href="" label="Twitter" />,
                   ]}
                 />,
               ]}
@@ -134,20 +134,20 @@ export default function EntityPage() {
               name="Löydä perille"
               contents={[
                 <InfoBlock.List
-                  key="directions-hsl"
+                  id="directions-hsl"
                   items={[
                     <InfoBlock.Link
-                      key="hsl"
+                      id="hsl"
                       href=""
                       label="Reittiohjeet (HSL)"
                     />,
                   ]}
                 />,
                 <InfoBlock.List
-                  key="directions-google"
+                  id="directions-google"
                   items={[
                     <InfoBlock.Link
-                      key="google"
+                      id="google"
                       href=""
                       label="Reittiohjeet (Google)"
                     />,
@@ -160,7 +160,7 @@ export default function EntityPage() {
               name="Liikunnan tiedot"
               contents={[
                 <InfoBlock.List
-                  key="sports-info"
+                  id="sports-info"
                   items={[
                     "Helsingin kaupunki,",
                     "Kulttuurin ja vapaa-ajan toimiala",
@@ -169,7 +169,7 @@ export default function EntityPage() {
                   ]}
                 />,
                 <InfoBlock.Link
-                  key="organizer-link"
+                  id="organizer-link"
                   href=""
                   label="Katso muut järjestäjät"
                 />,
@@ -182,7 +182,9 @@ export default function EntityPage() {
               {shortDescription}
             </Text>
             {content.split("\n\n").map((paragraph) => (
-              <Text variant="body-l">{paragraph}</Text>
+              <Text key={paragraph.substr(0, 10)} variant="body-l">
+                {paragraph}
+              </Text>
             ))}
           </div>
         </div>
