@@ -39,8 +39,13 @@ function InfoBlockLink({
 }: InfoBlockContentLinkProps) {
   if (external) {
     return (
-      <a href={href} rel="noreferrer noopener" target="_blank">
-        {label} <IconLinkExternal />
+      <a
+        href={href}
+        className={styles.link}
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        {label} <IconLinkExternal aria-label="Avautuu uudessa välilehdessä" />
       </a>
     );
   }
