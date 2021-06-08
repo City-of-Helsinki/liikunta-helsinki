@@ -1,0 +1,60 @@
+@use "breakpoints";
+@import "variables";
+
+.wrapper {
+  padding: $spacing-m;
+  margin: 0 calc(-1 * #{$spacing-xs});
+
+  background-color: $color-black-5;
+
+  @include breakpoints.respond-above(s) {
+    margin: $spacing-xl 0 $spacing-xl;
+  }
+}
+
+.title {
+  display: flex;
+}
+
+.titleText {
+  display: flex;
+  margin-bottom: $spacing-s;
+  flex: 1 1 0%;
+  align-items: center;
+
+  svg {
+    margin-right: $spacing-xs;
+  }
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  color: $color-black;
+  font-size: $fontsize-body-s;
+  text-decoration: none;
+  margin-bottom: $spacing-s;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  svg {
+    margin-left: $spacing-2-xs;
+    fill: $color-black;
+  }
+}
+
+.meta {
+  margin-top: $spacing-s;
+
+  & > *:not(:last-child) {
+    margin-bottom: $spacing-s;
+  }
+}
+
+.mapContainer {
+  border: none;
+  width: 100%;
+  height: 20rem;
+}
