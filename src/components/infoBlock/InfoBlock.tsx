@@ -10,8 +10,27 @@ type InfoBlockContentLinkProps = {
   label: string;
   href: string;
   // eslint-disable-next-line react/no-unused-prop-types
-  key: string;
+  id: string;
 };
+
+type InfoBlockContentListProps = {
+  items: Array<string | React.ReactElement<InfoBlockContentLinkProps>>;
+  // eslint-disable-next-line react/no-unused-prop-types
+  id: string;
+};
+
+type InfoBlockContent =
+  | React.ReactElement<InfoBlockContentLinkProps>
+  | React.ReactElement<InfoBlockContentListProps>
+  | string;
+
+function getKey(item: InfoBlockContent): string {
+  if (typeof item === "string") {
+    return item;
+  }
+
+  return item.props.id;
+}
 
 function InfoBlockLink({
   external = false,
@@ -36,22 +55,6 @@ function InfoBlockLink({
   );
 }
 
-function getKey(
-  item: string | React.ReactElement<InfoBlockContentLinkProps>
-): string {
-  if (typeof item === "string") {
-    return item;
-  }
-
-  return item.props.key;
-}
-
-type InfoBlockContentListProps = {
-  items: Array<string | React.ReactElement<InfoBlockContentLinkProps>>;
-  // eslint-disable-next-line react/no-unused-prop-types
-  key: string;
-};
-
 function InfoBlockList({ items }: InfoBlockContentListProps) {
   return (
     <ul className={styles.list}>
@@ -61,11 +64,6 @@ function InfoBlockList({ items }: InfoBlockContentListProps) {
     </ul>
   );
 }
-
-type InfoBlockContent =
-  | React.ReactElement<InfoBlockContentLinkProps>
-  | React.ReactElement<InfoBlockContentListProps>
-  | string;
 
 type Props = {
   icon: React.ReactElement;
@@ -80,13 +78,9 @@ function InfoBlock({ icon, name, contents }: Props) {
         {icon} {name}
       </Text>
       <ul className={styles.content}>
-        {contents.map((content) => {
-          if (typeof content === "string") {
-            return <li key={content}>{content}</li>;
-          }
-
-          return <li key={content.key}>{content}</li>;
-        })}
+        {contents.map((content) => (
+          <li key={getKey(content)}>{content}</li>
+        ))}
       </ul>
     </div>
   );
