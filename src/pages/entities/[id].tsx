@@ -9,9 +9,11 @@ import {
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
+import { NextRouter, useRouter } from "next/router";
 
 import initializeCmsApollo from "../../api/cmsApolloClient";
 import { getQlLanguage } from "../../api/utils";
+import mockRecommendations from "../../api/tmp/mockRecommendations";
 import useSearch from "../../hooks/useSearch";
 import Keyword from "../../components/keyword/Keyword";
 import Page from "../../components/page/Page";
@@ -20,7 +22,11 @@ import InfoBlock from "../../components/infoBlock/InfoBlock";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
 import MapBox from "../../components/mapBox/MapBox";
 import Hr from "../../components/hr/Hr";
+import Section from "../../components/section/Section";
+import List from "../../components/list/List";
+import Card from "../../components/card/DefaultCard";
 import styles from "./entity.module.scss";
+import { Item, Recommendation } from "../../types";
 
 const image =
   "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg";
@@ -32,7 +38,24 @@ Vivamus varius, elit sit amet vulputate tincidunt, est tellus finibus est, id ef
 const shortDescription =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu interdum sem, ut gravida est. Cras tempor gravida eros nec suscipit. Nunc elementum tellus in rhoncus lobortis.";
 
+function getRecommendationsAsItems(
+  recommendations: Recommendation[],
+  router: NextRouter
+): Item[] {
+  return recommendations.map((recommendation) => ({
+    ...recommendation,
+    keywords: recommendation.keywords.map((keyword) => ({
+      label: keyword,
+      onClick: () => {
+        router.push(`keywords/${encodeURIComponent(keyword)}`);
+      },
+      isHighlighted: keyword === "Maksuton",
+    })),
+  }));
+}
+
 export default function EntityPage() {
+  const router = useRouter();
   const search = useSearch();
 
   const keywords = ["Uimaranta", "Uinti", "Ulkoilupaikat"];
@@ -45,6 +68,11 @@ export default function EntityPage() {
   ];
   const name = "Eiran uimaranta";
   const streetAddress = "Eiranranta 3";
+  const recommendationItems = getRecommendationsAsItems(
+    mockRecommendations,
+    router
+  );
+  console.log(recommendationItems);
 
   return (
     <Page
@@ -230,6 +258,13 @@ export default function EntityPage() {
           </div>
         </div>
       </article>
+      <Section title="Muuta samankaltaista liikuntaa" color="white">
+        <List
+          items={recommendationItems.map((item) => (
+            <Card key={item.id} {...item} />
+          ))}
+        />
+      </Section>
     </Page>
   );
 }
