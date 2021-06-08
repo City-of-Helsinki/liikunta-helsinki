@@ -92,19 +92,19 @@ export type TranslationsObject = {
 
 export type VenueDetails = {
   id: string;
-  data_source: string | null;
+  dataSource: string | null;
   email: string | null;
-  contact_type: string | null;
-  postal_code: string;
+  contactType: string | null;
+  postalCode: string;
   image: string | null;
-  address_locality: TranslationsObject;
+  addressLocality: TranslationsObject;
   position: {
     type: string;
     coordinates: number[] | null[];
   };
   description: string | null;
   name: TranslationsObject;
-  info_url: string | null;
-  street_address: TranslationsObject;
+  infoUrl: string | null;
+  streetAddress: TranslationsObject;
   telephone: string | null;
 };

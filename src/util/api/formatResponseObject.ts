@@ -1,6 +1,10 @@
-import { pick } from "lodash";
+import { camelCase, mapKeys, pick, rearg } from "lodash";
 
 import { VenueDetails } from "../../types";
+
+const toCamelCase = (obj) => {
+  return mapKeys(obj, rearg(camelCase, 1));
+};
 
 export default function formatResponseObject(
   obj,
@@ -8,7 +12,7 @@ export default function formatResponseObject(
 ): VenueDetails {
   switch (source) {
     case "linked":
-      return pick(obj, [
+      const linked = pick(obj, [
         "data_source",
         "email",
         "contact_type",
@@ -21,13 +25,14 @@ export default function formatResponseObject(
         "info_url",
         "street_address",
         "telephone",
-      ]) as VenueDetails;
+      ]);
+      return toCamelCase(linked) as VenueDetails;
     case "tprek":
       return {
         id: obj.id,
-        data_source: obj?.sources[0]?.source ?? null,
+        dataSource: obj?.sources[0]?.source ?? null,
         email: null,
-        postal_code: obj.address_zip,
+        postalCode: obj.address_zip,
         image: null,
         position: {
           type: "Point",
@@ -39,18 +44,18 @@ export default function formatResponseObject(
           en: obj.name_en ?? "",
           sv: obj.name_sv ?? "",
         },
-        street_address: {
+        streetAddress: {
           fi: obj.street_address_fi ?? "",
           en: obj.street_address_en ?? "",
           sv: obj.street_address_sv ?? "",
         },
-        address_locality: {
+        addressLocality: {
           fi: obj.address_city_fi ?? "",
           en: obj.address_city_en ?? "",
           sv: obj.address_city_sv ?? "",
         },
-        contact_type: null,
-        info_url: null,
+        contactType: null,
+        infoUrl: null,
         telephone: null,
       } as VenueDetails;
     default:

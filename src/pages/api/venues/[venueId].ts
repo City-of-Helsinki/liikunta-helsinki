@@ -9,12 +9,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { venueId } = req.query;
-  const splitVenueId = (venueId as string).split(":");
-  const source = splitVenueId[0];
-  const id = splitVenueId[1];
+  const [source, id] = (venueId as string).split(":");
 
-  const url = getSourceUrl(source, id);
-  const response = await axios.get(url);
-  const formattedResponse = formatResponseObject(response.data, source);
-  res.status(200).json(formattedResponse);
+  if (!source || !id) {
+    res.status(400).json({ msg: "Invalid ID parameter" });
+  }
+
+  try {
+    const url = getSourceUrl(source, id);
+    const response = await axios.get(url);
+    const formattedResponse = formatResponseObject(response.data, source);
+
+    res.status(200).json(formattedResponse);
+  } catch (e) {
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
 }
