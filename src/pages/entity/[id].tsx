@@ -106,7 +106,7 @@ export default function EntityPage() {
                   id="address"
                   items={["Eiran uimaranta", "Eiranranta 3", "Helsinki"]}
                 />,
-                <InfoBlock.Link id="map-link" href="" label="Avaa kartta" />,
+                <InfoBlock.Link id="map-link" href="#" label="Avaa kartta" />,
               ]}
             />
             <InfoBlock
@@ -120,11 +120,11 @@ export default function EntityPage() {
                 <InfoBlock.List
                   id="social-media-links"
                   items={[
-                    <InfoBlock.Link id="web" href="" label="Verkkosivu" />,
-                    <InfoBlock.Link id="fb" href="" label="Facebook" />,
-                    <InfoBlock.Link id="yt" href="" label="Youtube" />,
-                    <InfoBlock.Link id="ig" href="" label="Instagram" />,
-                    <InfoBlock.Link id="tw" href="" label="Twitter" />,
+                    <InfoBlock.Link id="web" href="#" label="Verkkosivu" />,
+                    <InfoBlock.Link id="fb" href="#" label="Facebook" />,
+                    <InfoBlock.Link id="yt" href="#" label="Youtube" />,
+                    <InfoBlock.Link id="ig" href="#" label="Instagram" />,
+                    <InfoBlock.Link id="tw" href="#" label="Twitter" />,
                   ]}
                 />,
               ]}
@@ -138,7 +138,7 @@ export default function EntityPage() {
                   items={[
                     <InfoBlock.Link
                       id="hsl"
-                      href=""
+                      href="#"
                       label="Reittiohjeet (HSL)"
                     />,
                   ]}
@@ -148,7 +148,7 @@ export default function EntityPage() {
                   items={[
                     <InfoBlock.Link
                       id="google"
-                      href=""
+                      href="#"
                       label="Reittiohjeet (Google)"
                     />,
                   ]}
@@ -170,7 +170,7 @@ export default function EntityPage() {
                 />,
                 <InfoBlock.Link
                   id="organizer-link"
-                  href=""
+                  href="#"
                   label="Katso muut järjestäjät"
                 />,
               ]}
