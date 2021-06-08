@@ -18,6 +18,8 @@ import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
 import InfoBlock from "../../components/infoBlock/InfoBlock";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
+import MapBox from "../../components/mapBox/MapBox";
+import Hr from "../../components/hr/Hr";
 import styles from "./entity.module.scss";
 
 const image =
@@ -41,6 +43,8 @@ export default function EntityPage() {
       info: "Eiranranta 3, Helsinki",
     },
   ];
+  const name = "Eiran uimaranta";
+  const streetAddress = "Eiranranta 3";
 
   return (
     <Page
@@ -75,7 +79,7 @@ export default function EntityPage() {
                 </li>
               ))}
             </ul>
-            <Text variant="h2">Eiran uimaranta</Text>
+            <Text variant="h2">{name}</Text>
             <ul className={styles.headerInfoLines}>
               {infoLines.map((infoLine) => (
                 <li key={infoLine.id} className={styles.headerInfoLine}>
@@ -105,7 +109,7 @@ export default function EntityPage() {
               contents={[
                 <InfoBlock.List
                   id="address"
-                  items={["Eiran uimaranta", "Eiranranta 3", "Helsinki"]}
+                  items={["Eiran uimaranta", streetAddress, "Helsinki"]}
                 />,
                 <InfoBlock.Link id="map-link" href="#" label="Avaa kartta" />,
               ]}
@@ -216,6 +220,13 @@ export default function EntityPage() {
             ))}
             <Text variant="h3">Jaa liikunta</Text>
             <ShareLinks />
+            <Hr />
+            <MapBox
+              title="Sijainti"
+              serviceMapUrl="https://palvelukartta.hel.fi/fi/embed/unit/7255"
+              placeName={name}
+              placeAddress={streetAddress}
+            />
           </div>
         </div>
       </article>

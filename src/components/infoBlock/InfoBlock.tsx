@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { IconLinkExternal, IconAngleRight } from "hds-react";
+import classNames from "classnames";
 
 import Text from "../text/Text";
 import styles from "./infoBlock.module.scss";
@@ -17,6 +18,7 @@ type InfoBlockContentListProps = {
   items: Array<string | React.ReactElement<InfoBlockContentLinkProps>>;
   // eslint-disable-next-line react/no-unused-prop-types
   id: string;
+  inline?: boolean;
 };
 
 type InfoBlockContent =
@@ -60,9 +62,13 @@ function InfoBlockLink({
   );
 }
 
-function InfoBlockList({ items }: InfoBlockContentListProps) {
+function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
   return (
-    <ul className={styles.list}>
+    <ul
+      className={classNames(styles.list, {
+        [styles.inline]: inline,
+      })}
+    >
       {items.map((item) => (
         <li key={getKey(item)}>{item}</li>
       ))}

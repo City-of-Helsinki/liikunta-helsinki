@@ -1,3 +1,4 @@
+@use "breakpoints";
 @import "variables";
 
 .infoBlock {
@@ -21,25 +22,41 @@
     & > li:not(:last-child) {
       margin-bottom: $spacing-s;
     }
+  }
+}
 
-    .link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: min-content;
-      min-width: 8rem;
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 8rem;
 
-      font-size: $fontsize-body-l;
-      font-weight: 700;
-      text-decoration: none;
-      color: $color-copper-dark;
-    }
+  font-size: $fontsize-body-l;
+  font-weight: 700;
+  text-decoration: none;
+  color: $color-copper-dark;
 
-    .list {
-      font-size: $fontsize-body-l;
-      line-height: $lineheight-l;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
-      list-style-type: none;
+.list {
+  display: flex;
+  flex-direction: column;
+
+  font-size: $fontsize-body-l;
+  line-height: $lineheight-l;
+
+  list-style-type: none;
+
+  @include breakpoints.respond-above(m) {
+    &.inline {
+      flex-direction: row;
+
+      & > li:not(:last-child) {
+        margin-right: $spacing-m;
+      }
     }
   }
 }
