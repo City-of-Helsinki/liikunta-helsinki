@@ -42,7 +42,11 @@ export default function EntityPage() {
   ];
 
   return (
-    <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
+    <Page
+      title="Liikunta-Helsinki"
+      description="Liikunta-helsinki"
+      navigationVariant="white"
+    >
       <article className={styles.wrapper}>
         <header className={classNames(styles.layout, styles.header)}>
           <button

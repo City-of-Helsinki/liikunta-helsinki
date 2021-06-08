@@ -53,6 +53,7 @@ type Props = Omit<React.ComponentProps<typeof PageMeta>, "languages"> &
 function Page({
   children,
   layoutComponent: Layout = DefaultLayout,
+  navigationVariant,
   ...rest
 }: Props) {
   const { locale, defaultLocale } = useRouter();
@@ -68,7 +69,11 @@ function Page({
   return (
     <>
       <PageMeta {...rest} languages={languages} />
-      <Layout menuItems={menuItems} languages={languages}>
+      <Layout
+        menuItems={menuItems}
+        languages={languages}
+        navigationVariant={navigationVariant}
+      >
         {children}
       </Layout>
     </>
