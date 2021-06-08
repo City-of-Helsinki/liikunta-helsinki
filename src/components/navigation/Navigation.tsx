@@ -2,6 +2,7 @@ import React from "react";
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import classNames from "classnames";
 
 import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
@@ -32,9 +33,15 @@ type Props = {
   mainContentId: string;
   navigationItems: NavigationItem[];
   languages: Language[];
+  variant?: "default" | "white";
 };
 
-function Navigation({ mainContentId, navigationItems, languages }: Props) {
+function Navigation({
+  mainContentId,
+  navigationItems,
+  languages,
+  variant = "default",
+}: Props) {
   const { locale, push, asPath } = useRouter();
 
   const handleLanguageClick = (event) => {
@@ -45,7 +52,9 @@ function Navigation({ mainContentId, navigationItems, languages }: Props) {
 
   return (
     <HDSNavigation
-      className={styles.Navigation}
+      className={classNames(styles.navigation, {
+        [styles.default]: variant === "default",
+      })}
       title="Liikunta Helsinki"
       menuToggleAriaLabel="menu"
       skipTo={`#${mainContentId}`}
