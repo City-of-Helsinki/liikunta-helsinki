@@ -120,11 +120,36 @@ export default function EntityPage() {
                 <InfoBlock.List
                   id="social-media-links"
                   items={[
-                    <InfoBlock.Link id="web" href="#" label="Verkkosivu" />,
-                    <InfoBlock.Link id="fb" href="#" label="Facebook" />,
-                    <InfoBlock.Link id="yt" href="#" label="Youtube" />,
-                    <InfoBlock.Link id="ig" href="#" label="Instagram" />,
-                    <InfoBlock.Link id="tw" href="#" label="Twitter" />,
+                    <InfoBlock.Link
+                      external
+                      id="web"
+                      href="#"
+                      label="Verkkosivu"
+                    />,
+                    <InfoBlock.Link
+                      external
+                      id="fb"
+                      href="#"
+                      label="Facebook"
+                    />,
+                    <InfoBlock.Link
+                      external
+                      id="yt"
+                      href="#"
+                      label="Youtube"
+                    />,
+                    <InfoBlock.Link
+                      external
+                      id="ig"
+                      href="#"
+                      label="Instagram"
+                    />,
+                    <InfoBlock.Link
+                      external
+                      id="tw"
+                      href="#"
+                      label="Twitter"
+                    />,
                   ]}
                 />,
               ]}
@@ -137,6 +162,7 @@ export default function EntityPage() {
                   id="directions-hsl"
                   items={[
                     <InfoBlock.Link
+                      external
                       id="hsl"
                       href="#"
                       label="Reittiohjeet (HSL)"
@@ -147,6 +173,7 @@ export default function EntityPage() {
                   id="directions-google"
                   items={[
                     <InfoBlock.Link
+                      external
                       id="google"
                       href="#"
                       label="Reittiohjeet (Google)"
@@ -171,7 +198,7 @@ export default function EntityPage() {
                 <InfoBlock.Link
                   id="organizer-link"
                   href="#"
-                  label="Katso muut järjestäjät"
+                  label="Katso muut järjestäjän tapahtumat"
                 />,
               ]}
             />
