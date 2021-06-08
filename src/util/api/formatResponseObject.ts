@@ -13,6 +13,7 @@ export default function formatResponseObject(
   switch (source) {
     case "linked":
       const linked = pick(obj, [
+        "id",
         "data_source",
         "email",
         "contact_type",
@@ -29,30 +30,30 @@ export default function formatResponseObject(
       return toCamelCase(linked) as VenueDetails;
     case "tprek":
       return {
-        id: obj.id,
+        id: [obj?.sources[0]?.source, obj.id].join(":"),
         dataSource: obj?.sources[0]?.source ?? null,
         email: null,
         postalCode: obj.address_zip,
         image: null,
         position: {
           type: "Point",
-          coordinates: [obj.latitude, obj.longitude],
+          coordinates: [obj.longitude, obj.latitude],
         },
         description: null,
         name: {
-          fi: obj.name_fi ?? "",
-          en: obj.name_en ?? "",
-          sv: obj.name_sv ?? "",
+          ...(obj.name_fi && { fi: obj.name_fi }),
+          ...(obj.name_en && { en: obj.name_en }),
+          ...(obj.name_sv && { sv: obj.name_sv }),
         },
         streetAddress: {
-          fi: obj.street_address_fi ?? "",
-          en: obj.street_address_en ?? "",
-          sv: obj.street_address_sv ?? "",
+          ...(obj.street_address_fi && { fi: obj.street_address_fi }),
+          ...(obj.street_address_en && { en: obj.street_address_en }),
+          ...(obj.street_address_sv && { sv: obj.street_address_sv }),
         },
         addressLocality: {
-          fi: obj.address_city_fi ?? "",
-          en: obj.address_city_en ?? "",
-          sv: obj.address_city_sv ?? "",
+          ...(obj.address_city_fi && { fi: obj.address_city_fi }),
+          ...(obj.address_city_en && { en: obj.address_city_en }),
+          ...(obj.address_city_sv && { sv: obj.address_city_sv }),
         },
         contactType: null,
         infoUrl: null,
