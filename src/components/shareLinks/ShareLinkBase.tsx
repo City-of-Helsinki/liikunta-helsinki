@@ -18,7 +18,7 @@ const ShareLinkBase = ({
   const href = url + "?" + new URLSearchParams(queryParameters).toString();
 
   const handleButtonClick = () => {
-    if (window !== undefined) {
+    if (process.browser) {
       openWindow(window, href, windowName);
     }
   };

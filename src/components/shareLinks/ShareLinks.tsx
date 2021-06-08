@@ -12,10 +12,9 @@ const ShareLinks = () => {
   // to pass the original request from the server. This same pattern was used in
   // MyHelsinki. Limitation is that sharing buttons will be re-rendered on client
   // side because href value is different
-  const href =
-    window !== undefined
-      ? `${window.location.origin}${window.location.pathname}`
-      : "";
+  const href = process.browser
+    ? `${window.location.origin}${window.location.pathname}`
+    : "";
 
   return (
     <ul className={styles.linkList}>
