@@ -37,10 +37,17 @@
   font-size: $fontsize-heading-s;
 }
 
+.h5 {
+  margin: 0 0 $spacing-s 0;
+
+  font-size: $fontsize-heading-xs;
+}
+
 .body-l {
   margin: 0 0 $spacing-m 0;
 
   font-size: $fontsize-body-l;
+  line-height: $lineheight-l;
 }
 
 .body {

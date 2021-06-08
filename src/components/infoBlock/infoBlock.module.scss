@@ -1,0 +1,45 @@
+@import "variables";
+
+.infoBlock {
+  .name {
+    display: flex;
+    align-items: center;
+
+    & > svg {
+      margin-right: $spacing-xs;
+    }
+  }
+
+  .content {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    white-space: pre;
+
+    line-height: $lineheight-l;
+
+    & > li:not(:last-child) {
+      margin-bottom: $spacing-s;
+    }
+
+    .link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min-content;
+      min-width: 8rem;
+
+      font-size: $fontsize-body-l;
+      font-weight: 700;
+      text-decoration: none;
+      color: $color-copper-dark;
+    }
+
+    .list {
+      font-size: $fontsize-body-l;
+      line-height: $lineheight-l;
+
+      list-style-type: none;
+    }
+  }
+}

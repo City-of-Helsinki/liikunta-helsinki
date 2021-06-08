@@ -2,11 +2,19 @@ import React, { ReactNode, HTMLAttributes } from "react";
 
 import styles from "./text.module.scss";
 
-type TextVariant = "h1" | "h2" | "h3" | "h4" | "body" | "body-l" | "body-xl";
+type TextVariant =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "body"
+  | "body-l"
+  | "body-xl";
 
 type Props = {
   as?: string | React.ComponentType<HTMLAttributes<HTMLElement>>;
-  variant: TextVariant;
+  variant?: TextVariant;
   children: ReactNode;
   className?: string;
   role?: string;
@@ -22,6 +30,8 @@ function getElement(variant: TextVariant) {
       return "h3";
     case "h4":
       return "h4";
+    case "h5":
+      return "h5";
     case "body":
     case "body-l":
     default:
