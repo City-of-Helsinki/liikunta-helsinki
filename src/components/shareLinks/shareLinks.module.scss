@@ -1,0 +1,49 @@
+@import "variables";
+
+.linkList {
+  list-style: none;
+  margin: unset;
+  padding: unset;
+  display: flex;
+
+  & > li {
+    &:not(:last-child) {
+      margin-right: $spacing-m;
+    }
+
+    button {
+      line-height: 1;
+
+      border: none;
+      background: none;
+
+      cursor: pointer;
+
+      &:focus,
+      &:active {
+        outline: 2px solid $color-black;
+      }
+    }
+  }
+}
+
+.relative {
+  position: relative;
+}
+
+.copyButtonSuccess {
+  fill: $color-success;
+}
+
+.successTooltip {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  padding: 0.25rem 0.6rem;
+
+  font-size: $fontsize-body-m;
+  color: $color-white;
+  white-space: nowrap;
+
+  background-color: $color-success;
+}

@@ -17,6 +17,7 @@ import Keyword from "../../components/keyword/Keyword";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
 import InfoBlock from "../../components/infoBlock/InfoBlock";
+import ShareLinks from "../../components/shareLinks/ShareLinks";
 import styles from "./entity.module.scss";
 
 const image =
@@ -213,6 +214,8 @@ export default function EntityPage() {
                 {paragraph}
               </Text>
             ))}
+            <Text variant="h3">Jaa liikunta</Text>
+            <ShareLinks />
           </div>
         </div>
       </article>
