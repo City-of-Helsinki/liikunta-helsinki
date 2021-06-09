@@ -16,8 +16,8 @@ env:
   K8S_REQUEST_RAM: 200Mi
   K8S_LIMIT_CPU: 400m
   K8S_LIMIT_RAM: 400Mi
-  K8S_LIVENESS_PATH: /client/healthz
-  K8S_READINESS_PATH: /client/readiness
+  K8S_LIVENESS_PATH: /api/healthz
+  K8S_READINESS_PATH: /api/readiness
   NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.hkih.production.geniem.io/graphql
   NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
 
