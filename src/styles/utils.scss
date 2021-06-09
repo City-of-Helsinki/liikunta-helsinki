@@ -1,0 +1,26 @@
+@import "variables";
+
+$sizes: (
+  s: $breakpoint-xl,
+  // Custom non-HDS compliant max width for content. Breaks alignment with
+  // for instance Navigation.
+  m: 100rem,
+  // 1600px
+);
+
+@function get-content-width($size) {
+  @return calc(#{map-get($sizes, $size)} - 2 * #{$spacing-layout-xs});
+}
+
+@mixin get-layout-columns($size) {
+  @if map-has-key($sizes, $size) {
+    $content-width: get-content-width($size);
+
+    grid-template-columns:
+      minmax(var(--spacing), auto)
+      minmax(auto, #{$content-width})
+      minmax(var(--spacing), auto);
+  } @else {
+    @warn 'Invalid size: #{$size}.';
+  }
+}

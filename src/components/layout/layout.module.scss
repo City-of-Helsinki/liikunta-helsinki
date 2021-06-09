@@ -1,21 +1,15 @@
 @use "breakpoints";
+@use "utils";
 @import "variables";
 
 .Layout {
-  // Custom non-HDS compliant max width for content. Breaks alignment with
-  // for instance Navigation.
-  --liikunta-width: 100rem; // 1600px
   --spacing: #{$spacing-layout-2-xs};
-  --content-width: calc(var(--liikunta-width) - 2 * #{$spacing-layout-xs});
 
   display: grid;
   // Set a three column layout where the middle column is the content column
-  // that has a max width of --content-width and two whitespace columns with a
+  // that has a max width of size param and two whitespace columns with a
   // mininum width of --spacing.
-  grid-template-columns:
-    minmax(var(--spacing), auto)
-    minmax(auto, var(--content-width))
-    minmax(var(--spacing), auto);
+  @include utils.get-layout-columns(m);
   grid-template-rows: auto;
 
   & > * {

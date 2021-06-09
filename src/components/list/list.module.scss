@@ -71,3 +71,18 @@
 .searchResult {
   grid-template-columns: 1fr;
 }
+
+.columns-3 {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  columns: 3 calc(24.5rem - (#{$spacing-m} / 2));
+  column-gap: $spacing-m;
+
+  & > * {
+    display: inline-block;
+    margin-bottom: $spacing-m;
+    width: 100%;
+  }
+}
