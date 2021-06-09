@@ -45,11 +45,12 @@ function CardTitle({ href, title, ...textProps }: CardTitleProps) {
 
 type CardPreProps = {
   children: ReactNode;
+  className?: string;
 };
 
-function CardPre({ children }: CardPreProps) {
+function CardPre({ children, className }: CardPreProps) {
   return (
-    <Text variant="body-l" className={styles.pre}>
+    <Text variant="body-l" className={classNames(styles.pre, className)}>
       {children}
     </Text>
   );

@@ -25,6 +25,7 @@ import Hr from "../../components/hr/Hr";
 import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import Card from "../../components/card/DefaultCard";
+import CondensedCard from "../../components/card/CondensedCard";
 import styles from "./entity.module.scss";
 import { Item, Recommendation } from "../../types";
 
@@ -69,7 +70,7 @@ export default function EntityPage() {
   const name = "Eiran uimaranta";
   const streetAddress = "Eiranranta 3";
   const recommendationItems = getRecommendationsAsItems(
-    [...mockRecommendations, ...mockRecommendations.slice(0, 2)],
+    mockRecommendations,
     router
   );
 
@@ -260,8 +261,14 @@ export default function EntityPage() {
       <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
         <List
           variant="columns-3"
-          items={recommendationItems.map((item) => (
-            <Card key={item.id} {...item} />
+          items={[
+            ...recommendationItems,
+            ...recommendationItems.slice(0, 2).map(({ id, ...rest }) => ({
+              ...rest,
+              id: `${id}-b`,
+            })),
+          ].map((item) => (
+            <CondensedCard key={item.id} {...item} />
           ))}
         />
       </Section>
