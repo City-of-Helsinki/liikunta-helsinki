@@ -69,10 +69,9 @@ export default function EntityPage() {
   const name = "Eiran uimaranta";
   const streetAddress = "Eiranranta 3";
   const recommendationItems = getRecommendationsAsItems(
-    mockRecommendations,
+    [...mockRecommendations, ...mockRecommendations.slice(0, 2)],
     router
   );
-  console.log(recommendationItems);
 
   return (
     <Page
@@ -258,6 +257,14 @@ export default function EntityPage() {
           </div>
         </div>
       </article>
+      <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
+        <List
+          variant="columns-3"
+          items={recommendationItems.map((item) => (
+            <Card key={item.id} {...item} />
+          ))}
+        />
+      </Section>
       <Section title="Muuta samankaltaista liikuntaa" color="white">
         <List
           items={recommendationItems.map((item) => (
