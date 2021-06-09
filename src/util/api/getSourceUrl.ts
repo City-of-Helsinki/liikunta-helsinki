@@ -6,6 +6,6 @@ export default function getSourceUrl(source: string, id: string) {
     case "tprek":
       return `https://www.hel.fi/palvelukarttaws/rest/v4/unit/${id}/`;
     default:
-      return `https://www.hel.fi/palvelukarttaws/rest/v4/unit/${id}/`;
+      break;
   }
 }

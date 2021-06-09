@@ -60,6 +60,6 @@ export default function formatResponseObject(
         telephone: null,
       } as VenueDetails;
     default:
-      return obj;
+      break;
   }
 }

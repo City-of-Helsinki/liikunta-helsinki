@@ -4,7 +4,7 @@ import { useRouter } from "next/dist/client/router";
 import NextLink from "next/link";
 
 import { NavigationItem } from "../../types";
-import mockCategories from "../../api/tmp/mockCategories";
+import mockCategories from "../../client/tmp/mockCategories";
 import SearchShortcuts from "../../components/searchShortcuts/SearchShortcuts";
 import styles from "./footer.module.scss";
 

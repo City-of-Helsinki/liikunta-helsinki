@@ -4,6 +4,8 @@ import axios from "axios";
 import formatResponseObject from "../../../util/api/formatResponseObject";
 import getSourceUrl from "../../../util/api/getSourceUrl";
 
+const SUPPORTED_SOURCES: string[] = ["tprek", "linked"];
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -11,8 +13,8 @@ export default async function handler(
   const { venueId } = req.query;
   const [source, id] = (venueId as string).split(":");
 
-  if (!source || !id) {
-    res.status(400).json({ msg: "Invalid ID parameter" });
+  if (!source || !id || !SUPPORTED_SOURCES.includes(source)) {
+    res.status(400).json({ message: "Invalid ID parameter" });
   }
 
   try {
@@ -22,6 +24,6 @@ export default async function handler(
 
     res.status(200).json(formattedResponse);
   } catch (e) {
-    res.status(500).json({ msg: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
