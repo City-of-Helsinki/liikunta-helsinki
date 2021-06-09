@@ -85,26 +85,25 @@ export type SearchResult = {
 };
 
 export type TranslationsObject = {
-  fi: string;
-  en: string;
-  sv: string;
+  fi?: string;
+  en?: string;
+  sv?: string;
 };
 
 export type VenueDetails = {
   id: string;
   dataSource: string | null;
   email: string | null;
-  contactType: string | null;
   postalCode: string;
   image: string | null;
-  addressLocality: TranslationsObject;
+  addressLocality: TranslationsObject | null;
   position: {
     type: string;
     coordinates: number[] | null[];
   };
-  description: string | null;
-  name: TranslationsObject;
-  infoUrl: string | null;
-  streetAddress: TranslationsObject;
+  description: TranslationsObject | null;
+  name: TranslationsObject | null;
+  infoUrl: TranslationsObject | null;
+  streetAddress: TranslationsObject | null;
   telephone: string | null;
 };

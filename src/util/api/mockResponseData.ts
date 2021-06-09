@@ -17,7 +17,6 @@ export const mockLinkedDefaultData = {
   last_modified_time: "2020-02-08T06:09:23.759206Z",
   custom_data: null,
   email: null,
-  contact_type: null,
   address_region: null,
   postal_code: "01260",
   post_office_box_num: null,
@@ -125,7 +124,6 @@ export const mockedResponse = {
     en: "Vantaa",
     sv: "Vanda",
   },
-  contactType: null,
   infoUrl: null,
   telephone: null,
 };
