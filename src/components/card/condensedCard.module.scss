@@ -1,0 +1,20 @@
+@import "variables";
+
+.keywords {
+  padding: $spacing-m !important;
+  padding-bottom: 0 !important;
+
+  & li {
+    transform: translateY(50%);
+  }
+}
+
+.pre {
+  margin-top: 0.25rem;
+
+  font-weight: 400 !important;
+}
+
+.content {
+  padding: $spacing-m !important;
+}
