@@ -6,14 +6,14 @@ import { Koros } from "hds-react";
 
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
-import searchApolloClient from "../../api/searchApolloClient";
+import searchApolloClient from "../../client/searchApolloClient";
 import styles from "./search.module.scss";
 import { Connection, Item, Keyword, SearchResult } from "../../types";
-import { getNodes } from "../../api/utils";
+import { getNodes } from "../../client/utils";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
-import initializeCmsApollo from "../../api/cmsApolloClient";
+import initializeCmsApollo from "../../client/cmsApolloClient";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};

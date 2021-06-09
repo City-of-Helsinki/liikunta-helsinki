@@ -3,9 +3,9 @@ import { NextRouter, useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 
 import { Collection, Connection, Item, Recommendation } from "../types";
-import initializeCmsApollo from "../api/cmsApolloClient";
-import { getNodes, getQlLanguage } from "../api/utils";
-import mockRecommendations from "../api/tmp/mockRecommendations";
+import initializeCmsApollo from "../client/cmsApolloClient";
+import { getNodes, getQlLanguage } from "../client/utils";
+import mockRecommendations from "../client/tmp/mockRecommendations";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
@@ -15,7 +15,7 @@ import CollectionCard from "../components/card/CollectionCard";
 import Hero from "../components/hero/Hero";
 import HeroImage from "../components/hero/HeroImage";
 import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
-import mockCategories from "../api/tmp/mockCategories";
+import mockCategories from "../client/tmp/mockCategories";
 import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
 
 export const LANDING_PAGE_QUERY = gql`
