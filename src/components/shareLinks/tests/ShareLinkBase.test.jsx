@@ -7,15 +7,19 @@ const testLabel = "Share Link";
 const testWindowName = "Window name";
 
 let jestOpen = null;
+let browserProcess;
 
 beforeAll(() => {
   jestOpen = window.open;
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   window.open = () => {};
+  browserProcess = process.browser;
+  process.browser = true;
 });
 
 afterAll(() => {
   window.open = jestOpen;
+  process.browser = browserProcess;
 });
 
 test("should apply an aria label", () => {
