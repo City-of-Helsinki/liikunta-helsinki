@@ -1,11 +1,11 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import ShareLinks from "../ShareLinks";
 
 const renderComponent = () => render(<ShareLinks />);
 
 test("should have discoverable link address copy button as well as Facebook, Twitter and LinkedIn share links", () => {
-  const { queryByLabelText } = renderComponent();
+  renderComponent();
   const shareLinkLabelsFI = [
     "Kopioi linkin osoite",
     "Jaa Facebookissa",
@@ -14,6 +14,6 @@ test("should have discoverable link address copy button as well as Facebook, Twi
   ];
 
   shareLinkLabelsFI.forEach((label) => {
-    expect(queryByLabelText(label)).not.toEqual(null);
+    expect(screen.queryByLabelText(label)).not.toEqual(null);
   });
 });

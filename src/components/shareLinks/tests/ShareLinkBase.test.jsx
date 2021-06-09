@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import ShareLinkBase from "../ShareLinkBase";
 
@@ -23,21 +23,21 @@ afterAll(() => {
 });
 
 test("should apply an aria label", () => {
-  const { queryByLabelText } = renderComponent({
+  renderComponent({
     linkLabel: testLabel,
     windowName: testWindowName,
   });
 
-  expect(queryByLabelText(testLabel)).not.toEqual(null);
+  expect(screen.queryByLabelText(testLabel)).not.toEqual(null);
 });
 
 test("should have button attribute", () => {
-  const { queryByLabelText } = renderComponent({
+  renderComponent({
     linkLabel: testLabel,
     windowName: testWindowName,
   });
 
-  expect(queryByLabelText(testLabel)).toHaveAttribute("type", "button");
+  expect(screen.queryByLabelText(testLabel)).toHaveAttribute("type", "button");
 });
 
 test("should launch sharing link in a pop up window with encoded uri components", () => {
@@ -46,13 +46,13 @@ test("should launch sharing link in a pop up window with encoded uri components"
     url: "https://helsinki.fi/path/",
   };
   const spy = jest.spyOn(window, "open");
-  const { getByLabelText } = renderComponent({
+  renderComponent({
     linkLabel: testLabel,
     queryParameters,
     url,
     windowName: testWindowName,
   });
-  const link = getByLabelText(testLabel);
+  const link = screen.getByLabelText(testLabel);
 
   fireEvent.click(link);
 
