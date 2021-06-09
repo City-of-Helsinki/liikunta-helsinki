@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import TwitterShareLink from "../TwitterShareLink";
 
@@ -6,9 +6,9 @@ const renderComponent = (props) => render(<TwitterShareLink {...props} />);
 
 test("should apply aria label", () => {
   const sharedLink = "https://helsinki.fi/some/";
-  const { getByLabelText } = renderComponent({ sharedLink });
+  renderComponent({ sharedLink });
 
-  expect(getByLabelText("Jaa Twitterissä"));
+  expect(screen.getByLabelText("Jaa Twitterissä"));
 });
 
 test("<TwitterShareLink /> matches snapshot", () => {
