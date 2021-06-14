@@ -292,14 +292,9 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const cmsClient = initializeCmsApollo();
-  const language = getQlLanguage(context.locale ?? context.defaultLocale);
 
   await cmsClient.pageQuery({
     nextContext: context,
-    variables: {
-      languageCode: language,
-      languageCodeFilter: language,
-    },
   });
 
   return {
