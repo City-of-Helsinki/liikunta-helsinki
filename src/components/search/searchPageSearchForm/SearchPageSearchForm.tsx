@@ -9,8 +9,8 @@ import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
 import styles from "./searchPageSearchForm.module.scss";
-import searchApolloClient from "../../../api/searchApolloClient";
-import { getUnifiedSearchLanguage } from "../../../api/utils";
+import searchApolloClient from "../../../client/searchApolloClient";
+import { getUnifiedSearchLanguage } from "../../../client/utils";
 
 function getURLSearchParamsFromAsPath(asPath: string): URLSearchParams {
   const [, searchParams] = asPath.split("?");

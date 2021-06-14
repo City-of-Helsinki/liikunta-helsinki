@@ -2,7 +2,7 @@ import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
 
-import { useCmsApollo } from "../api/cmsApolloClient";
+import { useCmsApollo } from "../client/cmsApolloClient";
 import AppMeta from "../components/meta/AppMeta";
 import "../styles/globals.scss";
 

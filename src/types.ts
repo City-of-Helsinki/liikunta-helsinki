@@ -83,3 +83,27 @@ export type Venue = {
 export type SearchResult = {
   venue: Venue;
 };
+
+export type TranslationsObject = {
+  fi?: string;
+  en?: string;
+  sv?: string;
+};
+
+export type VenueDetails = {
+  id: string;
+  dataSource: string | null;
+  email: string | null;
+  postalCode: string;
+  image: string | null;
+  addressLocality: TranslationsObject | null;
+  position: {
+    type: string;
+    coordinates: number[] | null[];
+  };
+  description: TranslationsObject | null;
+  name: TranslationsObject | null;
+  infoUrl: TranslationsObject | null;
+  streetAddress: TranslationsObject | null;
+  telephone: string | null;
+};
