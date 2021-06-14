@@ -26,6 +26,5 @@
 
   @include breakpoints.respond-above(m) {
     padding: $spacing-m !important;
-    padding-top: $spacing-m !important;
   }
 }
