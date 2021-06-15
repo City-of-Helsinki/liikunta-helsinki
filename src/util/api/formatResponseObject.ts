@@ -101,5 +101,6 @@ export default function formatResponseObject(
     name: pickLocale(venueDetails.name, locale),
     streetAddress: pickLocale(venueDetails.streetAddress, locale),
     infoUrl: pickLocale(venueDetails.infoUrl, locale),
+    telephone: pickLocale(venueDetails.telephone, locale),
   };
 }

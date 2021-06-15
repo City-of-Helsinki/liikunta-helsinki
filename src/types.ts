@@ -107,7 +107,36 @@ export type VenueDetails<T = TranslationsObject> = {
   name: T | null;
   infoUrl: T | null;
   streetAddress: T | null;
-  telephone: string | null;
+  telephone: T | null;
 };
 
 export type Source = "tprek" | "linked";
+
+export type TimeResourceState =
+  | "open"
+  | "closed"
+  | "undefined"
+  | "self_service"
+  | "with_key"
+  | "with_reservation"
+  | "open_and_reservable"
+  | "with_key_and_reservation"
+  | "enter_only"
+  | "exit_only"
+  | "weather_permitting";
+
+export type Time = {
+  name: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  endTimeOnNextDay: boolean;
+  resourceState: TimeResourceState;
+  fullDay: boolean;
+  periods: number[];
+};
+
+export type OpeningHour = {
+  date: string;
+  times: Time[];
+};
