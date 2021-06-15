@@ -10,9 +10,16 @@ type Props = {
   serviceMapUrl: string;
   placeName: string;
   placeAddress: string;
+  links?: React.ReactElement<React.ComponentProps<typeof InfoBlock.Link>>[];
 };
 
-const MapBox = ({ title, serviceMapUrl, placeName, placeAddress }: Props) => {
+function MapBox({
+  title,
+  serviceMapUrl,
+  placeName,
+  placeAddress,
+  links,
+}: Props) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>
@@ -43,27 +50,10 @@ const MapBox = ({ title, serviceMapUrl, placeName, placeAddress }: Props) => {
           {placeName}
         </Text>
         <Text variant="body-l">{placeAddress}</Text>
-        <InfoBlock.List
-          id="route-directions"
-          inline
-          items={[
-            <InfoBlock.Link
-              external
-              id="google"
-              href="#"
-              label="Reittiohjeet (Google)"
-            />,
-            <InfoBlock.Link
-              external
-              id="hsl"
-              href="#"
-              label="Reittiohjeet (HSL)"
-            />,
-          ]}
-        />
+        {links && <InfoBlock.List id="route-directions" inline items={links} />}
       </div>
     </div>
   );
-};
+}
 
 export default MapBox;

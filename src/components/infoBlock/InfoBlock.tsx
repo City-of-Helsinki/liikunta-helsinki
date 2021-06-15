@@ -31,7 +31,7 @@ function getKey(item: InfoBlockContent): string {
     return item;
   }
 
-  return item.props.id;
+  return item?.props?.id;
 }
 
 function InfoBlockLink({
