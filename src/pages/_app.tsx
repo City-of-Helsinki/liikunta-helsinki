@@ -1,12 +1,32 @@
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { LoadingSpinner } from "hds-react";
+import Error from "next/error";
 
 import { useCmsApollo } from "../client/cmsApolloClient";
 import AppMeta from "../components/meta/AppMeta";
 import "../styles/globals.scss";
 
+function Center({ children }) {
+  return (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const cmsApolloClient = useCmsApollo(pageProps.initialApolloState);
 
   // Unset hidden visibility that was applied to hide the first server render
@@ -28,7 +48,20 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={cmsApolloClient}>
       <AppMeta />
-      <Component {...pageProps} />
+      {router.isReady ? (
+        pageProps.errorCode ? (
+          <Error
+            statusCode={pageProps.errorCode}
+            title={pageProps.errorTitle}
+          />
+        ) : (
+          <Component {...pageProps} />
+        )
+      ) : (
+        <Center>
+          <LoadingSpinner />
+        </Center>
+      )}
     </ApolloProvider>
   );
 }

@@ -19,6 +19,10 @@ class Config {
     );
   }
 
+  static get nextApiEndpoint() {
+    return Config.getEnvOrError(process.env.NEXT_PUBLIC_NEXT_API_ENDPOINT);
+  }
+
   static get locales() {
     return nextConfig.i18n.locales;
   }

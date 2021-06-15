@@ -37,7 +37,6 @@
     [control] auto
     [full content] auto
     [aside] auto;
-  margin: 0 auto;
   padding: 0 $spacing-xs;
 
   @include breakpoints.respond-above(m) {
@@ -163,6 +162,7 @@
 .contentSection {
   padding-top: $spacing-m;
   padding-bottom: $spacing-m;
+  width: 100%;
 
   .aside {
     grid-area: content;
