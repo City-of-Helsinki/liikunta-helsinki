@@ -39,6 +39,8 @@ export const mockLinkedDefaultData = {
   description: null,
   name: {
     fi: "Kuninkaanmäki - Kuusijärvi retkeilyreitti 1km",
+    sv: null,
+    en: null,
   },
   info_url: null,
   street_address: {
@@ -113,6 +115,8 @@ export const mockedResponse = {
   description: null,
   name: {
     fi: "Kuninkaanmäki - Kuusijärvi retkeilyreitti 1km",
+    en: null,
+    sv: null,
   },
   streetAddress: {
     fi: "Kuusijärventie 3",
