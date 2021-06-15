@@ -12,7 +12,7 @@ import classNames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 
-import logger from "../../logger";
+import { staticGenerationLogger } from "../../logger";
 import { Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";
@@ -32,6 +32,7 @@ import styles from "./entity.module.scss";
 import initializeNextApiApolloClient, {
   useNextApiApolloClient,
 } from "../../client/nextApiApolloClient";
+import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
 
 export const ENTITY_QUERY = gql`
   query EntityQuery($id: ID!) {
@@ -41,9 +42,20 @@ export const ENTITY_QUERY = gql`
       description
       email
       id
+      isOpen
       image
       infoUrl
       name
+      openingHours {
+        date
+        times {
+          startTime
+          endTime
+          endTimeOnNextDay
+          resourceState
+          fullDay
+        }
+      }
       position {
         type
         coordinates
@@ -140,13 +152,14 @@ function getGoogleDirectionsUrl(
 export function EntityPageContent() {
   const router = useRouter();
   const search = useSearch();
+  const locale = router.locale ?? router.defaultLocale;
   const { data, loading, error } = useQuery(ENTITY_QUERY, {
     variables: {
       id: router.query.id,
     },
     context: {
       headers: {
-        "Accept-Language": router.locale ?? router.defaultLocale,
+        "Accept-Language": locale,
       },
     },
   });
@@ -168,6 +181,11 @@ export function EntityPageContent() {
   const instagram = data?.venue?.instagram;
   const twitter = data?.venue?.twitter;
   const description = data?.venue?.description;
+  const openingHours = humanizeOpeningHoursForWeek(
+    data?.venue?.openingHours,
+    locale
+  );
+  const isOpen = data?.venue?.isOpen;
 
   const simplifiedAddress = [streetAddress, addressLocality].join(", ");
   const directionPoint = {
@@ -206,7 +224,6 @@ export function EntityPageContent() {
       id: "tw",
     },
   ];
-
   const hslInfoLink = (
     <InfoBlock.Link
       external
@@ -233,7 +250,6 @@ export function EntityPageContent() {
 
   // Data that can't be found from the API at this point
   const keywords = null;
-  const openingHours = null;
   const temperature = null;
   const organizer = null;
   const shortDescription = null;
@@ -289,8 +305,8 @@ export function EntityPageContent() {
             {openingHours && (
               <InfoBlock
                 icon={<IconClock />}
-                name="Nyt auki"
-                contents={["Kausi 1.6-9.8.2020"]}
+                name={isOpen ? "Nyt auki" : "Aukioloaika"}
+                contents={[openingHours]}
               />
             )}
             {temperature && (
@@ -482,7 +498,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       revalidate: 10,
     };
   } catch (e) {
-    logger.error("Error while generating an entity page", e);
+    staticGenerationLogger.error("Error while generating an entity page:", e);
     if (isApolloError(e)) {
       return {
         props: {

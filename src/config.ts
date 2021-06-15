@@ -41,6 +41,10 @@ class Config {
   static get allowUnauthorizedRequests() {
     return Boolean(process.env.NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS);
   }
+
+  static get debug() {
+    return Boolean(process.env.NEXT_PUBLIC_DEBUG);
+  }
 }
 
 export type Locale = typeof Config.locales[number];

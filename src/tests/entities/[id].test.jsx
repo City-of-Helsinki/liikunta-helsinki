@@ -1,5 +1,6 @@
 import { act } from "react-dom/test-utils";
 
+import { getOpeningHoursForWeek } from "../../tests/mockData/getOpeningHours";
 import { ENTITY_QUERY, EntityPageContent } from "../../pages/entities/[id]";
 import { render, screen, waitFor } from "../utils";
 
@@ -35,6 +36,8 @@ const getMocks = () => [
           postalCode: "00001",
           streetAddress: "Eirantie 3",
           telephone: "+35812345678",
+          openingHours: getOpeningHoursForWeek(),
+          isOpen: false,
         },
       },
     },

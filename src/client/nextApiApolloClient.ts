@@ -10,7 +10,7 @@ import {
 import { useMemo } from "react";
 
 import Config from "../config";
-import logger from "../logger";
+import { misc as logger } from "../logger";
 import initializeApolloClient from "./initializeApolloClient";
 
 let apiApolloClient: ApolloClient<NormalizedCacheObject>;
