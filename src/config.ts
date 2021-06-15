@@ -1,3 +1,5 @@
+import nextConfig from "../next.config";
+
 class Config {
   private static getEnvOrError(variable?: string) {
     if (!variable) {
@@ -16,6 +18,16 @@ class Config {
       process.env.NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT
     );
   }
+
+  static get locales() {
+    return nextConfig.i18n.locales;
+  }
+
+  static get defaultLocale() {
+    return nextConfig.i18n.defaultLocale;
+  }
 }
+
+export type Locale = typeof Config.locales[number];
 
 export default Config;

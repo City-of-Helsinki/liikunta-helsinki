@@ -12,3 +12,11 @@ it("Returns correctly formatted object", () => {
   expect(linked).toEqual(mockedResponse);
   expect(tprek).toEqual(mockedResponse);
 });
+
+it("Can return trimmed translations", () => {
+  const linked = formatResponseObject(mockLinkedDefaultData, "linked", "fi");
+  const tprek = formatResponseObject(mockTprekDefaultData, "tprek", "fi");
+
+  expect(tprek.name).toEqual(mockTprekDefaultData.name_fi);
+  expect(linked.name).toEqual(mockLinkedDefaultData.name.fi);
+});

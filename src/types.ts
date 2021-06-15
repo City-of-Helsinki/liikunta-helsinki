@@ -90,20 +90,24 @@ export type TranslationsObject = {
   sv?: string;
 };
 
-export type VenueDetails = {
+export type Point = {
+  type: "Point";
+  coordinates: number[];
+};
+
+export type VenueDetails<T = TranslationsObject> = {
   id: string;
   dataSource: string | null;
   email: string | null;
   postalCode: string;
   image: string | null;
-  addressLocality: TranslationsObject | null;
-  position: {
-    type: string;
-    coordinates: number[] | null[];
-  };
-  description: TranslationsObject | null;
-  name: TranslationsObject | null;
-  infoUrl: TranslationsObject | null;
-  streetAddress: TranslationsObject | null;
+  addressLocality: T | null;
+  position: Point | null;
+  description: T | null;
+  name: T | null;
+  infoUrl: T | null;
+  streetAddress: T | null;
   telephone: string | null;
 };
+
+export type Source = "tprek" | "linked";
