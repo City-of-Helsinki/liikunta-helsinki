@@ -2,6 +2,7 @@ import { InMemoryCache } from "@apollo/client";
 import { useMemo } from "react";
 
 import Config from "../config";
+import initializeApolloClient from "./initializeApolloClient";
 import LiikuntaApolloClient from "./LiikuntaApolloClient";
 import { sortMenuItems } from "./utils";
 
@@ -9,6 +10,7 @@ let cmsApolloClient: LiikuntaApolloClient;
 
 function createCmsApolloClient() {
   return new LiikuntaApolloClient({
+    ssrMode: !process.browser,
     uri: Config.cmsGraphqlEndpoint,
     cache: new InMemoryCache({
       typePolicies: {
@@ -41,31 +43,19 @@ function createCmsApolloClient() {
   });
 }
 
-// https://www.apollographql.com/blog/building-a-next-js-app-with-apollo-client-slash-graphql/
 export default function initializeCmsApollo(initialState = null) {
-  const _apolloClient = cmsApolloClient ?? createCmsApolloClient();
-
-  // Initial state hydration
-  if (initialState) {
-    // Get existing cache, loaded during client side data fetching
-    const existingCache = _apolloClient.extract();
-
-    // Restore the cache using the data passed from
-    // getStaticProps/getServerSideProps combined with the existing cached data
-    _apolloClient.cache.restore({ ...existingCache, ...initialState });
-  }
-
-  // For SSG and SSR always create a new Apollo Client
-  if (typeof window === "undefined") {
-    return _apolloClient;
-  }
+  const client = initializeApolloClient(
+    initialState,
+    cmsApolloClient,
+    createCmsApolloClient
+  );
 
   // Create the Apollo Client once in the client
   if (!cmsApolloClient) {
-    cmsApolloClient = _apolloClient;
+    cmsApolloClient = client;
   }
 
-  return _apolloClient;
+  return client;
 }
 
 export function useCmsApollo(initialState) {

@@ -10,10 +10,10 @@ import {
 import React from "react";
 import classNames from "classnames";
 import { NextRouter, useRouter } from "next/router";
+import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 
-import { Item, Recommendation } from "../../types";
+import { Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
-import apiAxiosClient from "../../client/apiAxiosClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";
 import useSearch from "../../hooks/useSearch";
 import Keyword from "../../components/keyword/Keyword";
@@ -28,6 +28,31 @@ import List from "../../components/list/List";
 import Card from "../../components/card/DefaultCard";
 import CondensedCard from "../../components/card/CondensedCard";
 import styles from "./entity.module.scss";
+import initializeNextApiApolloClient, {
+  useNextApiApolloClient,
+} from "../../client/nextApiApolloClient";
+
+const ENTITY_QUERY = gql`
+  query EntityQuery($id: ID!) {
+    venue(id: $id) {
+      addressLocality
+      dataSource
+      description
+      email
+      id
+      image
+      infoUrl
+      name
+      position {
+        type
+        coordinates
+      }
+      postalCode
+      streetAddress
+      telephone
+    }
+  }
+`;
 
 function getRecommendationsAsItems(
   recommendations: Recommendation[],
@@ -50,11 +75,6 @@ function pruneId(idWithSource: string): string {
 
   return id;
 }
-
-type Point = {
-  type: string;
-  coordinates: number[] | null[];
-};
 
 type Address = {
   streetName: string;
@@ -116,35 +136,44 @@ function getGoogleDirectionsUrl(
   return `https://www.google.com/maps/dir/${from}/${to}/`;
 }
 
-export default function EntityPage({ data }) {
+function EntityPageContent() {
   const router = useRouter();
   const search = useSearch();
+  const { data } = useQuery(ENTITY_QUERY, {
+    variables: {
+      id: router.query.id,
+    },
+    context: {
+      headers: {
+        "Accept-Language": router.locale ?? router.defaultLocale,
+      },
+    },
+  });
 
-  const id = data?.entity?.id;
-  const name = data?.entity?.name;
-  const streetAddress = data?.entity?.streetAddress;
-  const addressLocality = data?.entity?.addressLocality;
-  const image = data?.entity?.image;
-  const telephone = data?.entity?.telephone;
-  const email = data?.entity?.email;
-  const infoUrl = data?.entity?.infoUrl;
-  const facebook = data?.entity?.facebook;
-  const youtube = data?.entity?.youtube;
-  const instagram = data?.entity?.instagram;
-  const twitter = data?.entity?.twitter;
-  const description = data?.entity?.description;
+  const id = data?.venue?.id;
+  const name = data?.venue?.name;
+  const streetAddress = data?.venue?.streetAddress;
+  const addressLocality = data?.venue?.addressLocality;
+  const image = data?.venue?.image;
+  const telephone = data?.venue?.telephone;
+  const email = data?.venue?.email;
+  const infoUrl = data?.venue?.infoUrl;
+  const facebook = data?.venue?.facebook;
+  const youtube = data?.venue?.youtube;
+  const instagram = data?.venue?.instagram;
+  const twitter = data?.venue?.twitter;
+  const description = data?.venue?.description;
 
   const simplifiedAddress = [streetAddress, addressLocality].join(", ");
   const directionPoint = {
     name,
     address: {
       streetName: streetAddress,
-      zip: data?.entity?.postalCode,
+      zip: data?.venue?.postalCode,
       city: addressLocality,
     },
-    point: data?.entity?.position,
+    point: data?.venue?.position,
   };
-
   const links = [
     {
       url: infoUrl,
@@ -172,6 +201,7 @@ export default function EntityPage({ data }) {
       id: "tw",
     },
   ];
+
   const hslInfoLink = (
     <InfoBlock.Link
       external
@@ -183,9 +213,9 @@ export default function EntityPage({ data }) {
   const googleInfoLink = (
     <InfoBlock.Link
       external
-      id="hsl"
+      id="google"
       href={getGoogleDirectionsUrl(null, directionPoint)}
-      label="Reittiohjeet (HSL)"
+      label="Reittiohjeet (Google)"
     />
   );
   const infoLines = [
@@ -209,11 +239,7 @@ export default function EntityPage({ data }) {
   );
 
   return (
-    <Page
-      title="Liikunta-Helsinki"
-      description="Liikunta-helsinki"
-      navigationVariant="white"
-    >
+    <>
       <article className={styles.wrapper}>
         <header className={classNames(styles.layout, styles.header)}>
           <button
@@ -366,7 +392,7 @@ export default function EntityPage({ data }) {
             <MapBox
               title="Sijainti"
               serviceMapUrl={`https://palvelukartta.hel.fi/fi/embed/unit/${pruneId(
-                data?.entity?.id
+                data?.venue?.id
               )}`}
               placeName={name}
               placeAddress={simplifiedAddress}
@@ -396,6 +422,24 @@ export default function EntityPage({ data }) {
           ))}
         />
       </Section>
+    </>
+  );
+}
+
+export default function EntityPage(props) {
+  const nextApiApolloClient = useNextApiApolloClient(
+    props.initialNextApiApolloState
+  );
+
+  return (
+    <Page
+      title="Liikunta-Helsinki"
+      description="Liikunta-helsinki"
+      navigationVariant="white"
+    >
+      <ApolloProvider client={nextApiApolloClient}>
+        <EntityPageContent {...props} />
+      </ApolloProvider>
     </Page>
   );
 }
@@ -407,42 +451,43 @@ export async function getStaticPaths() {
   };
 }
 
-async function getEntity(id: string, locale: string) {
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const cmsClient = initializeCmsApollo();
+  const nextApiClient = initializeNextApiApolloClient();
+
   try {
-    const entityResponse = await apiAxiosClient.get(`/venues/${id}`, {
+    await cmsClient.pageQuery({
+      nextContext: context,
+    });
+    await nextApiClient.query({
+      query: ENTITY_QUERY,
+      variables: {
+        id: context.params.id,
+      },
       headers: {
-        "Accept-Language": locale,
+        "Accept-Language": context.locale ?? context.defaultLocale,
       },
     });
 
-    return entityResponse;
-  } catch (e) {
-    console.log(e);
-    return e.response;
-  }
-}
-
-export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = initializeCmsApollo();
-
-  await cmsClient.pageQuery({
-    nextContext: context,
-  });
-  const entityResponse = await getEntity(
-    context.params.id as string,
-    context.locale ?? context.defaultLocale
-  );
-  const isError = entityResponse.statusText !== "OK";
-
-  return {
-    props: {
-      initialApolloState: cmsClient.cache.extract(),
-      data: {
-        entity: entityResponse?.data ?? null,
+    return {
+      props: {
+        initialApolloState: cmsClient.cache.extract(),
+        initialNextApiApolloState: nextApiClient.cache.extract(),
       },
-      errorCode: isError ? entityResponse.status : false,
-      errorTitle: isError ? entityResponse?.data?.message ?? null : false,
-    },
-    revalidate: 10,
-  };
+      revalidate: 10,
+    };
+  } catch (e) {
+    if (isApolloError(e)) {
+      return {
+        props: {
+          error: {
+            statusCode: 400,
+          },
+        },
+        revalidate: 10,
+      };
+    }
+
+    throw e;
+  }
 }
