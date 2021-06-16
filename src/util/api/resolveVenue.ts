@@ -1,11 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import accepts from "accepts";
 
-import Config from "../../../config";
-import formatResponseObject from "../../../util/api/formatResponseObject";
-import getSourceUrl from "../../../util/api/getSourceUrl";
-import { Source } from "../../../types";
+import { Source } from "../../types";
+import { Locale } from "../../config";
+import formatResponseObject from "./formatResponseObject";
+import getSourceUrl from "./getSourceUrl";
 
 const SUPPORTED_SOURCES: string[] = ["tprek", "linked"];
 
@@ -38,22 +36,7 @@ function parseVenueId(venueId: string | string[]): [Source, string] | null {
   return [source as Source, id];
 }
 
-function acceptsLanguages(
-  req: NextApiRequest,
-  languages: string[]
-): typeof languages[number] | false {
-  const accept = accepts(req);
-
-  return accept.languages(languages);
-}
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const { venueId } = req.query;
-  const language = acceptsLanguages(req, Config.locales);
-
+export default async function resolveVenue(venueId: string, language: Locale) {
   try {
     const [source, id] = parseVenueId(venueId);
     const url = getSourceUrl(source, id);
@@ -64,12 +47,12 @@ export default async function handler(
       language
     );
 
-    return res.status(200).json(formattedResponse);
+    return formattedResponse;
   } catch (e) {
     if (e instanceof IdParseError) {
-      return res.status(400).json({ message: "Invalid ID parameter" });
+      throw Error("Invalid ID parameter");
     }
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    throw Error("Internal Server Error");
   }
 }
