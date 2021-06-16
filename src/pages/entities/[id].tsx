@@ -32,7 +32,7 @@ import initializeNextApiApolloClient, {
   useNextApiApolloClient,
 } from "../../client/nextApiApolloClient";
 
-const ENTITY_QUERY = gql`
+export const ENTITY_QUERY = gql`
   query EntityQuery($id: ID!) {
     venue(id: $id) {
       addressLocality
@@ -136,10 +136,10 @@ function getGoogleDirectionsUrl(
   return `https://www.google.com/maps/dir/${from}/${to}/`;
 }
 
-function EntityPageContent() {
+export function EntityPageContent() {
   const router = useRouter();
   const search = useSearch();
-  const { data } = useQuery(ENTITY_QUERY, {
+  const { data, loading, error } = useQuery(ENTITY_QUERY, {
     variables: {
       id: router.query.id,
     },
@@ -149,6 +149,10 @@ function EntityPageContent() {
       },
     },
   });
+
+  if (loading || error) {
+    return null;
+  }
 
   const id = data?.venue?.id;
   const name = data?.venue?.name;
@@ -392,7 +396,7 @@ function EntityPageContent() {
             <MapBox
               title="Sijainti"
               serviceMapUrl={`https://palvelukartta.hel.fi/fi/embed/unit/${pruneId(
-                data?.venue?.id
+                id
               )}`}
               placeName={name}
               placeAddress={simplifiedAddress}

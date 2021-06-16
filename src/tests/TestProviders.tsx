@@ -31,11 +31,12 @@ const mockRouter: NextRouter = {
 type Props = {
   mocks?: ReadonlyArray<MockedResponse>;
   children: React.ReactNode;
+  router?: Partial<NextRouter>;
 };
 
-function TestProviders({ mocks, children }: Props) {
+function TestProviders({ mocks, children, router }: Props) {
   return (
-    <RouterContext.Provider value={mockRouter}>
+    <RouterContext.Provider value={{ ...mockRouter, ...router }}>
       <MockedProvider mocks={mocks} addTypename={false}>
         {children}
       </MockedProvider>

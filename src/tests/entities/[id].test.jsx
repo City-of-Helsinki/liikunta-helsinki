@@ -1,29 +1,42 @@
 import { act } from "react-dom/test-utils";
 
-import { PAGE_QUERY } from "../../components/page/Page";
-import EntityPage from "../../pages/entities/[id]";
+import { ENTITY_QUERY, EntityPageContent } from "../../pages/entities/[id]";
 import { render, screen, waitFor } from "../utils";
-import mockMenus from "../mockData/mockMenus";
 
+const id = "tprek:25";
 const getMocks = () => [
   {
     request: {
-      query: PAGE_QUERY,
+      query: ENTITY_QUERY,
       variables: {
-        menuLocation: "PRIMARY",
+        id,
+      },
+      context: {
+        headers: {
+          "Accept-Language": "fi",
+        },
       },
     },
-    response: {
-      pageLanguages: [
-        {
-          id: "1",
-          name: "English",
-          slug: "en",
-          code: "EN",
-          locale: "en_US",
+    result: {
+      data: {
+        venue: {
+          addressLocality: "Helsinki",
+          dataSource: "",
+          description: "",
+          email: "",
+          id,
+          image: "",
+          infoUrl: "https://hel.fi",
+          name: "Eiran uimaranta",
+          position: {
+            type: "Point",
+            coordinates: [1, 2],
+          },
+          postalCode: "00001",
+          streetAddress: "Eirantie 3",
+          telephone: "+35812345678",
         },
-      ],
-      pageMenus: mockMenus,
+      },
     },
   },
 ];
@@ -31,7 +44,11 @@ const getMocks = () => [
 describe("entities/[id]", () => {
   it("renders without crashing", async () => {
     await act(async () => {
-      render(<EntityPage />, getMocks());
+      render(<EntityPageContent />, getMocks(), {
+        query: {
+          id,
+        },
+      });
     });
 
     await waitFor(() =>
