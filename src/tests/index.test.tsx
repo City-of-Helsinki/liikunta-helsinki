@@ -32,17 +32,19 @@ const getMocks = () => [
         menuLocation: "PRIMARY",
       },
     },
-    response: {
-      pageLanguages: [
-        {
-          id: "1",
-          name: "English",
-          slug: "en",
-          code: "EN",
-          locale: "en_US",
-        },
-      ],
-      pageMenus: mockMenus,
+    result: {
+      data: {
+        pageLanguages: [
+          {
+            id: "1",
+            name: "English",
+            slug: "en",
+            code: "EN",
+            locale: "en_US",
+          },
+        ],
+        pageMenus: mockMenus,
+      },
     },
   },
 ];
