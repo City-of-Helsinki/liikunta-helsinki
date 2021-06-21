@@ -20,7 +20,7 @@ env:
   K8S_READINESS_PATH: /api/readiness
   NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.hkih.production.geniem.io/graphql
   NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
-  NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}/api/graphql
+  CUSTOM_ENVIRONMENT_URL: https://liikunta-helsinki-${{ github.event.pull_request.number }}.${{ secrets.BASE_DOMAIN_STAGING }}
 
 jobs:
   build:
@@ -34,7 +34,8 @@ jobs:
           DOCKER_IMAGE_NAME: ${{ env.REPO_NAME }}-review
           DOCKER_BUILD_ARG_NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT }}
           DOCKER_BUILD_ARG_NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT }}
-          DOCKER_BUILD_ARG_NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT }}
+          DOCKER_BUILD_ARG_NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT: ${{ env.CUSTOM_ENVIRONMENT_URL }}/api/graphql
+          DOCKER_BUILD_ARG_NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS: 1
 
   review:
     runs-on: ubuntu-latest
@@ -47,23 +48,12 @@ jobs:
       - name: Deploy
         uses: andersinno/kolga-deploy-action@v2
         env:
-          ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
+          ENVIRONMENT_URL: ${{ env.CUSTOM_ENVIRONMENT_URL }}
           DOCKER_IMAGE_NAME: ${{ env.REPO_NAME }}-review
           K8S_SECRET_NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT }}
           K8S_SECRET_NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT }}
-          K8S_SECRET_NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT: ${{ env.NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT }}
-
-      - name: Setup kubectl
-        run: |
-          echo "${{ env.KUBECONFIG_RAW }}" > $(pwd)/kubeconfig
-          echo "KUBECONFIG=$(pwd)/kubeconfig" >> $GITHUB_ENV
-        shell: bash
-      - name: Get Review Deploy URL
-        id: deploy-url
-        run: |
-          DEPLOY_URL=$(kubectl get ingress -n "${{ env.K8S_NAMESPACE }}" -o jsonpath='{.items[0].spec.rules[0].host}')
-          echo "BROWSER_TESTS_LOCAL_ENV_URL=https://$DEPLOY_URL" >> $GITHUB_ENV
-        shell: bash
+          K8S_SECRET_NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT: ${{ env.CUSTOM_ENVIRONMENT_URL }}/api/graphql
+          K8S_SECRET_NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS: 1
 
       - name: Create PR comment for Deploy URL
         uses: marocchino/sticky-pull-request-comment@v2
@@ -71,4 +61,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: deployment-url
           message: |
-            **Liikunta-helsinki branch is deployed to: ${{ env.BROWSER_TESTS_LOCAL_ENV_URL }}** :rocket::rocket::rocket:
+            **Liikunta-helsinki branch is deployed to: ${{ env.CUSTOM_ENVIRONMENT_URL }}** :rocket::rocket::rocket:
