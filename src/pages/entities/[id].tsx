@@ -11,9 +11,9 @@ import React from "react";
 import classNames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 
-import initializeCmsApollo from "../../api/cmsApolloClient";
-import { getQlLanguage } from "../../api/utils";
-import mockRecommendations from "../../api/tmp/mockRecommendations";
+import initializeCmsApollo from "../../client/cmsApolloClient";
+import { getQlLanguage } from "../../client/utils";
+import mockRecommendations from "../../client/tmp/mockRecommendations";
 import useSearch from "../../hooks/useSearch";
 import Keyword from "../../components/keyword/Keyword";
 import Page from "../../components/page/Page";
