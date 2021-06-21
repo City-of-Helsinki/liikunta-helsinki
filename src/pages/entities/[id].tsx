@@ -12,6 +12,7 @@ import classNames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 
+import logger from "../../logger";
 import { Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";
@@ -481,6 +482,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       revalidate: 10,
     };
   } catch (e) {
+    logger.error("Error while generating an entity page", e);
     if (isApolloError(e)) {
       return {
         props: {

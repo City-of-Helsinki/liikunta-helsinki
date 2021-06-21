@@ -2,6 +2,7 @@ import { ApolloServer, gql, ApolloError } from "apollo-server-micro";
 import accepts from "accepts";
 import { NextApiRequest } from "next";
 
+import logger from "../../logger";
 import Config from "../../config";
 import resolveVenue from "../../util/api/resolveVenue";
 
@@ -39,6 +40,7 @@ const resolvers = {
 
         return venue;
       } catch (e) {
+        logger.error("Error while attempting to complete query resolver", e);
         throw new ApolloError(e.message);
       }
     },

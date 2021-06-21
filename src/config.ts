@@ -37,6 +37,10 @@ class Config {
   static get defaultLocale() {
     return nextConfig.i18n.defaultLocale;
   }
+
+  static get allowUnauthorizedRequests() {
+    return Boolean(process.env.NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS);
+  }
 }
 
 export type Locale = typeof Config.locales[number];
