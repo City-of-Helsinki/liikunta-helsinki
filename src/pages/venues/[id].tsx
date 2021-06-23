@@ -28,14 +28,14 @@ import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import Card from "../../components/card/DefaultCard";
 import CondensedCard from "../../components/card/CondensedCard";
-import styles from "./entity.module.scss";
+import styles from "./venue.module.scss";
 import initializeNextApiApolloClient, {
   useNextApiApolloClient,
 } from "../../client/nextApiApolloClient";
 import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
 
-export const ENTITY_QUERY = gql`
-  query EntityQuery($id: ID!) {
+export const VENUE_QUERY = gql`
+  query VenueQuery($id: ID!) {
     venue(id: $id) {
       addressLocality
       dataSource
@@ -149,11 +149,11 @@ function getGoogleDirectionsUrl(
   return `https://www.google.com/maps/dir/${from}/${to}/`;
 }
 
-export function EntityPageContent() {
+export function VenuePageContent() {
   const router = useRouter();
   const search = useSearch();
   const locale = router.locale ?? router.defaultLocale;
-  const { data, loading, error } = useQuery(ENTITY_QUERY, {
+  const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
     },
@@ -328,7 +328,7 @@ export function EntityPageContent() {
                 />,
                 <InfoBlock.Link
                   id="map-link"
-                  href={`/map?entity=${id}`}
+                  href={`/map?venue=${id}`}
                   label="Avaa kartta"
                 />,
               ]}
@@ -447,7 +447,7 @@ export function EntityPageContent() {
   );
 }
 
-export default function EntityPage(props) {
+export default function VenuePage(props) {
   const nextApiApolloClient = useNextApiApolloClient(
     props.initialNextApiApolloState
   );
@@ -459,7 +459,7 @@ export default function EntityPage(props) {
       navigationVariant="white"
     >
       <ApolloProvider client={nextApiApolloClient}>
-        <EntityPageContent {...props} />
+        <VenuePageContent {...props} />
       </ApolloProvider>
     </Page>
   );
@@ -481,7 +481,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       nextContext: context,
     });
     await nextApiClient.query({
-      query: ENTITY_QUERY,
+      query: VENUE_QUERY,
       variables: {
         id: context.params.id,
       },
@@ -498,7 +498,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       revalidate: 10,
     };
   } catch (e) {
-    staticGenerationLogger.error("Error while generating an entity page:", e);
+    staticGenerationLogger.error("Error while generating a venue page:", e);
     if (isApolloError(e)) {
       return {
         props: {

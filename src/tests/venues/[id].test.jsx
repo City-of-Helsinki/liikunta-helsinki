@@ -1,14 +1,14 @@
 import { act } from "react-dom/test-utils";
 
-import { getOpeningHoursForWeek } from "../../tests/mockData/getOpeningHours";
-import { ENTITY_QUERY, EntityPageContent } from "../../pages/entities/[id]";
+import { getOpeningHoursForWeek } from "../mockData/getOpeningHours";
+import { VENUE_QUERY, VenuePageContent } from "../../pages/venues/[id]";
 import { render, screen, waitFor } from "../utils";
 
 const id = "tprek:25";
 const getMocks = () => [
   {
     request: {
-      query: ENTITY_QUERY,
+      query: VENUE_QUERY,
       variables: {
         id,
       },
@@ -44,10 +44,10 @@ const getMocks = () => [
   },
 ];
 
-describe("entities/[id]", () => {
+describe("venues/[id]", () => {
   it("renders without crashing", async () => {
     await act(async () => {
-      render(<EntityPageContent />, getMocks(), {
+      render(<VenuePageContent />, getMocks(), {
         query: {
           id,
         },
