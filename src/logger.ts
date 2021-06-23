@@ -28,29 +28,29 @@ function formatMessage(
 
 // Never log on the client side in production in order to avoid hurting the
 // performance of the user's browser.
-const isNotProductionClient =
-  !process.browser && process.env.NODE_ENV !== "production";
+const isNotProductionClient = () =>
+  !(process.browser && process.env.NODE_ENV === "production");
 
 function createLogger(namespace: string) {
   return {
     debug: (message?: any, ...optionalParameters: any[]) =>
-      isNotProductionClient &&
+      isNotProductionClient() &&
       Config.debug &&
       console.debug(
         formatMessage(namespace, "debug", message, ...optionalParameters)
       ),
     info: (message?: any, ...optionalParameters: any[]) =>
-      isNotProductionClient &&
+      isNotProductionClient() &&
       console.info(
         formatMessage(namespace, "info", message, ...optionalParameters)
       ),
     warn: (message?: any, ...optionalParameters: any[]) =>
-      isNotProductionClient &&
+      isNotProductionClient() &&
       console.warn(
         formatMessage(namespace, "warn", message, ...optionalParameters)
       ),
     error: (message?: any, ...optionalParameters: any[]) =>
-      isNotProductionClient &&
+      isNotProductionClient() &&
       console.error(
         formatMessage(namespace, "error", message, ...optionalParameters)
       ),
