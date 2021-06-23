@@ -77,7 +77,8 @@
   padding: 0;
   list-style-type: none;
 
-  columns: calc(24.5rem - (#{$spacing-m} * 0.5)) 3;
+  column-count: 3;
+  column-width: calc(24.5rem - (#{$spacing-m} * 0.5));
   column-gap: $spacing-m;
 
   & > * {
