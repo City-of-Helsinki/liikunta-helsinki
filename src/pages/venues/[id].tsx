@@ -485,8 +485,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       variables: {
         id: context.params.id,
       },
-      headers: {
-        "Accept-Language": context.locale ?? context.defaultLocale,
+      context: {
+        headers: {
+          "Accept-Language": context.locale ?? context.defaultLocale,
+        },
       },
     });
 
