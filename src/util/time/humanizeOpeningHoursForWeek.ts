@@ -179,7 +179,11 @@ function getDayOfWeekName(dateTime: string, locale: DateLocale = fi): string {
 function humanizeOpeningHour(
   openingHour: OpeningHour,
   locale: Locale = "fi"
-): string {
+): string | null {
+  if (openingHour?.times.length === 0) {
+    return null;
+  }
+
   const dayOfWeekName = getDayOfWeekName(
     openingHour?.date,
     dateLocales[locale]
@@ -187,6 +191,12 @@ function humanizeOpeningHour(
   const times = humanizeTimes(openingHour?.times, microCopy[locale]);
 
   return `${dayOfWeekName} ${times}`;
+}
+
+function renderOpeningHours(openingHours: Array<string | null>): string {
+  return openingHours
+    .filter((item): item is string => item !== null)
+    .join("\n");
 }
 
 /**
@@ -231,24 +241,23 @@ function humanizeOpeningHoursForWeek(
 
   if (matchingTimes) {
     const commonTimes = humanizeTimes(matchingTimes, microCopy[locale]);
-    const weekendOpeningHours = [sat, sun]
-      .map((weekendOpeningHour) =>
-        humanizeOpeningHour(weekendOpeningHour, locale)
-      )
-      .join("\n");
-
-    return [
+    const weekendOpeningHours = [sat, sun].map((weekendOpeningHour) =>
+      humanizeOpeningHour(weekendOpeningHour, locale)
+    );
+    const formattedOpeningHours = [
       `${getDayOfWeekName(mon.date, dateLocales[locale])}-${getDayOfWeekName(
         fri.date,
         dateLocales[locale]
       )} ${commonTimes}`,
-      weekendOpeningHours,
-    ].join("\n");
+      ...weekendOpeningHours,
+    ];
+
+    return renderOpeningHours(formattedOpeningHours);
   }
 
-  return openingHours
-    .map((openingHour) => humanizeOpeningHour(openingHour, locale))
-    .join("\n");
+  return renderOpeningHours(
+    openingHours.map((openingHour) => humanizeOpeningHour(openingHour, locale))
+  );
 }
 
 export default humanizeOpeningHoursForWeek;

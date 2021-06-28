@@ -137,6 +137,27 @@ describe("humanizeOpeningHoursForWeek", () => {
     `);
   });
 
+  it("should not return information for dates that don't have any opening times", () => {
+    expect(
+      humanizeOpeningHoursForWeek(
+        getOpeningHoursForWeek((date, index) => {
+          if (index === 5 || index === 6) {
+            return getDate(date, []);
+          }
+
+          return getDate(date, [
+            {
+              startTime: "08:00:00",
+              endTime: "16:00:00",
+              resourceState: "open",
+            },
+          ]);
+        }),
+        "en"
+      )
+    ).toMatchInlineSnapshot(`"Mo-Fr 08:00 - 16:00"`);
+  });
+
   it("should work with Swedish", () => {
     expect(
       humanizeOpeningHoursForWeek(
