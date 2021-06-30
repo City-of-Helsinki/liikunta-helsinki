@@ -4,16 +4,16 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { Koros } from "hds-react";
 
+import { Connection, Item, Keyword, SearchResult } from "../../types";
+import searchApolloClient from "../../client/searchApolloClient";
+import { getNodes } from "../../client/utils";
+import initializeCmsApollo from "../../client/cmsApolloClient";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
-import searchApolloClient from "../../client/searchApolloClient";
-import styles from "./search.module.scss";
-import { Connection, Item, Keyword, SearchResult } from "../../types";
-import { getNodes } from "../../client/utils";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
-import initializeCmsApollo from "../../client/cmsApolloClient";
+import styles from "./search.module.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -85,10 +85,11 @@ export default function Search() {
     query: { q: searchText = "*" },
   } = useRouter();
 
-  const { data, loading, refetch, fetchMore } = useQuery(SEARCH_QUERY, {
+  const { data, loading, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
     ssr: false,
     variables: { q: searchText, first: BLOCK_SIZE, after: "" },
+    fetchPolicy: "cache-and-network",
   });
 
   const searchResultItems: Item[] = getSearchResultsAsItems(
@@ -113,13 +114,9 @@ export default function Search() {
     });
   };
 
-  const onRefetch = (q) => {
-    refetch({ q: q ?? "*", first: BLOCK_SIZE });
-  };
-
   return (
     <Page title="Search" description="Search">
-      <SearchPageSearchForm refetch={onRefetch} />
+      <SearchPageSearchForm />
       <Koros className={styles.koros} />
 
       <Section variant="contained">
