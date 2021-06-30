@@ -17,6 +17,7 @@ import { Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";
 import useSearch from "../../hooks/useSearch";
+import queryPersister from "../../util/queryPersister";
 import Keyword from "../../components/keyword/Keyword";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
@@ -28,11 +29,11 @@ import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import Card from "../../components/card/DefaultCard";
 import CondensedCard from "../../components/card/CondensedCard";
-import styles from "./venue.module.scss";
 import initializeNextApiApolloClient, {
   useNextApiApolloClient,
 } from "../../client/nextApiApolloClient";
 import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
+import styles from "./venue.module.scss";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -164,6 +165,17 @@ export function VenuePageContent() {
     },
   });
 
+  const handleBackToSearchClick = () => {
+    const persistedQuery = queryPersister.readPersistedQuery();
+    let backUrl = "/search";
+
+    if (persistedQuery) {
+      backUrl = `${backUrl}?${new URLSearchParams(persistedQuery)}`;
+    }
+
+    router.push(backUrl);
+  };
+
   if (loading || error) {
     return null;
   }
@@ -267,6 +279,7 @@ export function VenuePageContent() {
             type="button"
             className={styles.backToSearch}
             aria-label="Hakuun"
+            onClick={handleBackToSearchClick}
           >
             <IconArrowLeft aria-hidden="true" />
           </button>

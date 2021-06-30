@@ -68,6 +68,7 @@
   background: $color-white;
   border-radius: 0;
   border: none;
+  cursor: pointer;
 
   @include breakpoints.respond-above(m) {
     justify-self: flex-end;

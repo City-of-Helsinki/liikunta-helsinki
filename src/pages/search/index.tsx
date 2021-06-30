@@ -82,13 +82,13 @@ function getSearchResultsAsItems(
 
 export default function Search() {
   const {
-    query: { q: searchText },
+    query: { q: searchText = "*" },
   } = useRouter();
 
   const { data, loading, refetch, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
     ssr: false,
-    variables: { q: searchText ?? "*", first: BLOCK_SIZE, after: "" },
+    variables: { q: searchText, first: BLOCK_SIZE, after: "" },
   });
 
   const searchResultItems: Item[] = getSearchResultsAsItems(
@@ -103,7 +103,7 @@ export default function Search() {
   const onLoadMore = () => {
     fetchMore({
       variables: {
-        q: searchText ?? "*",
+        q: searchText,
         first: BLOCK_SIZE,
         cursor: cursor,
       },
