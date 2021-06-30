@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "hds-react";
+import Image from "next/image";
 
 import { Item } from "../../types";
 import Card from "./Card";
@@ -13,7 +14,13 @@ function SearchResultCard({ id, title, keywords, href, image }: Item) {
       </Card.Content>
       <Button className={styles.button}>Lue lisää</Button>
       <Card.Keywords keywords={keywords} className={styles.keywords} />
-      <Card.Image image={image} />
+      {image && <Card.Image image={image} />}
+      {!image && (
+        <Card.Image
+          className={styles.placeholderCard}
+          image={<Image src="/placeholder_image_missing.png" layout="fill" />}
+        />
+      )}
     </Card>
   );
 }

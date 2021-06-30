@@ -46,6 +46,9 @@ export const SEARCH_QUERY = gql`
             description {
               fi
             }
+            images {
+              url
+            }
           }
         }
       }
@@ -73,8 +76,7 @@ function getSearchResultsAsItems(
     infoLines: [],
     href: `/venues/tprek:${searchResult.venue.meta.id}`,
     keywords: mockKeywords,
-    image:
-      "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg",
+    image: searchResult.venue.images[0]?.url,
   }));
 }
 
