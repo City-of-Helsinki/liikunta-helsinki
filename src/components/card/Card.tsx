@@ -116,6 +116,25 @@ function CardCta({ className }: CardCtaProps) {
   );
 }
 
+type CardCtaButtonProps = {
+  className?: string;
+  children?: React.ReactNode;
+};
+
+function CardCtaButton({ className, children }: CardCtaButtonProps) {
+  const { id } = useContext(CardContext);
+
+  return (
+    <span
+      className={classNames(styles.ctaButton, className)}
+      aria-hidden="true"
+      id={`cta-button:${id}`}
+    >
+      {children}
+    </span>
+  );
+}
+
 type CardKeywordsProps = {
   keywords: KeywordType[];
   className?: string;
@@ -213,6 +232,7 @@ Card.Pre = CardPre;
 Card.InfoLines = CardInfoLines;
 Card.Content = CardContent;
 Card.Cta = CardCta;
+Card.CtaButton = CardCtaButton;
 Card.Keywords = CardKeywords;
 Card.Image = CardImage;
 
