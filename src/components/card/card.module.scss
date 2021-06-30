@@ -48,7 +48,8 @@
     text-decoration: none;
     outline: none;
   }
-  & .text:focus-within ~ .cta {
+  & .text:focus-within ~ .cta,
+  & .text:focus-within ~ .ctaButton {
     outline: 2px solid $color-black;
   }
 
@@ -75,7 +76,8 @@
     grid-area: text;
   }
 
-  .cta {
+  .cta,
+  .ctaButton {
     grid-area: cta;
   }
 
@@ -193,6 +195,23 @@
       height: 1.5rem;
       width: 1.5rem;
     }
+
+    &:focus {
+      outline: 2px solid var(--color-black);
+    }
+  }
+
+  .ctaButton {
+    padding: $spacing-m $spacing-l;
+    align-self: end;
+
+    color: $color-white;
+    font-weight: 500;
+
+    border: none;
+    background: $color-bus;
+
+    margin: var(--content-padding);
 
     &:focus {
       outline: 2px solid var(--color-black);
