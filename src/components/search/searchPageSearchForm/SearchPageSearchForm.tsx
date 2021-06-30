@@ -42,7 +42,7 @@ function SearchPageSearchForm() {
     const nextQuery = q ? { q } : null;
 
     queryPersister.persistQuery(nextQuery);
-    router.push({ query: nextQuery ?? "" }, undefined, {
+    router.push({ pathname: router.pathname, query: nextQuery }, undefined, {
       shallow: true,
     });
   };
