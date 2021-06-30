@@ -7,17 +7,12 @@ import debounce from "lodash/debounce";
 import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
 import queryPersister from "../../../util/queryPersister";
+import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
 import Text from "../../text/Text";
 import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
 import styles from "./searchPageSearchForm.module.scss";
-
-function getURLSearchParamsFromAsPath(asPath: string): URLSearchParams {
-  const [, searchParams] = asPath.split("?");
-
-  return new URLSearchParams(searchParams);
-}
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -33,11 +28,7 @@ const SUGGESTION_QUERY = gql`
   }
 `;
 
-type Props = {
-  refetch: (q: string) => void;
-};
-
-function SearchPageSearchForm({ refetch }: Props) {
+function SearchPageSearchForm() {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string>(
     getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
@@ -71,7 +62,6 @@ function SearchPageSearchForm({ refetch }: Props) {
         ),
       },
     });
-    refetch(searchText);
   };
 
   const handleSelectSuggestion = (suggestion: Suggestion) => {
