@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
+import classNames from "classnames";
 
 import Text from "../../text/Text";
 import SuggestionInput, {
@@ -34,9 +35,10 @@ const SUGGESTION_QUERY = gql`
 
 type Props = {
   refetch: (q: string) => void;
+  showMode: "map" | "list";
 };
 
-function SearchPageSearchForm({ refetch }: Props) {
+function SearchPageSearchForm({ refetch, showMode }: Props) {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string>(
     getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
@@ -78,9 +80,15 @@ function SearchPageSearchForm({ refetch }: Props) {
     data?.unifiedSearchCompletionSuggestions?.suggestions ?? [];
 
   return (
-    <div className={styles.searchArea}>
-      <Text variant="h1">Mitä etsit?</Text>
-      <form role="search" className={styles.form} onSubmit={handleSubmit}>
+    <div>
+      {showMode === "list" && <Text variant="h1">Mitä etsit?</Text>}
+      <form
+        role="search"
+        className={classNames(styles.form, {
+          [styles.mapMode]: showMode === "map",
+        })}
+        onSubmit={handleSubmit}
+      >
         <SuggestionInput
           name="q"
           id="q"

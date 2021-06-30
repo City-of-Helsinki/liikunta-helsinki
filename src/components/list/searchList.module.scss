@@ -39,7 +39,18 @@
   justify-self: center;
 }
 
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.showOnMap {
+  width: 200px;
+}
+
 .resultCount {
+  margin-left: auto;
   justify-self: end;
   font-size: 1.25rem;
 }

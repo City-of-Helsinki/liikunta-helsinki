@@ -1,0 +1,119 @@
+@use "breakpoints";
+@import "variables";
+
+.searchHeader {
+  --background-color: #{$color-engel-medium-light};
+
+  height: calc(100vh - 64px);
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  // Disable pointer events to allow users to move the map
+  pointer-events: none;
+  z-index: 2;
+
+  @include breakpoints.respond-above(m) {
+    height: 8rem;
+  }
+
+  & + * {
+    // Force searchHeader to same row with MapView
+    grid-row: 1 !important;
+  }
+
+  & + * + * {
+    // Force the element after that to overlap the MapView.
+    padding-top: 0;
+    margin-top: -10rem;
+  }
+
+  // Menu that opens
+  .searchMenu {
+    padding: $spacing-xs;
+    height: calc(100vh - 64px);
+    background-color: var(--background-color);
+    overflow-y: hidden;
+    pointer-events: all;
+
+    @include breakpoints.respond-above(m) {
+      display: grid;
+      grid-template-rows: auto;
+      grid-template-columns: 4fr 1fr;
+      grid-column-gap: $spacing-s;
+      height: auto;
+
+      .closeSearch {
+        margin-left: auto;
+        width: 230px;
+        height: 56px;
+      }
+    }
+  }
+
+  // These are the buttons
+  .searchActions {
+    background-color: var(--background-color);
+    align-self: flex-end;
+    pointer-events: all;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @include breakpoints.respond-above(m) {
+      padding: $spacing-xs $spacing-s;
+      align-self: flex-start;
+    }
+
+    .countAndTags {
+      width: 0;
+      visibility: hidden;
+
+      @include breakpoints.respond-above(m) {
+        visibility: visible;
+        width: auto;
+        margin-left: $spacing-layout-l;
+      }
+    }
+
+    button {
+      width: 50%;
+
+      @include breakpoints.respond-above(m) {
+        width: 200px;
+        border: 2px solid;
+        height: 45px;
+      }
+    }
+
+    button:last-child {
+      border-left: 2px solid;
+
+      @include breakpoints.respond-above(m) {
+        margin-left: auto;
+      }
+    }
+
+    @include breakpoints.respond-above(m) {
+      button:hover {
+        border: 2px solid;
+      }
+    }
+  }
+}
+
+.searchArea {
+  padding-top: $spacing-m;
+  grid-column: 1 / -1 !important;
+
+  display: inherit;
+  grid-template-columns: inherit;
+  grid-template-rows: inherit;
+
+  & > * {
+    grid-column: 2;
+    margin-bottom: 0;
+  }
+
+  background-color: var(--background-color);
+}

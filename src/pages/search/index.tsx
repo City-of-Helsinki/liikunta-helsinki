@@ -3,6 +3,7 @@ import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { Koros } from "hds-react";
+import dynamic from "next/dynamic";
 
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
@@ -14,6 +15,7 @@ import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
 import initializeCmsApollo from "../../client/cmsApolloClient";
+import SearchHeader from "../../components/search/searchHeader/SearchHeader";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -77,13 +79,18 @@ function getSearchResultsAsItems(
 
 export default function Search() {
   const {
-    query: { q: searchText },
+    query: { q: searchText, show },
   } = useRouter();
 
   const { data, loading, refetch, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
     ssr: false,
     variables: { q: searchText ?? "*", first: BLOCK_SIZE, after: "" },
+  });
+
+  // https://stackoverflow.com/a/64634759
+  const MapView = dynamic(() => import("../../components/mapView/MapView"), {
+    ssr: false,
   });
 
   const searchResultItems: Item[] = getSearchResultsAsItems(
@@ -112,24 +119,32 @@ export default function Search() {
     refetch({ q: q ?? "*", first: BLOCK_SIZE });
   };
 
+  const changeShowMode = () => {
+    const newMode = showMode === "list" ? "map" : "list";
+  };
+
+  const showMode = show === "map" || show === "list" ? show : "list";
+
   return (
     <Page title="Search" description="Search">
-      <SearchPageSearchForm refetch={onRefetch} />
-      <Koros className={styles.koros} />
-
-      <Section variant="contained">
-        <SearchList
-          ref={moreResultsAnnouncerRef}
-          loading={loading}
-          onLoadMore={onLoadMore}
-          count={count}
-          blockSize={BLOCK_SIZE}
-          hasNext={pageInfo?.hasNextPage}
-          items={searchResultItems.map((item) => (
-            <SearchResultCard key={item.id} {...item} />
-          ))}
-        />
-      </Section>
+      <SearchHeader showMode={showMode} count={count} refetch={onRefetch} />
+      {showMode === "map" && <MapView />}
+      {showMode === "list" && (
+        <Section variant="contained">
+          <Koros className={styles.koros} />
+          <SearchList
+            ref={moreResultsAnnouncerRef}
+            loading={loading}
+            onLoadMore={onLoadMore}
+            count={count}
+            blockSize={BLOCK_SIZE}
+            hasNext={pageInfo?.hasNextPage}
+            items={searchResultItems.map((item) => (
+              <SearchResultCard key={item.id} {...item} />
+            ))}
+          />
+        </Section>
+      )}
     </Page>
   );
 }
