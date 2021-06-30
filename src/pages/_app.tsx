@@ -1,7 +1,7 @@
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { LoadingSpinner } from "hds-react";
 import Error from "next/error";
 
@@ -28,27 +28,6 @@ function Center({ children }) {
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const cmsApolloClient = useCmsApollo(pageProps.initialApolloState);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const handleRouteChangeStart = () => {
-      setIsLoading(true);
-    };
-
-    const handleRouteChangeEnd = () => {
-      setIsLoading(false);
-    };
-
-    router.events.on("routeChangeStart", handleRouteChangeStart);
-    router.events.on("routeChangeComplete", handleRouteChangeEnd);
-    router.events.on("routeChangeError", handleRouteChangeEnd);
-
-    return () => {
-      router.events.on("routeChangeStart", handleRouteChangeStart);
-      router.events.on("routeChangeComplete", handleRouteChangeEnd);
-      router.events.on("routeChangeError", handleRouteChangeEnd);
-    };
-  }, [router.events]);
 
   // Unset hidden visibility that was applied to hide the first server render
   // that does not include styles from HDS. HDS applies styling by injecting
@@ -69,7 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={cmsApolloClient}>
       <AppMeta />
-      {isLoading ? (
+      {router.isFallback ? (
         <Center>
           <LoadingSpinner />
         </Center>
