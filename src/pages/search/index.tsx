@@ -37,6 +37,9 @@ export const SEARCH_QUERY = gql`
       edges {
         node {
           venue {
+            meta {
+              id
+            }
             name {
               fi
             }
@@ -68,7 +71,7 @@ function getSearchResultsAsItems(
     id: searchResult.venue.name.fi,
     title: searchResult.venue.name.fi,
     infoLines: [],
-    href: "",
+    href: `/venues/tprek:${searchResult.venue.meta.id}`,
     keywords: mockKeywords,
     image:
       "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg",

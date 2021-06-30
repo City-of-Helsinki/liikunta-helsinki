@@ -75,9 +75,13 @@ export type LocalizedString = {
 };
 
 export type Venue = {
-  id: string;
   name: LocalizedString;
   description: LocalizedString;
+  meta: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 };
 
 export type SearchResult = {
