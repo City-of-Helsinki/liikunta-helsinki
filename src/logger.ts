@@ -61,6 +61,6 @@ export const graphqlLogger = createLogger("graphql");
 export const dataSourceLogger = createLogger("dataSource");
 export const dataSourceHaukiLogger = createLogger("dataSource:Hauki");
 export const staticGenerationLogger = createLogger("staticGeneration");
-export const misc = createLogger("misc");
+export const logger = createLogger("general");
 
 export default createLogger;

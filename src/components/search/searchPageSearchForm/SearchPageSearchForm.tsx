@@ -4,13 +4,14 @@ import { useRouter } from "next/router";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 
+import searchApolloClient from "../../../client/searchApolloClient";
+import { getUnifiedSearchLanguage } from "../../../client/utils";
+import queryPersister from "../../../util/queryPersister";
 import Text from "../../text/Text";
 import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
 import styles from "./searchPageSearchForm.module.scss";
-import searchApolloClient from "../../../client/searchApolloClient";
-import { getUnifiedSearchLanguage } from "../../../client/utils";
 
 function getURLSearchParamsFromAsPath(asPath: string): URLSearchParams {
   const [, searchParams] = asPath.split("?");
@@ -47,7 +48,10 @@ function SearchPageSearchForm({ refetch }: Props) {
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   const doSearch = (q?: string) => {
-    router.push({ query: q ? { q } : "" }, undefined, {
+    const nextQuery = q ? { q } : null;
+
+    queryPersister.persistQuery(nextQuery);
+    router.push({ query: nextQuery ?? "" }, undefined, {
       shallow: true,
     });
   };
