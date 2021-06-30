@@ -74,6 +74,11 @@ export type LocalizedString = {
   en: string;
 };
 
+type Image = {
+  url: string;
+  caption: string | null;
+};
+
 export type Venue = {
   name: LocalizedString;
   description: LocalizedString;
@@ -82,6 +87,7 @@ export type Venue = {
     createdAt: string;
     updatedAt: string;
   };
+  images: Image[] | null;
 };
 
 export type SearchResult = {
