@@ -8,10 +8,11 @@ import styles from "./searchHeader.module.scss";
 type Props = {
   showMode: "map" | "list";
   count: number;
-  refetch: (q: any) => void;
+  refetch: (q: string) => void;
+  switchShowMode: () => void;
 };
 
-function SearchHeader({ showMode, refetch, count }: Props) {
+function SearchHeader({ showMode, refetch, count, switchShowMode }: Props) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   const MapSearch = () => {
@@ -39,6 +40,7 @@ function SearchHeader({ showMode, refetch, count }: Props) {
                 variant="supplementary"
                 theme="black"
                 iconLeft={<IconMenuHamburger />}
+                onClick={switchShowMode}
               >
                 Näytä listana
               </Button>

@@ -1,7 +1,6 @@
 import React, { Ref, forwardRef } from "react";
 import classNames from "classnames";
 import { Button, LoadingSpinner, IconMap } from "hds-react";
-import { useRouter } from "next/router";
 
 import styles from "./searchList.module.scss";
 import Text from "../text/Text";
@@ -13,27 +12,31 @@ type Props = {
   loading: boolean;
   count: number;
   blockSize: number;
+  switchShowMode: () => void;
 };
 
 const SearchList = forwardRef(
   (
-    { loading, hasNext, count, onLoadMore, items, blockSize }: Props,
+    {
+      loading,
+      hasNext,
+      count,
+      onLoadMore,
+      items,
+      blockSize,
+      switchShowMode,
+    }: Props,
     ref: Ref<HTMLLIElement>
   ) => {
-    const router = useRouter();
     const resultsLeft = count ? count - items.length : 0;
     const a11yIndex = (Math.floor(items.length / blockSize) - 1) * blockSize;
     const loadedMoreAmount = hasNext ? blockSize : count - items.length;
-
-    const showOnMap = () => {
-      router.push("/search/?show=map");
-    };
 
     return (
       <>
         {!loading && (
           <div className={styles.row}>
-            <Button onClick={showOnMap} iconLeft={<IconMap />}>
+            <Button onClick={switchShowMode} iconLeft={<IconMap />}>
               Näytä kartalla
             </Button>
             <Text variant="h2" className={styles.resultCount} role="status">

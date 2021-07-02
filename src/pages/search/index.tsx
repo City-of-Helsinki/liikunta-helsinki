@@ -5,7 +5,6 @@ import { gql, useQuery } from "@apollo/client";
 import { Koros } from "hds-react";
 import dynamic from "next/dynamic";
 
-import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
 import searchApolloClient from "../../client/searchApolloClient";
 import styles from "./search.module.scss";
@@ -78,9 +77,10 @@ function getSearchResultsAsItems(
 }
 
 export default function Search() {
+  const router = useRouter();
   const {
     query: { q: searchText, show },
-  } = useRouter();
+  } = router;
 
   const { data, loading, refetch, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
@@ -119,15 +119,31 @@ export default function Search() {
     refetch({ q: q ?? "*", first: BLOCK_SIZE });
   };
 
-  const changeShowMode = () => {
-    const newMode = showMode === "list" ? "map" : "list";
+  const switchShowMode = () => {
+    const nextMode = showMode === "list" ? "map" : "list";
+    const [, searchParams] = router.asPath.split("?");
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("show", nextMode);
+
+    router.replace(
+      { pathname: router.pathname, query: newParams.toString() },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
 
   const showMode = show === "map" || show === "list" ? show : "list";
 
   return (
     <Page title="Search" description="Search">
-      <SearchHeader showMode={showMode} count={count} refetch={onRefetch} />
+      <SearchHeader
+        showMode={showMode}
+        count={count}
+        refetch={onRefetch}
+        switchShowMode={switchShowMode}
+      />
       {showMode === "map" && <MapView />}
       {showMode === "list" && (
         <Section variant="contained">
@@ -142,6 +158,7 @@ export default function Search() {
             items={searchResultItems.map((item) => (
               <SearchResultCard key={item.id} {...item} />
             ))}
+            switchShowMode={switchShowMode}
           />
         </Section>
       )}
