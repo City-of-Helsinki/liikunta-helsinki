@@ -63,9 +63,11 @@ export type Connection<T> = {
 
 export type Collection = {
   id: string;
-  title: string;
-  description: string;
-  image: string;
+  translation?: {
+    title?: string;
+    description?: string;
+    image?: string;
+  };
 };
 
 export type LocalizedString = {

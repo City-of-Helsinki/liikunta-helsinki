@@ -12,13 +12,12 @@ const getMocks = () => [
       query: LANDING_PAGE_QUERY,
       variables: {
         languageCode: "FI",
-        languageCodeFilter: "FI",
       },
     },
     result: {
       data: {
-        collections: { edges: [] },
         landingPage: mockLandingPage,
+        pageBy: { modules: [] },
       },
     },
   },
