@@ -35,13 +35,17 @@ export const LANDING_PAGE_QUERY = gql`
     }
     landingPage(id: "root", idType: SLUG) {
       id
+      desktopImage {
+        edges {
+          node {
+            mediaItemUrl
+          }
+        }
+      }
       translation(language: $languageCode) {
         title
         description
         heroLink
-        desktopImage {
-          mediaItemUrl
-        }
       }
     }
   }
@@ -108,12 +112,14 @@ export default function Home() {
     data?.collections ?? emptyConnection
   );
   const categories = mockCategories;
+  const heroImage =
+    data?.landingPage?.desktopImage?.edges[0]?.node?.mediaItemUrl;
 
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
       {landingPage && (
         <>
-          <HeroImage desktopImageUri={landingPage.desktopImage?.mediaItemUrl} />
+          <HeroImage desktopImageUri={heroImage} />
           <Section variant="contained" color="transparent">
             <Hero
               title={landingPage.title}
