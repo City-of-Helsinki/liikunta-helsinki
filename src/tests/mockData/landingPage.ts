@@ -1,11 +1,18 @@
 const mockLandingPage = {
-  title: "Kesän parhaat uimarannat",
-  description: "Kokosimme yhteen",
+  id: "sdkjfn1",
   desktopImage: {
-    mediaItemUrl:
-      "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg",
+    edges: {
+      node: {
+        mediaItemUrl:
+          "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg",
+      },
+    },
   },
-  heroLink: ["Katso vinkit", "/tips/uimarannat"],
+  translation: {
+    title: "Kesän parhaat uimarannat",
+    description: "Kokosimme yhteen",
+    heroLink: ["Katso vinkit", "/tips/uimarannat"],
+  },
 };
 
 export default mockLandingPage;
