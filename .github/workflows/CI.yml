@@ -34,7 +34,7 @@ jobs:
       - name: Build application
         run: yarn build
         env:
-          NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: "https://liikunta.hkih.production.geniem.io/graphql"
+          NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
           NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
 
   test:
@@ -62,7 +62,7 @@ jobs:
       - name: Run tests
         run: yarn test --coverage
         env:
-          NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: "https://liikunta.hkih.production.geniem.io/graphql"
+          NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
           NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v1
