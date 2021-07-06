@@ -75,9 +75,17 @@ export type LocalizedString = {
   en: string;
 };
 
+export type GEOLocation = {
+  geoLocation: {
+    geometry: {
+      coordinates: number[];
+    };
+  };
+};
+
 // TODO fix this
 export type Venue = {
-  location: any;
+  location: GEOLocation;
   id: string;
   name: LocalizedString;
   description: LocalizedString;

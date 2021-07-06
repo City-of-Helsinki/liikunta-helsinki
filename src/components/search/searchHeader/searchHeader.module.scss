@@ -3,45 +3,25 @@
 
 .searchHeader {
   --background-color: #{$color-engel-medium-light};
-
-  height: calc(100vh - 50px);
   grid-column: 1 / -1 !important;
-  grid-row: 1 !important;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  // Disable pointer events to allow users to move the map
-  pointer-events: none;
+
+  // Give increased z-index to show mobile actions
   z-index: 2;
 
-  @include breakpoints.respond-above(m) {
-    height: 8rem;
-  }
-
-  & + * {
-    // Force searchHeader to same row with MapView
-    grid-row: 1 !important;
-  }
-
-  & + * + * {
-    // Force the element after that to overlap the MapView.
-    padding-top: 0;
-    margin-top: -10rem;
-  }
-
-  // Menu that opens
+  // Menu that contains the search form
   .searchMenu {
     padding: $spacing-xs;
+    // Fullscreen minus the main navigation height
     height: calc(100vh - 50px);
     background-color: var(--background-color);
     overflow-y: hidden;
-    pointer-events: all;
 
     @include breakpoints.respond-above(m) {
+      height: auto;
       display: grid;
-      grid-template-rows: auto;
+      grid-template-rows: 1fr;
       grid-template-columns: 4fr 1fr;
       grid-column-gap: $spacing-s;
-      height: auto;
 
       .closeSearch {
         margin-left: auto;
@@ -51,11 +31,8 @@
     }
   }
 
-  // These are the buttons
   .searchActions {
     background-color: var(--background-color);
-    align-self: flex-end;
-    pointer-events: all;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -67,7 +44,6 @@
     @include breakpoints.respond-above(m) {
       position: initial;
       padding: $spacing-xs $spacing-s;
-      align-self: flex-start;
     }
 
     .countAndTags {
@@ -83,7 +59,6 @@
 
     button {
       width: 50%;
-      height: 100%;
 
       @include breakpoints.respond-above(m) {
         width: 200px;

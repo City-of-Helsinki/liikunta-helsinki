@@ -21,7 +21,6 @@ function MapView({ items = [] }: Props) {
       center={[60.16687, 24.943781]}
       zoom={13}
       className={styles.mapView}
-      scrollWheelZoom={false}
     >
       <TileLayer
         attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"

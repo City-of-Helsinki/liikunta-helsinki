@@ -1,5 +1,6 @@
 .mapView {
   grid-column: 1 / -1 !important;
+  // Reduce the header height, adjusted slightly by hand
   height: calc(100vh - 50px);
   width: 100%;
   z-index: 1;
