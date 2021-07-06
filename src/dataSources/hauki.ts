@@ -71,6 +71,11 @@ class Hauki extends DataSource {
     const res = await this.get(
       `https://hauki.api.hel.fi/v1/resource/${id}/opening_hours/?${params.toString()}`
     );
+
+    if (res.statusText !== "OK") {
+      return null;
+    }
+
     const transformedOpeningHours = toCamelCase<OpeningHour[]>(
       patchMissingDates(ongoingWeekInterval, res?.data, (date: Date) => ({
         date: lightFormat(date, "yyyy-MM-dd"),
