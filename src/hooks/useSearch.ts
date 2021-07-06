@@ -1,15 +1,20 @@
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 
+type Filters = {
+  q: string;
+  ontology?: string;
+};
+
+type Search = string | Partial<Filters> | URLSearchParams;
+
 const searchRouteMap = {
   fi: "/haku",
   sv: "/sok",
   en: "/search",
 };
 
-function getQueryString(
-  search: string | Record<string, string> | URLSearchParams
-): string {
+function getQueryString(search: Search): string {
   if (typeof search === "string") {
     return search;
   }
@@ -24,21 +29,25 @@ function getQueryString(
 function useSearch() {
   const router = useRouter();
 
-  const search = useCallback(
-    (
-      search: string | Record<string, string> | URLSearchParams,
-      type: "push" | "replace" = "push"
-    ) => {
+  const getSearchRoute = useCallback(
+    (search: Search) => {
       const searchRoute = searchRouteMap[router.locale ?? router.defaultLocale];
-      const method = router[type];
-      const queryString = getQueryString(search);
 
-      return method(`${searchRoute}?${queryString}`);
+      return `${searchRoute}?${getQueryString(search)}`;
     },
-    [router]
+    [router.defaultLocale, router.locale]
   );
 
-  return search;
+  const search = useCallback(
+    (search: Search, type: "push" | "replace" = "push") => {
+      const method = router[type];
+
+      return method(getSearchRoute(search));
+    },
+    [getSearchRoute, router]
+  );
+
+  return { search, getSearchRoute };
 }
 
 export default useSearch;

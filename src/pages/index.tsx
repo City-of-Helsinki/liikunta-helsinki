@@ -63,9 +63,7 @@ function getRecommendationsAsItems(
     ...recommendation,
     keywords: recommendation.keywords.map((keyword) => ({
       label: keyword,
-      onClick: () => {
-        router.push(`keywords/${encodeURIComponent(keyword)}`);
-      },
+      href: `keywords/${encodeURIComponent(keyword)}`,
       isHighlighted: keyword === "Maksuton",
     })),
   }));
@@ -84,9 +82,7 @@ function getCollectionsAsItems(
     keywords: [
       {
         label: "120 kpl",
-        onClick: () => {
-          // pass
-        },
+        href: "",
       },
     ],
     image: collection.image,

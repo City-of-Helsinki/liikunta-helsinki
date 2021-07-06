@@ -143,13 +143,11 @@ type CardKeywordsProps = {
 function CardKeywords({ keywords, className }: CardKeywordsProps) {
   return (
     <ul className={classNames(styles.keywords, className)}>
-      {keywords.map(({ label, onClick, isHighlighted }) => (
+      {keywords.map(({ label, href, isHighlighted }) => (
         <li key={label} className={styles.keyword}>
           <Keyword
             keyword={label}
-            onClick={() => {
-              onClick();
-            }}
+            href={href}
             color={isHighlighted ? "tramLight20" : undefined}
           />
         </li>

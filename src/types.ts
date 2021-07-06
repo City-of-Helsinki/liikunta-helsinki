@@ -21,7 +21,7 @@ export type Language = {
 export type Keyword = {
   label: string;
   isHighlighted?: boolean;
-  onClick: () => void;
+  href: string;
 };
 
 export type Item = {
