@@ -63,6 +63,10 @@ function InfoBlockLink({
 }
 
 function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
+  if (items.filter((item) => item).length === 0) {
+    return null;
+  }
+
   return (
     <ul
       className={classNames(styles.list, {
@@ -83,6 +87,30 @@ type Props = {
 };
 
 function InfoBlock({ icon, name, contents }: Props) {
+  const contentWithoutEmpty = contents.filter((item) => {
+    if (typeof item === "string") {
+      return Boolean(item);
+    }
+
+    const props = item?.props;
+    const items = "items" in props ? props?.items : null;
+
+    if (items) {
+      const allItemsAreEmpty = items.reduce(
+        (acc, item) => acc && item === null,
+        true
+      );
+
+      return !allItemsAreEmpty;
+    }
+
+    return true;
+  });
+
+  if (contentWithoutEmpty.length === 0) {
+    return null;
+  }
+
   return (
     <div className={styles.infoBlock}>
       <Text as="h4" variant="h5" className={styles.name}>

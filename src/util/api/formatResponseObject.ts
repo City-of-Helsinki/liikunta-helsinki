@@ -67,6 +67,8 @@ function getTprekVenue(obj): VenueDetails {
     addressLocality: formTranslationObject(obj, "address_city"),
     infoUrl: formTranslationObject(obj, "www"),
     telephone: obj?.phone ?? null,
+    ontologyWordIds: obj?.ontologyword_ids,
+    ontologyTreeIds: obj?.ontologytree_ids,
   };
 }
 

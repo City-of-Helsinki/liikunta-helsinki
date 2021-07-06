@@ -36,6 +36,11 @@ import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursFor
 import styles from "./venue.module.scss";
 
 export const VENUE_QUERY = gql`
+  fragment ontologyFragment on Ontology {
+    id
+    label
+  }
+
   query VenueQuery($id: ID!) {
     venue(id: $id) {
       addressLocality
@@ -64,6 +69,12 @@ export const VENUE_QUERY = gql`
       postalCode
       streetAddress
       telephone
+      ontologyTree {
+        ...ontologyFragment
+      }
+      ontologyWords {
+        ...ontologyFragment
+      }
     }
   }
 `;
@@ -76,9 +87,7 @@ function getRecommendationsAsItems(
     ...recommendation,
     keywords: recommendation.keywords.map((keyword) => ({
       label: keyword,
-      onClick: () => {
-        router.push(`keywords/${encodeURIComponent(keyword)}`);
-      },
+      href: `keywords/${encodeURIComponent(keyword)}`,
       isHighlighted: keyword === "Maksuton",
     })),
   }));
@@ -152,7 +161,7 @@ function getGoogleDirectionsUrl(
 
 export function VenuePageContent() {
   const router = useRouter();
-  const search = useSearch();
+  const { getSearchRoute } = useSearch();
   const locale = router.locale ?? router.defaultLocale;
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
@@ -259,9 +268,12 @@ export function VenuePageContent() {
       info: simplifiedAddress,
     },
   ];
+  const keywords = data?.venue?.ontologyTree?.map((ontology) => ({
+    label: ontology.label,
+    id: ontology.id,
+  }));
 
   // Data that can't be found from the API at this point
-  const keywords = null;
   const temperature = null;
   const organizer = null;
   const shortDescription = null;
@@ -290,14 +302,10 @@ export function VenuePageContent() {
             {keywords && (
               <ul className={styles.keywords}>
                 {keywords.map((keyword) => (
-                  <li key={keyword}>
+                  <li key={keyword.id}>
                     <Keyword
-                      keyword={keyword}
-                      onClick={() => {
-                        search({
-                          ontology: keyword,
-                        });
-                      }}
+                      keyword={keyword.label}
+                      href={getSearchRoute({ ontology: keyword.label })}
                     />
                   </li>
                 ))}

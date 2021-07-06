@@ -8,8 +8,13 @@ import {
 it("Returns correctly formatted object", () => {
   const linked = formatResponseObject(mockLinkedDefaultData, "linked");
   const tprek = formatResponseObject(mockTprekDefaultData, "tprek");
+  const {
+    ontologyTreeIds,
+    ontologyWordIds,
+    ...linkedMockedResponse
+  } = mockedResponse;
 
-  expect(linked).toEqual(mockedResponse);
+  expect(linked).toEqual(linkedMockedResponse);
   expect(tprek).toEqual(mockedResponse);
 });
 

@@ -15,9 +15,6 @@ import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
 import styles from "./search.module.scss";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {};
-
 const BLOCK_SIZE = 10;
 
 export const SEARCH_QUERY = gql`
@@ -61,9 +58,9 @@ const emptyConnection = {
 };
 
 const mockKeywords: Keyword[] = [
-  { label: "Maauimala", onClick: noop },
-  { label: "Uinti", onClick: noop },
-  { label: "Ulkoliikuntapaikat", onClick: noop },
+  { label: "Maauimala", href: "" },
+  { label: "Uinti", href: "" },
+  { label: "Ulkoliikuntapaikat", href: "" },
 ];
 
 function getSearchResultsAsItems(

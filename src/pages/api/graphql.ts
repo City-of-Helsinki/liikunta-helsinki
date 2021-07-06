@@ -7,6 +7,7 @@ import Config from "../../config";
 import resolveVenue from "../../util/api/resolveVenue";
 import parseVenueId, { IdParseError } from "../../util/api/parseVenueId";
 import hauki from "../../dataSources/hauki";
+import tprek from "../../dataSources/tprek";
 
 const typeDefs = gql`
   type Query {
@@ -48,6 +49,11 @@ const typeDefs = gql`
     times: [Time!]!
   }
 
+  type Ontology {
+    id: Int
+    label: String
+  }
+
   type Venue {
     addressLocality: String
     dataSource: String
@@ -63,6 +69,8 @@ const typeDefs = gql`
     telephone: String
     openingHours: [OpeningHour!]
     isOpen: Boolean
+    ontologyTree: [Ontology]!
+    ontologyWords: [Ontology]!
   }
 `;
 
@@ -183,6 +191,32 @@ const resolvers = {
     },
     isOpen({ isOpen }) {
       return isOpen;
+    },
+    async ontologyTree({ ontologyTreeIds }, _, { language }) {
+      if (!ontologyTreeIds) {
+        return null;
+      }
+
+      const ontologyTree = await tprek.getOntologyTree(ontologyTreeIds);
+      const formattedTree = ontologyTree?.map((tree) => ({
+        id: tree.id,
+        label: tree[`name_${language}`],
+      }));
+
+      return formattedTree ?? [];
+    },
+    async ontologyWords({ ontologyWordIds }, _, { language }) {
+      if (!ontologyWordIds) {
+        return null;
+      }
+
+      const ontologyWords = await tprek.getOntologyWords(ontologyWordIds);
+      const formattedWords = ontologyWords?.map((word) => ({
+        id: word.id,
+        label: word[`ontologyword_${language}`],
+      }));
+
+      return formattedWords ?? [];
     },
   },
 };

@@ -130,4 +130,6 @@ export const mockedResponse = {
   },
   infoUrl: null,
   telephone: null,
+  ontologyTreeIds: [590],
+  ontologyWordIds: [582],
 };

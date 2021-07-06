@@ -60,6 +60,7 @@ function createLogger(namespace: string) {
 export const graphqlLogger = createLogger("graphql");
 export const dataSourceLogger = createLogger("dataSource");
 export const dataSourceHaukiLogger = createLogger("dataSource:Hauki");
+export const dataSourceTprekLogger = createLogger("dataSource:Tprek");
 export const staticGenerationLogger = createLogger("staticGeneration");
 export const logger = createLogger("general");
 
