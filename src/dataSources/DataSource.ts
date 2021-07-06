@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 import { dataSourceLogger as defaultLogger } from "../logger";
 
@@ -9,7 +9,7 @@ export default abstract class DataSource {
     this.logger = logger;
   }
 
-  async get(url: string, config?: AxiosRequestConfig) {
+  async get(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse> {
     try {
       this.logger.debug(`Requesting ${url}`);
       const response = await axios.get(url, config);

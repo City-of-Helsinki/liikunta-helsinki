@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React from "react";
+import Link from "next/link";
 
 import styles from "./keyword.module.scss";
 
@@ -8,7 +9,7 @@ type Props = {
   color?: "engelLight50" | "tramLight20";
   hideOnMobile?: boolean;
   keyword: string;
-  onClick: () => void;
+  href: string;
 };
 
 const Keyword = ({
@@ -16,24 +17,20 @@ const Keyword = ({
   color,
   hideOnMobile,
   keyword,
-  onClick,
+  href,
 }: Props) => {
-  const handleClick = (ev: React.MouseEvent) => {
-    ev.preventDefault();
-    onClick();
-  };
-
   return (
-    <button
-      className={classNames(styles.keyword, color && styles[color], {
-        [styles.blackOnMobile]: blackOnMobile,
-        [styles.hideOnMobile]: hideOnMobile,
-      })}
-      onClick={handleClick}
-      type="button"
-    >
-      {keyword}
-    </button>
+    <Link href={href}>
+      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <a
+        className={classNames(styles.keyword, color && styles[color], {
+          [styles.blackOnMobile]: blackOnMobile,
+          [styles.hideOnMobile]: hideOnMobile,
+        })}
+      >
+        {keyword}
+      </a>
+    </Link>
   );
 };
 
