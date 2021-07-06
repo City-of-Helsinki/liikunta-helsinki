@@ -31,6 +31,7 @@ export type Item = {
   infoLines: string[];
   keywords: Keyword[];
   href: string;
+  location: number[];
   image: string;
 };
 
@@ -74,7 +75,9 @@ export type LocalizedString = {
   en: string;
 };
 
+// TODO fix this
 export type Venue = {
+  location: any;
   id: string;
   name: LocalizedString;
   description: LocalizedString;

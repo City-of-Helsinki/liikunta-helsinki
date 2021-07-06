@@ -15,6 +15,7 @@ import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import SearchHeader from "../../components/search/searchHeader/SearchHeader";
+import updateUrlParams from "../../util/updateURLParams";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -44,6 +45,13 @@ export const SEARCH_QUERY = gql`
             description {
               fi
             }
+            location {
+              geoLocation {
+                geometry {
+                  coordinates
+                }
+              }
+            }
           }
         }
       }
@@ -71,6 +79,7 @@ function getSearchResultsAsItems(
     infoLines: [],
     href: "",
     keywords: mockKeywords,
+    location: searchResult.venue.location.geoLocation.geometry.coordinates,
     image:
       "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg",
   }));
@@ -121,17 +130,11 @@ export default function Search() {
 
   const switchShowMode = () => {
     const nextMode = showMode === "list" ? "map" : "list";
-    const [, searchParams] = router.asPath.split("?");
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("show", nextMode);
+    const params = updateUrlParams(router.asPath, "show", nextMode);
 
-    router.replace(
-      { pathname: router.pathname, query: newParams.toString() },
-      undefined,
-      {
-        shallow: true,
-      }
-    );
+    router.replace({ pathname: router.pathname, query: params }, undefined, {
+      shallow: true,
+    });
   };
 
   const showMode = show === "map" || show === "list" ? show : "list";
@@ -144,7 +147,7 @@ export default function Search() {
         refetch={onRefetch}
         switchShowMode={switchShowMode}
       />
-      {showMode === "map" && <MapView />}
+      {showMode === "map" && <MapView items={searchResultItems} />}
       {showMode === "list" && (
         <Section variant="contained">
           <Koros className={styles.koros} />

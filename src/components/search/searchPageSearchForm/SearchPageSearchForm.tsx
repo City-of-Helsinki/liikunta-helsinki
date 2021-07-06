@@ -12,6 +12,7 @@ import SuggestionInput, {
 import styles from "./searchPageSearchForm.module.scss";
 import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
+import updateUrlParams from "../../../util/updateURLParams";
 
 function getURLSearchParamsFromAsPath(asPath: string): URLSearchParams {
   const [, searchParams] = asPath.split("?");
@@ -49,7 +50,8 @@ function SearchPageSearchForm({ refetch, showMode }: Props) {
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   const doSearch = (q?: string) => {
-    router.push({ query: q ? { q } : "" }, undefined, {
+    const params = updateUrlParams(router.asPath, "q", q);
+    router.push({ query: params }, undefined, {
       shallow: true,
     });
   };
