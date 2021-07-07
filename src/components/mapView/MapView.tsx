@@ -10,6 +10,14 @@ import "leaflet/dist/leaflet.css";
 import venueIcon from "./VenueIcon";
 import styles from "./mapView.module.scss";
 import { Item } from "../../types";
+import {
+  BOUNDARIES,
+  DEFAULT_POSITION,
+  DEFAULT_ZOOM,
+  MAX_ZOOM,
+  MIN_ZOOM,
+  TILE_URL,
+} from "./mapConstants";
 
 type Props = {
   items: Item[];
@@ -18,13 +26,16 @@ type Props = {
 function MapView({ items = [] }: Props) {
   return (
     <MapContainer
-      center={[60.16687, 24.943781]}
-      zoom={12}
+      center={DEFAULT_POSITION}
+      zoom={DEFAULT_ZOOM}
       className={styles.mapView}
+      maxBounds={BOUNDARIES}
+      minZoom={MIN_ZOOM}
+      maxZoom={MAX_ZOOM}
     >
       <TileLayer
         attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
-        url="http://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png"
+        url={TILE_URL}
       />
       {items?.map((item) => (
         <Marker

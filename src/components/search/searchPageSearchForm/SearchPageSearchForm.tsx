@@ -1,5 +1,5 @@
 import { Button, IconSearch } from "hds-react";
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
@@ -13,6 +13,7 @@ import styles from "./searchPageSearchForm.module.scss";
 import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
 import updateUrlParams from "../../../util/updateURLParams";
+import { ShowMode } from "../searchHeader/SearchHeader";
 
 function getURLSearchParamsFromAsPath(asPath: string): URLSearchParams {
   const [, searchParams] = asPath.split("?");
@@ -36,7 +37,7 @@ const SUGGESTION_QUERY = gql`
 
 type Props = {
   refetch: (q: string) => void;
-  showMode: "map" | "list";
+  showMode: ShowMode;
 };
 
 function SearchPageSearchForm({ refetch, showMode }: Props) {
@@ -83,11 +84,11 @@ function SearchPageSearchForm({ refetch, showMode }: Props) {
 
   return (
     <div>
-      {showMode === "list" && <Text variant="h1">Mitä etsit?</Text>}
+      {showMode === ShowMode.LIST && <Text variant="h1">Mitä etsit?</Text>}
       <form
         role="search"
         className={classNames(styles.form, {
-          [styles.mapMode]: showMode === "map",
+          [styles.mapMode]: showMode === ShowMode.MAP,
         })}
         onSubmit={handleSubmit}
       >

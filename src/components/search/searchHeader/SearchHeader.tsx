@@ -5,8 +5,13 @@ import Text from "../../text/Text";
 import SearchPageSearchForm from "../searchPageSearchForm/SearchPageSearchForm";
 import styles from "./searchHeader.module.scss";
 
+export enum ShowMode {
+  MAP = "map",
+  LIST = "list",
+}
+
 type Props = {
-  showMode: "map" | "list";
+  showMode: ShowMode;
   count: number;
   refetch: (q: string) => void;
   switchShowMode: () => void;
@@ -72,8 +77,8 @@ function SearchHeader({ showMode, refetch, count, switchShowMode }: Props) {
 
   return (
     <>
-      {showMode === "map" && <MapSearch />}
-      {showMode === "list" && <ListSearch />}
+      {showMode === ShowMode.MAP && <MapSearch />}
+      {showMode === ShowMode.LIST && <ListSearch />}
     </>
   );
 }
