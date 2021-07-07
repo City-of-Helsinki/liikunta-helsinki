@@ -67,17 +67,17 @@
       }
     }
 
-    button:last-child {
-      border-left: 2px solid;
-
-      @include breakpoints.respond-above(m) {
-        margin-left: auto;
-      }
+    button:first-child {
+      border-right: 2px solid;
     }
 
     @include breakpoints.respond-above(m) {
       button:hover {
         border: 2px solid;
+      }
+
+      button:last-child {
+        margin-left: auto;
       }
     }
   }

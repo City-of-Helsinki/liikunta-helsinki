@@ -1,7 +1,17 @@
+@use "breakpoints";
+
+// Px amount is roughly adjusted by hand
 .mapView {
   grid-column: 1 / -1 !important;
-  // Reduce the header height, adjusted slightly by hand
-  height: calc(100vh - 50px);
+  height: calc(100vh - 120px);
   width: 100%;
   z-index: 1;
+
+  @include breakpoints.respond-above(s) {
+    height: calc(100vh - 130px);
+  }
+
+  @include breakpoints.respond-above(m) {
+    height: calc(100vh - 140px);
+  }
 }

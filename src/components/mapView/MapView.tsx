@@ -19,7 +19,7 @@ function MapView({ items = [] }: Props) {
   return (
     <MapContainer
       center={[60.16687, 24.943781]}
-      zoom={13}
+      zoom={12}
       className={styles.mapView}
     >
       <TileLayer
