@@ -1,3 +1,6 @@
+import { Sources } from "./constants";
+import { Locale } from "./config";
+
 export type MenuItem = {
   id: string;
   order: number;
@@ -122,7 +125,7 @@ export type VenueDetails<T = TranslationsObject> = {
   telephone: T | null;
 };
 
-export type Source = "tprek" | "linked";
+export type Source = typeof Sources[keyof typeof Sources];
 
 export type TimeResourceState =
   | "open"
@@ -151,4 +154,10 @@ export type Time = {
 export type OpeningHour = {
   date: string;
   times: Time[];
+};
+
+export type AnyObject = Record<string, unknown>;
+
+export type Context = {
+  language?: Locale;
 };

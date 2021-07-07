@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import Config from "./config";
+import Config from "../config";
 
 function formatMessage(
   namespace: string,

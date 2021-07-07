@@ -1,4 +1,4 @@
-import { Source } from "../../types";
+import { Source } from "../../../types";
 
 const SUPPORTED_SOURCES: string[] = ["tprek", "linked"];
 

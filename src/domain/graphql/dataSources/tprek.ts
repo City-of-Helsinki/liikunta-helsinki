@@ -1,4 +1,4 @@
-import { dataSourceTprekLogger as logger } from "../logger";
+import { dataSourceTprekLogger as logger } from "../../logger";
 import DataSource from "./DataSource";
 
 type AnyObject = Record<string, unknown>;
