@@ -1,23 +1,22 @@
-import { Source, AnyObject, Context } from "../../../../types";
+import { Source, AnyObject, Context, VenueDetails } from "../../../../types";
 import VenueEnricher from "./VenueEnricher";
 
-type Config = {
-  getDataSources?: (id: string, source: Source) => Promise<unknown>[];
-  format?: (data: AnyObject, context: Context) => AnyObject;
-  enrichers?: VenueEnricher[];
+export type VenueData = VenueDetails | VenueDetails<string>;
+
+type Config<I> = {
+  getDataSources?: (id: string, source: Source) => Promise<I>[];
+  format?: (data: I, context: Context) => Partial<VenueData>;
+  enrichers?: VenueEnricher<I, Partial<VenueData>>[];
 };
 
-export default class VenueResolverIntegration<
-  I extends AnyObject = AnyObject,
-  O extends AnyObject = AnyObject
-> {
-  config: Config;
+export default class VenueResolverIntegration<I = AnyObject> {
+  config: Config<I>;
 
-  constructor(config?: Config) {
+  constructor(config?: Config<I>) {
     this.config = config;
   }
 
-  getDataSources(id: string, source: Source): Promise<unknown>[] {
+  getDataSources(id: string, source: Source): Promise<I>[] {
     if (!this.config.getDataSources) {
       return [];
     }
@@ -25,15 +24,15 @@ export default class VenueResolverIntegration<
     return this.config.getDataSources(id, source);
   }
 
-  format(uncleanData: I, context: Context): O {
+  format(uncleanData: I, context: Context): Partial<VenueData> {
     if (this.config.format) {
-      return this.config.format(uncleanData, context) as O;
+      return this.config.format(uncleanData, context);
     }
 
-    return uncleanData as O;
+    return (uncleanData as unknown) as VenueData;
   }
 
-  async enrich(data: AnyObject, context: Context): Promise<AnyObject> {
+  async enrich(data: I, context: Context): Promise<Partial<VenueData>> {
     const enrichers =
       this.config.enrichers?.map((enricher) =>
         enricher.getEnrichments(data, context)
@@ -47,6 +46,6 @@ export default class VenueResolverIntegration<
       {}
     );
 
-    return enrichmentData;
+    return enrichmentData as VenueData;
   }
 }

@@ -108,6 +108,11 @@ export type Point = {
   coordinates: number[];
 };
 
+type Ontology = {
+  id: number;
+  label: string;
+};
+
 export type VenueDetails<T = TranslationsObject> = {
   id: string;
   dataSource: string | null;
@@ -121,6 +126,8 @@ export type VenueDetails<T = TranslationsObject> = {
   infoUrl: T | null;
   streetAddress: T | null;
   telephone: T | null;
+  ontologyTree: Ontology[];
+  ontologyWords: Ontology[];
 };
 
 export type Source = typeof Sources[keyof typeof Sources];

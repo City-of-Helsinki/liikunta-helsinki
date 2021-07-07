@@ -1,15 +1,18 @@
-import { AnyObject, Context } from "../../../../types";
+import { Context } from "../../../../types";
 import tprek from "../../dataSources/tprek";
 import VenueEnricher from "./VenueEnricher";
+import { VenueData } from "./VenueResolverIntegration";
+import { TprekUnit } from "./VenueTprekIntegration";
 
-export default class VenueOntologyEnricher implements VenueEnricher {
+export default class VenueOntologyEnricher
+  implements VenueEnricher<TprekUnit, VenueData> {
   async getEnrichments(
     {
       ontologytree_ids: ontologyTreeIds,
       ontologyword_ids: ontologyWordIds,
-    }: AnyObject,
+    }: TprekUnit,
     { language }: Context
-  ): Promise<AnyObject> {
+  ): Promise<Partial<VenueData>> {
     const enrichDataLocations = [];
 
     if (ontologyTreeIds && Array.isArray(ontologyTreeIds)) {
