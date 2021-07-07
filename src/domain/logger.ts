@@ -1,18 +1,29 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import chalk, { Color } from "chalk";
+import chalk from "chalk";
 
 import Config from "../config";
+
+type LoggerFunction = (message?: any, ...optionalParameters: any[]) => void;
+
+export type Logger = {
+  debug: LoggerFunction;
+  info: LoggerFunction;
+  warn: LoggerFunction;
+  error: LoggerFunction;
+};
 
 function getColor(level: string) {
   switch (level) {
     case "error":
       return chalk.bold.red;
-    case "warning":
+    case "warn":
       return chalk.bold.yellow;
     case "debug":
       return chalk.cyan;
+    default:
+      return chalk.white;
   }
 }
 
@@ -47,7 +58,7 @@ function formatMessage(
 const isNotProductionClient = () =>
   !(process.browser && process.env.NODE_ENV === "production");
 
-function createLogger(namespace: string) {
+function createLogger(namespace: string): Logger {
   return {
     debug: (message?: any, ...optionalParameters: any[]) =>
       isNotProductionClient() &&
