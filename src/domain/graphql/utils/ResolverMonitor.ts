@@ -1,6 +1,6 @@
 import { Logger } from "../../logger";
 
-export default class QueryMonitor {
+export default class ResolverMonitor {
   startTime: Date;
   threshold: number;
   logger: Logger;
@@ -19,7 +19,7 @@ export default class QueryMonitor {
 
     if (approximateQueryTime > this.threshold) {
       this.logger.warn(
-        `Query "${this.name}" took approximately ${approximateQueryTime}ms (threshold at ${this.threshold}ms)`
+        `${this.name} took approximately ${approximateQueryTime}ms to resolve (threshold at ${this.threshold}ms)`
       );
     }
   }
