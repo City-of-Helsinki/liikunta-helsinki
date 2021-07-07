@@ -63,7 +63,9 @@ function InfoBlockLink({
 }
 
 function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
-  if (items.filter((item) => item).length === 0) {
+  const nonEmptyItems = items.filter((item) => item);
+
+  if (nonEmptyItems.length === 0) {
     return null;
   }
 
@@ -73,7 +75,7 @@ function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
         [styles.inline]: inline,
       })}
     >
-      {items.map((item) => (
+      {nonEmptyItems.map((item) => (
         <li key={getKey(item)}>{item}</li>
       ))}
     </ul>
