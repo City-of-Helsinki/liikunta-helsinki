@@ -8,8 +8,8 @@ import {
 import { fi } from "date-fns/locale";
 import camelCaseKeys from "camelcase-keys";
 
-import { dataSourceHaukiLogger as logger } from "../logger";
-import { OpeningHour } from "../types";
+import { dataSourceHaukiLogger as logger } from "../../logger";
+import { OpeningHour } from "../../../types";
 import DataSource from "./DataSource";
 
 type DateInterval = {

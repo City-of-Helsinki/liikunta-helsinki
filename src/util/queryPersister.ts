@@ -1,4 +1,4 @@
-import { logger } from "../logger";
+import { logger } from "../domain/logger";
 
 type AnyObject = Record<string, unknown>;
 
