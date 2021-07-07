@@ -12,7 +12,7 @@ import classNames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 
-import { staticGenerationLogger } from "../../logger";
+import { staticGenerationLogger } from "../../domain/logger";
 import { Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";

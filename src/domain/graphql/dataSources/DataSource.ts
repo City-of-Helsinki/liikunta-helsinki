@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-import { dataSourceLogger as defaultLogger } from "../logger";
+import { dataSourceLogger as defaultLogger } from "../../logger";
 
 export default abstract class DataSource {
   logger;
