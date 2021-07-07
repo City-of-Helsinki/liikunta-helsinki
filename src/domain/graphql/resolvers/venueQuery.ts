@@ -3,6 +3,7 @@ import { ApolloError } from "apollo-server-micro";
 import { graphqlLogger as logger } from "../../logger";
 import { Source } from "../../../types";
 import { Sources } from "../../../constants";
+import QueryMonitor from "../utils/QueryMonitor";
 import parseVenueId, { IdParseError } from "../utils/parseVenueId";
 import VenueHaukiIntegration from "./instructions/VenueHaukiIntegration";
 import VenueOntologyEnricher from "./instructions/VenueOntologyEnricher";
@@ -40,6 +41,7 @@ resolvers.set(
 );
 
 async function venueQueryResolver(_, { id: idWithSource }, { language }) {
+  const monitor = new QueryMonitor(logger, `Venue with id ${idWithSource}`);
   logger.debug(`Querying venue: ${idWithSource}, ${language}`);
 
   try {
@@ -47,9 +49,11 @@ async function venueQueryResolver(_, { id: idWithSource }, { language }) {
     const dataResolver = resolvers.get(source) ?? null;
     const venue = await dataResolver.resolveVenue(id, source, { language });
 
+    monitor.end();
+
     return venue;
   } catch (e) {
-    logger.error(`Error while querying venue with ${idWithSource}:`, e);
+    logger.error(`Error while querying venue with ${idWithSource}:\n\n${e}\n`);
 
     if (e instanceof IdParseError) {
       throw new ApolloError("Invalid ID parameter");
