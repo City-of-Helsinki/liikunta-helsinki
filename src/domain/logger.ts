@@ -1,7 +1,20 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import chalk, { Color } from "chalk";
+
 import Config from "../config";
+
+function getColor(level: string) {
+  switch (level) {
+    case "error":
+      return chalk.bold.red;
+    case "warning":
+      return chalk.bold.yellow;
+    case "debug":
+      return chalk.cyan;
+  }
+}
 
 function formatMessage(
   namespace: string,
@@ -9,17 +22,20 @@ function formatMessage(
   message?: any,
   ...optionalParameters: any[]
 ) {
+  const color = getColor(level);
+  const tags = [level, namespace];
+  const renderedTag = tags.map((tag) => `[${tag}]`).join(" ");
   const messageData = {
     level,
     timestamp: new Date().toJSON(),
-    message: [`${namespace}:`, message, ...optionalParameters].join(" "),
+    message: [`${renderedTag} - `, message, ...optionalParameters].join(" "),
   };
 
   if (process.env.NODE_ENV !== "production") {
     return [
-      messageData.timestamp,
-      `${messageData.level} -`,
-      messageData.message,
+      new Date(messageData.timestamp).toLocaleTimeString(),
+      `${color(renderedTag)} -`,
+      message,
     ].join(" ");
   }
 
@@ -59,8 +75,8 @@ function createLogger(namespace: string) {
 
 export const graphqlLogger = createLogger("graphql");
 export const dataSourceLogger = createLogger("dataSource");
-export const dataSourceHaukiLogger = createLogger("dataSource:Hauki");
-export const dataSourceTprekLogger = createLogger("dataSource:Tprek");
+export const dataSourceHaukiLogger = createLogger("ds:Hauki");
+export const dataSourceTprekLogger = createLogger("ds:Tprek");
 export const staticGenerationLogger = createLogger("staticGeneration");
 export const logger = createLogger("general");
 
