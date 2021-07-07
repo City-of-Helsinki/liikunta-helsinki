@@ -1,15 +1,14 @@
 import { ApolloError } from "apollo-server-micro";
 
-import { graphqlLogger as logger } from "../../logger";
 import { Source } from "../../../types";
 import { Sources } from "../../../constants";
-import QueryMonitor from "../utils/QueryMonitor";
 import parseVenueId, { IdParseError } from "../utils/parseVenueId";
 import VenueHaukiIntegration from "./instructions/VenueHaukiIntegration";
 import VenueOntologyEnricher from "./instructions/VenueOntologyEnricher";
 import VenueResolver from "./instructions/VenueResolver";
 import VenueTprekIntegration from "./instructions/VenueTprekIntegration";
 import VenueLinkedIntegration from "./instructions/VenueLinkedIntegration";
+import createQueryResolver from "./createQueryResolver";
 
 const resolvers: Map<Source, VenueResolver> = new Map();
 resolvers.set(
@@ -40,33 +39,20 @@ resolvers.set(
   })
 );
 
-async function venueQueryResolver(_, { id: idWithSource }, { language }) {
-  const monitor = new QueryMonitor(logger, `Venue with id ${idWithSource}`);
-  logger.debug(`Querying venue: ${idWithSource}, ${language}`);
+async function resolver(_, { id: idWithSource }, { language }) {
+  const [source, id] = parseVenueId(idWithSource);
+  const dataResolver = resolvers.get(source) ?? null;
+  const venue = await dataResolver.resolveVenue(id, source, { language });
 
-  try {
-    const [source, id] = parseVenueId(idWithSource);
-    const dataResolver = resolvers.get(source) ?? null;
-    const venue = await dataResolver.resolveVenue(id, source, { language });
+  return venue;
+}
 
-    monitor.end();
-
-    return venue;
-  } catch (e) {
-    logger.error(`Error while querying venue with ${idWithSource}:\n\n${e}\n`);
-
-    if (e instanceof IdParseError) {
-      throw new ApolloError("Invalid ID parameter");
-    }
-
-    if (e instanceof ApolloError) {
-      throw e;
-    }
-
-    // Hide any unexpected errors in order to avoid accidentally leaking too
-    // much information.
-    throw new ApolloError("Internal server error");
+function onError(e: unknown) {
+  if (e instanceof IdParseError) {
+    throw new ApolloError("Invalid ID parameter");
   }
 }
+
+const venueQueryResolver = createQueryResolver(resolver, onError);
 
 export default venueQueryResolver;

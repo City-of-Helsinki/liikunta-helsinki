@@ -22,6 +22,8 @@ function getColor(level: string) {
       return chalk.bold.yellow;
     case "debug":
       return chalk.cyan;
+    case "info":
+      return chalk.bold.white;
     default:
       return chalk.white;
   }
