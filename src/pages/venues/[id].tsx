@@ -16,8 +16,13 @@ import { staticGenerationLogger } from "../../domain/logger";
 import { Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";
+import initializeNextApiApolloClient, {
+  useNextApiApolloClient,
+} from "../../client/nextApiApolloClient";
 import useSearch from "../../hooks/useSearch";
 import queryPersister from "../../util/queryPersister";
+import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
+import UpcomingEventsSection from "../../widgets/upcomingEventsSection/UpcomingEventsSection";
 import Keyword from "../../components/keyword/Keyword";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
@@ -28,11 +33,6 @@ import Hr from "../../components/hr/Hr";
 import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import Card from "../../components/card/DefaultCard";
-import CondensedCard from "../../components/card/CondensedCard";
-import initializeNextApiApolloClient, {
-  useNextApiApolloClient,
-} from "../../client/nextApiApolloClient";
-import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
 import styles from "./venue.module.scss";
 
 export const VENUE_QUERY = gql`
@@ -161,6 +161,7 @@ function getGoogleDirectionsUrl(
 
 export function VenuePageContent() {
   const router = useRouter();
+  const id = router.query.id as string;
   const { getSearchRoute } = useSearch();
   const locale = router.locale ?? router.defaultLocale;
   const { data, loading, error } = useQuery(VENUE_QUERY, {
@@ -189,7 +190,6 @@ export function VenuePageContent() {
     return null;
   }
 
-  const id = data?.venue?.id;
   const name = data?.venue?.name;
   const streetAddress = data?.venue?.streetAddress;
   const addressLocality = data?.venue?.addressLocality;
@@ -443,20 +443,7 @@ export function VenuePageContent() {
           </div>
         </div>
       </article>
-      <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
-        <List
-          variant="columns-3"
-          items={[
-            ...recommendationItems,
-            ...recommendationItems.slice(0, 2).map(({ id, ...rest }) => ({
-              ...rest,
-              id: `${id}-b`,
-            })),
-          ].map((item) => (
-            <CondensedCard key={item.id} {...item} />
-          ))}
-        />
-      </Section>
+      <UpcomingEventsSection linkedId={id} />
       <Section title="Muuta samankaltaista liikuntaa" color="white">
         <List
           items={recommendationItems.map((item) => (

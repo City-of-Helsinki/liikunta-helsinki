@@ -20,7 +20,7 @@ function getResolverName(
   return `${info.path.key}${info.path.typename}(${argsAsString})${contextAsString}`;
 }
 
-type ResolverFunction<T = Record<string, unknown>> = (
+type ResolverFunction<T = unknown> = (
   source: unknown,
   args: unknown,
   context: Context,

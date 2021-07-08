@@ -68,7 +68,8 @@ class Hauki extends DataSource {
     params.append("start_date", ongoingWeekInterval.start.toJSON());
     params.append("end_date", ongoingWeekInterval.end.toJSON());
 
-    const res = await this.get(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await this.get<any>(
       `https://hauki.api.hel.fi/v1/resource/${id}/opening_hours/?${params.toString()}`
     );
 
@@ -94,7 +95,8 @@ class Hauki extends DataSource {
    * @throws {AxiosError}
    */
   async getIsOpen(id: string): Promise<boolean | null> {
-    const res = await this.get(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await this.get<any>(
       `https://hauki.api.hel.fi/v1/resource/${id}/is_open_now/`
     );
 

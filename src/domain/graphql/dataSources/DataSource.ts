@@ -9,12 +9,15 @@ export default abstract class DataSource {
     this.logger = logger;
   }
 
-  async get(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse> {
+  async get<T = unknown>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     try {
       this.logger.debug(`Starting request\n
       URL: ${url}
       CONFIG: ${config}\n`);
-      const response = await axios.get(url, config);
+      const response = await axios.get<T>(url, config);
       this.logger.debug(`Request succeeded\n
       URL: ${url}
       CONFIG: ${config}\n`);
