@@ -29,7 +29,8 @@ class Tprek extends DataSource {
   }
 
   private async getAllOntologyWords() {
-    const res = await this.get(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await this.get<any>(
       `http://www.hel.fi/palvelukarttaws/rest/v4/ontologyword/`
     );
 
@@ -41,7 +42,8 @@ class Tprek extends DataSource {
   }
 
   private async getOntologyTrees() {
-    const res = await this.get(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await this.get<any>(
       `http://www.hel.fi/palvelukarttaws/rest/v4/ontologytree/`
     );
 

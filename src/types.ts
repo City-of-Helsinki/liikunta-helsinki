@@ -168,3 +168,25 @@ export type AnyObject = Record<string, unknown>;
 export type Context = {
   language?: Locale;
 };
+
+export type EventOffer = {
+  isFree: boolean;
+  description: string | null;
+  price: string | null;
+  infoUrl: string | null;
+};
+
+export type Event = {
+  id: string;
+  name: string | null;
+  shortDescription: string | null;
+  startTime: string;
+  endTime: string | null;
+  infoUrl: string | null;
+  offers: EventOffer[];
+  images: {
+    id: string | null;
+    alt: string | null;
+    url: string | null;
+  }[];
+};
