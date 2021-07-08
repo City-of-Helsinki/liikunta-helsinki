@@ -14,7 +14,9 @@ import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
 import initializeCmsApollo from "../../client/cmsApolloClient";
-import SearchHeader from "../../components/search/searchHeader/SearchHeader";
+import SearchHeader, {
+  ShowMode,
+} from "../../components/search/searchHeader/SearchHeader";
 import updateUrlParams from "../../util/updateURLParams";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -129,7 +131,7 @@ export default function Search() {
   };
 
   const switchShowMode = () => {
-    const nextMode = showMode === "list" ? "map" : "list";
+    const nextMode = show === ShowMode.LIST ? ShowMode.MAP : ShowMode.LIST;
     const params = updateUrlParams(router.asPath, "show", nextMode);
 
     router.replace({ pathname: router.pathname, query: params }, undefined, {
@@ -137,7 +139,8 @@ export default function Search() {
     });
   };
 
-  const showMode = show === "map" || show === "list" ? show : "list";
+  const showMode =
+    show === ShowMode.MAP || show === ShowMode.LIST ? show : ShowMode.LIST;
 
   return (
     <Page title="Search" description="Search">
@@ -147,8 +150,8 @@ export default function Search() {
         refetch={onRefetch}
         switchShowMode={switchShowMode}
       />
-      {showMode === "map" && <MapView items={searchResultItems} />}
-      {showMode === "list" && (
+      {showMode === ShowMode.MAP && <MapView items={searchResultItems} />}
+      {showMode === ShowMode.LIST && (
         <Section variant="contained">
           <Koros className={styles.koros} />
           <SearchList
