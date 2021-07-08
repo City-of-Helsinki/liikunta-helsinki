@@ -4,12 +4,12 @@ import { NextApiRequest } from "next";
 import { gql } from "@apollo/client";
 
 import Config from "../../config";
-import venueSchema from "../../domain/graphql/schemas/venue";
-import venueQueryResolver from "../../domain/graphql/resolvers/venueQuery";
-import Venue from "../../domain/graphql/resolvers/venue";
-import eventSchema from "../../domain/graphql/schemas/event";
-import upcomingEventsQueryResolver from "../../domain/graphql/resolvers/upcomingEventsQuery";
-import Event from "../../domain/graphql/resolvers/event";
+import venueSchema from "../../domain/graphql/venue/venueSchema";
+import venueQueryResolver from "../../domain/graphql/venue/venueQueryResolver";
+import Venue from "../../domain/graphql/venue/venueResolver";
+import eventSchema from "../../domain/graphql/event/eventSchema";
+import upcomingEventsQueryResolver from "../../domain/graphql/event/upcomingEventsQueryResolver";
+import Event from "../../domain/graphql/event/eventResolver";
 
 // Note: In the current version of GraphQL, you can’t have an empty type even if
 // you intend to extend it later. So we need to make sure the Query type has at
