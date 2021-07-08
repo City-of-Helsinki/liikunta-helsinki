@@ -2,13 +2,13 @@ import { ApolloError } from "apollo-server-micro";
 
 import { Source } from "../../../types";
 import { Sources } from "../../../constants";
-import parseVenueId, { IdParseError } from "../utils/parseVenueId";
+import parseVenueId, { IdParseError } from "./parseVenueId";
 import VenueHaukiIntegration from "./instructions/VenueHaukiIntegration";
 import VenueOntologyEnricher from "./instructions/VenueOntologyEnricher";
 import VenueResolver from "./instructions/VenueResolver";
 import VenueTprekIntegration from "./instructions/VenueTprekIntegration";
 import VenueLinkedIntegration from "./instructions/VenueLinkedIntegration";
-import createQueryResolver from "./createQueryResolver";
+import createQueryResolver from "../createQueryResolver";
 
 const resolvers: Map<Source, VenueResolver> = new Map();
 resolvers.set(

@@ -1,4 +1,4 @@
-import { Logger } from "../../logger";
+import { Logger } from "../logger";
 
 export default class ResolverMonitor {
   startTime: Date;

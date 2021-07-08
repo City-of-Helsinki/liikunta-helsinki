@@ -1,9 +1,9 @@
 import { ApolloError } from "apollo-server-micro";
 import { GraphQLResolveInfo } from "graphql";
 
-import { Context } from "../../../types";
-import { graphqlLogger as logger } from "../../logger";
-import ResolverMonitor from "../utils/ResolverMonitor";
+import { Context } from "../../types";
+import { graphqlLogger as logger } from "../logger";
+import ResolverMonitor from "./ResolverMonitor";
 
 function getResolverName(
   _: unknown,
