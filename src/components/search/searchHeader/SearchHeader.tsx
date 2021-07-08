@@ -24,7 +24,7 @@ function SearchHeader({ showMode, count, switchShowMode }: Props) {
       <div className={styles.searchHeader}>
         {!collapsed && (
           <div className={styles.searchMenu}>
-            <SearchPageSearchForm showMode={showMode} />
+            <SearchPageSearchForm />
             <Button
               className={styles.closeSearch}
               variant="secondary"
@@ -69,7 +69,7 @@ function SearchHeader({ showMode, count, switchShowMode }: Props) {
   const ListSearch = () => {
     return (
       <div className={styles.searchArea}>
-        <SearchPageSearchForm showMode={showMode} />
+        <SearchPageSearchForm />
       </div>
     );
   };

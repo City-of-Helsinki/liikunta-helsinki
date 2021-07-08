@@ -17,7 +17,8 @@ import initializeCmsApollo from "../../client/cmsApolloClient";
 import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";
-import updateUrlParams from "../../util/updateURLParams";
+import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
+import getShowMode from "../../util/getShowMode";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -133,16 +134,27 @@ export default function Search() {
   };
 
   const switchShowMode = () => {
-    const nextMode = show === ShowMode.LIST ? ShowMode.MAP : ShowMode.LIST;
-    const params = updateUrlParams(router.asPath, "show", nextMode);
+    let nextMode;
+    // If show is undefined we know we are in list view, so nextMode should be map
+    if (!show) {
+      nextMode = ShowMode.MAP;
+    } else {
+      nextMode = show === ShowMode.LIST ? ShowMode.MAP : ShowMode.LIST;
+    }
 
-    router.replace({ pathname: router.pathname, query: params }, undefined, {
-      shallow: true,
-    });
+    const params = getURLSearchParamsFromAsPath(router.asPath);
+    params.set("show", nextMode);
+
+    router.replace(
+      { pathname: router.pathname, query: params.toString() },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
 
-  const showMode =
-    show === ShowMode.MAP || show === ShowMode.LIST ? show : ShowMode.LIST;
+  const showMode = getShowMode(show?.toString());
 
   return (
     <Page title="Search" description="Search">

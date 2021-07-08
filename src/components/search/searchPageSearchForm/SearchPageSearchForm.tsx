@@ -14,8 +14,8 @@ import SuggestionInput, {
 import styles from "./searchPageSearchForm.module.scss";
 import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
-import updateUrlParams from "../../../util/updateURLParams";
 import { ShowMode } from "../searchHeader/SearchHeader";
+import getShowMode from "../../../util/getShowMode";
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -31,11 +31,7 @@ const SUGGESTION_QUERY = gql`
   }
 `;
 
-type Props = {
-  showMode: ShowMode;
-};
-
-function SearchPageSearchForm({ showMode }: Props) {
+function SearchPageSearchForm() {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string>(
     getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
@@ -47,12 +43,17 @@ function SearchPageSearchForm({ showMode }: Props) {
 
   const doSearch = (q?: string) => {
     const nextQuery = q ? { q } : null;
-    //const params = updateUrlParams(router.asPath, "q", q);
+    const params = getURLSearchParamsFromAsPath(router.asPath);
 
     queryPersister.persistQuery(nextQuery);
-    router.push({ pathname: router.pathname, query: nextQuery }, undefined, {
-      shallow: true,
-    });
+    params.set("q", nextQuery.q);
+    router.push(
+      { pathname: router.pathname, query: params.toString() },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
 
   const handleSubmit = (e) => {
@@ -78,6 +79,9 @@ function SearchPageSearchForm({ showMode }: Props) {
 
   const suggestions =
     data?.unifiedSearchCompletionSuggestions?.suggestions ?? [];
+
+  const show = getURLSearchParamsFromAsPath(router.asPath).get("show");
+  const showMode = getShowMode(show);
 
   return (
     <div>
