@@ -13,11 +13,10 @@ export enum ShowMode {
 type Props = {
   showMode: ShowMode;
   count: number;
-  refetch: (q: string) => void;
   switchShowMode: () => void;
 };
 
-function SearchHeader({ showMode, refetch, count, switchShowMode }: Props) {
+function SearchHeader({ showMode, count, switchShowMode }: Props) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   const MapSearch = () => {
@@ -25,7 +24,7 @@ function SearchHeader({ showMode, refetch, count, switchShowMode }: Props) {
       <div className={styles.searchHeader}>
         {!collapsed && (
           <div className={styles.searchMenu}>
-            <SearchPageSearchForm refetch={refetch} showMode={showMode} />
+            <SearchPageSearchForm showMode={showMode} />
             <Button
               className={styles.closeSearch}
               variant="secondary"
@@ -70,7 +69,7 @@ function SearchHeader({ showMode, refetch, count, switchShowMode }: Props) {
   const ListSearch = () => {
     return (
       <div className={styles.searchArea}>
-        <SearchPageSearchForm refetch={refetch} showMode={showMode} />
+        <SearchPageSearchForm showMode={showMode} />
       </div>
     );
   };

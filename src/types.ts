@@ -31,7 +31,7 @@ export type Item = {
   infoLines: string[];
   keywords: Keyword[];
   href: string;
-  location: number[];
+  location?: number[];
   image: string;
 };
 
@@ -64,15 +64,22 @@ export type Connection<T> = {
 
 export type Collection = {
   id: string;
-  title: string;
-  description: string;
-  image: string;
+  translation?: {
+    title?: string;
+    description?: string;
+    image?: string;
+  };
 };
 
 export type LocalizedString = {
   fi: string;
   sv: string;
   en: string;
+};
+
+type Image = {
+  url: string;
+  caption: string | null;
 };
 
 export type GEOLocation = {
@@ -83,12 +90,16 @@ export type GEOLocation = {
   };
 };
 
-// TODO fix this
 export type Venue = {
-  location: GEOLocation;
-  id: string;
   name: LocalizedString;
   description: LocalizedString;
+  location: GEOLocation;
+  meta: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  images: Image[] | null;
 };
 
 export type SearchResult = {

@@ -2,9 +2,9 @@ import { GetStaticPropsContext } from "next";
 import { NextRouter, useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 
-import { Collection, Connection, Item, Recommendation } from "../types";
+import { Collection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../client/cmsApolloClient";
-import { getNodes, getQlLanguage } from "../client/utils";
+import { getQlLanguage } from "../client/utils";
 import mockRecommendations from "../client/tmp/mockRecommendations";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
@@ -19,37 +19,38 @@ import mockCategories from "../client/tmp/mockCategories";
 import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
 
 export const LANDING_PAGE_QUERY = gql`
-  query LandingPageQuery(
-    $languageCode: LanguageCodeEnum!
-    $languageCodeFilter: LanguageCodeFilterEnum!
-  ) {
-    collections(first: 7, where: { language: $languageCodeFilter }) {
-      edges {
-        node {
-          id
-          title
-          description
-          image
-        }
-      }
-    }
+  query LandingPageQuery($languageCode: LanguageCodeEnum!) {
     landingPage(id: "root", idType: SLUG) {
       id
+      desktopImage {
+        edges {
+          node {
+            mediaItemUrl
+          }
+        }
+      }
       translation(language: $languageCode) {
         title
         description
         heroLink
-        desktopImage {
-          mediaItemUrl
+      }
+    }
+    pageBy(uri: "/") {
+      modules {
+        ... on LayoutCollection {
+          collection {
+            id
+            translation(language: $languageCode) {
+              title
+              description
+              image
+            }
+          }
         }
       }
     }
   }
 `;
-
-const emptyConnection = {
-  edges: [],
-};
 
 function getRecommendationsAsItems(
   recommendations: Recommendation[],
@@ -67,15 +68,11 @@ function getRecommendationsAsItems(
   }));
 }
 
-function getCollectionsAsItems(
-  collectionConnection: Connection<Collection> | null
-): Item[] {
-  const collections = getNodes<Collection>(collectionConnection);
-
+function getCollectionsAsItems(collections: Collection[] | null): Item[] {
   return collections.map((collection) => ({
     id: collection.id,
-    title: collection.title,
-    infoLines: [collection.description],
+    title: collection.translation?.title,
+    infoLines: [collection.translation?.description],
     href: `/collections/${collection.id}`,
     keywords: [
       {
@@ -85,7 +82,7 @@ function getCollectionsAsItems(
         },
       },
     ],
-    image: collection.image,
+    image: collection.translation?.image,
   }));
 }
 
@@ -95,7 +92,6 @@ export default function Home() {
   const { data } = useQuery(LANDING_PAGE_QUERY, {
     variables: {
       languageCode: language,
-      languageCodeFilter: language,
     },
   });
 
@@ -105,15 +101,19 @@ export default function Home() {
   );
   const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(
-    data?.collections ?? emptyConnection
+    data?.pageBy?.modules
+      .filter((module) => "collection" in module)
+      .map((module) => module.collection) ?? []
   );
   const categories = mockCategories;
+  const heroImage =
+    data?.landingPage?.desktopImage?.edges[0]?.node?.mediaItemUrl;
 
   return (
     <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
       {landingPage && (
         <>
-          <HeroImage desktopImageUri={landingPage.desktopImage?.mediaItemUrl} />
+          <HeroImage desktopImageUri={heroImage} />
           <Section variant="contained" color="transparent">
             <Hero
               title={landingPage.title}
@@ -174,7 +174,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     query: LANDING_PAGE_QUERY,
     variables: {
       languageCode: language,
-      languageCodeFilter: language,
     },
   });
 

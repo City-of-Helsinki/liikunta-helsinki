@@ -2,6 +2,7 @@ import React, { ReactNode, RefObject, useContext, useRef } from "react";
 import Link from "next/link";
 import { IconArrowRight } from "hds-react";
 import classNames from "classnames";
+import { ImageProps } from "next/image";
 
 import { Keyword as KeywordType } from "../../types";
 import Text from "../text/Text";
@@ -115,6 +116,25 @@ function CardCta({ className }: CardCtaProps) {
   );
 }
 
+type CardCtaButtonProps = {
+  className?: string;
+  children?: React.ReactNode;
+};
+
+function CardCtaButton({ className, children }: CardCtaButtonProps) {
+  const { id } = useContext(CardContext);
+
+  return (
+    <span
+      className={classNames(styles.ctaButton, className)}
+      aria-hidden="true"
+      id={`cta-button:${id}`}
+    >
+      {children}
+    </span>
+  );
+}
+
 type CardKeywordsProps = {
   keywords: KeywordType[];
   className?: string;
@@ -139,13 +159,15 @@ function CardKeywords({ keywords, className }: CardKeywordsProps) {
 }
 
 type CardImageProps = {
-  image: string;
+  image: string | React.ReactElement<ImageProps>;
+  className?: string;
 };
 
-function CardImage({ image }: CardImageProps) {
+function CardImage({ image, className }: CardImageProps) {
   return (
-    <div className={styles.image}>
-      <img src={image} alt="" />
+    <div className={classNames(styles.image, className)}>
+      {typeof image === "string" && <img src={image} alt="" />}
+      {typeof image !== "string" && image}
     </div>
   );
 }
@@ -210,6 +232,7 @@ Card.Pre = CardPre;
 Card.InfoLines = CardInfoLines;
 Card.Content = CardContent;
 Card.Cta = CardCta;
+Card.CtaButton = CardCtaButton;
 Card.Keywords = CardKeywords;
 Card.Image = CardImage;
 

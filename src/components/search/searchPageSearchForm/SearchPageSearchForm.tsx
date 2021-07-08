@@ -5,6 +5,8 @@ import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import classNames from "classnames";
 
+import queryPersister from "../../../util/queryPersister";
+import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
 import Text from "../../text/Text";
 import SuggestionInput, {
   Suggestion,
@@ -14,12 +16,6 @@ import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
 import updateUrlParams from "../../../util/updateURLParams";
 import { ShowMode } from "../searchHeader/SearchHeader";
-
-function getURLSearchParamsFromAsPath(asPath: string): URLSearchParams {
-  const [, searchParams] = asPath.split("?");
-
-  return new URLSearchParams(searchParams);
-}
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -36,11 +32,10 @@ const SUGGESTION_QUERY = gql`
 `;
 
 type Props = {
-  refetch: (q: string) => void;
   showMode: ShowMode;
 };
 
-function SearchPageSearchForm({ refetch, showMode }: Props) {
+function SearchPageSearchForm({ showMode }: Props) {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string>(
     getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
@@ -51,8 +46,11 @@ function SearchPageSearchForm({ refetch, showMode }: Props) {
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   const doSearch = (q?: string) => {
-    const params = updateUrlParams(router.asPath, "q", q);
-    router.push({ query: params }, undefined, {
+    const nextQuery = q ? { q } : null;
+    //const params = updateUrlParams(router.asPath, "q", q);
+
+    queryPersister.persistQuery(nextQuery);
+    router.push({ pathname: router.pathname, query: nextQuery }, undefined, {
       shallow: true,
     });
   };
@@ -72,7 +70,6 @@ function SearchPageSearchForm({ refetch, showMode }: Props) {
         ),
       },
     });
-    refetch(searchText);
   };
 
   const handleSelectSuggestion = (suggestion: Suggestion) => {

@@ -22,7 +22,7 @@ env:
   K8S_REPLICACOUNT: 2
   K8S_LIVENESS_PATH: /api/healthz
   K8S_READINESS_PATH: /api/readiness
-  NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.hkih.production.geniem.io/graphql
+  NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
   NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
   NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT: https://${{ secrets.ENVIRONMENT_URL_STAGING }}/api/graphql
 

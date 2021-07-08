@@ -5,14 +5,14 @@ import { gql, useQuery } from "@apollo/client";
 import { Koros } from "hds-react";
 import dynamic from "next/dynamic";
 
-import Page from "../../components/page/Page";
-import searchApolloClient from "../../client/searchApolloClient";
-import styles from "./search.module.scss";
 import { Connection, Item, Keyword, SearchResult } from "../../types";
+import searchApolloClient from "../../client/searchApolloClient";
 import { getNodes } from "../../client/utils";
+import Page from "../../components/page/Page";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
+import styles from "./search.module.scss";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import SearchHeader, {
   ShowMode,
@@ -41,6 +41,9 @@ export const SEARCH_QUERY = gql`
       edges {
         node {
           venue {
+            meta {
+              id
+            }
             name {
               fi
             }
@@ -53,6 +56,9 @@ export const SEARCH_QUERY = gql`
                   coordinates
                 }
               }
+            }
+            images {
+              url
             }
           }
         }
@@ -79,24 +85,24 @@ function getSearchResultsAsItems(
     id: searchResult.venue.name.fi,
     title: searchResult.venue.name.fi,
     infoLines: [],
-    href: "",
+    href: `/venues/tprek:${searchResult.venue.meta.id}`,
     keywords: mockKeywords,
+    image: searchResult.venue.images[0]?.url,
     location: searchResult.venue.location.geoLocation.geometry.coordinates,
-    image:
-      "https://liikunta.hkih.production.geniem.io/uploads/sites/2/2021/05/097b0788-hkms000005_km00390n-scaled.jpeg",
   }));
 }
 
 export default function Search() {
   const router = useRouter();
   const {
-    query: { q: searchText, show },
+    query: { q: searchText = "*", show },
   } = router;
 
-  const { data, loading, refetch, fetchMore } = useQuery(SEARCH_QUERY, {
+  const { data, loading, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
     ssr: false,
-    variables: { q: searchText ?? "*", first: BLOCK_SIZE, after: "" },
+    variables: { q: searchText, first: BLOCK_SIZE, after: "" },
+    fetchPolicy: "cache-and-network",
   });
 
   // https://stackoverflow.com/a/64634759
@@ -116,7 +122,7 @@ export default function Search() {
   const onLoadMore = () => {
     fetchMore({
       variables: {
-        q: searchText ?? "*",
+        q: searchText,
         first: BLOCK_SIZE,
         cursor: cursor,
       },
@@ -124,10 +130,6 @@ export default function Search() {
       moreResultsAnnouncerRef.current &&
         moreResultsAnnouncerRef.current.focus();
     });
-  };
-
-  const onRefetch = (q) => {
-    refetch({ q: q ?? "*", first: BLOCK_SIZE });
   };
 
   const switchShowMode = () => {
@@ -147,7 +149,6 @@ export default function Search() {
       <SearchHeader
         showMode={showMode}
         count={count}
-        refetch={onRefetch}
         switchShowMode={switchShowMode}
       />
       {showMode === ShowMode.MAP && <MapView items={searchResultItems} />}
