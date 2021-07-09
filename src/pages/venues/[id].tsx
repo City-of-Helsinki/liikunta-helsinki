@@ -78,6 +78,7 @@ function getRecommendationsAsItems(
 ): Item[] {
   return recommendations.map((recommendation) => ({
     ...recommendation,
+    href: recommendation.href,
     keywords: recommendation.keywords.map((keyword) => ({
       label: keyword,
       href: `keywords/${encodeURIComponent(keyword)}`,
@@ -325,7 +326,9 @@ export function VenuePageContent() {
                   <li key={keyword.id}>
                     <Keyword
                       keyword={keyword.label}
-                      href={getSearchRoute({ ontology: keyword.label })}
+                      href={getSearchRoute({
+                        ontology: keyword.label.toLowerCase(),
+                      })}
                     />
                   </li>
                 ))}

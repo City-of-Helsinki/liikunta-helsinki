@@ -1,3 +1,5 @@
+import { UrlObject } from "url";
+
 import React, { ReactNode, RefObject, useContext, useRef } from "react";
 import { IconArrowRight } from "hds-react";
 import classNames from "classnames";
@@ -20,7 +22,7 @@ const CardContext = React.createContext<CardContextType>({
 });
 
 type CardTitleProps = Partial<React.ComponentProps<typeof Text>> & {
-  href: string;
+  href: string | UrlObject;
   title: string;
 };
 
@@ -29,7 +31,7 @@ function CardTitle({ href, title, ...textProps }: CardTitleProps) {
 
   return (
     <Text as="h3" variant="body-l" className={styles.title} {...textProps}>
-      <Link href={href}>
+      <Link href={href} avoidEscaping>
         {/* <Link /> applies the href prop to <a> */}
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a

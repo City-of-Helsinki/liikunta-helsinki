@@ -1,13 +1,28 @@
+import { UrlObject } from "url";
+
 import i18nRoutes from "../../../i18nRoutes.config";
 
-export function getI18nAsPath(route: string, locale: string): string | null {
-  const hasI18nRewriteRule = Object.keys(i18nRoutes).includes(route);
+// dynamic path: /venues/:id
+// segmented: /venues/[id]
+function transformDynamicPathIntoSegmentedDynamicPath(path: string): string {
+  return path
+    .split("/")
+    .map((part) => (part.startsWith(":") ? `[${part.slice(1)}]` : part))
+    .join("/");
+}
 
-  if (!hasI18nRewriteRule) {
+export function getI18nPath(route: string, locale: string): string {
+  const i18nRewriteRules =
+    Object.entries(i18nRoutes).find(
+      ([routeKey]) =>
+        transformDynamicPathIntoSegmentedDynamicPath(routeKey) === route
+    )?.[1] ?? [];
+
+  if (!i18nRewriteRules || i18nRewriteRules.length === 0) {
     return null;
   }
 
-  const i18nRewriteRuleForCurrentLocale = i18nRoutes[route].find(
+  const i18nRewriteRuleForCurrentLocale = i18nRewriteRules.find(
     (rewriteRule) => rewriteRule.locale === locale
   );
 
@@ -15,5 +30,19 @@ export function getI18nAsPath(route: string, locale: string): string | null {
     return null;
   }
 
-  return i18nRewriteRuleForCurrentLocale.source;
+  return transformDynamicPathIntoSegmentedDynamicPath(
+    i18nRewriteRuleForCurrentLocale.source
+  );
+}
+
+const isDynamic = (part: string) => part.startsWith("[") && part.endsWith("]");
+const parseDynamicName = (part: string) => part.slice(1, -1);
+
+export function stringifyUrlObject(url: UrlObject): string {
+  return url.pathname
+    ?.split("/")
+    .map((part) =>
+      isDynamic(part) ? url.query[parseDynamicName(part)] ?? part : part
+    )
+    .join("/");
 }

@@ -1,3 +1,5 @@
+import { UrlObject } from "url";
+
 import classNames from "classnames";
 import React from "react";
 
@@ -9,7 +11,7 @@ type Props = {
   color?: "engelLight50" | "tramLight20";
   hideOnMobile?: boolean;
   keyword: string;
-  href: string;
+  href: string | UrlObject;
 };
 
 const Keyword = ({

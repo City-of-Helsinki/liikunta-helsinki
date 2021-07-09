@@ -1,3 +1,5 @@
+import { UrlObject } from "url";
+
 import classNames from "classnames";
 import { IconAngleRight } from "hds-react";
 import React from "react";
@@ -9,7 +11,7 @@ type Props = {
   className?: string;
   icon: React.ReactNode;
   label?: string;
-  href: string;
+  href: string | UrlObject;
 };
 
 const CategoryLink = ({ className, icon, href, label }: Props) => {

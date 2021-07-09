@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import i18nRoutes from "../../i18nRoutes.config";
 import useRouter from "../domain/i18nRouter/useRouter";
 
 type Filters = {
@@ -23,13 +24,15 @@ function getQueryString(search: Search): string {
 
 function useSearch() {
   const router = useRouter();
-  const [asPathWithoutSearch] = router.asPath.split("?");
+  const searchBasePath =
+    i18nRoutes["/search"].find(({ locale }) => locale === router.locale)
+      ?.source ?? "/search";
 
   const getSearchRoute = useCallback(
     (search: Search) => {
-      return `${asPathWithoutSearch}?${getQueryString(search)}`;
+      return `${searchBasePath}?${getQueryString(search)}`;
     },
-    [asPathWithoutSearch]
+    [searchBasePath]
   );
 
   const search = useCallback(
@@ -37,12 +40,12 @@ function useSearch() {
       const method = router[type];
 
       if (search === null) {
-        return method(asPathWithoutSearch);
+        return method(searchBasePath);
       }
 
       return method(getSearchRoute(search));
     },
-    [getSearchRoute, router, asPathWithoutSearch]
+    [getSearchRoute, router, searchBasePath]
   );
 
   return { search, getSearchRoute };
