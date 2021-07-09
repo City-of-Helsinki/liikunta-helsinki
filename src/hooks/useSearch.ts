@@ -1,18 +1,13 @@
-import { useRouter } from "next/router";
 import { useCallback } from "react";
+
+import useRouter from "../domain/i18nRouter/useRouter";
 
 type Filters = {
   q: string;
   ontology?: string;
 };
 
-type Search = string | Partial<Filters> | URLSearchParams;
-
-const searchRouteMap = {
-  fi: "/haku",
-  sv: "/sok",
-  en: "/search",
-};
+type Search = string | Partial<Filters> | URLSearchParams | null;
 
 function getQueryString(search: Search): string {
   if (typeof search === "string") {
@@ -28,23 +23,26 @@ function getQueryString(search: Search): string {
 
 function useSearch() {
   const router = useRouter();
+  const [asPathWithoutSearch] = router.asPath.split("?");
 
   const getSearchRoute = useCallback(
     (search: Search) => {
-      const searchRoute = searchRouteMap[router.locale ?? router.defaultLocale];
-
-      return `${searchRoute}?${getQueryString(search)}`;
+      return `${asPathWithoutSearch}?${getQueryString(search)}`;
     },
-    [router.defaultLocale, router.locale]
+    [asPathWithoutSearch]
   );
 
   const search = useCallback(
     (search: Search, type: "push" | "replace" = "push") => {
       const method = router[type];
 
+      if (search === null) {
+        return method(asPathWithoutSearch);
+      }
+
       return method(getSearchRoute(search));
     },
-    [getSearchRoute, router]
+    [getSearchRoute, router, asPathWithoutSearch]
   );
 
   return { search, getSearchRoute };

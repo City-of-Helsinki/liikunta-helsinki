@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import { IconAngleRight } from "hds-react";
-import Link from "next/link";
 import React from "react";
 
+import Link from "../../domain/i18nRouter/Link";
 import styles from "./categoryLink.module.scss";
 
 type Props = {

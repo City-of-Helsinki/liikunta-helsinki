@@ -1,11 +1,11 @@
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { LoadingSpinner } from "hds-react";
 import Error from "next/error";
 
 import { useCmsApollo } from "../client/cmsApolloClient";
+import useRouter from "../domain/i18nRouter/useRouter";
 import AppMeta from "../components/meta/AppMeta";
 import "../styles/globals.scss";
 

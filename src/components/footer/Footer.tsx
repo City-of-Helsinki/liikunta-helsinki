@@ -1,10 +1,10 @@
 import { Footer as HDSFooter, LogoLanguage } from "hds-react";
 import React from "react";
-import { useRouter } from "next/dist/client/router";
-import NextLink from "next/link";
 
+import useRouter from "../../domain/i18nRouter/useRouter";
 import { NavigationItem } from "../../types";
 import mockCategories from "../../client/tmp/mockCategories";
+import NextLink from "../../domain/i18nRouter/Link";
 import SearchShortcuts from "../../components/searchShortcuts/SearchShortcuts";
 import styles from "./footer.module.scss";
 

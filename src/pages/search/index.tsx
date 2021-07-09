@@ -1,30 +1,42 @@
 import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
-import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { Koros } from "hds-react";
 
-import { Connection, Item, Keyword, SearchResult } from "../../types";
+import {
+  Connection,
+  Item,
+  Keyword,
+  LocalizedString,
+  SearchResult,
+} from "../../types";
 import searchApolloClient from "../../client/searchApolloClient";
 import { getNodes } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
+import useRouter from "../../domain/i18nRouter/useRouter";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
 import styles from "./search.module.scss";
+import { Locale } from "../../config";
 
 const BLOCK_SIZE = 10;
 
 export const SEARCH_QUERY = gql`
-  query SearchQuery($q: String, $first: Int, $cursor: String) {
+  query SearchQuery(
+    $q: String
+    $first: Int
+    $cursor: String
+    $language: UnifiedSearchLanguage!
+  ) {
     unifiedSearch(
       q: $q
       index: "location"
-      ontology: "Liikunta"
       first: $first
       after: $cursor
+      languages: [$language]
     ) {
       count
       pageInfo {
@@ -39,6 +51,8 @@ export const SEARCH_QUERY = gql`
             }
             name {
               fi
+              sv
+              en
             }
             description {
               fi
@@ -53,6 +67,12 @@ export const SEARCH_QUERY = gql`
   }
 `;
 
+const appToUnifiedSearchLanguageMap = {
+  fi: "FINNISH",
+  sv: "SWEDISH",
+  en: "ENGLISH",
+};
+
 const emptyConnection = {
   edges: [],
 };
@@ -63,13 +83,19 @@ const mockKeywords: Keyword[] = [
   { label: "Ulkoliikuntapaikat", href: "" },
 ];
 
+function getTranslation(translation: LocalizedString, locale: Locale) {
+  return translation[locale] ?? translation.fi;
+}
+
 function getSearchResultsAsItems(
-  searchResultConnection: Connection<SearchResult> | null
+  searchResultConnection: Connection<SearchResult> | null,
+  locale: Locale
 ): Item[] {
   const searchResults = getNodes<SearchResult>(searchResultConnection);
+
   return searchResults.map((searchResult) => ({
-    id: searchResult.venue.name.fi,
-    title: searchResult.venue.name.fi,
+    id: searchResult.venue.meta.id,
+    title: getTranslation(searchResult.venue.name, locale),
     infoLines: [],
     href: `/venues/tprek:${searchResult.venue.meta.id}`,
     keywords: mockKeywords,
@@ -80,17 +106,24 @@ function getSearchResultsAsItems(
 export default function Search() {
   const {
     query: { q: searchText = "*" },
+    ...router
   } = useRouter();
-
+  const locale = router.locale ?? router.defaultLocale;
   const { data, loading, fetchMore } = useQuery(SEARCH_QUERY, {
     client: searchApolloClient,
     ssr: false,
-    variables: { q: searchText, first: BLOCK_SIZE, after: "" },
+    variables: {
+      q: searchText,
+      first: BLOCK_SIZE,
+      after: "",
+      language: appToUnifiedSearchLanguageMap[locale],
+    },
     fetchPolicy: "cache-and-network",
   });
 
   const searchResultItems: Item[] = getSearchResultsAsItems(
-    data?.unifiedSearch ?? emptyConnection
+    data?.unifiedSearch ?? emptyConnection,
+    locale
   );
 
   const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);

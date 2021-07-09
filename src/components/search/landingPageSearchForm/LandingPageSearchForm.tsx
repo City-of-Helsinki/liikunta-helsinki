@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TextInput, Button, IconSearch } from "hds-react";
-import Link from "next/link";
 import classNames from "classnames";
-import { useRouter } from "next/router";
 
+import useRouter from "../../../domain/i18nRouter/useRouter";
+import Link from "../../../domain/i18nRouter/Link";
 import Text from "../../text/Text";
 import SecondaryLink from "../../link/SecondaryLink";
 import styles from "./landingPageSearchForm.module.scss";
