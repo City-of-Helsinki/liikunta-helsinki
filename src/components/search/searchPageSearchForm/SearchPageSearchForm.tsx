@@ -1,6 +1,5 @@
 import { Button, IconSearch } from "hds-react";
 import React, { useState, useRef } from "react";
-import { useRouter } from "next/router";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 
@@ -8,11 +7,13 @@ import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
 import queryPersister from "../../../util/queryPersister";
 import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
+import useRouter from "../../../domain/i18nRouter/useRouter";
 import Text from "../../text/Text";
 import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
 import styles from "./searchPageSearchForm.module.scss";
+import useSearch from "../../../hooks/useSearch";
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -30,6 +31,7 @@ const SUGGESTION_QUERY = gql`
 
 function SearchPageSearchForm() {
   const router = useRouter();
+  const { search } = useSearch();
   const [searchText, setSearchText] = useState<string>(
     getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
   );
@@ -42,9 +44,7 @@ function SearchPageSearchForm() {
     const nextQuery = q ? { q } : null;
 
     queryPersister.persistQuery(nextQuery);
-    router.push({ pathname: router.pathname, query: nextQuery }, undefined, {
-      shallow: true,
-    });
+    search(nextQuery, "replace");
   };
 
   const handleSubmit = (e) => {

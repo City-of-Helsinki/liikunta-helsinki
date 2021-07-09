@@ -10,8 +10,8 @@ import {
   isSameDay,
 } from "date-fns";
 import fi from "date-fns/locale/fi";
-import { useRouter } from "next/router";
 
+import useRouter from "../../domain/i18nRouter/useRouter";
 import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import CondensedCard from "../../components/card/CondensedCard";

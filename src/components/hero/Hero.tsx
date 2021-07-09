@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import Link from "../../domain/i18nRouter/Link";
 import Text from "../text/Text";
 import styles from "./hero.module.scss";
 

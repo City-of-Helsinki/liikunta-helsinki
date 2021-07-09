@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
 import classNames from "classnames";
 
+import I18nLink from "../../domain/i18nRouter/Link";
+import useRouter from "../../domain/i18nRouter/useRouter";
 import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
 
@@ -16,16 +16,16 @@ const noop = () => {};
 
 type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
   href: string;
-  locale?: React.ComponentProps<typeof NextLink>["locale"];
+  locale?: React.ComponentProps<typeof I18nLink>["locale"];
   lang?: string;
   children?: React.ReactNode;
 };
 
 const Link = ({ href, children, locale, ...rest }: LinkProps) => {
   return (
-    <NextLink href={href} locale={locale}>
+    <I18nLink href={href} locale={locale}>
       <a {...rest}>{children}</a>
-    </NextLink>
+    </I18nLink>
   );
 };
 
@@ -42,7 +42,7 @@ function Navigation({
   languages,
   variant = "default",
 }: Props) {
-  const { locale, push, asPath } = useRouter();
+  const { locale, push, route } = useRouter();
 
   const handleLanguageClick = (event) => {
     const lang = event.target.lang;
@@ -110,7 +110,7 @@ function Navigation({
               lang={language.slug}
               // Target current route with another locale
               locale={language.slug}
-              href={asPath}
+              href={route}
               onClick={handleLanguageClick}
             />
           ))}

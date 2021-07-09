@@ -1,9 +1,9 @@
 import React, { ReactNode, RefObject, useContext, useRef } from "react";
-import Link from "next/link";
 import { IconArrowRight } from "hds-react";
 import classNames from "classnames";
 import { ImageProps } from "next/image";
 
+import Link from "../../domain/i18nRouter/Link";
 import { Keyword as KeywordType } from "../../types";
 import Text from "../text/Text";
 import Keyword from "../keyword/Keyword";
