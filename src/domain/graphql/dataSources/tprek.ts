@@ -11,9 +11,7 @@ class Tprek extends DataSource {
       return null;
     }
 
-    const ontologyTree = ids.map((id) => trees.find((tree) => id === tree.id));
-
-    return ontologyTree;
+    return ids.map((id) => trees.find((tree) => id === tree.id));
   }
 
   async getOntologyWords(ids: number[]): Promise<AnyObject[] | null> {
@@ -23,9 +21,7 @@ class Tprek extends DataSource {
       return null;
     }
 
-    const ontologyWords = ids.map((id) => words.find((word) => id === word.id));
-
-    return ontologyWords;
+    return ids.map((id) => words.find((word) => id === word.id));
   }
 
   private async getAllOntologyWords() {

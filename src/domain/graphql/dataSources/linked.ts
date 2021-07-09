@@ -115,9 +115,7 @@ class Linked extends DataSource {
     );
     // Get the first 6 only as the UI doesn't show more ever. Linked API does
     // not offer a way to limit the result set.
-    const events = response?.data?.data.slice(0, 6) ?? [];
-
-    return events;
+    return response?.data?.data.slice(0, 6) ?? [];
   }
 }
 
