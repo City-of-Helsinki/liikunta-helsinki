@@ -36,11 +36,6 @@ import Card from "../../components/card/DefaultCard";
 import styles from "./venue.module.scss";
 
 export const VENUE_QUERY = gql`
-  fragment ontologyFragment on Ontology {
-    id
-    label
-  }
-
   query VenueQuery($id: ID!) {
     venue(id: $id) {
       addressLocality
@@ -69,11 +64,9 @@ export const VENUE_QUERY = gql`
       postalCode
       streetAddress
       telephone
-      ontologyTree {
-        ...ontologyFragment
-      }
       ontologyWords {
-        ...ontologyFragment
+        id
+        label
       }
     }
   }
@@ -157,6 +150,12 @@ function getGoogleDirectionsUrl(
   const to = getGoogleDirection(toPoint);
 
   return `https://www.google.com/maps/dir/${from}/${to}/`;
+}
+
+function capitalize(string: string) {
+  const [firstCharacter, ...rest] = string.split("");
+
+  return `${firstCharacter.toUpperCase()}${rest.join("")}`;
 }
 
 export function VenuePageContent() {
@@ -268,8 +267,8 @@ export function VenuePageContent() {
       info: simplifiedAddress,
     },
   ];
-  const keywords = data?.venue?.ontologyTree?.map((ontology) => ({
-    label: ontology.label,
+  const keywords = data?.venue?.ontologyWords?.map((ontology) => ({
+    label: capitalize(ontology.label),
     id: ontology.id,
   }));
 
