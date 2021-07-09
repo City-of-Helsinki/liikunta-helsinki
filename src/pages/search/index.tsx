@@ -18,6 +18,10 @@ import styles from "./search.module.scss";
 import { Locale } from "../../config";
 
 const BLOCK_SIZE = 10;
+// And ID that matches the sports ontology tree branch that has the Culture,
+// sports and leisure department (KuVa) as its parent.
+// https://www.hel.fi/palvelukarttaws/rest/v4/ontologytree/551
+const SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID = 551;
 
 export const SEARCH_QUERY = gql`
   query SearchQuery(
@@ -25,6 +29,7 @@ export const SEARCH_QUERY = gql`
     $first: Int
     $cursor: String
     $language: UnifiedSearchLanguage!
+    $ontologyTreeId: ID!
   ) {
     unifiedSearch(
       q: $q
@@ -32,6 +37,7 @@ export const SEARCH_QUERY = gql`
       first: $first
       after: $cursor
       languages: [$language]
+      ontologyTreeId: $ontologyTreeId
     ) {
       count
       pageInfo {
@@ -111,6 +117,7 @@ export default function Search() {
       first: BLOCK_SIZE,
       after: "",
       language: appToUnifiedSearchLanguageMap[locale],
+      ontologyTreeId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
     },
     fetchPolicy: "cache-and-network",
   });
