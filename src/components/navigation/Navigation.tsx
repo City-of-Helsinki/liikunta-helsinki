@@ -10,7 +10,7 @@ import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
 
 function persistLanguageChoice(language: string) {
-  document.cookie = `NEXT_LOCALE=${language}`;
+  document.cookie = `NEXT_LOCALE=${language}; SameSite=Strict`;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
