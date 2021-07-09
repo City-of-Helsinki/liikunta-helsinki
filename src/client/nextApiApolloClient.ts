@@ -45,18 +45,11 @@ function createNextApiApolloClient() {
 }
 
 export default function initializeNextApiApolloClient(initialState = null) {
-  const client = initializeApolloClient(
+  return initializeApolloClient(
     initialState,
     apiApolloClient,
     createNextApiApolloClient
   );
-
-  // Create the Apollo Client once in the client
-  if (!apiApolloClient) {
-    apiApolloClient = client;
-  }
-
-  return client;
 }
 
 export function useNextApiApolloClient(initialState) {
