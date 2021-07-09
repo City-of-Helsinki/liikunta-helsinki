@@ -1,5 +1,5 @@
 import { GetStaticPropsContext } from "next";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 
 import { Collection, Item, Recommendation } from "../types";
@@ -52,12 +52,10 @@ export const LANDING_PAGE_QUERY = gql`
   }
 `;
 
-function getRecommendationsAsItems(
-  recommendations: Recommendation[],
-  router: NextRouter
-): Item[] {
+function getRecommendationsAsItems(recommendations: Recommendation[]): Item[] {
   return recommendations.map((recommendation) => ({
     ...recommendation,
+    href: recommendation.href,
     keywords: recommendation.keywords.map((keyword) => ({
       label: keyword,
       href: `keywords/${encodeURIComponent(keyword)}`,
@@ -71,7 +69,10 @@ function getCollectionsAsItems(collections: Collection[] | null): Item[] {
     id: collection.id,
     title: collection.translation?.title,
     infoLines: [collection.translation?.description],
-    href: `/collections/${collection.id}`,
+    href: {
+      pathname: "/collections/[id]",
+      query: { id: collection.id },
+    },
     keywords: [
       {
         label: "120 kpl",
@@ -92,8 +93,7 @@ export default function Home() {
   });
 
   const recommendationItems: Item[] = getRecommendationsAsItems(
-    mockRecommendations,
-    router
+    mockRecommendations
   );
   const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(

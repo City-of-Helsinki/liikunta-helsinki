@@ -1,3 +1,5 @@
+import { UrlObject } from "url";
+
 import React from "react";
 import { Navigation as HDSNavigation, IconSignout } from "hds-react";
 import classNames from "classnames";
@@ -15,7 +17,7 @@ function persistLanguageChoice(language: string) {
 const noop = () => {};
 
 type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
-  href: string;
+  href: string | UrlObject;
   locale?: React.ComponentProps<typeof I18nLink>["locale"];
   lang?: string;
   children?: React.ReactNode;
@@ -23,7 +25,7 @@ type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
 
 const Link = ({ href, children, locale, ...rest }: LinkProps) => {
   return (
-    <I18nLink href={href} locale={locale}>
+    <I18nLink href={href} locale={locale} avoidEscaping>
       <a {...rest}>{children}</a>
     </I18nLink>
   );
@@ -42,7 +44,7 @@ function Navigation({
   languages,
   variant = "default",
 }: Props) {
-  const { locale, push, route } = useRouter();
+  const { locale, push, route, query } = useRouter();
 
   const handleLanguageClick = (event) => {
     const lang = event.target.lang;
@@ -110,7 +112,12 @@ function Navigation({
               lang={language.slug}
               // Target current route with another locale
               locale={language.slug}
-              href={route}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              href={{
+                pathname: route,
+                query,
+              }}
               onClick={handleLanguageClick}
             />
           ))}

@@ -1,3 +1,5 @@
+import { UrlObject } from "url";
+
 import React from "react";
 import { IconLinkExternal, IconAngleRight } from "hds-react";
 import classNames from "classnames";
@@ -9,7 +11,7 @@ import styles from "./infoBlock.module.scss";
 type InfoBlockContentLinkProps = {
   external?: boolean;
   label: string;
-  href: string;
+  href: string | UrlObject;
   // eslint-disable-next-line react/no-unused-prop-types
   id: string;
 };
@@ -34,6 +36,16 @@ function getKey(item: InfoBlockContent): string {
   return item?.props?.id;
 }
 
+function getHrefAsString(href: string | UrlObject): string {
+  if (typeof href === "string") {
+    return href;
+  }
+
+  return `${href.protocol}//${href.pathname}${
+    href.search ? `?${href.search}` : ""
+  }`;
+}
+
 function InfoBlockLink({
   external = false,
   label,
@@ -42,7 +54,7 @@ function InfoBlockLink({
   if (external) {
     return (
       <a
-        href={href}
+        href={getHrefAsString(href)}
         className={styles.link}
         rel="noreferrer noopener"
         target="_blank"

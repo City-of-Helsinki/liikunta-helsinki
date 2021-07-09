@@ -1,3 +1,5 @@
+import { UrlObject } from "url";
+
 import { Sources } from "./constants";
 import { Locale } from "./config";
 
@@ -24,7 +26,7 @@ export type Language = {
 export type Keyword = {
   label: string;
   isHighlighted?: boolean;
-  href: string;
+  href: string | UrlObject;
 };
 
 export type Item = {
@@ -33,7 +35,7 @@ export type Item = {
   pre?: string;
   infoLines: string[];
   keywords: Keyword[];
-  href: string;
+  href: string | UrlObject;
   image: string;
 };
 

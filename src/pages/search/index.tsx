@@ -97,7 +97,12 @@ function getSearchResultsAsItems(
     id: searchResult.venue.meta.id,
     title: getTranslation(searchResult.venue.name, locale),
     infoLines: [],
-    href: `/venues/tprek:${searchResult.venue.meta.id}`,
+    href: {
+      pathname: "/venues/[id]",
+      query: {
+        id: `tprek:${searchResult.venue.meta.id}`,
+      },
+    },
     keywords: mockKeywords,
     image: searchResult.venue.images[0]?.url,
   }));
