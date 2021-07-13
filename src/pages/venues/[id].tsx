@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 
 import { staticGenerationLogger } from "../../domain/logger";
-import { Item, Point, Recommendation } from "../../types";
+import { Address, Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";
 import initializeNextApiApolloClient, {
@@ -34,6 +34,7 @@ import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import Card from "../../components/card/DefaultCard";
 import styles from "./venue.module.scss";
+import renderAddressToString from "../../util/renderAddressToString";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -90,23 +91,11 @@ function pruneId(idWithSource: string): string {
   return id;
 }
 
-type Address = {
-  streetName: string;
-  zip: string;
-  city: string;
-};
-
 type DirectionPoint = {
   name: string;
   address: Address;
   point: Point;
 };
-
-function renderAddressToString(address: Address): string {
-  return [address.streetName, address.zip, address.city]
-    .filter((item) => item)
-    .join(", ");
-}
 
 function getHSLDirection(point?: DirectionPoint): string {
   if (!point) {

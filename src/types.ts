@@ -95,6 +95,13 @@ export type Venue = {
     updatedAt: string;
   };
   images: Image[] | null;
+  location: {
+    address: {
+      streetAddress?: LocalizedString;
+      postalCode?: string;
+      city?: LocalizedString;
+    };
+  };
 };
 
 export type SearchResult = {
@@ -191,4 +198,10 @@ export type Event = {
     alt: string | null;
     url: string | null;
   }[];
+};
+
+export type Address = {
+  streetName: string;
+  zip: string;
+  city: string;
 };

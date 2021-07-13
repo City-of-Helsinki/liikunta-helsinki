@@ -94,9 +94,10 @@ type Props = {
   icon: React.ReactElement;
   name: string;
   contents: InfoBlockContent[];
+  target?: "body" | "card";
 };
 
-function InfoBlock({ icon, name, contents }: Props) {
+function InfoBlock({ icon, name, contents, target = "body" }: Props) {
   const contentWithoutEmpty = contents.filter((item) => {
     if (typeof item === "string") {
       return Boolean(item);
@@ -121,9 +122,11 @@ function InfoBlock({ icon, name, contents }: Props) {
     return null;
   }
 
+  const textVariant = target === "card" ? "body" : "h5";
+
   return (
-    <div className={styles.infoBlock}>
-      <Text as="h4" variant="h5" className={styles.name}>
+    <div className={classNames(styles.infoBlock, styles[target])}>
+      <Text as="h4" variant={textVariant} className={styles.name}>
         {icon} {name}
       </Text>
       <ul className={styles.content}>

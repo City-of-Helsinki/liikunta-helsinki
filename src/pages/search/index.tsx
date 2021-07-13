@@ -1,15 +1,9 @@
 import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
 import { gql, useQuery } from "@apollo/client";
-import { Koros } from "hds-react";
+import { Koros, IconLocation } from "hds-react";
 
-import {
-  Connection,
-  Item,
-  Keyword,
-  LocalizedString,
-  SearchResult,
-} from "../../types";
+import { Keyword, LocalizedString, SearchResult } from "../../types";
 import searchApolloClient from "../../client/searchApolloClient";
 import { getNodes } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
@@ -17,8 +11,9 @@ import useRouter from "../../domain/i18nRouter/useRouter";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
 import Section from "../../components/section/Section";
-import SearchResultCard from "../../components/card/searchResultCard";
+import SearchResultCard from "../../components/card/SearchResultCard";
 import SearchList from "../../components/list/SearchList";
+import InfoBlock from "../../components/infoBlock/InfoBlock";
 import styles from "./search.module.scss";
 import { Locale } from "../../config";
 
@@ -60,6 +55,21 @@ export const SEARCH_QUERY = gql`
             images {
               url
             }
+            location {
+              address {
+                streetAddress {
+                  fi
+                  sv
+                  en
+                }
+                postalCode
+                city {
+                  fi
+                  sv
+                  en
+                }
+              }
+            }
           }
         }
       }
@@ -87,27 +97,6 @@ function getTranslation(translation: LocalizedString, locale: Locale) {
   return translation[locale] ?? translation.fi;
 }
 
-function getSearchResultsAsItems(
-  searchResultConnection: Connection<SearchResult> | null,
-  locale: Locale
-): Item[] {
-  const searchResults = getNodes<SearchResult>(searchResultConnection);
-
-  return searchResults.map((searchResult) => ({
-    id: searchResult.venue.meta.id,
-    title: getTranslation(searchResult.venue.name, locale),
-    infoLines: [],
-    href: {
-      pathname: "/venues/[id]",
-      query: {
-        id: `tprek:${searchResult.venue.meta.id}`,
-      },
-    },
-    keywords: mockKeywords,
-    image: searchResult.venue.images[0]?.url,
-  }));
-}
-
 export default function Search() {
   const {
     query: { q: searchText = "*" },
@@ -126,9 +115,8 @@ export default function Search() {
     fetchPolicy: "cache-and-network",
   });
 
-  const searchResultItems: Item[] = getSearchResultsAsItems(
-    data?.unifiedSearch ?? emptyConnection,
-    locale
+  const searchResults = getNodes<SearchResult>(
+    data?.unifiedSearch ?? emptyConnection
   );
 
   const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);
@@ -153,7 +141,6 @@ export default function Search() {
     <Page title="Search" description="Search">
       <SearchPageSearchForm />
       <Koros className={styles.koros} />
-
       <Section variant="contained">
         <SearchList
           ref={moreResultsAnnouncerRef}
@@ -162,9 +149,46 @@ export default function Search() {
           count={count}
           blockSize={BLOCK_SIZE}
           hasNext={pageInfo?.hasNextPage}
-          items={searchResultItems.map((item) => (
-            <SearchResultCard key={item.id} {...item} />
-          ))}
+          items={searchResults.map((searchResult) => {
+            const item = {
+              id: searchResult.venue.meta.id,
+              title: getTranslation(searchResult.venue.name, locale),
+              infoLines: [],
+              href: {
+                pathname: "/venues/[id]",
+                query: {
+                  id: `tprek:${searchResult.venue.meta.id}`,
+                },
+              },
+              keywords: mockKeywords,
+              image: searchResult.venue.images[0]?.url,
+            };
+
+            return (
+              <SearchResultCard
+                key={item.id}
+                item={item}
+                infoBlocks={[
+                  <InfoBlock
+                    key="location"
+                    target="card"
+                    icon={<IconLocation />}
+                    name={getTranslation(
+                      searchResult.venue.location.address.streetAddress,
+                      locale
+                    )}
+                    contents={[
+                      <InfoBlock.Link
+                        key="map-link"
+                        href={`/map?venue=${item.id}`}
+                        label="Näytä kartalla"
+                      />,
+                    ]}
+                  />,
+                ]}
+              />
+            );
+          })}
         />
       </Section>
     </Page>
