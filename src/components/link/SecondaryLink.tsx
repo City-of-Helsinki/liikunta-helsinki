@@ -20,4 +20,6 @@ const SecondaryLink = React.forwardRef<HTMLAnchorElement, Props>(
   }
 );
 
+SecondaryLink.displayName = "SecondaryLink";
+
 export default SecondaryLink;

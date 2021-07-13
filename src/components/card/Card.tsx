@@ -190,7 +190,7 @@ function Card({ children, id, className }: CardProps) {
   const linkRef = useRef(null);
   const downRef = useRef<Date>(null);
 
-  const handleWrapperMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+  const handleWrapperMouseDown = () => {
     downRef.current = new Date();
   };
 

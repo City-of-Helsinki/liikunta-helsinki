@@ -67,4 +67,6 @@ const SearchList = forwardRef(
   }
 );
 
+SearchList.displayName = "SearchList";
+
 export default SearchList;

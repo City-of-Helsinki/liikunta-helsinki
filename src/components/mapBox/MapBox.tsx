@@ -50,7 +50,9 @@ function MapBox({
           {placeName}
         </Text>
         <Text variant="body-l">{placeAddress}</Text>
-        {links && <InfoBlock.List id="route-directions" inline items={links} />}
+        {links && (
+          <InfoBlock.List key="route-directions" inline items={links} />
+        )}
       </div>
     </div>
   );
