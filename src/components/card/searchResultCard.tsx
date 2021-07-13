@@ -1,15 +1,31 @@
 import React from "react";
 import Image from "next/image";
 
+import InfoBlock from "../infoBlock/InfoBlock";
 import { Item } from "../../types";
 import Card from "./Card";
 import styles from "./searchResultCard.module.scss";
 
-function SearchResultCard({ id, title, keywords, href, image }: Item) {
+type Props = {
+  item: Item;
+  infoBlocks?: React.ReactElement<React.ComponentProps<typeof InfoBlock>>[];
+};
+
+function SearchResultCard({
+  item: { id, title, keywords, href, image },
+  infoBlocks,
+}: Props) {
   return (
     <Card id={id} className={styles.searchResultCard}>
-      <Card.Content>
+      <Card.Content className={styles.content}>
         <Card.Title title={title} as="h2" variant="h3" href={href} />
+        {infoBlocks && (
+          <ul className={styles.infoBlocks}>
+            {infoBlocks.map((infoBlock) => (
+              <li key={infoBlock.key}>{infoBlock}</li>
+            ))}
+          </ul>
+        )}
       </Card.Content>
       <Card.CtaButton className={styles.button}>Lue lisää</Card.CtaButton>
       <Card.Keywords keywords={keywords} className={styles.keywords} />
