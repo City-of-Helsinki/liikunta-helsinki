@@ -12,6 +12,11 @@ function transformDynamicPathIntoSegmentedDynamicPath(path: string): string {
 }
 
 export function getI18nPath(route: string, locale: string): string {
+  // English is the default language within code so it doesn't need transforming
+  if (locale === "en") {
+    return route;
+  }
+
   const i18nRewriteRules =
     Object.entries(i18nRoutes).find(
       ([routeKey]) =>
