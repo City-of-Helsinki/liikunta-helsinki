@@ -17,7 +17,9 @@ function SearchResultCard({ id, title, keywords, href, image }: Item) {
       {!image && (
         <Card.Image
           className={styles.placeholderCard}
-          image={<Image src="/placeholder_image_missing.png" layout="fill" />}
+          image={
+            <Image src="/placeholder_image_missing.png" layout="fill" alt="" />
+          }
         />
       )}
     </Card>

@@ -12,14 +12,10 @@ type InfoBlockContentLinkProps = {
   external?: boolean;
   label: string;
   href: string | UrlObject;
-  // eslint-disable-next-line react/no-unused-prop-types
-  id: string;
 };
 
 type InfoBlockContentListProps = {
   items: Array<string | React.ReactElement<InfoBlockContentLinkProps>>;
-  // eslint-disable-next-line react/no-unused-prop-types
-  id: string;
   inline?: boolean;
 };
 
@@ -33,7 +29,7 @@ function getKey(item: InfoBlockContent): string {
     return item;
   }
 
-  return item?.props?.id;
+  return item?.key?.toString();
 }
 
 function getHrefAsString(href: string | UrlObject): string {

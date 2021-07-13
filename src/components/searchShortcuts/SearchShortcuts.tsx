@@ -17,7 +17,7 @@ function SearchShortcuts({ shortcuts }: Props) {
   return (
     <List
       variant="tight"
-      items={shortcuts.map((shortcut, i) => (
+      items={shortcuts.map((shortcut) => (
         <CategoryLink
           key={shortcut.id}
           label={shortcut.label}
