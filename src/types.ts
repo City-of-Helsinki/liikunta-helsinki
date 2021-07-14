@@ -110,7 +110,7 @@ export type Venue = {
       geometry: {
         coordinates: number[];
       };
-    },
+    };
     address: {
       streetAddress?: LocalizedString;
       postalCode?: string;
@@ -223,4 +223,9 @@ export type Address = {
   streetName: string;
   zip: string;
   city: string;
+};
+
+export type Option = {
+  label: string;
+  value: string;
 };

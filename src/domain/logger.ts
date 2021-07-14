@@ -87,11 +87,13 @@ function createLogger(namespace: string): Logger {
 }
 
 export const graphqlLogger = createLogger("graphql");
+export const graphqlClientLogger = createLogger("graphql-client");
 export const dataSourceLogger = createLogger("dataSource");
 export const dataSourceHaukiLogger = createLogger("ds:Hauki");
 export const dataSourceTprekLogger = createLogger("ds:Tprek");
 export const dataSourceLinkedLogger = createLogger("ds:linked");
 export const staticGenerationLogger = createLogger("staticGeneration");
 export const logger = createLogger("general");
+export const networkLogger = createLogger("network");
 
 export default createLogger;
