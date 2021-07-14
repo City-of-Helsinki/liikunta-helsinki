@@ -2,10 +2,13 @@ import {
   ApolloClient,
   NormalizedCacheObject,
   InMemoryCache,
+  from,
+  HttpLink,
 } from "@apollo/client";
 import { relayStylePagination } from "@apollo/client/utilities";
 
 import Config from "../config";
+import apolloErrorLink from "./apolloErrorLink";
 
 const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {
@@ -17,12 +20,15 @@ const cache: InMemoryCache = new InMemoryCache({
   },
 });
 
-const searchApolloClient: ApolloClient<NormalizedCacheObject> = new ApolloClient(
-  {
+const httpLink = new HttpLink({
+  uri: Config.unifiedSearchGraphqlEndpoint,
+});
+
+const searchApolloClient: ApolloClient<NormalizedCacheObject> =
+  new ApolloClient({
     cache,
-    uri: Config.unifiedSearchGraphqlEndpoint,
+    link: from([apolloErrorLink, httpLink]),
     ssrMode: false,
-  }
-);
+  });
 
 export default searchApolloClient;

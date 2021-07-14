@@ -3,7 +3,11 @@ import { GetStaticPropsContext } from "next";
 import { gql, useQuery } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
 
+import { LocalizedString, SearchResult } from "../../types";
+import { Locale } from "../../config";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
+import useSearch from "../../hooks/useSearch";
+import capitalize from "../../util/capitalize";
 import searchApolloClient from "../../client/searchApolloClient";
 import { getNodes } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
@@ -18,10 +22,6 @@ import styles from "./search.module.scss";
 import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";
-import { Keyword, LocalizedString, SearchResult } from "../../types";
-import { Locale } from "../../config";
-import useSearch from "../../hooks/useSearch";
-import capitalize from "../../util/capitalize";
 
 const BLOCK_SIZE = 10;
 // And ID that matches the sports ontology tree branch that has the Culture,
@@ -36,6 +36,7 @@ export const SEARCH_QUERY = gql`
     $cursor: String
     $language: UnifiedSearchLanguage!
     $ontologyTreeId: ID!
+    $administrativeDivisionId: ID
   ) {
     unifiedSearch(
       q: $q
@@ -44,6 +45,7 @@ export const SEARCH_QUERY = gql`
       after: $cursor
       languages: [$language]
       ontologyTreeId: $ontologyTreeId
+      administrativeDivisionId: $administrativeDivisionId
     ) {
       count
       pageInfo {
@@ -112,7 +114,7 @@ function getTranslation(translation: LocalizedString, locale: Locale) {
 
 export default function Search() {
   const {
-    query: { q: searchText = "*" },
+    query: { q: searchText = "*", administrativeDivisionId },
     ...router
   } = useRouter();
   const locale = router.locale ?? router.defaultLocale;
@@ -125,6 +127,7 @@ export default function Search() {
       after: "",
       language: appToUnifiedSearchLanguageMap[locale],
       ontologyTreeId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
+      administrativeDivisionId,
     },
     fetchPolicy: "cache-and-network",
   });

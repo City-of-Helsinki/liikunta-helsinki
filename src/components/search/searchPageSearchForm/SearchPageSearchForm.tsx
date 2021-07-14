@@ -6,14 +6,16 @@ import debounce from "lodash/debounce";
 import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
 import useRouter from "../../../domain/i18nRouter/useRouter";
 import queryPersister from "../../../util/queryPersister";
+// eslint-disable-next-line max-len
+import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
 import Text from "../../text/Text";
-import useSearch from "../../../hooks/useSearch";
-import styles from "./searchPageSearchForm.module.scss";
+import useSearch, { Filters } from "../../../hooks/useSearch";
 import searchApolloClient from "../../../client/searchApolloClient";
 import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
+import styles from "./searchPageSearchForm.module.scss";
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -36,27 +38,31 @@ type Props = {
 function SearchPageSearchForm({ showTitle = true }: Props) {
   const router = useRouter();
   const { search } = useSearch();
+  const urlSearchParams = getURLSearchParamsFromAsPath(router.asPath);
   const [searchText, setSearchText] = useState<string>(
-    getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
+    urlSearchParams.get("q") ?? ""
   );
+  const [administrativeDivisionId, setAdministrativeDivisionId] =
+    useState<string>(urlSearchParams.get("administrativeDivisionId") ?? "");
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
-  const doSearch = (q?: string) => {
-    const nextQuery = q ? { q } : null;
-
-    queryPersister.persistQuery(nextQuery);
-    search(nextQuery, "replace");
+  const doSearch = (query: Filters) => {
+    queryPersister.persistQuery(query);
+    search(query, "replace");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    doSearch(e.target.q.value);
+
+    const q = e.target.q.value;
+
+    doSearch({ q, administrativeDivisionId });
   };
 
-  const handleChange = (value: string) => {
+  const handleSearchTextChange = (value: string) => {
     setSearchText(value);
     debouncedFindSuggestions.current({
       variables: {
@@ -69,7 +75,11 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
   };
 
   const handleSelectSuggestion = (suggestion: Suggestion) => {
-    doSearch(suggestion.label);
+    doSearch({ q: suggestion.label });
+  };
+
+  const handleAdminDivisionChange = (administrativeDivisionId: string) => {
+    setAdministrativeDivisionId(administrativeDivisionId);
   };
 
   const suggestions =
@@ -85,14 +95,24 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
           label="Haku"
           placeholder="Kirjoita hakusana, esim. uimahalli tai jooga"
           value={searchText}
-          onChange={handleChange}
+          onChange={handleSearchTextChange}
           onSelectedItemChange={handleSelectSuggestion}
           suggestions={suggestions.map((suggestion) => ({
             id: suggestion.label,
             label: suggestion.label,
           }))}
         />
-        <Button type="submit" iconLeft={<IconSearch />}>
+        <AdministrativeDivisionDropdown
+          id="administrativeDivisionId"
+          name="administrativeDivisionId"
+          onChange={handleAdminDivisionChange}
+          value={administrativeDivisionId}
+        />
+        <Button
+          type="submit"
+          className={styles.submitButton}
+          iconLeft={<IconSearch />}
+        >
           Hae
         </Button>
       </form>

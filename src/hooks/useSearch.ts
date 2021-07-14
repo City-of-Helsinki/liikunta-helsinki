@@ -3,9 +3,10 @@ import { useCallback } from "react";
 import i18nRoutes from "../../i18nRoutes.config";
 import useRouter from "../domain/i18nRouter/useRouter";
 
-type Filters = {
+export type Filters = {
   q: string;
   ontology?: string;
+  administrativeDivisionId?: string;
 };
 
 type Search = string | Partial<Filters> | URLSearchParams | null;
@@ -19,7 +20,21 @@ function getQueryString(search: Search): string {
     return search.toString();
   }
 
-  return new URLSearchParams(search).toString();
+  const searchParamsWithoutEmpty = Object.entries(search).reduce(
+    (acc, [filterName, filterValue]) => {
+      if (!filterValue) {
+        return acc;
+      }
+
+      return {
+        ...acc,
+        [filterName]: filterValue,
+      };
+    },
+    {}
+  );
+
+  return new URLSearchParams(searchParamsWithoutEmpty).toString();
 }
 
 function useSearch() {
@@ -30,7 +45,9 @@ function useSearch() {
 
   const getSearchRoute = useCallback(
     (search: Search) => {
-      return `${searchBasePath}?${getQueryString(search)}`;
+      const queryString = getQueryString(search);
+
+      return `${searchBasePath}${queryString ? `?${queryString}` : ""}`;
     },
     [searchBasePath]
   );

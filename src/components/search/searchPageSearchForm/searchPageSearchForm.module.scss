@@ -8,6 +8,15 @@
   grid-gap: $spacing-m;
 
   @include breakpoints.respond-above(s) {
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
+
+    & > *:first-child,
+    & > *:nth-child(2) {
+      grid-column: span 2;
+    }
+  }
+
+  .submitButton {
+    grid-column: 4;
   }
 }
