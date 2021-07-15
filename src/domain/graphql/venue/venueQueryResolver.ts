@@ -39,11 +39,11 @@ resolvers.set(
   })
 );
 
-async function resolver(_, { id: idWithSource }, { language }) {
+async function resolver(_, { id: idWithSource }, { language, dataSources }) {
   const [source, id] = parseVenueId(idWithSource);
   const dataResolver = resolvers.get(source) ?? null;
 
-  return dataResolver.resolveVenue(id, source, { language });
+  return dataResolver.resolveVenue(id, source, { language, dataSources });
 }
 
 function onError(e: unknown) {

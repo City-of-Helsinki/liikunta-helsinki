@@ -1,6 +1,6 @@
+import RESTDataSource from "./RESTDataSource";
 import { Locale } from "../../../config";
 import { dataSourceLinkedLogger as logger } from "../../logger";
-import DataSource from "./DataSource";
 
 type LinkedResponse<E> = {
   meta: unknown;
@@ -96,7 +96,12 @@ type LinkedEvent<Translation = LinkedTranslation> = {
 };
 
 // https://api.hel.fi/linkedevents/v1
-class Linked extends DataSource {
+export default class Linked extends RESTDataSource {
+  constructor() {
+    super(logger);
+    this.baseURL = "https://api.hel.fi/linkedevents/v1/";
+  }
+
   async getUpcomingEvents(
     id: string,
     language?: Locale
@@ -111,12 +116,21 @@ class Linked extends DataSource {
     }
 
     const response = await this.get<LinkedResponse<LinkedEvent>>(
-      `https://api.hel.fi/linkedevents/v1/event/?${params}`
+      `event/?${params}`
     );
     // Get the first 6 only as the UI doesn't show more ever. Linked API does
     // not offer a way to limit the result set.
-    return response?.data?.data.slice(0, 6) ?? [];
+    return response?.data.slice(0, 6) ?? [];
   }
-}
 
-export default new Linked(logger);
+  async getPlace(id: string) {
+    return this.get(`place/${id}/`);
+  }
+
+  // async getEvents(
+  //   ids: string[]
+  // ): Promise<LinkedEvent[] | LinkedEvent<string>[]> {
+  //   const params = new URLSearchParams();
+  //   params.set("ids", ids.join(","));
+  // }
+}

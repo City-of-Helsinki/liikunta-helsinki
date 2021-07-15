@@ -72,10 +72,8 @@ type Config = {
 export default class VenueTprekIntegration extends VenueResolverIntegration<TprekUnit> {
   constructor(config: Config) {
     super({
-      getDataSources: (id: string) => [
-        axios
-          .get(`https://www.hel.fi/palvelukarttaws/rest/v4/unit/${id}`)
-          .then((response) => response.data),
+      getDataSources: (id: string, _, { dataSources }) => [
+        dataSources.tprek.getUnit(id),
       ],
       enrichers: config.enrichers,
       format: (data, context) => translateVenue(this.formatter(data), context),

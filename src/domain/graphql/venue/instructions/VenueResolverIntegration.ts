@@ -4,7 +4,11 @@ import VenueEnricher from "./VenueEnricher";
 export type VenueData = VenueDetails | VenueDetails<string>;
 
 type Config<I> = {
-  getDataSources?: (id: string, source: Source) => Promise<I>[];
+  getDataSources?: (
+    id: string,
+    source: Source,
+    context: Context
+  ) => Promise<I>[];
   format?: (data: I, context: Context) => Partial<VenueData>;
   enrichers?: VenueEnricher<I, Partial<VenueData>>[];
 };
@@ -16,12 +20,12 @@ export default class VenueResolverIntegration<I = AnyObject> {
     this.config = config;
   }
 
-  getDataSources(id: string, source: Source): Promise<I>[] {
+  getDataSources(id: string, source: Source, context: Context): Promise<I>[] {
     if (!this.config.getDataSources) {
       return [];
     }
 
-    return this.config.getDataSources(id, source);
+    return this.config.getDataSources(id, source, context);
   }
 
   format(uncleanData: I, context: Context): Partial<VenueData> {
@@ -29,7 +33,7 @@ export default class VenueResolverIntegration<I = AnyObject> {
       return this.config.format(uncleanData, context);
     }
 
-    return (uncleanData as unknown) as VenueData;
+    return uncleanData as unknown as VenueData;
   }
 
   async enrich(data: I, context: Context): Promise<Partial<VenueData>> {
