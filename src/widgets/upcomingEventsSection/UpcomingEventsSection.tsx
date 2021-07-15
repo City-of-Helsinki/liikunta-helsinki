@@ -169,6 +169,7 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
   const locale = router.locale ?? router.defaultLocale;
   const { loading, error, data } = useQuery(UPCOMING_EVENTS_QUERY, {
     variables: { id: linkedId },
+    skip: !process.browser,
     context: {
       headers: {
         "Accept-Language": locale,
