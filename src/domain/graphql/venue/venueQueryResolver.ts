@@ -52,6 +52,4 @@ function onError(e: unknown) {
   }
 }
 
-const venueQueryResolver = createQueryResolver(resolver, onError);
-
-export default venueQueryResolver;
+export default createQueryResolver(resolver, onError);
