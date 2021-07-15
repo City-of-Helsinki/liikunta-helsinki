@@ -13,6 +13,7 @@ import Event from "../../domain/graphql/event/eventResolver";
 import Hauki from "../../domain/graphql/dataSources/Hauki";
 import Tprek from "../../domain/graphql/dataSources/Tprek";
 import Linked from "../../domain/graphql/dataSources/Linked";
+import LiikuntaLoggerPlugin from "../../domain/graphql/LiikuntaLoggerPlugin";
 
 // Note: In the current version of GraphQL, you can’t have an empty type even if
 // you intend to extend it later. So we need to make sure the Query type has at
@@ -63,6 +64,7 @@ const apolloServer = new ApolloServer({
       language,
     };
   },
+  plugins: [new LiikuntaLoggerPlugin()],
 });
 
 export const config = {
