@@ -72,7 +72,7 @@ function getCollectionsAsItems(collections: Collection[] | null): Item[] {
     infoLines: [collection.translation?.description],
     href: {
       pathname: "/collections/[slug]",
-      query: { slug: collection.translation.slug },
+      query: { slug: collection.translation?.slug },
     },
     keywords: [
       {
