@@ -16,6 +16,7 @@
     "@apollo/client": "^3.3.16",
     "@types/jest": "^26.0.23",
     "accepts": "^1.3.7",
+    "apollo-datasource-rest": "^3.0.0",
     "apollo-server-micro": "^2.25.1",
     "axios": "^0.21.1",
     "camelcase-keys": "^6.2.2",

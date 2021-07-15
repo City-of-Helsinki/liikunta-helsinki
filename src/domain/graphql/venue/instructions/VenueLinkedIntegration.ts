@@ -66,14 +66,10 @@ type Config = {
 export default class VenueLinkedIntegration extends VenueResolverIntegration<LinkedPlace> {
   constructor(config: Config) {
     super({
-      getDataSources: (id: string) => {
+      getDataSources: (id: string, _, { dataSources }) => {
         const linkedId = `tprek:${id}`;
 
-        return [
-          axios
-            .get(`https://api.hel.fi/linkedevents/v1/place/${linkedId}/`)
-            .then((response) => response.data),
-        ];
+        return [dataSources.linked.getPlace(linkedId)];
       },
       enrichers: config.enrichers,
       format: (data, context) => translateVenue(this.formatter(data), context),

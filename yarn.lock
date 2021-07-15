@@ -1538,6 +1538,17 @@ apollo-cache-control@^0.14.0:
     apollo-server-env "^3.1.0"
     apollo-server-plugin-base "^0.13.0"
 
+apollo-datasource-rest@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-datasource-rest/-/apollo-datasource-rest-3.0.0.tgz#0ff8eb585f0e3a6e327b6d39db243669dd56ef23"
+  integrity sha512-pjx2uOvQSGHCE6fEeItTUniqYshL3OvD02ybwhbISg+7iQXKsyvgYKDgzY77tDjIiNSdUZsFOkNw2lmfnORBxA==
+  dependencies:
+    apollo-datasource "^3.0.0"
+    apollo-server-caching "^3.0.0"
+    apollo-server-env "^4.0.0"
+    apollo-server-errors "^3.0.0"
+    http-cache-semantics "^4.1.0"
+
 apollo-datasource@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/apollo-datasource/-/apollo-datasource-0.9.0.tgz#b0b2913257a6103a5f4c03cb56d78a30e9d850db"
@@ -1545,6 +1556,14 @@ apollo-datasource@^0.9.0:
   dependencies:
     apollo-server-caching "^0.7.0"
     apollo-server-env "^3.1.0"
+
+apollo-datasource@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-datasource/-/apollo-datasource-3.0.0.tgz#27b96f6d8dbc4796d241aa4329ed9e4cf734b714"
+  integrity sha512-mX+o0AQj/C4Z5M6r4g0BLRS6Ey7zxp4EvAhhLuMFB3xUnpcLxPxaq+FBLmxxo8OfE7Ay3AUe6mJgnAYIC2eqlg==
+  dependencies:
+    apollo-server-caching "^3.0.0"
+    apollo-server-env "^4.0.0"
 
 apollo-graphql@^0.9.0:
   version "0.9.3"
@@ -1576,6 +1595,13 @@ apollo-server-caching@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/apollo-server-caching/-/apollo-server-caching-0.7.0.tgz#e6d1e68e3bb571cba63a61f60b434fb771c6ff39"
   integrity sha512-MsVCuf/2FxuTFVhGLK13B+TZH9tBd2qkyoXKKILIiGcZ5CDUEBO14vIV63aNkMkS1xxvK2U4wBcuuNj/VH2Mkw==
+  dependencies:
+    lru-cache "^6.0.0"
+
+apollo-server-caching@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-server-caching/-/apollo-server-caching-3.0.0.tgz#be292891f58e11ae7e62ef0af6e2edbec3998851"
+  integrity sha512-5ziYq8qv4PBAteY4dxVgiUq4h9OyQPY9BS/xadsyoa3VNChfXu1ByVrSx6v9hUcYkZAf5eioH0eT74EG/rjSgw==
   dependencies:
     lru-cache "^6.0.0"
 
@@ -1618,10 +1644,23 @@ apollo-server-env@^3.1.0:
     node-fetch "^2.6.1"
     util.promisify "^1.0.0"
 
+apollo-server-env@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-server-env/-/apollo-server-env-4.0.0.tgz#ebb1ed7a1948f124cebbc0fe792158be19eba9d8"
+  integrity sha512-NpdtkJRZq07XrZGjjrL0joU8N1OivUNYun00gafCxzZqNg+D0YkXIU0any6brXFh+u0qIXuvYS+eKFcjiVWCJg==
+  dependencies:
+    node-fetch "^2.6.1"
+    util.promisify "^1.0.1"
+
 apollo-server-errors@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/apollo-server-errors/-/apollo-server-errors-2.5.0.tgz#5d1024117c7496a2979e3e34908b5685fe112b68"
   integrity sha512-lO5oTjgiC3vlVg2RKr3RiXIIQ5pGXBFxYGGUkKDhTud3jMIhs+gel8L8zsEjKaKxkjHhCQAA/bcEfYiKkGQIvA==
+
+apollo-server-errors@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-server-errors/-/apollo-server-errors-3.0.0.tgz#9441ea6030d036822e77ca2b2d4320d11fe4556e"
+  integrity sha512-fyvyn/3EN4RO4A9GL26EWOEGbqmbeOy5vgh0MK9YErfKctWWNFvH4cuCWAy30hiqYnwR1apNKDedOKEhe+/CIg==
 
 apollo-server-micro@^2.25.1:
   version "2.25.2"
@@ -3815,6 +3854,11 @@ htmlparser2@6.1.0:
     domhandler "^4.0.0"
     domutils "^2.5.2"
     entities "^2.0.0"
+
+http-cache-semantics@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.0.tgz#49e91c5cbf36c9b94bcfcd71c23d5249ec74e390"
+  integrity sha512-carPklcUh7ROWRK7Cv27RPtdhYhUsela/ue5/jKzjegVvXDqM2ILE9Q2BGn9JZJh1g87cp56su/FgQSzcWS8cQ==
 
 http-errors@1.6.2:
   version "1.6.2"
@@ -7094,7 +7138,7 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-util.promisify@^1.0.0:
+util.promisify@^1.0.0, util.promisify@^1.0.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/util.promisify/-/util.promisify-1.1.1.tgz#77832f57ced2c9478174149cae9b96e9918cd54b"
   integrity sha512-/s3UsZUrIfa6xDhr7zZhnE9SLQ5RIXyYfiVnMMyMDzOc8WhWN4Nbh36H842OyurKbCDAesZOJaVyvmSl6fhGQw==

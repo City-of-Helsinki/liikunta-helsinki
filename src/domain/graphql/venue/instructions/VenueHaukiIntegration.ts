@@ -1,5 +1,4 @@
 import { Source } from "../../../../types";
-import hauki from "../../dataSources/hauki";
 import VenueResolverInstruction from "./VenueResolverIntegration";
 
 type Config = {
@@ -9,14 +8,14 @@ type Config = {
 export default class HaukiIntegration extends VenueResolverInstruction {
   constructor(config: Config) {
     super({
-      getDataSources: (id, source) => {
+      getDataSources: (id, source, { dataSources }) => {
         const haukiId = config.getId(id, source);
 
         return [
-          hauki.getIsOpen(haukiId).then((result) => ({
+          dataSources.hauki.getIsOpen(haukiId).then((result) => ({
             isOpen: result,
           })),
-          hauki.getOpeningHours(haukiId).then((result) => ({
+          dataSources.hauki.getOpeningHours(haukiId).then((result) => ({
             openingHours: result,
           })),
         ];

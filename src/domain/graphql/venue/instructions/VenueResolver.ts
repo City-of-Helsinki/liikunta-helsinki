@@ -32,7 +32,7 @@ export default class VenueResolver {
     [id, source, context]: [string, Source, Context]
   ) {
     const dataPromisesWithFormatting = integrations.flatMap((integration) => {
-      const dataLocations = integration.getDataSources(id, source);
+      const dataLocations = integration.getDataSources(id, source, context);
 
       return dataLocations.map((dataLocation) => {
         return dataLocation.then((data) =>

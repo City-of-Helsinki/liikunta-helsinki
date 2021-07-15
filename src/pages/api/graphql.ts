@@ -10,6 +10,9 @@ import Venue from "../../domain/graphql/venue/venueResolver";
 import eventSchema from "../../domain/graphql/event/eventSchema";
 import upcomingEventsQueryResolver from "../../domain/graphql/event/upcomingEventsQueryResolver";
 import Event from "../../domain/graphql/event/eventResolver";
+import Hauki from "../../domain/graphql/dataSources/Hauki";
+import Tprek from "../../domain/graphql/dataSources/Tprek";
+import Linked from "../../domain/graphql/dataSources/Linked";
 
 // Note: In the current version of GraphQL, you can’t have an empty type even if
 // you intend to extend it later. So we need to make sure the Query type has at
@@ -24,6 +27,11 @@ const initQueryTypeDefs = gql`
 `;
 
 const typeDefs = [initQueryTypeDefs, venueSchema, eventSchema];
+const dataSources = () => ({
+  hauki: new Hauki(),
+  tprek: new Tprek(),
+  linked: new Linked(),
+});
 
 const resolvers = {
   Query: {
@@ -44,6 +52,7 @@ function acceptsLanguages(
 }
 
 const apolloServer = new ApolloServer({
+  dataSources,
   typeDefs,
   resolvers,
   tracing: process.env.NODE_ENV !== "production",

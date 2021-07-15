@@ -177,6 +177,7 @@ export type AnyObject = Record<string, unknown>;
 
 export type Context = {
   language?: Locale;
+  dataSources?: any;
 };
 
 export type EventOffer = {
