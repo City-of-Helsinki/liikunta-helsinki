@@ -1,5 +1,6 @@
 import Link from "../../domain/i18nRouter/Link";
 import Text from "../text/Text";
+import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
 import styles from "./hero.module.scss";
 
 type Props = {
@@ -14,9 +15,9 @@ type Props = {
 function Hero({ title, description, cta }: Props) {
   return (
     <div className={styles.box}>
-      <Text variant="body" className={styles.boxHelper}>
-        {description}
-      </Text>
+      <span className={styles.boxHelper}>
+        <HtmlToReact>{description}</HtmlToReact>
+      </span>
       <Text variant="h1" className={styles.boxTitle}>
         {title}
       </Text>
