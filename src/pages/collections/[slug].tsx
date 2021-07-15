@@ -60,6 +60,7 @@ export default function CollectionsPage() {
   const twitterTitle = collection?.translation?.twitterTitle;
   const backgroundColor = collection?.backgroundColor;
   const metaImage = collection?.translation?.socialImage?.uri;
+  const image = collection?.translation?.image;
 
   return (
     <Page
@@ -93,14 +94,16 @@ export default function CollectionsPage() {
             </div>
           </div>
           <div className={styles.collectionBlockImage}>
-            <Image
-              alt=""
-              src={collection?.translation?.image}
-              layout="responsive"
-              objectFit="cover"
-              height="100%"
-              width="100%"
-            />
+            {image && (
+              <Image
+                alt=""
+                src={image}
+                layout="responsive"
+                objectFit="cover"
+                height="100%"
+                width="100%"
+              />
+            )}
           </div>
         </div>
       </Section>
