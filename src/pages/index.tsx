@@ -41,6 +41,7 @@ export const LANDING_PAGE_QUERY = gql`
           collection {
             id
             translation(language: $languageCode) {
+              slug
               title
               description
               image
@@ -70,8 +71,8 @@ function getCollectionsAsItems(collections: Collection[] | null): Item[] {
     title: collection.translation?.title,
     infoLines: [collection.translation?.description],
     href: {
-      pathname: "/collections/[id]",
-      query: { id: collection.id },
+      pathname: "/collections/[slug]",
+      query: { slug: collection.translation.slug },
     },
     keywords: [
       {
@@ -92,9 +93,8 @@ export default function Home() {
     },
   });
 
-  const recommendationItems: Item[] = getRecommendationsAsItems(
-    mockRecommendations
-  );
+  const recommendationItems: Item[] =
+    getRecommendationsAsItems(mockRecommendations);
   const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(
     data?.pageBy?.modules
