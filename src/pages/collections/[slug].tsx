@@ -6,6 +6,7 @@ import classNames from "classnames";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
+import RecommendedEventsSection from "../../widgets/recommendedEventsSection/RecommendedEventsSection";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
@@ -18,6 +19,12 @@ export const COLLECTION_PAGE_QUERY = gql`
     collection(id: $slug, idType: SLUG) {
       id
       backgroundColor
+      modules {
+        ... on EventSelected {
+          module
+          events
+        }
+      }
       translation(language: $languageCode) {
         title
         description
@@ -61,6 +68,9 @@ export default function CollectionsPage() {
   const backgroundColor = collection?.backgroundColor;
   const metaImage = collection?.translation?.socialImage?.uri;
   const image = collection?.translation?.image;
+  const recommendedEventIds = collection?.modules?.flatMap(
+    (module) => module.events
+  );
 
   return (
     <Page
@@ -107,6 +117,7 @@ export default function CollectionsPage() {
           </div>
         </div>
       </Section>
+      <RecommendedEventsSection eventIds={recommendedEventIds} />
     </Page>
   );
 }
