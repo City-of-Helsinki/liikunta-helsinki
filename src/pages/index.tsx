@@ -5,6 +5,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Collection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../client/cmsApolloClient";
 import { getQlLanguage } from "../client/utils";
+import mockCategories from "../client/tmp/mockCategories";
 import mockRecommendations from "../client/tmp/mockRecommendations";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
@@ -15,7 +16,6 @@ import CollectionCard from "../components/card/CollectionCard";
 import Hero from "../components/hero/Hero";
 import HeroImage from "../components/hero/HeroImage";
 import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
-import mockCategories from "../client/tmp/mockCategories";
 import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
 
 export const LANDING_PAGE_QUERY = gql`

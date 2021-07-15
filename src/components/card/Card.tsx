@@ -1,6 +1,12 @@
 import { UrlObject } from "url";
 
-import React, { ReactNode, RefObject, useContext, useRef } from "react";
+import React, {
+  ReactNode,
+  RefObject,
+  useContext,
+  useMemo,
+  useRef,
+} from "react";
 import { IconArrowRight } from "hds-react";
 import classNames from "classnames";
 import { ImageProps } from "next/image";
@@ -9,6 +15,7 @@ import Link from "../../domain/i18nRouter/Link";
 import { Keyword as KeywordType } from "../../types";
 import Text from "../text/Text";
 import Keyword from "../keyword/Keyword";
+import HtmlToReact from "../htmlToReact/HtmlToReact";
 import styles from "./card.module.scss";
 
 type CardContextType = {
@@ -64,17 +71,29 @@ type CardInfoLinesProps = Partial<React.ComponentProps<typeof Text>> & {
 };
 
 function CardInfoLines({ infoLines, ...textProps }: CardInfoLinesProps) {
+  const P = useMemo(() => {
+    const component = ({ children }: { children: React.ReactNode }) => (
+      <Text className={styles.infoLine} {...textProps}>
+        {children}
+      </Text>
+    );
+
+    component.displayName = "CardP";
+
+    return component;
+  }, [textProps]);
+
   return (
     <div className={styles.infoLines}>
       {infoLines.map((infoLine) => (
-        <Text
+        <HtmlToReact
           key={infoLine}
-          variant="body"
-          className={styles.infoLine}
-          {...textProps}
+          components={{
+            p: P,
+          }}
         >
           {infoLine}
-        </Text>
+        </HtmlToReact>
       ))}
     </div>
   );

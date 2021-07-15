@@ -6,11 +6,11 @@ import classNames from "classnames";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
-import hash from "../../util/hash";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
+import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
 import styles from "./collection.module.scss";
 
 export const COLLECTION_PAGE_QUERY = gql`
@@ -54,11 +54,7 @@ export default function CollectionsPage() {
             <Text as="h1" variant="h2">
               {title}
             </Text>
-            {description?.split("\n\n").map((paragraph) => (
-              <Text key={hash(paragraph.substr(0, 50))} variant="body">
-                {paragraph}
-              </Text>
-            ))}
+            <HtmlToReact>{description}</HtmlToReact>
             <div className={styles.collectionBlockContentSome}>
               <Text as="h2" variant="h4">
                 Jaa liikunta

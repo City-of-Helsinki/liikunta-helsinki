@@ -16,9 +16,9 @@
   }
 }
 
-.boxHelper {
-  color: $color-white;
-  margin-bottom: $spacing-s;
+.boxHelper > p {
+  color: $color-white !important;
+  margin-bottom: $spacing-s !important;
 }
 
 .boxTitle {
