@@ -3,6 +3,7 @@ import { gql } from "apollo-server-micro";
 const typeDefs = gql`
   extend type Query {
     upcomingEvents(id: ID!): [Event]!
+    eventsByIds(ids: [ID!]!): [Event]!
   }
 
   type Image {

@@ -9,6 +9,7 @@ import venueQueryResolver from "../../domain/graphql/venue/venueQueryResolver";
 import Venue from "../../domain/graphql/venue/venueResolver";
 import eventSchema from "../../domain/graphql/event/eventSchema";
 import upcomingEventsQueryResolver from "../../domain/graphql/event/upcomingEventsQueryResolver";
+import eventsByIdsResolver from "../../domain/graphql/event/eventsByIdsResolver";
 import Event from "../../domain/graphql/event/eventResolver";
 import Hauki from "../../domain/graphql/dataSources/Hauki";
 import Tprek from "../../domain/graphql/dataSources/Tprek";
@@ -38,6 +39,7 @@ const resolvers = {
   Query: {
     venue: venueQueryResolver,
     upcomingEvents: upcomingEventsQueryResolver,
+    eventsByIds: eventsByIdsResolver,
   },
   Venue,
   Event,

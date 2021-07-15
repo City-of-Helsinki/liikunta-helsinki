@@ -1,6 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import { LoadingSpinner } from "hds-react";
 
+import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
 import getEventsAsItems from "../../util/events/getEventsAsItems";
 import eventFragment from "../../util/events/eventFragment";
 import useRouter from "../../domain/i18nRouter/useRouter";
@@ -8,25 +9,27 @@ import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import CondensedCard from "../../components/card/CondensedCard";
 
-const UPCOMING_EVENTS_QUERY = gql`
-  query UpcomingEventsQuery($id: ID!) {
-    upcomingEvents(id: $id) {
+const RECOMMENDED_EVENTS_QUERY = gql`
+  query RecommendedEventsQuery($ids: [ID!]!) {
+    eventsByIds(ids: $ids) {
       ...eventFragment
     }
   }
+
   ${eventFragment}
 `;
 
 type Props = {
-  linkedId: string;
+  eventIds: string[];
 };
 
-// This component expects to find the apiApolloClient from Context
-export default function UpcomingEventsSection({ linkedId }: Props) {
+export default function RecommendedEventsSection({ eventIds }: Props) {
+  const nextApiApolloClient = useNextApiApolloClient();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { loading, error, data } = useQuery(UPCOMING_EVENTS_QUERY, {
-    variables: { id: linkedId },
+  const { loading, error, data } = useQuery(RECOMMENDED_EVENTS_QUERY, {
+    client: nextApiApolloClient,
+    variables: { ids: eventIds },
     skip: !process.browser,
     context: {
       headers: {
@@ -45,7 +48,7 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
     return null;
   }
 
-  const eventItems = getEventsAsItems(data?.upcomingEvents);
+  const eventItems = getEventsAsItems(data?.eventsByIds);
 
   // In case there are no upcoming events, hide the section.
   if (eventItems.length === 0) {
@@ -53,9 +56,9 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
   }
 
   return (
-    <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
+    <Section title="Suositellut tapahtumat">
       <List
-        variant="columns-3"
+        variant="grid-2"
         items={eventItems.map((item) => (
           <CondensedCard key={item.id} {...item} />
         ))}

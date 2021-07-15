@@ -52,10 +52,11 @@ export default function initializeNextApiApolloClient(initialState = null) {
   );
 }
 
-export function useNextApiApolloClient(initialState) {
-  const store = useMemo(() => initializeNextApiApolloClient(initialState), [
-    initialState,
-  ]);
+export function useNextApiApolloClient(initialState = null) {
+  const store = useMemo(
+    () => initializeNextApiApolloClient(initialState),
+    [initialState]
+  );
 
   return store;
 }

@@ -127,10 +127,20 @@ export default class Linked extends RESTDataSource {
     return this.get(`place/${id}/`);
   }
 
-  // async getEvents(
-  //   ids: string[]
-  // ): Promise<LinkedEvent[] | LinkedEvent<string>[]> {
-  //   const params = new URLSearchParams();
-  //   params.set("ids", ids.join(","));
-  // }
+  async getEventsByIds(
+    ids: string[],
+    language?: Locale
+  ): Promise<LinkedEvent[] | LinkedEvent<string>[]> {
+    const params = new URLSearchParams();
+    params.set("ids", ids.join(","));
+
+    if (language) {
+      params.set("language", language);
+      params.set("translation", language);
+    }
+
+    const result = await this.get(`event?${params.toString()}`);
+
+    return result.data;
+  }
 }
