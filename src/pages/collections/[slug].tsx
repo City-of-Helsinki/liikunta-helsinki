@@ -22,6 +22,18 @@ export const COLLECTION_PAGE_QUERY = gql`
         title
         description
         image
+        seo {
+          title
+          description
+          openGraphDescription
+          openGraphTitle
+          openGraphType
+          twitterDescription
+          twitterTitle
+          socialImage {
+            uri
+          }
+        }
       }
     }
   }
@@ -37,12 +49,30 @@ export default function CollectionsPage() {
   });
 
   const collection = data?.collection;
+  const metaTitle = collection?.translation?.seo?.title;
+  const metaDescription = collection?.translation?.seo?.description;
   const title = collection?.translation?.title;
   const description = collection?.translation?.description;
+  const openGraphDescription = collection?.translation?.openGraphDescription;
+  const openGraphTitle = collection?.translation?.openGraphTitle;
+  const openGraphType = collection?.translation?.openGraphType;
+  const twitterDescription = collection?.translation?.twitterDescription;
+  const twitterTitle = collection?.translation?.twitterTitle;
   const backgroundColor = collection?.backgroundColor;
+  const metaImage = collection?.translation?.socialImage?.uri;
 
   return (
-    <Page title={title} description={description} navigationVariant="white">
+    <Page
+      navigationVariant="white"
+      title={metaTitle}
+      description={metaDescription}
+      openGraphTitle={openGraphTitle}
+      openGraphDescription={openGraphDescription}
+      openGraphType={openGraphType}
+      twitterTitle={twitterTitle}
+      twitterDescription={twitterDescription}
+      image={metaImage}
+    >
       <Section color="white" variant="contained">
         <div className={classNames(styles.collectionBlock)}>
           <div

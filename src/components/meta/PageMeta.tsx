@@ -10,20 +10,42 @@ export type Props = React.ComponentProps<typeof RouteMeta> & {
   title: string;
   description?: string | null;
   image?: string | null;
+  canonicalUrl?: string;
+  openGraphDescription?: string;
+  openGraphTitle?: string;
+  openGraphType?: string;
+  twitterDescription?: string;
+  twitterTitle?: string;
 };
 
-function PageMeta({ title, description, image, languages }: Props) {
+function PageMeta({
+  title,
+  description,
+  image,
+  languages,
+  openGraphType,
+  twitterDescription,
+  twitterTitle,
+  ...seo
+}: Props) {
+  const openGraphTitle = seo.openGraphTitle ?? title;
+  const openGraphDescription = seo.openGraphDescription ?? description;
+
   return (
     <>
       <Head>
         <title>{title}</title>
         {description && <meta name="description" content={description} />}
-
-        <meta property="og:title" content={title} />
+        <meta property="og:title" content={openGraphTitle} />
         {description && (
-          <meta property="og:description" content={description} />
+          <meta property="og:description" content={openGraphDescription} />
         )}
         {image && <meta property="og:image" content={image} />}
+        {openGraphType && <meta property="og:type" content={openGraphType} />}
+        {twitterTitle && <meta name="twitter:title" content={twitterTitle} />}
+        {twitterDescription && (
+          <meta name="twitter:description" content={twitterDescription} />
+        )}
       </Head>
       <RouteMeta languages={languages} />
     </>
