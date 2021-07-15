@@ -5,6 +5,4 @@ async function resolver(_, { id }, { language }) {
   return linked.getUpcomingEvents(id, language);
 }
 
-const venueQueryResolver = createQueryResolver(resolver);
-
-export default venueQueryResolver;
+export default createQueryResolver(resolver);
