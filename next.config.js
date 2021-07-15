@@ -26,4 +26,7 @@ module.exports = {
   async rewrites() {
     return i18nRewriteRules;
   },
+  images: {
+    domains: ["liikunta.content.api.hel.fi"],
+  },
 };

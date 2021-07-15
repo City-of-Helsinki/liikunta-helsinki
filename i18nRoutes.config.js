@@ -7,6 +7,10 @@ const i18nRoutes = {
     { source: "/paikat/:id", locale: "fi" },
     { source: "/platser/:id", locale: "sv" },
   ],
+  "/collections/:slug": [
+    { source: "/kokoelmat/:slug", locale: "fi" },
+    { source: "/collections/:slug", locale: "sv" },
+  ],
 };
 
 module.exports = i18nRoutes;
