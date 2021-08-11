@@ -35,6 +35,14 @@ export type Item = {
   image: string;
 };
 
+export type MapItem = {
+  id: string;
+  title: string;
+  pre?: string;
+  href: string;
+  location?: number[];
+};
+
 export type LandingPage = {
   title: string;
   desktopImage: {

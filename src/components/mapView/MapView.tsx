@@ -9,7 +9,7 @@ import "leaflet/dist/leaflet.css";
 
 import venueIcon from "./VenueIcon";
 import styles from "./mapView.module.scss";
-import { Item } from "../../types";
+import { MapItem } from "../../types";
 import {
   BOUNDARIES,
   DEFAULT_POSITION,
@@ -20,7 +20,7 @@ import {
 } from "./mapConstants";
 
 type Props = {
-  items: Item[];
+  items: MapItem[];
 };
 
 function MapView({ items = [] }: Props) {

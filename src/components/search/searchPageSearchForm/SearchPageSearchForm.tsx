@@ -1,21 +1,18 @@
-import { Button, IconSearch } from "hds-react";
 import React, { useRef, useState } from "react";
+import debounce from "lodash/debounce";
+import { Button, IconSearch } from "hds-react";
 import { useRouter } from "next/router";
 import { gql, useLazyQuery } from "@apollo/client";
-import debounce from "lodash/debounce";
-import classNames from "classnames";
 
-import queryPersister from "../../../util/queryPersister";
 import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
+import queryPersister from "../../../util/queryPersister";
 import Text from "../../text/Text";
+import styles from "./searchPageSearchForm.module.scss";
+import searchApolloClient from "../../../client/searchApolloClient";
 import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
-import styles from "./searchPageSearchForm.module.scss";
-import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
-import { ShowMode } from "../searchHeader/SearchHeader";
-import getShowMode from "../../../util/getShowMode";
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -31,7 +28,11 @@ const SUGGESTION_QUERY = gql`
   }
 `;
 
-function SearchPageSearchForm() {
+type Props = {
+  showTitle?: boolean;
+};
+
+function SearchPageSearchForm({ showTitle = true }: Props) {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string>(
     getURLSearchParamsFromAsPath(router.asPath).get("q") ?? ""
@@ -43,17 +44,11 @@ function SearchPageSearchForm() {
 
   const doSearch = (q?: string) => {
     const nextQuery = q ? { q } : null;
-    const params = getURLSearchParamsFromAsPath(router.asPath);
 
     queryPersister.persistQuery(nextQuery);
-    params.set("q", nextQuery.q);
-    router.push(
-      { pathname: router.pathname, query: params.toString() },
-      undefined,
-      {
-        shallow: true,
-      }
-    );
+    router.push({ pathname: router.pathname, query: nextQuery }, undefined, {
+      shallow: true,
+    });
   };
 
   const handleSubmit = (e) => {
@@ -80,19 +75,10 @@ function SearchPageSearchForm() {
   const suggestions =
     data?.unifiedSearchCompletionSuggestions?.suggestions ?? [];
 
-  const show = getURLSearchParamsFromAsPath(router.asPath).get("show");
-  const showMode = getShowMode(show);
-
   return (
     <div>
-      {showMode === ShowMode.LIST && <Text variant="h1">Mitä etsit?</Text>}
-      <form
-        role="search"
-        className={classNames(styles.form, {
-          [styles.mapMode]: showMode === ShowMode.MAP,
-        })}
-        onSubmit={handleSubmit}
-      >
+      {showTitle && <Text variant="h1">Mitä etsit?</Text>}
+      <form role="search" className={styles.form} onSubmit={handleSubmit}>
         <SuggestionInput
           name="q"
           id="q"

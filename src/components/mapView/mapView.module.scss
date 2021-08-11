@@ -1,16 +1,19 @@
 @use "breakpoints";
 
-// Px amount is roughly adjusted by hand
+// Px amount is roughly adjusted by hand to make sure that the map fits the screen and don't overflow.
+// Mainly because we want to make sure that the links at right bottom corner are always visible.
 .mapView {
   grid-column: 1 / -1 !important;
   height: calc(100vh - 120px);
   width: 100%;
   z-index: 1;
 
+  // At breakpoint-s the logo shrinks a little, so we need to adjust map size to match that
   @include breakpoints.respond-above(s) {
     height: calc(100vh - 130px);
   }
 
+  // While at desktop the search bar can be a little bigger so adjust map size to match that.
   @include breakpoints.respond-above(m) {
     height: calc(100vh - 140px);
   }

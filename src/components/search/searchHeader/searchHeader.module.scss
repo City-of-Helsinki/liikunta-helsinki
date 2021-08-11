@@ -23,6 +23,12 @@
       grid-template-columns: 4fr 1fr;
       grid-column-gap: $spacing-s;
 
+      // Remove margin from from to get it aligned correctly
+      & > div > form {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
       .closeSearch {
         margin-left: auto;
         width: 230px;
@@ -59,23 +65,35 @@
 
     button {
       width: 50%;
+      border: none;
 
       @include breakpoints.respond-above(m) {
-        width: 200px;
+        width: unset;
         border: 2px solid;
         height: 45px;
       }
     }
 
     button:first-child {
-      border-right: 2px solid;
+      position: relative;
+
+      &:after {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: 0;
+        // Add few pixels to make sure border covers the whole height of the container
+        height: calc(100% + 5px);
+        border-left: 0;
+        right: 0;
+
+        @include breakpoints.respond-above(m) {
+          border: none;
+        }
+      }
     }
 
     @include breakpoints.respond-above(m) {
-      button:hover {
-        border: 2px solid;
-      }
-
       button:last-child {
         margin-left: auto;
       }
@@ -96,5 +114,5 @@
     margin-bottom: 0;
   }
 
-  background-color: $color-engel-medium-light;
+  background-color: $color-engel;
 }

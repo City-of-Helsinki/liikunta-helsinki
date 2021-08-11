@@ -36,7 +36,11 @@ const SearchList = forwardRef(
       <>
         {!loading && (
           <div className={styles.row}>
-            <Button onClick={switchShowMode} iconLeft={<IconMap />}>
+            <Button
+              onClick={switchShowMode}
+              iconLeft={<IconMap />}
+              className={styles.showOnMap}
+            >
               Näytä kartalla
             </Button>
             <Text variant="h2" className={styles.resultCount} role="status">
