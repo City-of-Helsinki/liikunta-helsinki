@@ -3,22 +3,21 @@ import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { Koros } from "hds-react";
-import dynamic from "next/dynamic";
 
-import { Connection, Item, Keyword, SearchResult } from "../../types";
+import initializeCmsApollo from "../../client/cmsApolloClient";
+import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
 import searchApolloClient from "../../client/searchApolloClient";
-import { getNodes } from "../../client/utils";
 import Page from "../../components/page/Page";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/searchResultCard";
 import SearchList from "../../components/list/SearchList";
 import styles from "./search.module.scss";
-import initializeCmsApollo from "../../client/cmsApolloClient";
+import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";
-import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
-import getShowMode from "../../util/getShowMode";
+import { Connection, Item, Keyword, SearchResult } from "../../types";
+import { getNodes } from "../../client/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -96,7 +95,7 @@ function getSearchResultsAsItems(
 export default function Search() {
   const router = useRouter();
   const {
-    query: { q: searchText = "*", show },
+    query: { q: searchText = "*" },
   } = router;
 
   const { data, loading, fetchMore } = useQuery(SEARCH_QUERY, {
@@ -104,11 +103,6 @@ export default function Search() {
     ssr: false,
     variables: { q: searchText, first: BLOCK_SIZE, after: "" },
     fetchPolicy: "cache-and-network",
-  });
-
-  // https://stackoverflow.com/a/64634759
-  const MapView = dynamic(() => import("../../components/mapView/MapView"), {
-    ssr: false,
   });
 
   const searchResultItems: Item[] = getSearchResultsAsItems(
@@ -134,19 +128,10 @@ export default function Search() {
   };
 
   const switchShowMode = () => {
-    let nextMode;
-    // If show is undefined we know we are in list view, so nextMode should be map
-    if (!show) {
-      nextMode = ShowMode.MAP;
-    } else {
-      nextMode = show === ShowMode.LIST ? ShowMode.MAP : ShowMode.LIST;
-    }
-
     const params = getURLSearchParamsFromAsPath(router.asPath);
-    params.set("show", nextMode);
 
     router.replace(
-      { pathname: router.pathname, query: params.toString() },
+      { pathname: "/search/map", query: params.toString() },
       undefined,
       {
         shallow: true,
@@ -154,33 +139,29 @@ export default function Search() {
     );
   };
 
-  const showMode = getShowMode(show?.toString());
-
   return (
     <Page title="Search" description="Search">
       <SearchHeader
-        showMode={showMode}
+        showMode={ShowMode.LIST}
         count={count}
         switchShowMode={switchShowMode}
+        searchForm={<SearchPageSearchForm />}
       />
-      {showMode === ShowMode.MAP && <MapView items={searchResultItems} />}
-      {showMode === ShowMode.LIST && (
-        <Section variant="contained">
-          <Koros className={styles.koros} />
-          <SearchList
-            ref={moreResultsAnnouncerRef}
-            loading={loading}
-            onLoadMore={onLoadMore}
-            count={count}
-            blockSize={BLOCK_SIZE}
-            hasNext={pageInfo?.hasNextPage}
-            items={searchResultItems.map((item) => (
-              <SearchResultCard key={item.id} {...item} />
-            ))}
-            switchShowMode={switchShowMode}
-          />
-        </Section>
-      )}
+      <Section variant="contained">
+        <Koros className={styles.koros} />
+        <SearchList
+          ref={moreResultsAnnouncerRef}
+          loading={loading}
+          onLoadMore={onLoadMore}
+          count={count}
+          blockSize={BLOCK_SIZE}
+          hasNext={pageInfo?.hasNextPage}
+          items={searchResultItems.map((item) => (
+            <SearchResultCard key={item.id} {...item} />
+          ))}
+          switchShowMode={switchShowMode}
+        />
+      </Section>
     </Page>
   );
 }
