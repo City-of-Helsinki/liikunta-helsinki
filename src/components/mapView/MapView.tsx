@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import {
   MapContainer,
   TileLayer,
@@ -8,6 +9,7 @@ import {
 import "leaflet/dist/leaflet.css";
 
 import venueIcon from "./VenueIcon";
+import Text from "../text/Text";
 import styles from "./mapView.module.scss";
 import { MapItem } from "../../types";
 import {
@@ -43,7 +45,10 @@ function MapView({ items = [] }: Props) {
           position={[item.location[1], item.location[0]]}
           icon={venueIcon}
         >
-          <Popup>{item.title}</Popup>
+          <Popup className={styles.popup}>
+            <Text variant="body">{item.title}</Text>
+            <Link href={item.href}>Näytä sivu</Link>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>

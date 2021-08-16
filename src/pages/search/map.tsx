@@ -1,18 +1,18 @@
-import { GetStaticPropsContext } from "next";
 import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
+import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/dist/client/router";
 
-import Page from "../../components/page/Page";
 import initializeCmsApollo from "../../client/cmsApolloClient";
+import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
+import Page from "../../components/page/Page";
+import searchApolloClient from "../../client/searchApolloClient";
+import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";
-import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import { Connection, MapItem, SearchResult } from "../../types";
 import { getNodes } from "../../client/utils";
-import searchApolloClient from "../../client/searchApolloClient";
-import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
 
 // Add ID that matches the sports ontology tree branch that has the Culture,
 // sports and leisure department (KuVa) as its parent.
@@ -122,10 +122,6 @@ export default function MapSearch() {
 export async function getStaticProps(context: GetStaticPropsContext) {
   const cmsClient = initializeCmsApollo();
 
-  // We still need to initialize the application with data from the CMS. The
-  // data includes things like menus and languages. If we don't initialize, this
-  // data will be missing when the application is accessed through the search
-  // view.
   await cmsClient.pageQuery({
     nextContext: context,
   });

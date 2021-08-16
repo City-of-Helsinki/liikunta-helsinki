@@ -1,4 +1,5 @@
 @use "breakpoints";
+@import "variables";
 
 // Px amount is roughly adjusted by hand to make sure that the map fits the screen and don't overflow.
 // Mainly because we want to make sure that the links at right bottom corner are always visible.
@@ -16,5 +17,17 @@
   // While at desktop the search bar can be a little bigger so adjust map size to match that.
   @include breakpoints.respond-above(m) {
     height: calc(100vh - 140px);
+  }
+
+  .popup {
+    width: 15rem;
+
+    p {
+      margin: 0 0 $spacing-2-xs 0;
+    }
+
+    a {
+      font-size: $fontsize-body-m;
+    }
   }
 }
