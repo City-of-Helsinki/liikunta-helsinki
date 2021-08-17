@@ -44,10 +44,12 @@ const isDynamic = (part: string) => part.startsWith("[") && part.endsWith("]");
 const parseDynamicName = (part: string) => part.slice(1, -1);
 
 export function stringifyUrlObject(url: UrlObject): string {
-  return url.pathname
+  const pathname = url.pathname
     ?.split("/")
     .map((part) =>
       isDynamic(part) ? url.query[parseDynamicName(part)] ?? part : part
     )
     .join("/");
+
+  return `${pathname}${url.search || ""}`;
 }
