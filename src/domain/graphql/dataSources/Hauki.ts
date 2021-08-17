@@ -74,16 +74,12 @@ export default class Hauki extends RESTDataSource {
     params.append("end_date", ongoingWeekInterval.end.toJSON());
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res = await this.get<any>(
+    const data = await this.get<any>(
       `resource/${id}/opening_hours/?${params.toString()}`
     );
 
-    if (res.statusText !== "OK") {
-      return null;
-    }
-
     const transformedOpeningHours = toCamelCase<OpeningHour[]>(
-      patchMissingDates(ongoingWeekInterval, res?.data, (date: Date) => ({
+      patchMissingDates(ongoingWeekInterval, data, (date: Date) => ({
         date: lightFormat(date, "yyyy-MM-dd"),
         times: [],
       }))
@@ -101,8 +97,8 @@ export default class Hauki extends RESTDataSource {
    */
   async getIsOpen(id: string): Promise<boolean | null> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res = await this.get<any>(`resource/${id}/is_open_now/`);
+    const data = await this.get<any>(`resource/${id}/is_open_now/`);
 
-    return res?.data?.is_open ?? null;
+    return data?.is_open ?? null;
   }
 }
