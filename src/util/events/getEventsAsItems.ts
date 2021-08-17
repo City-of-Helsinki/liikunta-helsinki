@@ -110,7 +110,6 @@ export default function getEventsAsItems(events?: Event[]): Item[] {
       id,
       name,
       shortDescription,
-      infoUrl,
       images,
       offers: [offer],
     } = event;
@@ -123,7 +122,7 @@ export default function getEventsAsItems(events?: Event[]): Item[] {
       keywords: [getIsCloseInTimeKeyword(event), getIsFree(event)].filter(
         (item) => item
       ),
-      href: infoUrl,
+      href: `https://tapahtumat.hel.fi/fi/events/${id}`,
       image: images?.[0]?.url,
     };
   });
