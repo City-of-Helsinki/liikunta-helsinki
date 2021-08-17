@@ -34,22 +34,10 @@ export default class Tprek extends RESTDataSource {
   }
 
   private async getAllOntologyWords() {
-    const res = await this.get(`ontologyword/`);
-
-    if (res.statusText !== "OK") {
-      return null;
-    }
-
-    return res.data;
+    return this.get(`ontologyword/`);
   }
 
   private async getOntologyTrees() {
-    const res = await this.get(`ontologytree/`);
-
-    if (res.statusText !== "OK") {
-      return null;
-    }
-
-    return res.data;
+    return this.get(`ontologytree/`);
   }
 }
