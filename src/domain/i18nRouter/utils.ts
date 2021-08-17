@@ -24,7 +24,7 @@ export function getI18nPath(route: string, locale: string): string {
     )?.[1] ?? [];
 
   if (!i18nRewriteRules || i18nRewriteRules.length === 0) {
-    return null;
+    return route;
   }
 
   const i18nRewriteRuleForCurrentLocale = i18nRewriteRules.find(
@@ -32,7 +32,7 @@ export function getI18nPath(route: string, locale: string): string {
   );
 
   if (!i18nRewriteRuleForCurrentLocale) {
-    return null;
+    return route;
   }
 
   return transformDynamicPathIntoSegmentedDynamicPath(
