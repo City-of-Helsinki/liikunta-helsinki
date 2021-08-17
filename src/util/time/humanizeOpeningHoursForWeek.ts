@@ -165,10 +165,6 @@ function humanizeTime(time: Time, copy = microCopy.fi): string {
 }
 
 function humanizeTimes(times: Time[], copy = microCopy.fi): string {
-  if (times.length === 0) {
-    return copy.closed;
-  }
-
   return times.map((time) => humanizeTime(time, copy)).join(", ");
 }
 
@@ -240,6 +236,10 @@ function humanizeOpeningHoursForWeek(
   );
 
   if (matchingTimes) {
+    if (matchingTimes.length === 0) {
+      return null;
+    }
+
     const commonTimes = humanizeTimes(matchingTimes, microCopy[locale]);
     const weekendOpeningHours = [sat, sun].map((weekendOpeningHour) =>
       humanizeOpeningHour(weekendOpeningHour, locale)
