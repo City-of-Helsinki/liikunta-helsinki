@@ -4,6 +4,7 @@ import { getI18nPath, stringifyUrlObject } from "./utils";
 
 export default function useRouter() {
   const { asPath, ...router } = useNextRouter();
+  const search = asPath.split("?")[1];
 
   return {
     ...router,
@@ -11,6 +12,7 @@ export default function useRouter() {
       stringifyUrlObject({
         pathname: getI18nPath(router.route, router.locale),
         query: router.query,
+        search: `?${search}`,
       }) ?? asPath,
   };
 }
