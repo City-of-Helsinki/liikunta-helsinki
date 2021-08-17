@@ -1,15 +1,16 @@
-import { useRouter } from "next/router";
 import { useCallback } from "react";
 
-const searchRouteMap = {
-  fi: "/haku",
-  sv: "/sok",
-  en: "/search",
+import i18nRoutes from "../../i18nRoutes.config";
+import useRouter from "../domain/i18nRouter/useRouter";
+
+type Filters = {
+  q: string;
+  ontology?: string;
 };
 
-function getQueryString(
-  search: string | Record<string, string> | URLSearchParams
-): string {
+type Search = string | Partial<Filters> | URLSearchParams | null;
+
+function getQueryString(search: Search): string {
   if (typeof search === "string") {
     return search;
   }
@@ -23,22 +24,31 @@ function getQueryString(
 
 function useSearch() {
   const router = useRouter();
+  const searchBasePath =
+    i18nRoutes["/search"].find(({ locale }) => locale === router.locale)
+      ?.source ?? "/search";
 
-  const search = useCallback(
-    (
-      search: string | Record<string, string> | URLSearchParams,
-      type: "push" | "replace" = "push"
-    ) => {
-      const searchRoute = searchRouteMap[router.locale ?? router.defaultLocale];
-      const method = router[type];
-      const queryString = getQueryString(search);
-
-      return method(`${searchRoute}?${queryString}`);
+  const getSearchRoute = useCallback(
+    (search: Search) => {
+      return `${searchBasePath}?${getQueryString(search)}`;
     },
-    [router]
+    [searchBasePath]
   );
 
-  return search;
+  const search = useCallback(
+    (search: Search, type: "push" | "replace" = "push") => {
+      const method = router[type];
+
+      if (search === null) {
+        return method(searchBasePath);
+      }
+
+      return method(getSearchRoute(search));
+    },
+    [getSearchRoute, router, searchBasePath]
+  );
+
+  return { search, getSearchRoute };
 }
 
 export default useSearch;

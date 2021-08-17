@@ -1,0 +1,65 @@
+import { useQuery, gql } from "@apollo/client";
+import { LoadingSpinner } from "hds-react";
+
+import getEventsAsItems from "../../util/events/getEventsAsItems";
+import eventFragment from "../../util/events/eventFragment";
+import useRouter from "../../domain/i18nRouter/useRouter";
+import Section from "../../components/section/Section";
+import List from "../../components/list/List";
+import CondensedCard from "../../components/card/CondensedCard";
+
+const UPCOMING_EVENTS_QUERY = gql`
+  query UpcomingEventsQuery($id: ID!) {
+    upcomingEvents(id: $id) {
+      ...eventFragment
+    }
+  }
+  ${eventFragment}
+`;
+
+type Props = {
+  linkedId: string;
+};
+
+// This component expects to find the apiApolloClient from Context
+export default function UpcomingEventsSection({ linkedId }: Props) {
+  const router = useRouter();
+  const locale = router.locale ?? router.defaultLocale;
+  const { loading, error, data } = useQuery(UPCOMING_EVENTS_QUERY, {
+    variables: { id: linkedId },
+    skip: !process.browser,
+    context: {
+      headers: {
+        "Accept-Language": locale,
+      },
+    },
+    fetchPolicy: "cache-and-network",
+  });
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  // In case of an error, silently fail.
+  if (error) {
+    return null;
+  }
+
+  const eventItems = getEventsAsItems(data?.upcomingEvents);
+
+  // In case there are no upcoming events, hide the section.
+  if (eventItems.length === 0) {
+    return null;
+  }
+
+  return (
+    <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
+      <List
+        variant="columns-3"
+        items={eventItems.map((item) => (
+          <CondensedCard key={item.id} {...item} />
+        ))}
+      />
+    </Section>
+  );
+}

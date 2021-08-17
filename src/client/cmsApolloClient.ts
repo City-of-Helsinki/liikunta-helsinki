@@ -32,18 +32,11 @@ function createCmsApolloClient() {
 }
 
 export default function initializeCmsApollo(initialState = null) {
-  const client = initializeApolloClient(
+  return initializeApolloClient(
     initialState,
     cmsApolloClient,
     createCmsApolloClient
   );
-
-  // Create the Apollo Client once in the client
-  if (!cmsApolloClient) {
-    cmsApolloClient = client;
-  }
-
-  return client;
 }
 
 export function useCmsApollo(initialState) {

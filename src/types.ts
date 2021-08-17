@@ -1,3 +1,8 @@
+import { UrlObject } from "url";
+
+import { Sources } from "./constants";
+import { Locale } from "./config";
+
 export type MenuItem = {
   id: string;
   order: number;
@@ -21,7 +26,7 @@ export type Language = {
 export type Keyword = {
   label: string;
   isHighlighted?: boolean;
-  onClick: () => void;
+  href: string | UrlObject;
 };
 
 export type Item = {
@@ -30,7 +35,7 @@ export type Item = {
   pre?: string;
   infoLines: string[];
   keywords: Keyword[];
-  href: string;
+  href: string | UrlObject;
   location?: number[];
   image: string;
 };
@@ -76,6 +81,7 @@ export type Collection = {
     title?: string;
     description?: string;
     image?: string;
+    slug: string;
   };
 };
 
@@ -90,24 +96,27 @@ type Image = {
   caption: string | null;
 };
 
-export type GEOLocation = {
-  geoLocation: {
-    geometry: {
-      coordinates: number[];
-    };
-  };
-};
-
 export type Venue = {
   name: LocalizedString;
   description: LocalizedString;
-  location: GEOLocation;
   meta: {
     id: string;
     createdAt: string;
     updatedAt: string;
   };
   images: Image[] | null;
+  location: {
+    geoLocation: {
+      geometry: {
+        coordinates: number[];
+      };
+    },
+    address: {
+      streetAddress?: LocalizedString;
+      postalCode?: string;
+      city?: LocalizedString;
+    };
+  };
 };
 
 export type SearchResult = {
@@ -125,6 +134,11 @@ export type Point = {
   coordinates: number[];
 };
 
+type Ontology = {
+  id: number;
+  label: string;
+};
+
 export type VenueDetails<T = TranslationsObject> = {
   id: string;
   dataSource: string | null;
@@ -138,9 +152,11 @@ export type VenueDetails<T = TranslationsObject> = {
   infoUrl: T | null;
   streetAddress: T | null;
   telephone: T | null;
+  ontologyTree: Ontology[];
+  ontologyWords: Ontology[];
 };
 
-export type Source = "tprek" | "linked";
+export type Source = typeof Sources[keyof typeof Sources];
 
 export type TimeResourceState =
   | "open"
@@ -169,4 +185,39 @@ export type Time = {
 export type OpeningHour = {
   date: string;
   times: Time[];
+};
+
+export type AnyObject = Record<string, unknown>;
+
+export type Context = {
+  language?: Locale;
+  dataSources?: any;
+};
+
+export type EventOffer = {
+  isFree: boolean;
+  description: string | null;
+  price: string | null;
+  infoUrl: string | null;
+};
+
+export type Event = {
+  id: string;
+  name: string | null;
+  shortDescription: string | null;
+  startTime: string;
+  endTime: string | null;
+  infoUrl: string | null;
+  offers: EventOffer[];
+  images: {
+    id: string | null;
+    alt: string | null;
+    url: string | null;
+  }[];
+};
+
+export type Address = {
+  streetName: string;
+  zip: string;
+  city: string;
 };

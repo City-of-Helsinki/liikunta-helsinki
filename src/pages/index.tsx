@@ -1,10 +1,11 @@
 import { GetStaticPropsContext } from "next";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 
 import { Collection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../client/cmsApolloClient";
 import { getQlLanguage } from "../client/utils";
+import mockCategories from "../client/tmp/mockCategories";
 import mockRecommendations from "../client/tmp/mockRecommendations";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
@@ -15,7 +16,6 @@ import CollectionCard from "../components/card/CollectionCard";
 import Hero from "../components/hero/Hero";
 import HeroImage from "../components/hero/HeroImage";
 import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
-import mockCategories from "../client/tmp/mockCategories";
 import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
 
 export const LANDING_PAGE_QUERY = gql`
@@ -41,6 +41,7 @@ export const LANDING_PAGE_QUERY = gql`
           collection {
             id
             translation(language: $languageCode) {
+              slug
               title
               description
               image
@@ -52,17 +53,13 @@ export const LANDING_PAGE_QUERY = gql`
   }
 `;
 
-function getRecommendationsAsItems(
-  recommendations: Recommendation[],
-  router: NextRouter
-): Item[] {
+function getRecommendationsAsItems(recommendations: Recommendation[]): Item[] {
   return recommendations.map((recommendation) => ({
     ...recommendation,
+    href: recommendation.href,
     keywords: recommendation.keywords.map((keyword) => ({
       label: keyword,
-      onClick: () => {
-        router.push(`keywords/${encodeURIComponent(keyword)}`);
-      },
+      href: `keywords/${encodeURIComponent(keyword)}`,
       isHighlighted: keyword === "Maksuton",
     })),
   }));
@@ -73,13 +70,14 @@ function getCollectionsAsItems(collections: Collection[] | null): Item[] {
     id: collection.id,
     title: collection.translation?.title,
     infoLines: [collection.translation?.description],
-    href: `/collections/${collection.id}`,
+    href: {
+      pathname: "/collections/[slug]",
+      query: { slug: collection.translation?.slug },
+    },
     keywords: [
       {
         label: "120 kpl",
-        onClick: () => {
-          // pass
-        },
+        href: "",
       },
     ],
     image: collection.translation?.image,
@@ -95,10 +93,8 @@ export default function Home() {
     },
   });
 
-  const recommendationItems: Item[] = getRecommendationsAsItems(
-    mockRecommendations,
-    router
-  );
+  const recommendationItems: Item[] =
+    getRecommendationsAsItems(mockRecommendations);
   const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(
     data?.pageBy?.modules

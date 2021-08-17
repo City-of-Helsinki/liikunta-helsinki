@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import { TextInput, Button, IconSearch } from "hds-react";
-import Link from "next/link";
 import classNames from "classnames";
-import { useRouter } from "next/router";
 
+import useSearch from "../../../hooks/useSearch";
+import Link from "../../../domain/i18nRouter/Link";
 import Text from "../../text/Text";
 import SecondaryLink from "../../link/SecondaryLink";
 import styles from "./landingPageSearchForm.module.scss";
 
 function LandingPageSearchForm() {
-  const router = useRouter();
+  const { search } = useSearch();
   const [searchText, setSearchText] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push({
-      pathname: "/search",
-      query: searchText ? { q: searchText } : "",
-    });
+    search(searchText ? { q: searchText } : "");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

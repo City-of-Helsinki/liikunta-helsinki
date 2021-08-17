@@ -72,6 +72,10 @@
   grid-template-columns: 1fr;
 }
 
+.grid-2 {
+  --base-list-item-width: 32rem; // 512px
+}
+
 .columns-3 {
   margin: 0;
   padding: 0;

@@ -1,10 +1,10 @@
 // https://www.apollographql.com/blog/building-a-next-js-app-with-apollo-client-slash-graphql/
 export default function initializeApolloClient(
   initialState = null,
-  client,
+  cachedClient,
   createClient
 ) {
-  const _apolloClient = client ?? createClient();
+  const _apolloClient = cachedClient ?? createClient();
 
   // Initial state hydration
   if (initialState) {
@@ -19,6 +19,11 @@ export default function initializeApolloClient(
   // For SSG and SSR always create a new Apollo Client
   if (typeof window === "undefined") {
     return _apolloClient;
+  }
+
+  // Create the Apollo Client once in the client
+  if (!cachedClient) {
+    cachedClient = _apolloClient;
   }
 
   return _apolloClient;

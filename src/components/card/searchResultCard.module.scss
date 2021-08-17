@@ -2,6 +2,10 @@
 @import "variables";
 
 .searchResultCard {
+  @include breakpoints.respond-above(m) {
+    --content-padding: #{$spacing-layout-m};
+  }
+
   .button {
     display: none;
   }
@@ -13,10 +17,23 @@
     object-fit: cover;
   }
 
+  .content {
+    @include breakpoints.respond-above(m) {
+      padding-top: 0;
+      padding-bottom: $spacing-m;
+      grid-gap: $spacing-m;
+    }
+  }
+
   .keywords {
     grid-area: keywords;
     align-self: start;
     flex-wrap: wrap;
+
+    @include breakpoints.respond-above(m) {
+      padding-bottom: $spacing-m;
+      padding-top: $spacing-m;
+    }
   }
 
   .placeholderCard {
@@ -32,6 +49,12 @@
         min-height: 18rem;
       }
     }
+  }
+
+  .infoBlocks {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
   }
 
   @include breakpoints.respond-above(m) {

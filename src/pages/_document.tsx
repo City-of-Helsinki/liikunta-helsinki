@@ -1,6 +1,16 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import { resetIdCounter } from "downshift";
 
 class LiikuntDocument extends Document {
+  static async getInitialProps(ctx) {
+    // Reset downshift id counter so that it won't be incremented between static
+    // and client renders.
+    resetIdCounter();
+    const initialProps = await Document.getInitialProps(ctx);
+
+    return initialProps;
+  }
+
   render() {
     return (
       <Html>

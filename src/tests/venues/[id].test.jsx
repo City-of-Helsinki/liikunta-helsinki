@@ -38,6 +38,8 @@ const getMocks = () => [
           telephone: "+35812345678",
           openingHours: getOpeningHoursForWeek(),
           isOpen: false,
+          ontologyTree: [],
+          ontologyWords: [],
         },
       },
     },

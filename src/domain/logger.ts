@@ -1,7 +1,33 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import Config from "./config";
+import chalk from "chalk";
+
+import Config from "../config";
+
+type LoggerFunction = (message?: any, ...optionalParameters: any[]) => void;
+
+export type Logger = {
+  debug: LoggerFunction;
+  info: LoggerFunction;
+  warn: LoggerFunction;
+  error: LoggerFunction;
+};
+
+function getColor(level: string) {
+  switch (level) {
+    case "error":
+      return chalk.bold.red;
+    case "warn":
+      return chalk.bold.yellow;
+    case "debug":
+      return chalk.cyan;
+    case "info":
+      return chalk.bold.white;
+    default:
+      return chalk.white;
+  }
+}
 
 function formatMessage(
   namespace: string,
@@ -9,17 +35,20 @@ function formatMessage(
   message?: any,
   ...optionalParameters: any[]
 ) {
+  const color = getColor(level);
+  const tags = [level, namespace];
+  const renderedTag = tags.map((tag) => `[${tag}]`).join(" ");
   const messageData = {
     level,
     timestamp: new Date().toJSON(),
-    message: [`${namespace}:`, message, ...optionalParameters].join(" "),
+    message: [`${renderedTag} - `, message, ...optionalParameters].join(" "),
   };
 
   if (process.env.NODE_ENV !== "production") {
     return [
-      messageData.timestamp,
-      `${messageData.level} -`,
-      messageData.message,
+      new Date(messageData.timestamp).toLocaleTimeString(),
+      `${color(renderedTag)} -`,
+      message,
     ].join(" ");
   }
 
@@ -31,7 +60,7 @@ function formatMessage(
 const isNotProductionClient = () =>
   !(process.browser && process.env.NODE_ENV === "production");
 
-function createLogger(namespace: string) {
+function createLogger(namespace: string): Logger {
   return {
     debug: (message?: any, ...optionalParameters: any[]) =>
       isNotProductionClient() &&
@@ -59,7 +88,9 @@ function createLogger(namespace: string) {
 
 export const graphqlLogger = createLogger("graphql");
 export const dataSourceLogger = createLogger("dataSource");
-export const dataSourceHaukiLogger = createLogger("dataSource:Hauki");
+export const dataSourceHaukiLogger = createLogger("ds:Hauki");
+export const dataSourceTprekLogger = createLogger("ds:Tprek");
+export const dataSourceLinkedLogger = createLogger("ds:linked");
 export const staticGenerationLogger = createLogger("staticGeneration");
 export const logger = createLogger("general");
 

@@ -8,9 +8,9 @@ import {
 import { fi } from "date-fns/locale";
 import camelCaseKeys from "camelcase-keys";
 
-import { dataSourceHaukiLogger as logger } from "../logger";
-import { OpeningHour } from "../types";
-import DataSource from "./DataSource";
+import { dataSourceHaukiLogger as logger } from "../../logger";
+import { OpeningHour } from "../../../types";
+import RESTDataSource from "./RESTDataSource";
 
 type DateInterval = {
   start: Date;
@@ -52,7 +52,12 @@ function toCamelCase<I>(obj: I): I {
   return camelCaseKeys<I>(obj, { deep: true });
 }
 
-class Hauki extends DataSource {
+export default class Hauki extends RESTDataSource {
+  constructor() {
+    super(logger);
+    this.baseURL = "https://hauki.api.hel.fi/v1/";
+  }
+
   /**
    * @param {!string} id
    * @returns {Promise<?Array>} A list of opening hours in Hauki format for the
@@ -68,9 +73,15 @@ class Hauki extends DataSource {
     params.append("start_date", ongoingWeekInterval.start.toJSON());
     params.append("end_date", ongoingWeekInterval.end.toJSON());
 
-    const res = await this.get(
-      `https://hauki.api.hel.fi/v1/resource/${id}/opening_hours/?${params.toString()}`
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await this.get<any>(
+      `resource/${id}/opening_hours/?${params.toString()}`
     );
+
+    if (res.statusText !== "OK") {
+      return null;
+    }
+
     const transformedOpeningHours = toCamelCase<OpeningHour[]>(
       patchMissingDates(ongoingWeekInterval, res?.data, (date: Date) => ({
         date: lightFormat(date, "yyyy-MM-dd"),
@@ -89,12 +100,9 @@ class Hauki extends DataSource {
    * @throws {AxiosError}
    */
   async getIsOpen(id: string): Promise<boolean | null> {
-    const res = await this.get(
-      `https://hauki.api.hel.fi/v1/resource/${id}/is_open_now/`
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res = await this.get<any>(`resource/${id}/is_open_now/`);
 
     return res?.data?.is_open ?? null;
   }
 }
-
-export default new Hauki(logger);

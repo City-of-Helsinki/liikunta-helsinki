@@ -1,13 +1,22 @@
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { LoadingSpinner } from "hds-react";
 import Error from "next/error";
+import "nprogress/nprogress.css";
 
 import { useCmsApollo } from "../client/cmsApolloClient";
+import useRouter from "../domain/i18nRouter/useRouter";
 import AppMeta from "../components/meta/AppMeta";
 import "../styles/globals.scss";
+
+const TopProgressBar = dynamic(
+  () => {
+    return import("../components/topProgressBar/TopProgressBar");
+  },
+  { ssr: false }
+);
 
 function Center({ children }) {
   return (
@@ -46,21 +55,24 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <ApolloProvider client={cmsApolloClient}>
-      <AppMeta />
-      {router.isFallback ? (
-        <Center>
-          <LoadingSpinner />
-        </Center>
-      ) : pageProps.error ? (
-        <Error
-          statusCode={pageProps.error.networkError?.statusCode ?? 400}
-          title={pageProps.error.title}
-        />
-      ) : (
-        <Component {...pageProps} />
-      )}
-    </ApolloProvider>
+    <>
+      <TopProgressBar />
+      <ApolloProvider client={cmsApolloClient}>
+        <AppMeta />
+        {router.isFallback ? (
+          <Center>
+            <LoadingSpinner />
+          </Center>
+        ) : pageProps.error ? (
+          <Error
+            statusCode={pageProps.error.networkError?.statusCode ?? 400}
+            title={pageProps.error.title}
+          />
+        ) : (
+          <Component {...pageProps} />
+        )}
+      </ApolloProvider>
+    </>
   );
 }
 

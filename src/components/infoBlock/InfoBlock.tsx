@@ -1,23 +1,21 @@
+import { UrlObject } from "url";
+
 import React from "react";
-import Link from "next/link";
 import { IconLinkExternal, IconAngleRight } from "hds-react";
 import classNames from "classnames";
 
+import Link from "../../domain/i18nRouter/Link";
 import Text from "../text/Text";
 import styles from "./infoBlock.module.scss";
 
 type InfoBlockContentLinkProps = {
   external?: boolean;
   label: string;
-  href: string;
-  // eslint-disable-next-line react/no-unused-prop-types
-  id: string;
+  href: string | UrlObject;
 };
 
 type InfoBlockContentListProps = {
   items: Array<string | React.ReactElement<InfoBlockContentLinkProps>>;
-  // eslint-disable-next-line react/no-unused-prop-types
-  id: string;
   inline?: boolean;
 };
 
@@ -31,7 +29,17 @@ function getKey(item: InfoBlockContent): string {
     return item;
   }
 
-  return item?.props?.id;
+  return item?.key?.toString();
+}
+
+function getHrefAsString(href: string | UrlObject): string {
+  if (typeof href === "string") {
+    return href;
+  }
+
+  return `${href.protocol}//${href.pathname}${
+    href.search ? `?${href.search}` : ""
+  }`;
 }
 
 function InfoBlockLink({
@@ -42,7 +50,7 @@ function InfoBlockLink({
   if (external) {
     return (
       <a
-        href={href}
+        href={getHrefAsString(href)}
         className={styles.link}
         rel="noreferrer noopener"
         target="_blank"
@@ -63,13 +71,19 @@ function InfoBlockLink({
 }
 
 function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
+  const nonEmptyItems = items.filter((item) => item);
+
+  if (nonEmptyItems.length === 0) {
+    return null;
+  }
+
   return (
     <ul
       className={classNames(styles.list, {
         [styles.inline]: inline,
       })}
     >
-      {items.map((item) => (
+      {nonEmptyItems.map((item) => (
         <li key={getKey(item)}>{item}</li>
       ))}
     </ul>
@@ -80,12 +94,39 @@ type Props = {
   icon: React.ReactElement;
   name: string;
   contents: InfoBlockContent[];
+  target?: "body" | "card";
 };
 
-function InfoBlock({ icon, name, contents }: Props) {
+function InfoBlock({ icon, name, contents, target = "body" }: Props) {
+  const contentWithoutEmpty = contents.filter((item) => {
+    if (typeof item === "string") {
+      return Boolean(item);
+    }
+
+    const props = item?.props;
+    const items = "items" in props ? props?.items : null;
+
+    if (items) {
+      const allItemsAreEmpty = items.reduce(
+        (acc, item) => acc && item === null,
+        true
+      );
+
+      return !allItemsAreEmpty;
+    }
+
+    return true;
+  });
+
+  if (contentWithoutEmpty.length === 0) {
+    return null;
+  }
+
+  const textVariant = target === "card" ? "body" : "h5";
+
   return (
-    <div className={styles.infoBlock}>
-      <Text as="h4" variant="h5" className={styles.name}>
+    <div className={classNames(styles.infoBlock, styles[target])}>
+      <Text as="h4" variant={textVariant} className={styles.name}>
         {icon} {name}
       </Text>
       <ul className={styles.content}>

@@ -1,8 +1,8 @@
 import { useQuery, gql } from "@apollo/client";
-import { useRouter } from "next/router";
 import React from "react";
 
 import { getMenuLocationFromLanguage } from "../../client/utils";
+import useRouter from "../../domain/i18nRouter/useRouter";
 import DefaultLayout from "../layout/Layout";
 import { LayoutComponent } from "../layout/types";
 import PageMeta from "../meta/PageMeta";

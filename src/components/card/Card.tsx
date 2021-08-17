@@ -1,12 +1,21 @@
-import React, { ReactNode, RefObject, useContext, useRef } from "react";
-import Link from "next/link";
+import { UrlObject } from "url";
+
+import React, {
+  ReactNode,
+  RefObject,
+  useContext,
+  useMemo,
+  useRef,
+} from "react";
 import { IconArrowRight } from "hds-react";
 import classNames from "classnames";
 import { ImageProps } from "next/image";
 
+import Link from "../../domain/i18nRouter/Link";
 import { Keyword as KeywordType } from "../../types";
 import Text from "../text/Text";
 import Keyword from "../keyword/Keyword";
+import HtmlToReact from "../htmlToReact/HtmlToReact";
 import styles from "./card.module.scss";
 
 type CardContextType = {
@@ -20,7 +29,7 @@ const CardContext = React.createContext<CardContextType>({
 });
 
 type CardTitleProps = Partial<React.ComponentProps<typeof Text>> & {
-  href: string;
+  href: string | UrlObject;
   title: string;
 };
 
@@ -29,7 +38,7 @@ function CardTitle({ href, title, ...textProps }: CardTitleProps) {
 
   return (
     <Text as="h3" variant="body-l" className={styles.title} {...textProps}>
-      <Link href={href}>
+      <Link href={href} avoidEscaping>
         {/* <Link /> applies the href prop to <a> */}
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a
@@ -62,17 +71,29 @@ type CardInfoLinesProps = Partial<React.ComponentProps<typeof Text>> & {
 };
 
 function CardInfoLines({ infoLines, ...textProps }: CardInfoLinesProps) {
+  const P = useMemo(() => {
+    const component = ({ children }: { children: React.ReactNode }) => (
+      <Text className={styles.infoLine} {...textProps}>
+        {children}
+      </Text>
+    );
+
+    component.displayName = "CardP";
+
+    return component;
+  }, [textProps]);
+
   return (
     <div className={styles.infoLines}>
       {infoLines.map((infoLine) => (
-        <Text
+        <HtmlToReact
           key={infoLine}
-          variant="body"
-          className={styles.infoLine}
-          {...textProps}
+          components={{
+            p: P,
+          }}
         >
           {infoLine}
-        </Text>
+        </HtmlToReact>
       ))}
     </div>
   );
@@ -143,13 +164,11 @@ type CardKeywordsProps = {
 function CardKeywords({ keywords, className }: CardKeywordsProps) {
   return (
     <ul className={classNames(styles.keywords, className)}>
-      {keywords.map(({ label, onClick, isHighlighted }) => (
+      {keywords.map(({ label, href, isHighlighted }) => (
         <li key={label} className={styles.keyword}>
           <Keyword
             keyword={label}
-            onClick={() => {
-              onClick();
-            }}
+            href={href}
             color={isHighlighted ? "tramLight20" : undefined}
           />
         </li>
@@ -190,7 +209,7 @@ function Card({ children, id, className }: CardProps) {
   const linkRef = useRef(null);
   const downRef = useRef<Date>(null);
 
-  const handleWrapperMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+  const handleWrapperMouseDown = () => {
     downRef.current = new Date();
   };
 

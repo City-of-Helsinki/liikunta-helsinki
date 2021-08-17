@@ -1,15 +1,14 @@
 import { Footer as HDSFooter, LogoLanguage } from "hds-react";
 import React from "react";
-import { useRouter } from "next/dist/client/router";
-import NextLink from "next/link";
 
+import useRouter from "../../domain/i18nRouter/useRouter";
 import { NavigationItem } from "../../types";
 import mockCategories from "../../client/tmp/mockCategories";
+import NextLink from "../../domain/i18nRouter/Link";
 import SearchShortcuts from "../../components/searchShortcuts/SearchShortcuts";
 import styles from "./footer.module.scss";
 
 type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
-  href: string;
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
   children?: React.ReactNode;
@@ -17,7 +16,7 @@ type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
 
 const Link = ({ href, children, locale, ...rest }: LinkProps) => {
   return (
-    <NextLink href={href} locale={locale}>
+    <NextLink href={href} locale={locale} avoidEscaping>
       <a {...rest}>{children}</a>
     </NextLink>
   );

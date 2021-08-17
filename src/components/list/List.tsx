@@ -10,7 +10,8 @@ type Props = {
     | "collection-grid"
     | "tight"
     | "searchResult"
-    | "columns-3";
+    | "columns-3"
+    | "grid-2";
 };
 
 function List({ items, variant = "default" }: Props) {

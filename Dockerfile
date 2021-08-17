@@ -69,6 +69,7 @@ COPY --from=staticbuilder --chown=appuser:appuser /app/.next /app/.next
 COPY --from=staticbuilder --chown=appuser:appuser /app/node_modules /app/node_modules
 COPY --from=staticbuilder --chown=appuser:appuser /app/next.config.js /app/next.config.js
 COPY --from=staticbuilder --chown=appuser:appuser /app/public /app/public
+COPY --from=staticbuilder --chown=appuser:appuser /app/i18nRoutes.config.js /app/i18nRoutes.config.js
 
 # Expose port
 EXPOSE 80

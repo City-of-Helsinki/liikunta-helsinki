@@ -1,4 +1,17 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
+
+const i18nRoutes = require("./i18nRoutes.config");
+
+const i18nRewriteRules = Object.entries(i18nRoutes).flatMap(
+  ([destination, sources]) =>
+    sources.map(({ source, locale }) => ({
+      destination,
+      source: `/${locale}${source}`,
+      locale: false,
+    }))
+);
 
 module.exports = {
   sassOptions: {
@@ -11,15 +24,9 @@ module.exports = {
     defaultLocale: "fi",
   },
   async rewrites() {
-    return [
-      {
-        source: "/haku",
-        destination: "/search",
-      },
-      {
-        source: "/sok",
-        destination: "/search",
-      },
-    ];
+    return i18nRewriteRules;
+  },
+  images: {
+    domains: ["liikunta.content.api.hel.fi"],
   },
 };

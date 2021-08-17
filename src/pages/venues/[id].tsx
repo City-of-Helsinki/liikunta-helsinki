@@ -9,15 +9,20 @@ import {
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 
-import { staticGenerationLogger } from "../../logger";
-import { Item, Point, Recommendation } from "../../types";
+import { staticGenerationLogger } from "../../domain/logger";
+import { Address, Item, Point, Recommendation } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import mockRecommendations from "../../client/tmp/mockRecommendations";
+import initializeNextApiApolloClient, {
+  useNextApiApolloClient,
+} from "../../client/nextApiApolloClient";
 import useSearch from "../../hooks/useSearch";
 import queryPersister from "../../util/queryPersister";
+import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
+import UpcomingEventsSection from "../../widgets/upcomingEventsSection/UpcomingEventsSection";
 import Keyword from "../../components/keyword/Keyword";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
@@ -28,12 +33,9 @@ import Hr from "../../components/hr/Hr";
 import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import Card from "../../components/card/DefaultCard";
-import CondensedCard from "../../components/card/CondensedCard";
-import initializeNextApiApolloClient, {
-  useNextApiApolloClient,
-} from "../../client/nextApiApolloClient";
-import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
 import styles from "./venue.module.scss";
+import renderAddressToString from "../../util/renderAddressToString";
+import hash from "../../util/hash";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -64,21 +66,21 @@ export const VENUE_QUERY = gql`
       postalCode
       streetAddress
       telephone
+      ontologyWords {
+        id
+        label
+      }
     }
   }
 `;
 
-function getRecommendationsAsItems(
-  recommendations: Recommendation[],
-  router: NextRouter
-): Item[] {
+function getRecommendationsAsItems(recommendations: Recommendation[]): Item[] {
   return recommendations.map((recommendation) => ({
     ...recommendation,
+    href: recommendation.href,
     keywords: recommendation.keywords.map((keyword) => ({
       label: keyword,
-      onClick: () => {
-        router.push(`keywords/${encodeURIComponent(keyword)}`);
-      },
+      href: `keywords/${encodeURIComponent(keyword)}`,
       isHighlighted: keyword === "Maksuton",
     })),
   }));
@@ -90,23 +92,11 @@ function pruneId(idWithSource: string): string {
   return id;
 }
 
-type Address = {
-  streetName: string;
-  zip: string;
-  city: string;
-};
-
 type DirectionPoint = {
   name: string;
   address: Address;
   point: Point;
 };
-
-function renderAddressToString(address: Address): string {
-  return [address.streetName, address.zip, address.city]
-    .filter((item) => item)
-    .join(", ");
-}
 
 function getHSLDirection(point?: DirectionPoint): string {
   if (!point) {
@@ -150,9 +140,16 @@ function getGoogleDirectionsUrl(
   return `https://www.google.com/maps/dir/${from}/${to}/`;
 }
 
+function capitalize(string: string) {
+  const [firstCharacter, ...rest] = string.split("");
+
+  return `${firstCharacter.toUpperCase()}${rest.join("")}`;
+}
+
 export function VenuePageContent() {
   const router = useRouter();
-  const search = useSearch();
+  const id = router.query.id as string;
+  const { getSearchRoute } = useSearch();
   const locale = router.locale ?? router.defaultLocale;
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
@@ -180,7 +177,6 @@ export function VenuePageContent() {
     return null;
   }
 
-  const id = data?.venue?.id;
   const name = data?.venue?.name;
   const streetAddress = data?.venue?.streetAddress;
   const addressLocality = data?.venue?.addressLocality;
@@ -239,7 +235,7 @@ export function VenuePageContent() {
   const hslInfoLink = (
     <InfoBlock.Link
       external
-      id="hsl"
+      key="hsl"
       href={getHSLDirections(null, directionPoint)}
       label="Reittiohjeet (HSL)"
     />
@@ -247,7 +243,7 @@ export function VenuePageContent() {
   const googleInfoLink = (
     <InfoBlock.Link
       external
-      id="google"
+      key="google"
       href={getGoogleDirectionsUrl(null, directionPoint)}
       label="Reittiohjeet (Google)"
     />
@@ -259,17 +255,17 @@ export function VenuePageContent() {
       info: simplifiedAddress,
     },
   ];
+  const keywords = data?.venue?.ontologyWords?.map((ontology) => ({
+    label: capitalize(ontology.label),
+    id: ontology.id,
+  }));
 
   // Data that can't be found from the API at this point
-  const keywords = null;
   const temperature = null;
   const organizer = null;
   const shortDescription = null;
 
-  const recommendationItems = getRecommendationsAsItems(
-    mockRecommendations,
-    router
-  );
+  const recommendationItems = getRecommendationsAsItems(mockRecommendations);
 
   return (
     <>
@@ -290,14 +286,12 @@ export function VenuePageContent() {
             {keywords && (
               <ul className={styles.keywords}>
                 {keywords.map((keyword) => (
-                  <li key={keyword}>
+                  <li key={keyword.id}>
                     <Keyword
-                      keyword={keyword}
-                      onClick={() => {
-                        search({
-                          ontology: keyword,
-                        });
-                      }}
+                      keyword={keyword.label}
+                      href={getSearchRoute({
+                        ontology: keyword.label.toLowerCase(),
+                      })}
                     />
                   </li>
                 ))}
@@ -336,11 +330,11 @@ export function VenuePageContent() {
               name="Paikka"
               contents={[
                 <InfoBlock.List
-                  id="address"
+                  key="address"
                   items={[name, streetAddress, addressLocality]}
                 />,
                 <InfoBlock.Link
-                  id="map-link"
+                  key="map-link"
                   href={`/map?venue=${id}`}
                   label="Avaa kartta"
                 />,
@@ -351,11 +345,11 @@ export function VenuePageContent() {
               name="Muut tiedot"
               contents={[
                 <InfoBlock.List
-                  id="contact-details"
+                  key="contact-details"
                   items={[telephone, email]}
                 />,
                 <InfoBlock.List
-                  id="social-media-links"
+                  key="social-media-links"
                   items={links.reduce((acc, link) => {
                     if (!link.url) {
                       return acc;
@@ -365,7 +359,7 @@ export function VenuePageContent() {
                       ...acc,
                       <InfoBlock.Link
                         external
-                        id={link.id}
+                        key={link.id}
                         href={link.url}
                         label={link.name}
                       />,
@@ -378,9 +372,9 @@ export function VenuePageContent() {
               icon={<IconMap />}
               name="Löydä perille"
               contents={[
-                <InfoBlock.List id="directions-hsl" items={[hslInfoLink]} />,
+                <InfoBlock.List key="directions-hsl" items={[hslInfoLink]} />,
                 <InfoBlock.List
-                  id="directions-google"
+                  key="directions-google"
                   items={[googleInfoLink]}
                 />,
               ]}
@@ -391,7 +385,7 @@ export function VenuePageContent() {
                 name="Liikunnan tiedot"
                 contents={[
                   <InfoBlock.List
-                    id="sports-info"
+                    key="sports-info"
                     items={[
                       "Helsingin kaupunki,",
                       "Kulttuurin ja vapaa-ajan toimiala",
@@ -400,7 +394,7 @@ export function VenuePageContent() {
                     ]}
                   />,
                   <InfoBlock.Link
-                    id="organizer-link"
+                    key="organizer-link"
                     href="#"
                     label="Katso muut järjestäjän tapahtumat"
                   />,
@@ -416,7 +410,7 @@ export function VenuePageContent() {
               </Text>
             )}
             {description?.split("\n\n").map((paragraph) => (
-              <Text key={paragraph.substr(0, 10)} variant="body-l">
+              <Text key={hash(paragraph.substr(0, 50))} variant="body-l">
                 {paragraph}
               </Text>
             ))}
@@ -435,20 +429,7 @@ export function VenuePageContent() {
           </div>
         </div>
       </article>
-      <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
-        <List
-          variant="columns-3"
-          items={[
-            ...recommendationItems,
-            ...recommendationItems.slice(0, 2).map(({ id, ...rest }) => ({
-              ...rest,
-              id: `${id}-b`,
-            })),
-          ].map((item) => (
-            <CondensedCard key={item.id} {...item} />
-          ))}
-        />
-      </Section>
+      <UpcomingEventsSection linkedId={id} />
       <Section title="Muuta samankaltaista liikuntaa" color="white">
         <List
           items={recommendationItems.map((item) => (

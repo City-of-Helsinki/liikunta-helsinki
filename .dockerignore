@@ -7,3 +7,4 @@
 !tsconfig.json
 !next.config.js
 !.babelrc
+!i18nRoutes.config.js

@@ -23,6 +23,17 @@
       margin-bottom: $spacing-s;
     }
   }
+
+  &.card {
+    .name {
+      font-weight: 500;
+    }
+
+    .content {
+      // Width of the icon + it's whitespace
+      padding-left: calc(24px + #{$spacing-xs});
+    }
+  }
 }
 
 .link {
@@ -31,13 +42,22 @@
   justify-content: space-between;
   min-width: 8rem;
 
-  font-size: $fontsize-body-l;
   font-weight: 700;
   text-decoration: none;
-  color: $color-copper-dark;
 
   &:hover {
     text-decoration: underline;
+  }
+
+  .body & {
+    font-size: $fontsize-body-l;
+    color: $color-copper-dark;
+  }
+
+  .card & {
+    font-weight: 500;
+    font-size: $fontsize-body-m;
+    color: $color-bus;
   }
 }
 

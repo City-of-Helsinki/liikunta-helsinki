@@ -10,7 +10,7 @@ import {
 import { useMemo } from "react";
 
 import Config from "../config";
-import { logger } from "../logger";
+import { logger } from "../domain/logger";
 import initializeApolloClient from "./initializeApolloClient";
 
 let apiApolloClient: ApolloClient<NormalizedCacheObject>;
@@ -45,24 +45,18 @@ function createNextApiApolloClient() {
 }
 
 export default function initializeNextApiApolloClient(initialState = null) {
-  const client = initializeApolloClient(
+  return initializeApolloClient(
     initialState,
     apiApolloClient,
     createNextApiApolloClient
   );
-
-  // Create the Apollo Client once in the client
-  if (!apiApolloClient) {
-    apiApolloClient = client;
-  }
-
-  return client;
 }
 
-export function useNextApiApolloClient(initialState) {
-  const store = useMemo(() => initializeNextApiApolloClient(initialState), [
-    initialState,
-  ]);
+export function useNextApiApolloClient(initialState = null) {
+  const store = useMemo(
+    () => initializeNextApiApolloClient(initialState),
+    [initialState]
+  );
 
   return store;
 }
