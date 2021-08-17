@@ -1,22 +1,6 @@
 @use "breakpoints";
 @import "variables";
 
-.searchArea {
-  padding-top: $spacing-m;
-  grid-column: 1 / -1 !important;
-
-  display: inherit;
-  grid-template-columns: inherit;
-  grid-template-rows: inherit;
-
-  & > * {
-    grid-column: 2;
-    margin-bottom: 0;
-  }
-
-  background-color: $color-engel;
-}
-
 .form {
   margin: $spacing-m 0 $spacing-4-xl;
   display: grid;

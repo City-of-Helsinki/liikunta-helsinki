@@ -36,7 +36,16 @@ export type Item = {
   infoLines: string[];
   keywords: Keyword[];
   href: string | UrlObject;
+  location?: number[];
   image: string;
+};
+
+export type MapItem = {
+  id: string;
+  title: string;
+  pre?: string;
+  href: string;
+  location?: number[];
 };
 
 export type LandingPage = {
@@ -97,6 +106,11 @@ export type Venue = {
   };
   images: Image[] | null;
   location: {
+    geoLocation: {
+      geometry: {
+        coordinates: number[];
+      };
+    },
     address: {
       streetAddress?: LocalizedString;
       postalCode?: string;

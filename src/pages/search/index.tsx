@@ -3,7 +3,7 @@ import { GetStaticPropsContext } from "next";
 import { gql, useQuery } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
 
-import { Keyword, LocalizedString, SearchResult } from "../../types";
+import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
 import searchApolloClient from "../../client/searchApolloClient";
 import { getNodes } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
@@ -15,6 +15,10 @@ import SearchResultCard from "../../components/card/SearchResultCard";
 import SearchList from "../../components/list/SearchList";
 import InfoBlock from "../../components/infoBlock/InfoBlock";
 import styles from "./search.module.scss";
+import SearchHeader, {
+  ShowMode,
+} from "../../components/search/searchHeader/SearchHeader";
+import { Keyword, LocalizedString, SearchResult } from "../../types";
 import { Locale } from "../../config";
 
 const BLOCK_SIZE = 10;
@@ -144,11 +148,28 @@ export default function Search() {
     });
   };
 
+  const switchShowMode = () => {
+    const params = getURLSearchParamsFromAsPath(router.asPath);
+
+    router.replace(
+      { pathname: "/search/map", query: params.toString() },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+  };
+
   return (
     <Page title="Search" description="Search">
-      <SearchPageSearchForm />
-      <Koros className={styles.koros} />
+      <SearchHeader
+        showMode={ShowMode.LIST}
+        count={count}
+        switchShowMode={switchShowMode}
+        searchForm={<SearchPageSearchForm />}
+      />
       <Section variant="contained">
+        <Koros className={styles.koros} />
         <SearchList
           ref={moreResultsAnnouncerRef}
           loading={loading}
@@ -156,6 +177,7 @@ export default function Search() {
           count={count}
           blockSize={BLOCK_SIZE}
           hasNext={pageInfo?.hasNextPage}
+          switchShowMode={switchShowMode}
           items={searchResults.map((searchResult) => {
             const item = {
               id: searchResult.venue.meta.id,

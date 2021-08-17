@@ -1,0 +1,118 @@
+@use "breakpoints";
+@import "variables";
+
+.searchHeader {
+  --background-color: #{$color-engel-medium-light};
+  grid-column: 1 / -1 !important;
+
+  // Give increased z-index to show mobile actions
+  z-index: 2;
+
+  // Menu that contains the search form
+  .searchMenu {
+    padding: $spacing-xs;
+    // Fullscreen minus the main navigation height
+    height: calc(100vh - 50px);
+    background-color: var(--background-color);
+    overflow-y: hidden;
+
+    @include breakpoints.respond-above(m) {
+      height: auto;
+      display: grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 4fr 1fr;
+      grid-column-gap: $spacing-s;
+
+      // Remove margin from from to get it aligned correctly
+      & > div > form {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .closeSearch {
+        margin-left: auto;
+        width: 230px;
+        height: 56px;
+      }
+    }
+  }
+
+  .searchActions {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    @include breakpoints.respond-above(m) {
+      position: initial;
+      padding: $spacing-xs $spacing-s;
+    }
+
+    .countAndTags {
+      width: 0;
+      visibility: hidden;
+
+      @include breakpoints.respond-above(m) {
+        visibility: visible;
+        width: auto;
+        margin-left: $spacing-layout-l;
+      }
+    }
+
+    button {
+      width: 50%;
+      border: none;
+
+      @include breakpoints.respond-above(m) {
+        width: unset;
+        border: 2px solid;
+        height: 45px;
+      }
+    }
+
+    button:first-child {
+      position: relative;
+
+      &:after {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: 0;
+        // Add few pixels to make sure border covers the whole height of the container
+        height: calc(100% + 5px);
+        border-left: 0;
+        right: 0;
+
+        @include breakpoints.respond-above(m) {
+          border: none;
+        }
+      }
+    }
+
+    @include breakpoints.respond-above(m) {
+      button:last-child {
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+.searchArea {
+  padding-top: $spacing-m;
+  grid-column: 1 / -1 !important;
+
+  display: inherit;
+  grid-template-columns: inherit;
+  grid-template-rows: inherit;
+
+  & > * {
+    grid-column: 2;
+    margin-bottom: 0;
+  }
+
+  background-color: $color-engel;
+}

@@ -1,6 +1,6 @@
 import React, { Ref, forwardRef } from "react";
 import classNames from "classnames";
-import { Button, LoadingSpinner } from "hds-react";
+import { Button, LoadingSpinner, IconMap } from "hds-react";
 
 import styles from "./searchList.module.scss";
 import Text from "../text/Text";
@@ -12,11 +12,20 @@ type Props = {
   loading: boolean;
   count: number;
   blockSize: number;
+  switchShowMode: () => void;
 };
 
 const SearchList = forwardRef(
   (
-    { loading, hasNext, count, onLoadMore, items, blockSize }: Props,
+    {
+      loading,
+      hasNext,
+      count,
+      onLoadMore,
+      items,
+      blockSize,
+      switchShowMode,
+    }: Props,
     ref: Ref<HTMLLIElement>
   ) => {
     const resultsLeft = count ? count - items.length : 0;
@@ -26,9 +35,18 @@ const SearchList = forwardRef(
     return (
       <>
         {!loading && (
-          <Text variant="h2" className={styles.resultCount} role="status">
-            {count} hakutulosta
-          </Text>
+          <div className={styles.row}>
+            <Button
+              onClick={switchShowMode}
+              iconLeft={<IconMap />}
+              className={styles.showOnMap}
+            >
+              Näytä kartalla
+            </Button>
+            <Text variant="h2" className={styles.resultCount} role="status">
+              {count} hakutulosta
+            </Text>
+          </div>
         )}
         <ul className={classNames(styles.list, styles.searchResult)}>
           {items.map((node: React.ReactElement, index: number) => (

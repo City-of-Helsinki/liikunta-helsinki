@@ -39,9 +39,34 @@
   justify-self: center;
 }
 
+.row {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+
+  @include breakpoints.respond-above(s) {
+    flex-direction: row;
+    justify-content: unset;
+  }
+}
+
+.showOnMap {
+  width: 100%;
+
+  @include breakpoints.respond-above(s) {
+    width: unset;
+  }
+}
+
 .resultCount {
-  justify-self: end;
+  margin-left: 0;
   font-size: 1.25rem;
+  margin-bottom: $spacing-layout-2-xs !important;
+
+  @include breakpoints.respond-above(s) {
+    margin-bottom: 0 !important;
+    margin-left: auto;
+  }
 }
 
 .loadMore {
