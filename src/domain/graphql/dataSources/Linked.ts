@@ -110,6 +110,7 @@ export default class Linked extends RESTDataSource {
     params.set("start", "now");
     params.set("location", id);
     params.set("sort", "start_time");
+    params.set("super_event_type", "none");
 
     if (language) {
       params.set("language", language);
