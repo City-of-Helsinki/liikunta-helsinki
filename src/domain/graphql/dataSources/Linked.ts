@@ -109,6 +109,7 @@ export default class Linked extends RESTDataSource {
     const params = new URLSearchParams();
     params.set("start", "now");
     params.set("location", id);
+    params.set("sort", "start_time");
 
     if (language) {
       params.set("language", language);
