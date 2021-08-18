@@ -3,11 +3,11 @@ import { GetStaticPropsContext } from "next";
 import { gql, useQuery } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
 
-import { LocalizedString, SearchResult } from "../../types";
-import { Locale } from "../../config";
+import { SearchResult } from "../../types";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
 import useSearch from "../../hooks/useSearch";
 import capitalize from "../../util/capitalize";
+import getTranslation from "../../util/getTranslation";
 import searchApolloClient from "../../client/searchApolloClient";
 import { getNodes } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
@@ -107,10 +107,6 @@ const appToUnifiedSearchLanguageMap = {
 const emptyConnection = {
   edges: [],
 };
-
-function getTranslation(translation: LocalizedString, locale: Locale) {
-  return translation[locale] ?? translation.fi;
-}
 
 export default function Search() {
   const {

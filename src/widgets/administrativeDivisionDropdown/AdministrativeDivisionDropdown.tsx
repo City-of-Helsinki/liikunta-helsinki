@@ -4,6 +4,8 @@ import { IconLocation } from "hds-react";
 import { Option } from "../../types";
 import searchApolloClient from "../../client/searchApolloClient";
 import Select from "../../components/select/Select";
+import useRouter from "../../domain/i18nRouter/useRouter";
+import getTranslation from "../../util/getTranslation";
 
 const ADMINISTRATIVE_DIVISION_QUERY = gql`
   {
@@ -36,6 +38,7 @@ export default function AdministrativeDivisionDropdown({
   value,
   ...delegated
 }: Props) {
+  const { locale } = useRouter();
   const { data, loading, error } = useQuery(ADMINISTRATIVE_DIVISION_QUERY, {
     client: searchApolloClient,
   });
@@ -61,7 +64,7 @@ export default function AdministrativeDivisionDropdown({
       label: "",
     },
     ...data.administrativeDivisions.map((administrativeDivision) => ({
-      label: administrativeDivision.name.fi,
+      label: getTranslation(administrativeDivision.name, locale),
       value: administrativeDivision.id,
     })),
   ];
