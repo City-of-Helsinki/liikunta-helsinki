@@ -9,8 +9,8 @@ import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import CondensedCard from "../../components/card/CondensedCard";
 
-const RECOMMENDED_EVENTS_QUERY = gql`
-  query RecommendedEventsQuery($ids: [ID!]!) {
+const SELECTED_EVENTS_QUERY = gql`
+  query SelectedEventsQuery($ids: [ID!]!) {
     eventsByIds(ids: $ids) {
       ...eventFragment
     }
@@ -20,14 +20,18 @@ const RECOMMENDED_EVENTS_QUERY = gql`
 `;
 
 type Props = {
-  eventIds: string[];
+  title: string;
+  events: string[];
 };
 
-export default function RecommendedEventsSection({ eventIds }: Props) {
+export default function SelectedEventsSection({
+  title,
+  events: eventIds,
+}: Props) {
   const nextApiApolloClient = useNextApiApolloClient();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { loading, error, data } = useQuery(RECOMMENDED_EVENTS_QUERY, {
+  const { loading, error, data } = useQuery(SELECTED_EVENTS_QUERY, {
     client: nextApiApolloClient,
     variables: { ids: eventIds },
     skip: !process.browser,
@@ -40,7 +44,11 @@ export default function RecommendedEventsSection({ eventIds }: Props) {
   });
 
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <Section title={title}>
+        <LoadingSpinner />
+      </Section>
+    );
   }
 
   // In case of an error, silently fail.
@@ -56,7 +64,7 @@ export default function RecommendedEventsSection({ eventIds }: Props) {
   }
 
   return (
-    <Section title="Suositellut tapahtumat">
+    <Section title={title}>
       <List
         variant="grid-2"
         items={eventItems.map((item) => (
