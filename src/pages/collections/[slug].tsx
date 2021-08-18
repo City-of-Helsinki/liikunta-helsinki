@@ -8,15 +8,16 @@ import { useTranslation } from "next-i18next";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
 import SelectedEventsSection from "../../widgets/selectedEventsSection/SelectedEventsSection";
+import SearchEventsSection from "../../widgets/searchEventsSection/SearchEventsSection";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import Page from "../../components/page/Page";
+import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
 import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
 import styles from "./collection.module.scss";
-import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 
 export const COLLECTION_PAGE_QUERY = gql`
   query CollectionPageQuery($languageCode: LanguageCodeEnum!, $slug: ID!) {
@@ -34,6 +35,7 @@ export const COLLECTION_PAGE_QUERY = gql`
             title
           }
           ... on EventSearch {
+            module
             title
             url
           }
@@ -110,6 +112,16 @@ export default function CollectionsPage() {
               key={module.title}
               title={module.title}
               events={module.events}
+            />
+          );
+        }
+
+        if (module.module === "event_search") {
+          return (
+            <SearchEventsSection
+              key={module.title}
+              title={module.title}
+              url={module.url}
             />
           );
         }
