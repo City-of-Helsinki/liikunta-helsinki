@@ -7,7 +7,7 @@ import { useTranslation } from "next-i18next";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
-import RecommendedEventsSection from "../../widgets/recommendedEventsSection/RecommendedEventsSection";
+import SelectedEventsSection from "../../widgets/selectedEventsSection/SelectedEventsSection";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import Page from "../../components/page/Page";
@@ -23,16 +23,21 @@ export const COLLECTION_PAGE_QUERY = gql`
     collection(id: $slug, idType: SLUG) {
       id
       backgroundColor
-      modules {
-        ... on EventSelected {
-          module
-          events
-        }
-      }
       translation(language: $languageCode) {
         title
         description
         image
+        modules {
+          ... on EventSelected {
+            module
+            events
+            title
+          }
+          ... on EventSearch {
+            title
+            url
+          }
+        }
         seo {
           ...seoFragment
         }
@@ -58,9 +63,7 @@ export default function CollectionsPage() {
   const description = collection?.translation?.description;
   const backgroundColor = collection?.backgroundColor;
   const image = collection?.translation?.image;
-  const recommendedEventIds = collection?.modules?.flatMap(
-    (module) => module.events
-  );
+  const modules = collection?.translation.modules;
 
   return (
     <Page
@@ -100,7 +103,19 @@ export default function CollectionsPage() {
           </div>
         </div>
       </Section>
-      <RecommendedEventsSection eventIds={recommendedEventIds} />
+      {modules.map((module) => {
+        if (module.module === "event_selected") {
+          return (
+            <SelectedEventsSection
+              key={module.title}
+              title={module.title}
+              events={module.events}
+            />
+          );
+        }
+
+        return null;
+      })}
     </Page>
   );
 }
