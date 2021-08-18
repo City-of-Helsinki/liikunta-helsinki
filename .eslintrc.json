@@ -37,5 +37,6 @@
     "object-curly-spacing": ["warn", "always"],
     "@next/next/no-img-element": "off"
   },
-  "ignorePatterns": ["node_modules/", ".next/"]
+  "ignorePatterns": ["node_modules/", ".next/"],
+  "overrides": [{ "files": ["*.ts", "*.tsx"], "rules": { "no-undef": "off" } }]
 }
