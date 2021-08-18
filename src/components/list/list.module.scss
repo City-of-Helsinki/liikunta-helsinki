@@ -76,18 +76,8 @@
   --base-list-item-width: 32rem; // 512px
 }
 
-.columns-3 {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
+.grid-3 {
+  --base-list-item-width: calc(24.5rem - (#{$spacing-m} * 0.5));
 
-  column-count: 3;
-  column-width: calc(24.5rem - (#{$spacing-m} * 0.5));
-  column-gap: $spacing-m;
-
-  & > * {
-    display: inline-block;
-    margin-bottom: $spacing-m;
-    width: 100%;
-  }
+  grid-gap: $spacing-m;
 }
