@@ -56,7 +56,7 @@ export default function AdministrativeDivisionDropdown({
   // controlled, is used to initialize state. Hence only the value that's used
   // during the first render has any impact.
   if (loading) {
-    return null;
+    return <div />;
   }
 
   const options = [
