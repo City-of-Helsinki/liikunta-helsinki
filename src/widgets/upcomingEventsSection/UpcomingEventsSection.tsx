@@ -55,7 +55,7 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
   return (
     <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
       <List
-        variant="columns-3"
+        variant="grid-3"
         items={eventItems.map((item) => (
           <CondensedCard key={item.id} {...item} />
         ))}
