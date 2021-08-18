@@ -96,6 +96,9 @@ type LinkedEventQuery = {
   location?: string;
   sort?: string;
   superEventType?: string;
+  language?: string;
+  text?: string;
+  translation?: string;
 };
 
 // https://api.hel.fi/linkedevents/v1
@@ -143,10 +146,17 @@ export default class Linked extends RESTDataSource {
       if (key === "ids" && Array.isArray(value)) {
         params.set("ids", value.join(","));
       }
+
+      if (typeof value === "string") {
+        params.set(key, value);
+      }
     });
 
-    if (language) {
+    if (language && !linkedEventQuery.language) {
       params.set("language", language);
+    }
+
+    if (language && !linkedEventQuery.translation) {
       params.set("translation", language);
     }
 

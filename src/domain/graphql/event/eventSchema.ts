@@ -2,11 +2,14 @@ import { gql } from "apollo-server-micro";
 
 const typeDefs = gql`
   input EventQuery {
-    ids: [ID!]!
+    ids: [ID!]
     start: String
     location: ID
     sort: String
     superEventType: String
+    language: String
+    text: String
+    translation: String
   }
 
   extend type Query {

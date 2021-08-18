@@ -34,7 +34,7 @@ function getIsCloseInTimeKeyword({
 
   return {
     label,
-    href: infoUrl,
+    href: "",
   };
 }
 
@@ -47,7 +47,7 @@ function getIsFree(event: Event): Keyword | null {
 
   return {
     label: "Maksuton",
-    href: event.infoUrl,
+    href: "",
     isHighlighted: true,
   };
 }
