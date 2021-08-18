@@ -33,9 +33,13 @@ const createQueryResolver =
         throw e;
       }
 
-      // Hide any unexpected errors in order to avoid accidentally leaking too
-      // much information.
-      throw new ApolloError("Internal server error");
+      if (process.env.NODE_ENV === "development") {
+        throw e;
+      } else {
+        // Hide any unexpected errors in order to avoid accidentally leaking too
+        // much information when in production.
+        throw new ApolloError("Internal server error");
+      }
     }
   };
 
