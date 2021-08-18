@@ -2,11 +2,6 @@ import RESTDataSource from "./RESTDataSource";
 import { Locale } from "../../../config";
 import { dataSourceLinkedLogger as logger } from "../../logger";
 
-type LinkedResponse<E> = {
-  meta: unknown;
-  data: E[];
-};
-
 type LinkedObjectRef = {
   "@id": string;
 };
@@ -95,6 +90,14 @@ type LinkedEvent<Translation = LinkedTranslation> = {
   "@type": string;
 };
 
+type LinkedEventQuery = {
+  ids?: string[];
+  start?: string;
+  location?: string;
+  sort?: string;
+  superEventType?: string;
+};
+
 // https://api.hel.fi/linkedevents/v1
 export default class Linked extends RESTDataSource {
   constructor() {
@@ -106,35 +109,41 @@ export default class Linked extends RESTDataSource {
     id: string,
     language?: Locale
   ): Promise<LinkedEvent[] | LinkedEvent<string>[]> {
-    const params = new URLSearchParams();
-    params.set("start", "now");
-    params.set("location", id);
-    params.set("sort", "start_time");
-    params.set("super_event_type", "none");
-
-    if (language) {
-      params.set("language", language);
-      params.set("translation", language);
-    }
-
-    const response = await this.get<LinkedResponse<LinkedEvent>>(
-      `event/?${params}`
+    const data = await this.getEvents(
+      {
+        start: "now",
+        location: id,
+        sort: "start_time",
+        superEventType: "none",
+      },
+      language
     );
+
     // Get the first 6 only as the UI doesn't show more ever. Linked API does
     // not offer a way to limit the result set.
-    return response?.data.slice(0, 6) ?? [];
+    return data.slice(0, 6) ?? [];
   }
 
-  async getPlace(id: string) {
-    return this.get(`place/${id}/`);
-  }
-
-  async getEventsByIds(
-    ids: string[],
+  async getEvents(
+    linkedEventQuery: LinkedEventQuery,
     language?: Locale
   ): Promise<LinkedEvent[] | LinkedEvent<string>[]> {
     const params = new URLSearchParams();
-    params.set("ids", ids.join(","));
+
+    Object.entries(linkedEventQuery).forEach(([key, value]) => {
+      // If value is falsy, don't include the query parameter
+      if (!value) {
+        return;
+      }
+
+      if (key === "superEventType" && typeof value === "string") {
+        params.set("super_event_type", value);
+      }
+
+      if (key === "ids" && Array.isArray(value)) {
+        params.set("ids", value.join(","));
+      }
+    });
 
     if (language) {
       params.set("language", language);
@@ -144,5 +153,9 @@ export default class Linked extends RESTDataSource {
     const result = await this.get(`event?${params.toString()}`);
 
     return result.data;
+  }
+
+  async getPlace(id: string) {
+    return this.get(`place/${id}/`);
   }
 }

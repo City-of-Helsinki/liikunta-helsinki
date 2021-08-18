@@ -9,12 +9,12 @@ import venueQueryResolver from "../../domain/graphql/venue/venueQueryResolver";
 import Venue from "../../domain/graphql/venue/venueResolver";
 import eventSchema from "../../domain/graphql/event/eventSchema";
 import upcomingEventsQueryResolver from "../../domain/graphql/event/upcomingEventsQueryResolver";
-import eventsByIdsResolver from "../../domain/graphql/event/eventsByIdsResolver";
 import Event from "../../domain/graphql/event/eventResolver";
 import Hauki from "../../domain/graphql/dataSources/Hauki";
 import Tprek from "../../domain/graphql/dataSources/Tprek";
 import Linked from "../../domain/graphql/dataSources/Linked";
 import LiikuntaLoggerPlugin from "../../domain/graphql/LiikuntaLoggerPlugin";
+import eventsQueryResolver from "../../domain/graphql/event/eventsQueryResolver";
 
 // Note: In the current version of GraphQL, you can’t have an empty type even if
 // you intend to extend it later. So we need to make sure the Query type has at
@@ -39,7 +39,7 @@ const resolvers = {
   Query: {
     venue: venueQueryResolver,
     upcomingEvents: upcomingEventsQueryResolver,
-    eventsByIds: eventsByIdsResolver,
+    events: eventsQueryResolver,
   },
   Venue,
   Event,

@@ -11,7 +11,7 @@ import CondensedCard from "../../components/card/CondensedCard";
 
 const SELECTED_EVENTS_QUERY = gql`
   query SelectedEventsQuery($ids: [ID!]!) {
-    eventsByIds(ids: $ids) {
+    events(where: { ids: $ids }) {
       ...eventFragment
     }
   }
@@ -56,7 +56,7 @@ export default function SelectedEventsSection({
     return null;
   }
 
-  const eventItems = getEventsAsItems(data?.eventsByIds);
+  const eventItems = getEventsAsItems(data?.events);
 
   // In case there are no upcoming events, hide the section.
   if (eventItems.length === 0) {
