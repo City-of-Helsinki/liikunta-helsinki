@@ -5,13 +5,12 @@ import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
 import getEventsAsItems from "../../util/events/getEventsAsItems";
 import eventFragment from "../../util/events/eventFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
-import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import CondensedCard from "../../components/card/CondensedCard";
 
-const SELECTED_EVENTS_QUERY = gql`
-  query SelectedEventsQuery($ids: [ID!]!) {
-    events(where: { ids: $ids }) {
+const SEARCH_EVENTS_QUERY = gql`
+  query SearchEventsQuery($query: EventQuery!) {
+    events(where: $query) {
       ...eventFragment
     }
   }
@@ -19,21 +18,27 @@ const SELECTED_EVENTS_QUERY = gql`
   ${eventFragment}
 `;
 
+function getEventQuery(url: string) {
+  const params = new URL(url).searchParams;
+  const { super_event_type, ...restOfQuery } = Object.fromEntries(params);
+
+  return {
+    ...restOfQuery,
+    superEventType: super_event_type,
+  };
+}
+
 type Props = {
-  title: string;
-  events: string[];
+  url: string;
 };
 
-export default function SelectedEventsSection({
-  title,
-  events: eventIds,
-}: Props) {
+export default function SearchEventsSection({ url }: Props) {
   const nextApiApolloClient = useNextApiApolloClient();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { loading, error, data } = useQuery(SELECTED_EVENTS_QUERY, {
+  const { loading, error, data } = useQuery(SEARCH_EVENTS_QUERY, {
     client: nextApiApolloClient,
-    variables: { ids: eventIds },
+    variables: { query: getEventQuery(url) },
     skip: !process.browser,
     context: {
       headers: {
@@ -44,11 +49,7 @@ export default function SelectedEventsSection({
   });
 
   if (loading) {
-    return (
-      <Section title={title}>
-        <LoadingSpinner />
-      </Section>
-    );
+    return <LoadingSpinner />;
   }
 
   // In case of an error, silently fail.
@@ -58,19 +59,17 @@ export default function SelectedEventsSection({
 
   const eventItems = getEventsAsItems(data?.events);
 
-  // In case there are no upcoming events, hide the section.
+  // In case there are no events
   if (eventItems.length === 0) {
     return null;
   }
 
   return (
-    <Section title={title}>
-      <List
-        variant="grid-2"
-        items={eventItems.map((item) => (
-          <CondensedCard key={item.id} {...item} />
-        ))}
-      />
-    </Section>
+    <List
+      variant="grid-2"
+      items={eventItems.map((item) => (
+        <CondensedCard key={item.id} {...item} />
+      ))}
+    />
   );
 }

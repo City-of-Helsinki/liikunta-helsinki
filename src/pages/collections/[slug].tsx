@@ -7,10 +7,10 @@ import { useTranslation } from "next-i18next";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
-import SelectedEventsSection from "../../widgets/selectedEventsSection/SelectedEventsSection";
-import SearchEventsSection from "../../widgets/searchEventsSection/SearchEventsSection";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
+import SelectedEvents from "../../widgets/selectedEvents/SelectedEvents";
+import SearchEvents from "../../widgets/searchEvents/SearchEvents";
 import Page from "../../components/page/Page";
 import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import Text from "../../components/text/Text";
@@ -106,23 +106,21 @@ export default function CollectionsPage() {
         </div>
       </Section>
       {modules.map((module) => {
+        let content = null;
+
         if (module.module === "event_selected") {
-          return (
-            <SelectedEventsSection
-              key={module.title}
-              title={module.title}
-              events={module.events}
-            />
-          );
+          content = <SelectedEvents events={module.events} />;
         }
 
         if (module.module === "event_search") {
+          content = <SearchEvents url={module.url} />;
+        }
+
+        if (content) {
           return (
-            <SearchEventsSection
-              key={module.title}
-              title={module.title}
-              url={module.url}
-            />
+            <Section key={module.title} title={module.title}>
+              {content}
+            </Section>
           );
         }
 
