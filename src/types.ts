@@ -117,9 +117,11 @@ export type Venue = {
       city?: LocalizedString;
     };
   };
-  ontologyWords: [{
-    label: LocalizedString;
-  }]
+  ontologyWords: [
+    {
+      label: LocalizedString;
+    }
+  ];
 };
 
 export type SearchResult = {
@@ -228,4 +230,10 @@ export type Address = {
 export type Option = {
   label: string;
   value: string;
+};
+
+export type ItemsPromiseObject = {
+  loading: boolean;
+  error?: Error;
+  items: Item[];
 };

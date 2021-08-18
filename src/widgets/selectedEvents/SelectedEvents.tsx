@@ -1,12 +1,10 @@
 import { useQuery, gql } from "@apollo/client";
-import { LoadingSpinner } from "hds-react";
 
 import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
 import getEventsAsItems from "../../util/events/getEventsAsItems";
 import eventFragment from "../../util/events/eventFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
-import List from "../../components/list/List";
-import CondensedCard from "../../components/card/CondensedCard";
+import { ItemsPromiseObject } from "../../types";
 
 const SELECTED_EVENTS_QUERY = gql`
   query SelectedEventsQuery($ids: [ID!]!) {
@@ -20,9 +18,13 @@ const SELECTED_EVENTS_QUERY = gql`
 
 type Props = {
   events: string[];
+  render: (renderProps: ItemsPromiseObject) => JSX.Element;
 };
 
-export default function SelectedEventsSection({ events: eventIds }: Props) {
+export default function SelectedEventsSection({
+  events: eventIds,
+  render,
+}: Props) {
   const nextApiApolloClient = useNextApiApolloClient();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
@@ -38,28 +40,5 @@ export default function SelectedEventsSection({ events: eventIds }: Props) {
     fetchPolicy: "cache-and-network",
   });
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  // In case of an error, silently fail.
-  if (error) {
-    return null;
-  }
-
-  const eventItems = getEventsAsItems(data?.events);
-
-  // In case there are no upcoming events, hide the section.
-  if (eventItems.length === 0) {
-    return null;
-  }
-
-  return (
-    <List
-      variant="grid-2"
-      items={eventItems.map((item) => (
-        <CondensedCard key={item.id} {...item} />
-      ))}
-    />
-  );
+  return render({ loading, error, items: getEventsAsItems(data?.events) });
 }

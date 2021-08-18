@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import Image from "next/image";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
+import { LoadingSpinner } from "hds-react";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
@@ -17,7 +18,49 @@ import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
 import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
+import List from "../../components/list/List";
+import CondensedCard from "../../components/card/CondensedCard";
 import styles from "./collection.module.scss";
+import { ItemsPromiseObject } from "../../types";
+
+type CollectionItemListProps = {
+  itemPromiseObject: ItemsPromiseObject;
+  title: string;
+};
+
+function CollectionItemList({
+  title,
+  itemPromiseObject: { loading, error, items },
+}: CollectionItemListProps) {
+  if (loading) {
+    return (
+      <Section key={title} title={title}>
+        <LoadingSpinner />
+      </Section>
+    );
+  }
+
+  // In case of an error, silently fail.
+  if (error) {
+    return null;
+  }
+
+  // In case there are no events
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <Section key={title} title={title}>
+      <List
+        variant="grid-2"
+        items={items.map((item) => (
+          <CondensedCard key={item.id} {...item} />
+        ))}
+      />
+    </Section>
+  );
+}
 
 export const COLLECTION_PAGE_QUERY = gql`
   query CollectionPageQuery($languageCode: LanguageCodeEnum!, $slug: ID!) {
@@ -106,21 +149,31 @@ export default function CollectionsPage() {
         </div>
       </Section>
       {modules.map((module) => {
-        let content = null;
-
         if (module.module === "event_selected") {
-          content = <SelectedEvents events={module.events} />;
+          return (
+            <SelectedEvents
+              events={module.events}
+              render={(renderProps) => (
+                <CollectionItemList
+                  title={module.title}
+                  itemPromiseObject={renderProps}
+                />
+              )}
+            />
+          );
         }
 
         if (module.module === "event_search") {
-          content = <SearchEvents url={module.url} />;
-        }
-
-        if (content) {
           return (
-            <Section key={module.title} title={module.title}>
-              {content}
-            </Section>
+            <SearchEvents
+              url={module.url}
+              render={(renderProps) => (
+                <CollectionItemList
+                  title={module.title}
+                  itemPromiseObject={renderProps}
+                />
+              )}
+            />
           );
         }
 
