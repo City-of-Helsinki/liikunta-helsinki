@@ -9,7 +9,11 @@ import { ItemsPromiseObject } from "../../types";
 const SELECTED_EVENTS_QUERY = gql`
   query SelectedEventsQuery($ids: [ID!]!) {
     events(where: { ids: $ids }) {
-      ...eventFragment
+      edges {
+        node {
+          ...eventFragment
+        }
+      }
     }
   }
 
@@ -40,5 +44,9 @@ export default function SelectedEventsSection({
     fetchPolicy: "cache-and-network",
   });
 
-  return render({ loading, error, items: getEventsAsItems(data?.events) });
+  return render({
+    loading,
+    error,
+    items: getEventsAsItems(data?.events?.edges?.map((edge) => edge.node)),
+  });
 }

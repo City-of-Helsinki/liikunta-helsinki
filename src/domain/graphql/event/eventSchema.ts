@@ -14,7 +14,26 @@ const typeDefs = gql`
 
   extend type Query {
     upcomingEvents(id: ID!): [Event]!
-    events(where: EventQuery): [Event]!
+    events(where: EventQuery, first: Int, after: String): EventsConnection!
+  }
+
+  type PageInfo {
+    hasPreviousPage: Boolean!
+    hasNextPage: Boolean!
+    startCursor: String
+    endCursor: String
+    count: Int!
+  }
+
+  type EventsConnection {
+    edges: [EventEdge!]!
+    pageInfo: PageInfo
+    totalCount: Int
+  }
+
+  type EventEdge {
+    node: Event!
+    cursor: String!
   }
 
   type Image {

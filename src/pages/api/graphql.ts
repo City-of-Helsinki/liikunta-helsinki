@@ -15,6 +15,7 @@ import Tprek from "../../domain/graphql/dataSources/Tprek";
 import Linked from "../../domain/graphql/dataSources/Linked";
 import LiikuntaLoggerPlugin from "../../domain/graphql/LiikuntaLoggerPlugin";
 import eventsQueryResolver from "../../domain/graphql/event/eventsQueryResolver";
+import { createCursor, readCursor } from "../../domain/graphql/utils";
 
 // Note: In the current version of GraphQL, you can’t have an empty type even if
 // you intend to extend it later. So we need to make sure the Query type has at
@@ -27,6 +28,61 @@ const initQueryTypeDefs = gql`
     _empty: String
   }
 `;
+
+function getCurrentPage(previous?: string, next?: string): number {
+  if (!previous && next) {
+    return 1;
+  }
+
+  if (previous && !next) {
+    return Number(new URL(previous).searchParams.get("page")) + 1;
+  }
+
+  if (next) {
+    return Number(new URL(next).searchParams.get("page")) - 1;
+  }
+
+  return 1;
+}
+
+type LinkedCursor = {
+  where: Record<string, unknown>;
+};
+
+const LinkedPaginatedConnectionResolver = {
+  edges({ data: items }) {
+    return items.map((item) => ({
+      node: item,
+      cursor: null,
+    }));
+  },
+  totalCount({ meta: { count } }) {
+    return count;
+  },
+  pageInfo({ meta: { next, previous }, data, args: { where, after, first } }) {
+    const hasPreviousPage = Boolean(previous);
+    const hasNextPage = Boolean(next);
+    const query = after ? readCursor<LinkedCursor>(after).where : where;
+
+    const currentPage = getCurrentPage(previous, next);
+
+    return {
+      hasPreviousPage,
+      hasNextPage,
+      startCursor: createCursor({
+        where: query,
+        first,
+        page: currentPage,
+      }),
+      endCursor: createCursor({
+        where: query,
+        first,
+        page: currentPage,
+      }),
+      count: data.length,
+    };
+  },
+};
 
 const typeDefs = [initQueryTypeDefs, venueSchema, eventSchema];
 const dataSources = () => ({
@@ -42,6 +98,7 @@ const resolvers = {
     events: eventsQueryResolver,
   },
   Venue,
+  EventsConnection: LinkedPaginatedConnectionResolver,
   Event,
 };
 
