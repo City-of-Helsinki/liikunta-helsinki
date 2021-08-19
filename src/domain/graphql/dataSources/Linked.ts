@@ -90,6 +90,15 @@ type LinkedEvent<Translation = LinkedTranslation> = {
   "@type": string;
 };
 
+type LinkedPaginatedResponse<T> = {
+  meta: {
+    count: number;
+    next?: string;
+    previous?: string;
+  };
+  data: T[];
+};
+
 type LinkedEventQuery = {
   ids?: string[];
   start?: string;
@@ -99,6 +108,8 @@ type LinkedEventQuery = {
   language?: string;
   text?: string;
   translation?: string;
+  page?: number;
+  pageSize?: number;
 };
 
 // https://api.hel.fi/linkedevents/v1
@@ -111,26 +122,25 @@ export default class Linked extends RESTDataSource {
   async getUpcomingEvents(
     id: string,
     language?: Locale
-  ): Promise<LinkedEvent[] | LinkedEvent<string>[]> {
-    const data = await this.getEvents(
+  ): Promise<LinkedEvent[]> {
+    const result = await this.getEvents(
       {
         start: "now",
         location: id,
         sort: "start_time",
         superEventType: "none",
+        pageSize: 6,
       },
       language
     );
 
-    // Get the first 6 only as the UI doesn't show more ever. Linked API does
-    // not offer a way to limit the result set.
-    return data.slice(0, 6) ?? [];
+    return result.data ?? [];
   }
 
   async getEvents(
     linkedEventQuery: LinkedEventQuery,
     language?: Locale
-  ): Promise<LinkedEvent[] | LinkedEvent<string>[]> {
+  ): Promise<LinkedPaginatedResponse<LinkedEvent>> {
     const params = new URLSearchParams();
 
     Object.entries(linkedEventQuery).forEach(([key, value]) => {
@@ -140,15 +150,23 @@ export default class Linked extends RESTDataSource {
       }
 
       if (key === "superEventType" && typeof value === "string") {
-        params.set("super_event_type", value);
+        return params.set("super_event_type", value);
       }
 
       if (key === "ids" && Array.isArray(value)) {
-        params.set("ids", value.join(","));
+        return params.set("ids", value.join(","));
+      }
+
+      if (key === "pageSize" && typeof value === "number") {
+        return params.set("page_size", value.toString());
       }
 
       if (typeof value === "string") {
         params.set(key, value);
+      }
+
+      if (typeof value === "number") {
+        params.set(key, value.toString());
       }
     });
 
@@ -160,9 +178,7 @@ export default class Linked extends RESTDataSource {
       params.set("translation", language);
     }
 
-    const result = await this.get(`event?${params.toString()}`);
-
-    return result.data;
+    return this.get(`event?${params.toString()}`);
   }
 
   async getPlace(id: string) {

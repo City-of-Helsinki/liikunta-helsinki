@@ -9,7 +9,11 @@ import { ItemsPromiseObject } from "../../types";
 const SEARCH_EVENTS_QUERY = gql`
   query SearchEventsQuery($query: EventQuery!) {
     events(where: $query) {
-      ...eventFragment
+      edges {
+        node {
+          ...eventFragment
+        }
+      }
     }
   }
 
@@ -47,5 +51,9 @@ export default function SearchEventsSection({ url, render }: Props) {
     fetchPolicy: "cache-and-network",
   });
 
-  return render({ loading, error, items: getEventsAsItems(data?.events) });
+  return render({
+    loading,
+    error,
+    items: getEventsAsItems(data?.events?.edges?.map((edge) => edge.node)),
+  });
 }

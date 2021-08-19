@@ -8,6 +8,7 @@ import {
   HttpOptions,
 } from "@apollo/client";
 import { useMemo } from "react";
+import { relayStylePagination } from "@apollo/client/utilities";
 
 import Config from "../config";
 import { logger } from "../domain/logger";
@@ -36,9 +37,19 @@ function getHttpLink(uri: string) {
   return new HttpLink(options);
 }
 
+const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        events: relayStylePagination(["type", "where"]),
+      },
+    },
+  },
+});
+
 function createNextApiApolloClient() {
   return new ApolloClient({
-    cache: new InMemoryCache({}),
+    cache,
     link: getHttpLink(Config.nextApiGraphqlEndpoint),
     ssrMode: !process.browser,
   });
