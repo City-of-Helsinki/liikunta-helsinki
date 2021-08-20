@@ -1,5 +1,7 @@
 import { UrlObject } from "url";
 
+import { OperationVariables, QueryResult } from "@apollo/client";
+
 import { Sources } from "./constants";
 import { Locale } from "./config";
 
@@ -232,8 +234,18 @@ export type Option = {
   value: string;
 };
 
-export type ItemsPromiseObject = {
-  loading: boolean;
-  error?: Error;
+export type PageInfo = {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  endCursor: string;
+  count: number;
+};
+
+export type ItemQueryResult<TVariables = OperationVariables> = Omit<
+  QueryResult<null, TVariables>,
+  "data"
+> & {
   items: Item[];
+  pageInfo: PageInfo;
+  totalCount: number;
 };

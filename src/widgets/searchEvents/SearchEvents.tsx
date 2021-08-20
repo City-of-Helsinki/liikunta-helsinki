@@ -1,19 +1,26 @@
 import { useQuery, gql } from "@apollo/client";
 
+import { ItemQueryResult } from "../../types";
 import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
-import getEventsAsItems from "../../util/events/getEventsAsItems";
 import eventFragment from "../../util/events/eventFragment";
+import getEventsAsItems from "../../util/events/getEventsAsItems";
 import useRouter from "../../domain/i18n/router/useRouter";
-import { ItemsPromiseObject } from "../../types";
 
 const SEARCH_EVENTS_QUERY = gql`
-  query SearchEventsQuery($query: EventQuery!) {
-    events(where: $query) {
+  query SearchEventsQuery($where: EventQuery!, $first: Int, $after: String) {
+    events(where: $where, first: $first, after: $after) {
       edges {
         node {
           ...eventFragment
         }
       }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        endCursor
+        count
+      }
+      totalCount
     }
   }
 
@@ -32,28 +39,32 @@ function getEventQuery(url: string) {
 
 type Props = {
   url: string;
-  render: (renderProps: ItemsPromiseObject) => JSX.Element;
+  render: <TVariables>(renderProps: ItemQueryResult<TVariables>) => JSX.Element;
+  pageSize?: number;
 };
 
-export default function SearchEventsSection({ url, render }: Props) {
+export default function SearchEventsSection({ url, render, pageSize }: Props) {
   const nextApiApolloClient = useNextApiApolloClient();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { loading, error, data } = useQuery(SEARCH_EVENTS_QUERY, {
+  const { data, ...queryResult } = useQuery(SEARCH_EVENTS_QUERY, {
     client: nextApiApolloClient,
-    variables: { query: getEventQuery(url) },
+    variables: { where: getEventQuery(url), first: pageSize, after: "" },
     skip: !process.browser,
+    ssr: false,
     context: {
       headers: {
         "Accept-Language": locale,
       },
     },
     fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
   });
 
   return render({
-    loading,
-    error,
+    ...queryResult,
     items: getEventsAsItems(data?.events?.edges?.map((edge) => edge.node)),
+    pageInfo: data?.events?.pageInfo,
+    totalCount: data?.events?.totalCount,
   });
 }

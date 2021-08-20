@@ -4,42 +4,35 @@ import { gql, useQuery } from "@apollo/client";
 import Image from "next/image";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
-import { LoadingSpinner } from "hds-react";
 
+import { ItemQueryResult } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import SelectedEvents from "../../widgets/selectedEvents/SelectedEvents";
 import SearchEvents from "../../widgets/searchEvents/SearchEvents";
+import PaginationContainer from "../../widgets/paginationContainer/PaginationContainer";
 import Page from "../../components/page/Page";
 import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
 import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
-import List from "../../components/list/List";
 import CondensedCard from "../../components/card/CondensedCard";
 import styles from "./collection.module.scss";
-import { ItemsPromiseObject } from "../../types";
 
 type CollectionItemListProps = {
-  itemPromiseObject: ItemsPromiseObject;
+  queryResult: ItemQueryResult;
   title: string;
+  pageSize: number;
 };
 
 function CollectionItemList({
   title,
-  itemPromiseObject: { loading, error, items },
+  queryResult: { loading, error, fetchMore, items, pageInfo, totalCount },
+  pageSize,
 }: CollectionItemListProps) {
-  if (loading) {
-    return (
-      <Section key={title} title={title}>
-        <LoadingSpinner />
-      </Section>
-    );
-  }
-
   // In case of an error, silently fail.
   if (error) {
     return null;
@@ -51,12 +44,16 @@ function CollectionItemList({
   }
 
   return (
-    <Section key={title} title={title}>
-      <List
-        variant="grid-2"
-        items={items.map((item) => (
+    <Section title={title}>
+      <PaginationContainer
+        loading={loading}
+        fetchMore={fetchMore}
+        elements={items.map((item) => (
           <CondensedCard key={item.id} {...item} />
         ))}
+        pageInfo={pageInfo}
+        totalCount={totalCount}
+        pageSize={pageSize}
       />
     </Section>
   );
@@ -92,6 +89,8 @@ export const COLLECTION_PAGE_QUERY = gql`
 
   ${seoFragment}
 `;
+
+const PAGE_SIZE = 10;
 
 export default function CollectionsPage() {
   const { t } = useTranslation("collection_page");
@@ -152,11 +151,14 @@ export default function CollectionsPage() {
         if (module.module === "event_selected") {
           return (
             <SelectedEvents
+              key={module.title}
+              pageSize={PAGE_SIZE}
               events={module.events}
               render={(renderProps) => (
                 <CollectionItemList
                   title={module.title}
-                  itemPromiseObject={renderProps}
+                  queryResult={renderProps}
+                  pageSize={PAGE_SIZE}
                 />
               )}
             />
@@ -166,11 +168,14 @@ export default function CollectionsPage() {
         if (module.module === "event_search") {
           return (
             <SearchEvents
+              key={module.title}
+              pageSize={PAGE_SIZE}
               url={module.url}
               render={(renderProps) => (
                 <CollectionItemList
                   title={module.title}
-                  itemPromiseObject={renderProps}
+                  queryResult={renderProps}
+                  pageSize={PAGE_SIZE}
                 />
               )}
             />

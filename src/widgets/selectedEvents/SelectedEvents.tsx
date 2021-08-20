@@ -1,19 +1,26 @@
 import { useQuery, gql } from "@apollo/client";
 
 import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
-import getEventsAsItems from "../../util/events/getEventsAsItems";
 import eventFragment from "../../util/events/eventFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
-import { ItemsPromiseObject } from "../../types";
+import { ItemQueryResult } from "../../types";
+import getEventsAsItems from "../../util/events/getEventsAsItems";
 
 const SELECTED_EVENTS_QUERY = gql`
-  query SelectedEventsQuery($ids: [ID!]!) {
-    events(where: { ids: $ids }) {
+  query SelectedEventsQuery($ids: [ID!]!, $first: Int, $after: String) {
+    events(where: { ids: $ids }, first: $first, after: $after) {
       edges {
         node {
           ...eventFragment
         }
       }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        endCursor
+        count
+      }
+      totalCount
     }
   }
 
@@ -22,19 +29,21 @@ const SELECTED_EVENTS_QUERY = gql`
 
 type Props = {
   events: string[];
-  render: (renderProps: ItemsPromiseObject) => JSX.Element;
+  render: <TVariables>(renderProps: ItemQueryResult<TVariables>) => JSX.Element;
+  pageSize?: number;
 };
 
 export default function SelectedEventsSection({
   events: eventIds,
   render,
+  pageSize,
 }: Props) {
   const nextApiApolloClient = useNextApiApolloClient();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { loading, error, data } = useQuery(SELECTED_EVENTS_QUERY, {
+  const { data, ...queryResult } = useQuery(SELECTED_EVENTS_QUERY, {
     client: nextApiApolloClient,
-    variables: { ids: eventIds },
+    variables: { ids: eventIds, first: pageSize, after: "" },
     skip: !process.browser,
     context: {
       headers: {
@@ -45,8 +54,9 @@ export default function SelectedEventsSection({
   });
 
   return render({
-    loading,
-    error,
+    ...queryResult,
     items: getEventsAsItems(data?.events?.edges?.map((edge) => edge.node)),
+    pageInfo: data?.events?.pageInfo,
+    totalCount: data?.events?.totalCount,
   });
 }
