@@ -13,7 +13,6 @@ const typeDefs = gql`
   }
 
   extend type Query {
-    upcomingEvents(id: ID!): [Event]!
     events(where: EventQuery, first: Int, after: String): EventsConnection!
   }
 

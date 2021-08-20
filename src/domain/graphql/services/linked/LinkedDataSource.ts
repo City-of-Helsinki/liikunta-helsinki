@@ -119,24 +119,6 @@ export default class Linked extends RESTDataSource {
     this.baseURL = "https://api.hel.fi/linkedevents/v1/";
   }
 
-  async getUpcomingEvents(
-    id: string,
-    language?: Locale
-  ): Promise<LinkedEvent[]> {
-    const result = await this.getEvents(
-      {
-        start: "now",
-        location: id,
-        sort: "start_time",
-        superEventType: "none",
-        pageSize: 6,
-      },
-      language
-    );
-
-    return result.data ?? [];
-  }
-
   async getEvents(
     linkedEventQuery: LinkedEventQuery,
     language?: Locale
