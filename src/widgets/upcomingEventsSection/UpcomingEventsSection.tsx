@@ -9,9 +9,13 @@ import List from "../../components/list/List";
 import CondensedCard from "../../components/card/CondensedCard";
 
 const UPCOMING_EVENTS_QUERY = gql`
-  query UpcomingEventsQuery($id: ID!) {
-    upcomingEvents(id: $id) {
-      ...eventFragment
+  query UpcomingEventsQuery($where: EventQuery!, $first: Int) {
+    events(where: $where, first: $first) {
+      edges {
+        node {
+          ...eventFragment
+        }
+      }
     }
   }
   ${eventFragment}
@@ -26,7 +30,15 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { loading, error, data } = useQuery(UPCOMING_EVENTS_QUERY, {
-    variables: { id: linkedId },
+    variables: {
+      where: {
+        location: linkedId,
+        start: "now",
+        sort: "start_time",
+        superEventType: "none",
+      },
+      first: 6,
+    },
     skip: !process.browser,
     context: {
       headers: {
@@ -45,7 +57,9 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
     return null;
   }
 
-  const eventItems = getEventsAsItems(data?.upcomingEvents);
+  const eventItems = getEventsAsItems(
+    data?.events?.edges?.map((edge) => edge.node)
+  );
 
   // In case there are no upcoming events, hide the section.
   if (eventItems.length === 0) {
