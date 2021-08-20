@@ -1,27 +1,16 @@
 import React from "react";
 import {
-  ApolloQueryResult,
-  DocumentNode,
   FetchMoreOptions,
   FetchMoreQueryOptions,
   OperationVariables,
-  TypedDocumentNode,
 } from "@apollo/client";
 import { useCallback } from "react";
 
+import { FetchMoreFunction } from "./types";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Options<TData = any, TVariables = OperationVariables> = {
-  // Copied from Apollo's type definitions
-  fetchMore: (<K extends keyof TVariables>(
-    fetchMoreOptions: FetchMoreQueryOptions<TVariables, K, TData> &
-      FetchMoreOptions<TData, TVariables>
-  ) => Promise<ApolloQueryResult<TData>>) &
-    (<TData2, TVariables2, K extends keyof TVariables2>(
-      fetchMoreOptions: {
-        query?: DocumentNode | TypedDocumentNode<TData, TVariables>;
-      } & FetchMoreQueryOptions<TVariables2, K, TData> &
-        FetchMoreOptions<TData2, TVariables2>
-    ) => Promise<ApolloQueryResult<TData2>>);
+  fetchMore: FetchMoreFunction<TData, TVariables>;
   moreResultsAnnouncerRef: React.RefObject<HTMLElement>;
   hasNextPage: boolean;
   count: number;
@@ -38,16 +27,7 @@ type A11yHelpers = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ReturnValue<TData = any, TVariables = OperationVariables> = A11yHelpers & {
-  fetchMore: (<K extends keyof TVariables>(
-    fetchMoreOptions: FetchMoreQueryOptions<TVariables, K, TData> &
-      FetchMoreOptions<TData, TVariables>
-  ) => Promise<ApolloQueryResult<TData>>) &
-    (<TData2, TVariables2, K extends keyof TVariables2>(
-      fetchMoreOptions: {
-        query?: DocumentNode | TypedDocumentNode<TData, TVariables>;
-      } & FetchMoreQueryOptions<TVariables2, K, TData> &
-        FetchMoreOptions<TData2, TVariables2>
-    ) => Promise<ApolloQueryResult<TData2>>);
+  fetchMore: FetchMoreFunction<TData, TVariables>;
 };
 
 export default function useA11yPagination<
