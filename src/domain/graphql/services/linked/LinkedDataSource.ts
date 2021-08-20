@@ -1,6 +1,6 @@
-import RESTDataSource from "./RESTDataSource";
-import { Locale } from "../../../config";
-import { dataSourceLinkedLogger as logger } from "../../logger";
+import RESTDataSource from "../../utils/RESTDataSource";
+import { Locale } from "../../../../config";
+import { dataSourceLinkedLogger as logger } from "../../../logger";
 
 type LinkedObjectRef = {
   "@id": string;
