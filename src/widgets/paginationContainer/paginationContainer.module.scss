@@ -1,0 +1,20 @@
+@use "breakpoints";
+@import "variables";
+
+.loadMoreAnnouncer {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  list-style-type: none;
+
+  // Pull next list item upwards to get rid of the extra gap caused
+  // by injecting extra li that stores the focus
+  & + li {
+    margin-top: -$spacing-xs;
+
+    @include breakpoints.respond-above(m) {
+      margin-top: -$spacing-xl;
+    }
+  }
+}
