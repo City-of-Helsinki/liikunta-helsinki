@@ -12,7 +12,7 @@ import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTransl
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import SelectedEvents from "../../widgets/selectedEvents/SelectedEvents";
 import SearchEvents from "../../widgets/searchEvents/SearchEvents";
-import PaginationContainer from "../../widgets/paginationContainer/PaginationContainer";
+import PaginationContainer from "../../domain/pagination/PaginationContainer";
 import Page from "../../components/page/Page";
 import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import Text from "../../components/text/Text";

@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
 import { LoadingSpinner, Button } from "hds-react";
+import { OperationVariables } from "@apollo/client";
 
 import { PageInfo } from "../../types";
-import useA11yPagination from "../../hooks/usePagination";
+import useA11yPagination from "./usePagination";
 import Text from "../../components/text/Text";
 import List from "../../components/list/List";
 import styles from "./paginationContainer.module.scss";
+import { FetchMoreFunction } from "./types";
 
 const a11yListItemFactory =
   ({ a11yIndex, ref, loadedMoreAmount, loading }) =>
@@ -33,7 +35,7 @@ const a11yListItemFactory =
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fetchMore: any;
+  fetchMore: FetchMoreFunction<any, OperationVariables>;
   pageInfo: PageInfo;
   loading: boolean;
   elements: React.ReactElement[];
