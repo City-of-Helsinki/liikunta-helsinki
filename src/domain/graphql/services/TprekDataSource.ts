@@ -1,5 +1,5 @@
 import { dataSourceTprekLogger as logger } from "../../logger";
-import RESTDataSource from "./RESTDataSource";
+import RESTDataSource from "../utils/RESTDataSource";
 
 type AnyObject = Record<string, unknown>;
 

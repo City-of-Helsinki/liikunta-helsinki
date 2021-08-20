@@ -10,7 +10,7 @@ import camelCaseKeys from "camelcase-keys";
 
 import { dataSourceHaukiLogger as logger } from "../../logger";
 import { OpeningHour } from "../../../types";
-import RESTDataSource from "./RESTDataSource";
+import RESTDataSource from "../utils/RESTDataSource";
 
 type DateInterval = {
   start: Date;

@@ -1,5 +1,5 @@
 import createQueryResolver from "../createQueryResolver";
-import { readCursor } from "../utils";
+import { readCursor } from "../utils/cursorUtils";
 
 function getQuery({ where, first, after }) {
   // If a cursor is used, rely on it to find query data
