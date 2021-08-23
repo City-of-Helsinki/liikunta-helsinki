@@ -3,7 +3,7 @@ import { IconLocation } from "hds-react";
 
 import { Option } from "../../types";
 import searchApolloClient from "../../client/searchApolloClient";
-import Select from "../../components/select/Select";
+import Combobox from "../../components/combobox/Combobox";
 import useRouter from "../../domain/i18nRouter/useRouter";
 import getTranslation from "../../util/getTranslation";
 
@@ -44,7 +44,7 @@ export default function AdministrativeDivisionDropdown({
   });
 
   const handleOnChange = (option: Option) => {
-    onChange(option.value);
+    onChange(option?.value);
   };
 
   if (error) {
@@ -59,28 +59,28 @@ export default function AdministrativeDivisionDropdown({
     return <div />;
   }
 
-  const options = [
-    {
-      label: "",
-    },
-    ...data.administrativeDivisions.map((administrativeDivision) => ({
+  const options = data.administrativeDivisions.map(
+    (administrativeDivision, i) => ({
       label: getTranslation(administrativeDivision.name, locale),
       value: administrativeDivision.id,
-    })),
-  ];
+    })
+  );
   const defaultValue = options.find((option) => option.value === value);
 
   return (
-    <Select
+    <Combobox
       {...delegated}
+      multiselect={false}
       defaultValue={defaultValue}
       label={label}
-      clearButtonAriaLabel="Poista kaikki valinnat"
-      selectedItemRemoveButtonAriaLabel="Poista ${value}"
       options={options}
       onChange={handleOnChange}
       placeholder={placeholder}
       icon={<IconLocation />}
+      // The options list will break without this option because the data has
+      // duplicate labels.
+      virtualized
+      toggleButtonAriaLabel="Avaa valikko"
     />
   );
 }
