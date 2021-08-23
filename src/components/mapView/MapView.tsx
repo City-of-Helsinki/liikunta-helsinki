@@ -39,18 +39,24 @@ function MapView({ items = [] }: Props) {
         attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
         url={TILE_URL}
       />
-      {items?.map((item) => (
-        <Marker
-          key={item.id}
-          position={[item.location[1], item.location[0]]}
-          icon={venueIcon}
-        >
-          <Popup className={styles.popup}>
-            <Text variant="body">{item.title}</Text>
-            <Link href={item.href}>Näytä sivu</Link>
-          </Popup>
-        </Marker>
-      ))}
+      {items?.map((item) => {
+        if (!item.location) {
+          return null;
+        }
+
+        return (
+          <Marker
+            key={item.id}
+            position={[item.location[1], item.location[0]]}
+            icon={venueIcon}
+          >
+            <Popup className={styles.popup}>
+              <Text variant="body">{item.title}</Text>
+              <Link href={item.href}>Näytä sivu</Link>
+            </Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 }
