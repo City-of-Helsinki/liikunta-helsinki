@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic";
 import { gql } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
-import { useRouter } from "next/dist/client/router";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getNodes } from "../../client/utils";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
 import useSearchQuery from "../../domain/unifiedSearch/useSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
+import useRouter from "../../domain/i18nRouter/useRouter";
 import Page from "../../components/page/Page";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import SearchHeader, {
