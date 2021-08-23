@@ -117,6 +117,9 @@ export type Venue = {
       city?: LocalizedString;
     };
   };
+  ontologyWords: [{
+    label: LocalizedString;
+  }]
 };
 
 export type SearchResult = {

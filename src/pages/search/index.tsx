@@ -20,6 +20,7 @@ import SearchHeader, {
 } from "../../components/search/searchHeader/SearchHeader";
 import { Keyword, LocalizedString, SearchResult } from "../../types";
 import { Locale } from "../../config";
+import useSearch from "../../hooks/useSearch";
 
 const BLOCK_SIZE = 10;
 // And ID that matches the sports ontology tree branch that has the Culture,
@@ -80,6 +81,13 @@ export const SEARCH_QUERY = gql`
                 }
               }
             }
+            ontologyWords {
+              label {
+                fi
+                sv
+                en
+              }
+            }
           }
         }
       }
@@ -96,12 +104,6 @@ const appToUnifiedSearchLanguageMap = {
 const emptyConnection = {
   edges: [],
 };
-
-const mockKeywords: Keyword[] = [
-  { label: "Maauimala", href: "" },
-  { label: "Uinti", href: "" },
-  { label: "Ulkoliikuntapaikat", href: "" },
-];
 
 function getTranslation(translation: LocalizedString, locale: Locale) {
   return translation[locale] ?? translation.fi;
@@ -125,6 +127,7 @@ export default function Search() {
     },
     fetchPolicy: "cache-and-network",
   });
+  const { getSearchRoute } = useSearch();
 
   const searchResults = getNodes<SearchResult>(
     data?.unifiedSearch ?? emptyConnection
@@ -189,7 +192,15 @@ export default function Search() {
                   id: `tprek:${searchResult.venue.meta.id}`,
                 },
               },
-              keywords: mockKeywords,
+              keywords: searchResult.venue.ontologyWords.map((word) => {
+                const label = getTranslation(word.label, locale);
+                return {
+                  label,
+                  href: getSearchRoute({
+                    ontology: label.toLowerCase(),
+                  }),
+                };
+              }),
               image: searchResult.venue.images[0]?.url,
             };
 
