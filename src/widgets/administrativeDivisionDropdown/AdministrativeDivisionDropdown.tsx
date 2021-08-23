@@ -28,7 +28,7 @@ const ADMINISTRATIVE_DIVISION_QUERY = gql`
   }
 `;
 
-function filterCityDistricts(
+function filterNeighborhoods(
   administrativeDivisions: AdministrativeDivision[]
 ) {
   if (!administrativeDivisions) {
@@ -36,7 +36,7 @@ function filterCityDistricts(
   }
 
   return administrativeDivisions.filter(
-    (division) => division.type === "district"
+    (division) => division.type === "neighborhood"
   );
 }
 
@@ -69,7 +69,7 @@ function useAdministrativeDivisions() {
   return {
     data: {
       administrativeDivisions: sortAdministrativeDivisionsAlphabetically(
-        filterCityDistricts(data?.administrativeDivisions),
+        filterNeighborhoods(data?.administrativeDivisions),
         locale
       ),
     },
