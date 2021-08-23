@@ -1,18 +1,24 @@
 import { gql, useQuery } from "@apollo/client";
 import { IconLocation } from "hds-react";
 
-import { Option } from "../../types";
+import { LocalizedString, Option } from "../../types";
+import { Locale } from "../../config";
 import searchApolloClient from "../../client/searchApolloClient";
 import Combobox from "../../components/combobox/Combobox";
 import useRouter from "../../domain/i18nRouter/useRouter";
 import getTranslation from "../../util/getTranslation";
+
+type AdministrativeDivision = {
+  id: string;
+  type: string;
+  name: LocalizedString;
+};
 
 const ADMINISTRATIVE_DIVISION_QUERY = gql`
   {
     administrativeDivisions {
       id
       type
-      municipality
       name {
         fi
         sv
@@ -21,6 +27,55 @@ const ADMINISTRATIVE_DIVISION_QUERY = gql`
     }
   }
 `;
+
+function filterCityDistricts(
+  administrativeDivisions: AdministrativeDivision[]
+) {
+  if (!administrativeDivisions) {
+    return administrativeDivisions;
+  }
+
+  return administrativeDivisions.filter(
+    (division) => division.type === "district"
+  );
+}
+
+function sortAdministrativeDivisionsAlphabetically(
+  administrativeDivisions: AdministrativeDivision[],
+  locale: Locale
+) {
+  if (!administrativeDivisions) {
+    return administrativeDivisions;
+  }
+
+  const sorted = [...administrativeDivisions];
+
+  sorted.sort((a, b) => {
+    const aValue = getTranslation(a.name, locale);
+    const bValue = getTranslation(b.name, locale);
+
+    return aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+  });
+
+  return sorted;
+}
+
+function useAdministrativeDivisions() {
+  const { locale } = useRouter();
+  const { data, ...delegated } = useQuery(ADMINISTRATIVE_DIVISION_QUERY, {
+    client: searchApolloClient,
+  });
+
+  return {
+    data: {
+      administrativeDivisions: sortAdministrativeDivisionsAlphabetically(
+        filterCityDistricts(data?.administrativeDivisions),
+        locale
+      ),
+    },
+    ...delegated,
+  };
+}
 
 type Props = {
   label?: string;
@@ -39,9 +94,7 @@ export default function AdministrativeDivisionDropdown({
   ...delegated
 }: Props) {
   const { locale } = useRouter();
-  const { data, loading, error } = useQuery(ADMINISTRATIVE_DIVISION_QUERY, {
-    client: searchApolloClient,
-  });
+  const { data, loading, error } = useAdministrativeDivisions();
 
   const handleOnChange = (option: Option) => {
     onChange(option?.value);
@@ -60,7 +113,7 @@ export default function AdministrativeDivisionDropdown({
   }
 
   const options = data.administrativeDivisions.map(
-    (administrativeDivision, i) => ({
+    (administrativeDivision) => ({
       label: getTranslation(administrativeDivision.name, locale),
       value: administrativeDivision.id,
     })
