@@ -14,7 +14,6 @@
     // Fullscreen minus the main navigation height
     height: calc(100vh - 50px);
     background-color: var(--background-color);
-    overflow-y: hidden;
 
     @include breakpoints.respond-above(m) {
       height: auto;
