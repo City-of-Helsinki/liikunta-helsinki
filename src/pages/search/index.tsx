@@ -21,6 +21,7 @@ import SearchHeader, {
 import { Keyword, LocalizedString, SearchResult } from "../../types";
 import { Locale } from "../../config";
 import useSearch from "../../hooks/useSearch";
+import capitalize from "../../util/capitalize";
 
 const BLOCK_SIZE = 10;
 // And ID that matches the sports ontology tree branch that has the Culture,
@@ -195,7 +196,7 @@ export default function Search() {
               keywords: searchResult.venue.ontologyWords.map((word) => {
                 const label = getTranslation(word.label, locale);
                 return {
-                  label,
+                  label: capitalize(label),
                   href: getSearchRoute({
                     ontology: label.toLowerCase(),
                   }),
