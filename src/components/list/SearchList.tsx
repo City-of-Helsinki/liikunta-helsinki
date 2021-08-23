@@ -1,9 +1,10 @@
 import React, { Ref, forwardRef } from "react";
 import classNames from "classnames";
-import { Button, LoadingSpinner, IconMap } from "hds-react";
+import { Button, LoadingSpinner, IconMap, IconSearch } from "hds-react";
 
 import styles from "./searchList.module.scss";
 import Text from "../text/Text";
+import InfoTemplate from "../infoTemplate/InfoTemplate";
 
 type Props = {
   items: React.ReactElement[];
@@ -31,6 +32,16 @@ const SearchList = forwardRef(
     const resultsLeft = count ? count - items.length : 0;
     const a11yIndex = (Math.floor(items.length / blockSize) - 1) * blockSize;
     const loadedMoreAmount = hasNext ? blockSize : count - items.length;
+
+    if (count === 0) {
+      return (
+        <InfoTemplate
+          icon={IconSearch}
+          title="Sorry no search results were found for the search criteria you selected"
+          description="Try changing your search criteria and you're sure to find something to do!"
+        />
+      );
+    }
 
     return (
       <>
@@ -68,7 +79,6 @@ const SearchList = forwardRef(
           ))}
         </ul>
         <LoadingSpinner hidden={!loading} className={styles.spinner} />
-
         {!loading && (
           <>
             {hasNext ? (
