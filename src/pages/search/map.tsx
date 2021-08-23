@@ -1,57 +1,52 @@
 import dynamic from "next/dynamic";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/dist/client/router";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
+import { getNodes } from "../../client/utils";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
+import useSearchQuery from "../../domain/unifiedSearch/useSearchQuery";
+import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import Page from "../../components/page/Page";
-import searchApolloClient from "../../client/searchApolloClient";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";
 import { Connection, MapItem, SearchResult } from "../../types";
-import { getNodes } from "../../client/utils";
-
-// Add ID that matches the sports ontology tree branch that has the Culture,
-// sports and leisure department (KuVa) as its parent.
-// https://www.hel.fi/palvelukarttaws/rest/v4/ontologytree/551
-const SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID = 551;
 
 // This query is placeholder for now. When UnifiedSearch supports search by radius or
 // something similar make changes to this query.
 export const MAP_SEARCH_QUERY = gql`
-  query SearchQuery($q: String, $first: Int, $ontologyTreeId: ID!) {
+  query MapSearchQuery(
+    $q: String
+    $first: Int
+    $after: String
+    $language: UnifiedSearchLanguage!
+    $ontologyTreeId: ID!
+    $administrativeDivisionId: ID
+  ) {
     unifiedSearch(
       q: $q
       index: "location"
-      ontology: "Liikunta"
       first: $first
+      after: $after
+      languages: [$language]
       ontologyTreeId: $ontologyTreeId
+      administrativeDivisionId: $administrativeDivisionId
     ) {
       count
       edges {
         node {
           venue {
-            meta {
-              id
-            }
-            name {
-              fi
-            }
-            location {
-              geoLocation {
-                geometry {
-                  coordinates
-                }
-              }
-            }
+            ...unifiedSearchVenueFragment
           }
         }
       }
     }
   }
+
+  ${unifiedSearchVenueFragment}
 `;
 
 const emptyConnection = {
@@ -72,19 +67,8 @@ function getSearchResultsAsItems(
 
 export default function MapSearch() {
   const router = useRouter();
-  const {
-    query: { q: searchText = "*" },
-  } = router;
-
-  const { data } = useQuery(MAP_SEARCH_QUERY, {
-    client: searchApolloClient,
-    ssr: false,
-    variables: {
-      q: searchText,
-      first: 100,
-      ontologyTreeId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
-    },
-    fetchPolicy: "cache-and-network",
+  const { data } = useSearchQuery(MAP_SEARCH_QUERY, {
+    first: 100,
   });
 
   // https://stackoverflow.com/a/64634759

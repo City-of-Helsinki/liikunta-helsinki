@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
 
 import { SearchResult } from "../../types";
@@ -8,32 +8,29 @@ import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPat
 import useSearch from "../../hooks/useSearch";
 import capitalize from "../../util/capitalize";
 import getTranslation from "../../util/getTranslation";
-import searchApolloClient from "../../client/searchApolloClient";
 import { getNodes } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import useRouter from "../../domain/i18nRouter/useRouter";
+import useSearchQuery from "../../domain/unifiedSearch/useSearchQuery";
+import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/SearchResultCard";
 import SearchList from "../../components/list/SearchList";
 import InfoBlock from "../../components/infoBlock/InfoBlock";
-import styles from "./search.module.scss";
 import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";
+import styles from "./search.module.scss";
 
 const BLOCK_SIZE = 10;
-// And ID that matches the sports ontology tree branch that has the Culture,
-// sports and leisure department (KuVa) as its parent.
-// https://www.hel.fi/palvelukarttaws/rest/v4/ontologytree/551
-const SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID = 551;
 
 export const SEARCH_QUERY = gql`
   query SearchQuery(
     $q: String
     $first: Int
-    $cursor: String
+    $after: String
     $language: UnifiedSearchLanguage!
     $ontologyTreeId: ID!
     $administrativeDivisionId: ID
@@ -42,7 +39,7 @@ export const SEARCH_QUERY = gql`
       q: $q
       index: "location"
       first: $first
-      after: $cursor
+      after: $after
       languages: [$language]
       ontologyTreeId: $ontologyTreeId
       administrativeDivisionId: $administrativeDivisionId
@@ -55,77 +52,26 @@ export const SEARCH_QUERY = gql`
       edges {
         node {
           venue {
-            meta {
-              id
-            }
-            name {
-              fi
-              sv
-              en
-            }
-            description {
-              fi
-            }
-            images {
-              url
-            }
-            location {
-              address {
-                streetAddress {
-                  fi
-                  sv
-                  en
-                }
-                postalCode
-                city {
-                  fi
-                  sv
-                  en
-                }
-              }
-            }
-            ontologyWords {
-              label {
-                fi
-                sv
-                en
-              }
-            }
+            ...unifiedSearchVenueFragment
           }
         }
       }
     }
   }
-`;
 
-const appToUnifiedSearchLanguageMap = {
-  fi: "FINNISH",
-  sv: "SWEDISH",
-  en: "ENGLISH",
-};
+  ${unifiedSearchVenueFragment}
+`;
 
 const emptyConnection = {
   edges: [],
 };
 
 export default function Search() {
-  const {
-    query: { q: searchText = "*", administrativeDivisionId },
-    ...router
-  } = useRouter();
+  const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { data, loading, fetchMore } = useQuery(SEARCH_QUERY, {
-    client: searchApolloClient,
-    ssr: false,
-    variables: {
-      q: searchText,
-      first: BLOCK_SIZE,
-      after: "",
-      language: appToUnifiedSearchLanguageMap[locale],
-      ontologyTreeId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
-      administrativeDivisionId,
-    },
-    fetchPolicy: "cache-and-network",
+  const { data, loading, fetchMore } = useSearchQuery(SEARCH_QUERY, {
+    first: BLOCK_SIZE,
+    after: "",
   });
   const { getSearchRoute } = useSearch();
 
@@ -136,15 +82,12 @@ export default function Search() {
   const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);
   const count = data?.unifiedSearch?.count;
   const pageInfo = data?.unifiedSearch?.pageInfo;
-  const cursor = pageInfo?.endCursor;
+  const afterCursor = pageInfo?.endCursor;
 
   const onLoadMore = () => {
     fetchMore({
-      variables: {
-        q: searchText,
-        first: BLOCK_SIZE,
-        cursor: cursor,
-      },
+      first: BLOCK_SIZE,
+      after: afterCursor,
     }).then(() => {
       moreResultsAnnouncerRef.current &&
         moreResultsAnnouncerRef.current.focus();
