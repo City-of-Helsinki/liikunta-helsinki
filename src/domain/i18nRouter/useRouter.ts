@@ -12,7 +12,7 @@ export default function useRouter() {
       stringifyUrlObject({
         pathname: getI18nPath(router.route, router.locale),
         query: router.query,
-        search: `?${search}`,
+        search: search ? `?${search}` : null,
       }) ?? asPath,
   };
 }
