@@ -36,6 +36,7 @@ import Card from "../../components/card/DefaultCard";
 import styles from "./venue.module.scss";
 import renderAddressToString from "../../util/renderAddressToString";
 import hash from "../../util/hash";
+import capitalize from "../../util/capitalize";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -138,12 +139,6 @@ function getGoogleDirectionsUrl(
   const to = getGoogleDirection(toPoint);
 
   return `https://www.google.com/maps/dir/${from}/${to}/`;
-}
-
-function capitalize(string: string) {
-  const [firstCharacter, ...rest] = string.split("");
-
-  return `${firstCharacter.toUpperCase()}${rest.join("")}`;
 }
 
 export function VenuePageContent() {
