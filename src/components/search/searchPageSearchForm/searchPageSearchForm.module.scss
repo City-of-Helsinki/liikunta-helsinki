@@ -16,7 +16,9 @@
     }
   }
 
-  .submitButton {
-    grid-column: 4;
+  @include breakpoints.respond-above(s) {
+    .submitButton {
+      grid-column: 4;
+    }
   }
 }
