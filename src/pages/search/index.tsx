@@ -146,6 +146,8 @@ export default function Search() {
               }),
               image: searchResult.venue.images[0]?.url,
             };
+            const streetAddress =
+              searchResult.venue.location.address.streetAddress;
 
             return (
               <SearchResultCard
@@ -156,10 +158,14 @@ export default function Search() {
                     key="location"
                     target="card"
                     icon={<IconLocation />}
-                    name={getTranslation(
-                      searchResult.venue.location.address.streetAddress,
-                      locale
-                    )}
+                    name={
+                      streetAddress
+                        ? getTranslation(
+                            searchResult.venue.location.address.streetAddress,
+                            locale
+                          )
+                        : null
+                    }
                     contents={[
                       <InfoBlock.Link
                         key="map-link"
