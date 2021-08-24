@@ -128,13 +128,7 @@ export default function HomePage() {
           }))}
         />
       </Section>
-      <Section
-        title={t("recommended_collections_title")}
-        cta={{
-          label: t("see_all_collections"),
-          href: "/collections",
-        }}
-      >
+      <Section title={t("recommended_collections_title")}>
         <List
           variant="collection-grid"
           items={collectionItems.map((item, i) =>
