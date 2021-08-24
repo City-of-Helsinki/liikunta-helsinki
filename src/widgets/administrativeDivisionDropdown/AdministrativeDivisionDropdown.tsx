@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { IconLocation } from "hds-react";
+import { useTranslation } from "next-i18next";
 
 import { LocalizedString, Option } from "../../types";
 import { Locale } from "../../config";
@@ -87,12 +88,13 @@ type Props = {
 };
 
 export default function AdministrativeDivisionDropdown({
-  label = "Paikka",
-  placeholder = "Valitse Paikka",
+  label: userLabel,
+  placeholder: userPlaceholder,
   onChange,
   value,
   ...delegated
 }: Props) {
+  const { t } = useTranslation("administrative_division_dropdown");
   const { locale } = useRouter();
   const { data, loading, error } = useAdministrativeDivisions();
 
@@ -112,6 +114,8 @@ export default function AdministrativeDivisionDropdown({
     return <div />;
   }
 
+  const label = userLabel || t("label");
+  const placeholder = userPlaceholder || t("placeholder");
   const options = data.administrativeDivisions.map(
     (administrativeDivision) => ({
       label: getTranslation(administrativeDivision.name, locale),
@@ -133,7 +137,7 @@ export default function AdministrativeDivisionDropdown({
       // The options list will break without this option because the data has
       // duplicate labels.
       virtualized
-      toggleButtonAriaLabel="Avaa valikko"
+      toggleButtonAriaLabel={t("toggle_button_aria_label")}
     />
   );
 }
