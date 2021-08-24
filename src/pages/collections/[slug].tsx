@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import Image from "next/image";
 import classNames from "classnames";
+import { useTranslation } from "next-i18next";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
@@ -43,6 +44,7 @@ export const COLLECTION_PAGE_QUERY = gql`
 `;
 
 export default function CollectionsPage() {
+  const { t } = useTranslation("collection_page");
   const router = useRouter();
   const { data } = useQuery(COLLECTION_PAGE_QUERY, {
     variables: {
@@ -79,7 +81,7 @@ export default function CollectionsPage() {
             <HtmlToReact>{description}</HtmlToReact>
             <div className={styles.collectionBlockContentSome}>
               <Text as="h2" variant="h4">
-                Jaa liikunta
+                {t("share_sport")}
               </Text>
               <ShareLinks />
             </div>
@@ -126,7 +128,9 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale)),
+      ...(await serverSideTranslationsWithCommon(context.locale, [
+        "collection_page",
+      ])),
     },
     revalidate: 10,
   };
