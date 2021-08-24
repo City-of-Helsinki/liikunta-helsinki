@@ -470,6 +470,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         ...(await serverSideTranslationsWithCommon(context.locale, [
           "venue_page",
           "map_box",
+          "share_links",
         ])),
       },
       revalidate: 10,

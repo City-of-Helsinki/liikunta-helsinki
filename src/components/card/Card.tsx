@@ -10,6 +10,7 @@ import React, {
 import { IconArrowRight } from "hds-react";
 import classNames from "classnames";
 import { ImageProps } from "next/image";
+import { useTranslation } from "next-i18next";
 
 import Link from "../../domain/i18n/router/Link";
 import { Keyword as KeywordType } from "../../types";
@@ -123,13 +124,14 @@ type CardCtaProps = {
 // is clickable. It has a label so that visual screen reader users
 // can interact with the element.
 function CardCta({ className }: CardCtaProps) {
+  const { t } = useTranslation("card");
   const { id } = useContext(CardContext);
 
   return (
     <span
       className={classNames(styles.cta, className)}
       aria-hidden="true"
-      aria-label="Siirry sisältöön"
+      aria-label={t("go_to_content")}
       id={`cta:${id}`}
     >
       <IconArrowRight />

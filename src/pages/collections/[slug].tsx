@@ -130,6 +130,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       initialApolloState: cmsClient.cache.extract(),
       ...(await serverSideTranslationsWithCommon(context.locale, [
         "collection_page",
+        "share_links",
       ])),
     },
     revalidate: 10,

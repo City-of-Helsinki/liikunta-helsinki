@@ -17,6 +17,7 @@ type Props = {
   value: string;
   label: string;
   suggestions: Suggestion[];
+  toggleButtonAriaLabel: string;
 };
 
 function DropdownCombobox({
@@ -25,6 +26,7 @@ function DropdownCombobox({
   onSelectedItemChange,
   suggestions,
   value,
+  toggleButtonAriaLabel,
   ...rest
 }: Props) {
   const {
@@ -78,7 +80,7 @@ function DropdownCombobox({
             <button
               type="button"
               {...getToggleButtonProps()}
-              aria-label="toggle menu"
+              aria-label={toggleButtonAriaLabel}
             >
               <IconAngleDown aria-hidden="true" />
             </button>

@@ -2,5 +2,6 @@
   "title": "SV: Mitä etsit?",
   "free_text_search.label": "SV: Haku",
   "free_text_search.placeholder": "SV: Kirjoita hakusana, esim. uimahalli tai jooga",
-  "do_search": "SV: Hae"
+  "do_search": "SV: Hae",
+  "toggle_button_aria_label": "SV: Avaa valikko"
 }

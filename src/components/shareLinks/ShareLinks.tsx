@@ -1,5 +1,6 @@
 import React from "react";
 import { IconLink } from "hds-react";
+import { useTranslation } from "next-i18next";
 
 import CopyButton from "../copyButton/CopyButton";
 import FacebookShareLink from "./FacebookShareLink";
@@ -8,6 +9,7 @@ import styles from "./shareLinks.module.scss";
 import TwitterShareLink from "./TwitterShareLink";
 
 const ShareLinks = () => {
+  const { t } = useTranslation("share_links");
   // We are using the client only accessible href. By doing this, we do not need
   // to pass the original request from the server. This same pattern was used in
   // MyHelsinki. Limitation is that sharing buttons will be re-rendered on client
@@ -24,12 +26,10 @@ const ShareLinks = () => {
           string={href}
           successClass={styles.copyButtonSuccess}
           successMessage={
-            <span className={styles.successTooltip}>
-              Linkki kopioitu leikepöydälle
-            </span>
+            <span className={styles.successTooltip}>{t("copy.success")}</span>
           }
-          aria-label="Kopioi linkin osoite"
-          title="Kopioi linkin osoite"
+          aria-label={t("copy.label")}
+          title={t("copy.label")}
         >
           <IconLink />
         </CopyButton>

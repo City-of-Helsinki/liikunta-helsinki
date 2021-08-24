@@ -1,5 +1,6 @@
 import React from "react";
 import { IconFacebook } from "hds-react";
+import { useTranslation } from "next-i18next";
 
 import ShareLinkBase from "./ShareLinkBase";
 import { ShareLinkProps } from "./types";
@@ -7,8 +8,9 @@ import { ShareLinkProps } from "./types";
 const fbShareUrl = "https://www.facebook.com/sharer/sharer.php";
 
 const FacebookShareLink = ({ sharedLink }: ShareLinkProps) => {
+  const { t } = useTranslation("share_links");
   const queryParameters = { u: sharedLink };
-  const linkLabel = "Jaa Facebookissa";
+  const linkLabel = t("facebook");
 
   return (
     <ShareLinkBase
