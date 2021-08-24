@@ -235,6 +235,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         "search_page",
         "search_header",
         "search_page_search_form",
+        "administrative_division_dropdown",
       ])),
     },
     revalidate: 10,
