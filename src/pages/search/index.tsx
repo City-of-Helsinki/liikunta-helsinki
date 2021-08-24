@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
 import { gql, useQuery } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
+import { useTranslation } from "next-i18next";
 
 import { SearchResult } from "../../types";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
@@ -84,6 +85,7 @@ const emptyConnection = {
 };
 
 export default function Search() {
+  const { t } = useTranslation("search_page");
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { data, loading, fetchMore } = useSearchQuery(SEARCH_QUERY, {
@@ -179,6 +181,7 @@ export default function Search() {
               <SearchResultCard
                 key={item.id}
                 item={item}
+                ctaLabel={t("read_more")}
                 infoBlocks={[
                   <InfoBlock
                     key="location"
@@ -196,7 +199,7 @@ export default function Search() {
                       <InfoBlock.Link
                         key="map-link"
                         href={`/map?venue=${item.id}`}
-                        label="Näytä kartalla"
+                        label={t("show_results_on_map")}
                       />,
                     ]}
                   />,
@@ -228,7 +231,9 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale)),
+      ...(await serverSideTranslationsWithCommon(context.locale, [
+        "search_page",
+      ])),
     },
     revalidate: 10,
   };
