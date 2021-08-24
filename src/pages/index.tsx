@@ -1,17 +1,16 @@
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
+import { useTranslation } from "next-i18next";
 
-import { Collection, Item, Recommendation } from "../types";
+import { Collection, Item } from "../types";
 import initializeCmsApollo from "../client/cmsApolloClient";
 import { getQlLanguage } from "../client/utils";
 import mockCategories from "../client/tmp/mockCategories";
-import mockRecommendations from "../client/tmp/mockRecommendations";
 import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
-import Card from "../components/card/DefaultCard";
 import LargeCollectionCard from "../components/card/LargeCollectionCard";
 import CollectionCard from "../components/card/CollectionCard";
 import Hero from "../components/hero/Hero";
@@ -54,18 +53,6 @@ export const LANDING_PAGE_QUERY = gql`
   }
 `;
 
-function getRecommendationsAsItems(recommendations: Recommendation[]): Item[] {
-  return recommendations.map((recommendation) => ({
-    ...recommendation,
-    href: recommendation.href,
-    keywords: recommendation.keywords.map((keyword) => ({
-      label: keyword,
-      href: `keywords/${encodeURIComponent(keyword)}`,
-      isHighlighted: keyword === "Maksuton",
-    })),
-  }));
-}
-
 function getCollectionsAsItems(collections: Collection[] | null): Item[] {
   return collections.map((collection) => ({
     id: collection.id,
@@ -85,7 +72,8 @@ function getCollectionsAsItems(collections: Collection[] | null): Item[] {
   }));
 }
 
-export default function Home() {
+export default function HomePage() {
+  const { t } = useTranslation("home_page");
   const router = useRouter();
   const language = getQlLanguage(router.locale ?? router.defaultLocale);
   const { data } = useQuery(LANDING_PAGE_QUERY, {
@@ -94,8 +82,6 @@ export default function Home() {
     },
   });
 
-  const recommendationItems: Item[] =
-    getRecommendationsAsItems(mockRecommendations);
   const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(
     data?.pageBy?.modules
@@ -134,9 +120,9 @@ export default function Home() {
         />
       </Section>
       <Section
-        title="Suosittelemme"
+        title={t("recommended_collections_title")}
         cta={{
-          label: "Katso kaikki kokoelmat",
+          label: t("see_all_collections"),
           href: "/collections",
         }}
       >
@@ -149,13 +135,6 @@ export default function Home() {
               <CollectionCard key={item.id} {...item} />
             )
           )}
-        />
-      </Section>
-      <Section title="Suosittua juuri nyt">
-        <List
-          items={recommendationItems.map((item) => (
-            <Card key={item.id} {...item} />
-          ))}
         />
       </Section>
     </Page>
@@ -177,7 +156,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale)),
+      ...(await serverSideTranslationsWithCommon(context.locale, [
+        "home_page",
+        "landing_page_search_form",
+      ])),
     },
     revalidate: 10,
   };
