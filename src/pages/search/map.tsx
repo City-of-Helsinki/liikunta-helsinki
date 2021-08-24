@@ -114,7 +114,9 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale)),
+      ...(await serverSideTranslationsWithCommon(context.locale, [
+        "search_header",
+      ])),
     },
     revalidate: 10,
   };
