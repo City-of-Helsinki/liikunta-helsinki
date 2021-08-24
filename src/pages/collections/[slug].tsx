@@ -8,12 +8,14 @@ import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
 import RecommendedEventsSection from "../../widgets/recommendedEventsSection/RecommendedEventsSection";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import seoFragment from "../../domain/seo/cmsSeoFragment";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
 import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
 import styles from "./collection.module.scss";
+import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 
 export const COLLECTION_PAGE_QUERY = gql`
   query CollectionPageQuery($languageCode: LanguageCodeEnum!, $slug: ID!) {
@@ -31,20 +33,13 @@ export const COLLECTION_PAGE_QUERY = gql`
         description
         image
         seo {
-          title
-          description
-          openGraphDescription
-          openGraphTitle
-          openGraphType
-          twitterDescription
-          twitterTitle
-          socialImage {
-            uri
-          }
+          ...seoFragment
         }
       }
     }
   }
+
+  ${seoFragment}
 `;
 
 export default function CollectionsPage() {
@@ -57,17 +52,9 @@ export default function CollectionsPage() {
   });
 
   const collection = data?.collection;
-  const metaTitle = collection?.translation?.seo?.title;
-  const metaDescription = collection?.translation?.seo?.description;
   const title = collection?.translation?.title;
   const description = collection?.translation?.description;
-  const openGraphDescription = collection?.translation?.openGraphDescription;
-  const openGraphTitle = collection?.translation?.openGraphTitle;
-  const openGraphType = collection?.translation?.openGraphType;
-  const twitterDescription = collection?.translation?.twitterDescription;
-  const twitterTitle = collection?.translation?.twitterTitle;
   const backgroundColor = collection?.backgroundColor;
-  const metaImage = collection?.translation?.socialImage?.uri;
   const image = collection?.translation?.image;
   const recommendedEventIds = collection?.modules?.flatMap(
     (module) => module.events
@@ -76,14 +63,7 @@ export default function CollectionsPage() {
   return (
     <Page
       navigationVariant="white"
-      title={metaTitle}
-      description={metaDescription}
-      openGraphTitle={openGraphTitle}
-      openGraphDescription={openGraphDescription}
-      openGraphType={openGraphType}
-      twitterTitle={twitterTitle}
-      twitterDescription={twitterDescription}
-      image={metaImage}
+      {...getPageMetaPropsFromSEO(collection?.translation?.seo)}
     >
       <Section color="white" variant="contained">
         <div className={classNames(styles.collectionBlock)}>

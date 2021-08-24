@@ -9,7 +9,7 @@ import "nprogress/nprogress.css";
 
 import { useCmsApollo } from "../client/cmsApolloClient";
 import useRouter from "../domain/i18n/router/useRouter";
-import AppMeta from "../components/meta/AppMeta";
+import AppMeta from "../domain/seo/meta/AppMeta";
 import "../styles/globals.scss";
 
 const TopProgressBar = dynamic(
