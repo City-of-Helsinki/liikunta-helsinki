@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { LoadingSpinner } from "hds-react";
 import Error from "next/error";
+import { appWithTranslation } from "next-i18next";
 import "nprogress/nprogress.css";
 
 import { useCmsApollo } from "../client/cmsApolloClient";
@@ -76,4 +77,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

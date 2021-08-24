@@ -3,6 +3,7 @@
 const path = require("path");
 
 const i18nRoutes = require("./i18nRoutes.config");
+const { i18n } = require("./next-i18next.config");
 
 const i18nRewriteRules = Object.entries(i18nRoutes).flatMap(
   ([destination, sources]) =>
@@ -17,12 +18,7 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, "src/styles")],
   },
-  i18n: {
-    // These values should correspond to the slug field in the headless CMS
-    locales: ["fi", "sv", "en"],
-    // Will be used for non-localized paths
-    defaultLocale: "fi",
-  },
+  i18n,
   async rewrites() {
     return i18nRewriteRules;
   },

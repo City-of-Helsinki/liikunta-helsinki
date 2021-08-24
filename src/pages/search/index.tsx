@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
 import { gql } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { SearchResult } from "../../types";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
@@ -198,6 +199,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
+      ...(await serverSideTranslations(context.locale, [
+        "common",
+        "navigation",
+      ])),
     },
     revalidate: 10,
   };
