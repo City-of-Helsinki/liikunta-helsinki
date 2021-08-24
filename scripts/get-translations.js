@@ -12,7 +12,7 @@ const LANGUAGES = ["fi", "sv", "en"];
 const TRANSLATIONS_DESTINATION = "./public/locales";
 const TRANSLATION_QUERY = `
   query TranslationQuery {
-    translations {
+    translations(first: 1000) {
       nodes {
         title
         translations {
