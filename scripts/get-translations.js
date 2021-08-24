@@ -64,7 +64,11 @@ function dropFirstLevelFromKey(key) {
 
 async function saveTranslationDocumentToFileSystem(translationDocument) {
   try {
-    const fileName = `${translationDocument.title.toLowerCase()}.json`;
+    const fileNameWithoutFormat = translationDocument.title
+      .toLowerCase()
+      // Replace spaces with underscores
+      .replace(/ /g, "_");
+    const fileName = `${fileNameWithoutFormat}.json`;
 
     for (const language of LANGUAGES) {
       const fileContentForLanguage = translationDocument.translations.reduce(

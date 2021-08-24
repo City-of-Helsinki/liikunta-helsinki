@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, Button, IconSearch } from "hds-react";
 import classNames from "classnames";
+import { useTranslation } from "next-i18next";
 
 import useSearch from "../../../hooks/useSearch";
 import Link from "../../../domain/i18n/router/Link";
@@ -9,6 +10,7 @@ import SecondaryLink from "../../link/SecondaryLink";
 import styles from "./landingPageSearchForm.module.scss";
 
 function LandingPageSearchForm() {
+  const { t } = useTranslation("landing_page_search_form");
   const { search } = useSearch();
   const [searchText, setSearchText] = useState<string>("");
 
@@ -24,7 +26,7 @@ function LandingPageSearchForm() {
   return (
     <form role="search" className={styles.searchForm} onSubmit={handleSubmit}>
       <Text as="h2" variant="h3" className={styles.title}>
-        Löydä liikuntaa
+        {t("title")}
       </Text>
       <TextInput
         className={classNames(
@@ -33,8 +35,8 @@ function LandingPageSearchForm() {
         )}
         name="q"
         id="q"
-        label="Mitä etsit?"
-        placeholder="Aloita kirjoittamalla tähän, esim. uimahalli tai jooga"
+        label={t("free_text_search.label")}
+        placeholder={t("free_text_search.placeholder")}
         onChange={handleChange}
         value={searchText}
       >
@@ -45,10 +47,10 @@ function LandingPageSearchForm() {
         iconLeft={<IconSearch />}
         className={styles.hdsButtonOverrides}
       >
-        Hae
+        {t("do_search")}
       </Button>
       <Link href="/search" passHref>
-        <SecondaryLink>Tarkennettu haku</SecondaryLink>
+        <SecondaryLink>{t("go_to_advanced_search")}</SecondaryLink>
       </Link>
     </form>
   );
