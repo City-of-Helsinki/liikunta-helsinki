@@ -146,6 +146,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       ...(await serverSideTranslationsWithCommon(context.locale, [
         "search_header",
         "search_page_search_form",
+        "map_view",
       ])),
     },
     revalidate: 10,
