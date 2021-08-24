@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
 import { gql } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { SearchResult } from "../../types";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
@@ -11,9 +10,10 @@ import capitalize from "../../util/capitalize";
 import getTranslation from "../../util/getTranslation";
 import { getNodes } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
-import useRouter from "../../domain/i18nRouter/useRouter";
 import useSearchQuery from "../../domain/unifiedSearch/useSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
+import useRouter from "../../domain/i18n/router/useRouter";
+import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
 import Section from "../../components/section/Section";
@@ -199,10 +199,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslations(context.locale, [
-        "common",
-        "navigation",
-      ])),
+      ...(await serverSideTranslationsWithCommon(context.locale)),
     },
     revalidate: 10,
   };

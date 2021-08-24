@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 
-import useRouter from "../../domain/i18nRouter/useRouter";
+import useRouter from "../../domain/i18n/router/useRouter";
 import { Language } from "../../types";
 
 function getLanguageAwarePath(

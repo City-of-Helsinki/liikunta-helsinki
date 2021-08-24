@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { IconAngleRight } from "hds-react";
 import React from "react";
 
-import Link from "../../domain/i18nRouter/Link";
+import Link from "../../domain/i18n/router/Link";
 import styles from "./categoryLink.module.scss";
 
 type Props = {

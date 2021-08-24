@@ -3,7 +3,7 @@ import { UrlObject } from "url";
 import classNames from "classnames";
 import React from "react";
 
-import Link from "../../domain/i18nRouter/Link";
+import Link from "../../domain/i18n/router/Link";
 import styles from "./keyword.module.scss";
 
 type Props = {

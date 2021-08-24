@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import i18nRoutes from "../../i18nRoutes.config";
-import useRouter from "../domain/i18nRouter/useRouter";
+import useRouter from "../domain/i18n/router/useRouter";
 
 export type Filters = {
   q: string;

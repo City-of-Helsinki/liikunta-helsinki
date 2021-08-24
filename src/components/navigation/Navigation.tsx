@@ -5,8 +5,8 @@ import { Navigation as HDSNavigation } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
-import I18nLink from "../../domain/i18nRouter/Link";
-import useRouter from "../../domain/i18nRouter/useRouter";
+import I18nLink from "../../domain/i18n/router/Link";
+import useRouter from "../../domain/i18n/router/useRouter";
 import { Language, NavigationItem } from "../../types";
 import styles from "./navigation.module.scss";
 

@@ -8,7 +8,7 @@ import { appWithTranslation } from "next-i18next";
 import "nprogress/nprogress.css";
 
 import { useCmsApollo } from "../client/cmsApolloClient";
-import useRouter from "../domain/i18nRouter/useRouter";
+import useRouter from "../domain/i18n/router/useRouter";
 import AppMeta from "../components/meta/AppMeta";
 import "../styles/globals.scss";
 

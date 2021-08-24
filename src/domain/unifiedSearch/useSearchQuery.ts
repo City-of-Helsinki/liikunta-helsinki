@@ -6,7 +6,7 @@ import {
 } from "@apollo/client";
 
 import searchApolloClient from "../../client/searchApolloClient";
-import useRouter from "../../domain/i18nRouter/useRouter";
+import useRouter from "../../domain/i18n/router/useRouter";
 import useSearchParameters from "../../domain/unifiedSearch/useSearchParameters";
 
 const appToUnifiedSearchLanguageMap = {

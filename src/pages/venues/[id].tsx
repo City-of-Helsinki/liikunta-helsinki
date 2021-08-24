@@ -11,7 +11,6 @@ import React from "react";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { staticGenerationLogger } from "../../domain/logger";
 import { Address, Item, Point, Recommendation } from "../../types";
@@ -23,6 +22,7 @@ import initializeNextApiApolloClient, {
 import useSearch from "../../hooks/useSearch";
 import queryPersister from "../../util/queryPersister";
 import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
+import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import UpcomingEventsSection from "../../widgets/upcomingEventsSection/UpcomingEventsSection";
 import Keyword from "../../components/keyword/Keyword";
 import Page from "../../components/page/Page";
@@ -486,10 +486,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       props: {
         initialApolloState: cmsClient.cache.extract(),
         initialNextApiApolloState: nextApiClient.cache.extract(),
-        ...(await serverSideTranslations(context.locale, [
-          "common",
-          "navigation",
-        ])),
+        ...(await serverSideTranslationsWithCommon(context.locale)),
       },
       revalidate: 10,
     };

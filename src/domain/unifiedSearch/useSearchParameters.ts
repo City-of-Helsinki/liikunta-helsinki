@@ -1,4 +1,4 @@
-import useRouter from "../i18nRouter/useRouter";
+import useRouter from "../i18n/router/useRouter";
 
 // Add ID that matches the sports ontology tree branch that has the Culture,
 // sports and leisure department (KuVa) as its parent.
