@@ -5,7 +5,7 @@ import { LocalizedString, Option } from "../../types";
 import { Locale } from "../../config";
 import searchApolloClient from "../../client/searchApolloClient";
 import Combobox from "../../components/combobox/Combobox";
-import useRouter from "../../domain/i18nRouter/useRouter";
+import useRouter from "../../domain/i18n/router/useRouter";
 import getTranslation from "../../util/getTranslation";
 
 type AdministrativeDivision = {

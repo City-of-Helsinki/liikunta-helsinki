@@ -4,7 +4,7 @@ import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 
 import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
-import useRouter from "../../../domain/i18nRouter/useRouter";
+import useRouter from "../../../domain/i18n/router/useRouter";
 import queryPersister from "../../../util/queryPersister";
 // eslint-disable-next-line max-len
 import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";

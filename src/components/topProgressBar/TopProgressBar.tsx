@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import NProgress from "nprogress";
 
 import { logger } from "../../domain/logger";
-import useRouter from "../../domain/i18nRouter/useRouter";
+import useRouter from "../../domain/i18n/router/useRouter";
 
 function TopProgressBar() {
   const router = useRouter();

@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import { Koros } from "hds-react";
 
-import Link from "../../domain/i18nRouter/Link";
+import Link from "../../domain/i18n/router/Link";
 import Text from "../text/Text";
 import SecondaryLink from "../link/SecondaryLink";
 import styles from "./section.module.scss";

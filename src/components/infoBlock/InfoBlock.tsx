@@ -4,7 +4,7 @@ import React from "react";
 import { IconLinkExternal, IconAngleRight } from "hds-react";
 import classNames from "classnames";
 
-import Link from "../../domain/i18nRouter/Link";
+import Link from "../../domain/i18n/router/Link";
 import Text from "../text/Text";
 import styles from "./infoBlock.module.scss";
 

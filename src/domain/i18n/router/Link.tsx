@@ -3,9 +3,9 @@ import { UrlObject } from "url";
 import React from "react";
 import NextLink, { LinkProps } from "next/link";
 
-import useRouter from "../../domain/i18nRouter/useRouter";
+import useRouter from "./useRouter";
 import { getI18nPath, stringifyUrlObject } from "./utils";
-import { Locale } from "../../config";
+import { Locale } from "../../../config";
 
 function getI18nHref(
   href: string | UrlObject,

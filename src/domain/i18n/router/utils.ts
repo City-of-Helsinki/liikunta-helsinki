@@ -1,6 +1,6 @@
 import { UrlObject } from "url";
 
-import i18nRoutes from "../../../i18nRoutes.config";
+import i18nRoutes from "../../../../i18nRoutes.config";
 
 // dynamic path: /venues/:id
 // segmented: /venues/[id]

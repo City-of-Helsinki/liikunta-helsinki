@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import Image from "next/image";
 import classNames from "classnames";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
 import RecommendedEventsSection from "../../widgets/recommendedEventsSection/RecommendedEventsSection";
+import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import Page from "../../components/page/Page";
 import Text from "../../components/text/Text";
 import Section from "../../components/section/Section";
@@ -146,10 +146,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslations(context.locale, [
-        "common",
-        "navigation",
-      ])),
+      ...(await serverSideTranslationsWithCommon(context.locale)),
     },
     revalidate: 10,
   };

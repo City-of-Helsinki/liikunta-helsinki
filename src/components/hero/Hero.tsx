@@ -1,4 +1,4 @@
-import Link from "../../domain/i18nRouter/Link";
+import Link from "../../domain/i18n/router/Link";
 import Text from "../text/Text";
 import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
 import styles from "./hero.module.scss";

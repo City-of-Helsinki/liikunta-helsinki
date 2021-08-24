@@ -3,7 +3,7 @@ import { TextInput, Button, IconSearch } from "hds-react";
 import classNames from "classnames";
 
 import useSearch from "../../../hooks/useSearch";
-import Link from "../../../domain/i18nRouter/Link";
+import Link from "../../../domain/i18n/router/Link";
 import Text from "../../text/Text";
 import SecondaryLink from "../../link/SecondaryLink";
 import styles from "./landingPageSearchForm.module.scss";

@@ -1,14 +1,13 @@
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
 
 import { Collection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../client/cmsApolloClient";
 import { getQlLanguage } from "../client/utils";
 import mockCategories from "../client/tmp/mockCategories";
 import mockRecommendations from "../client/tmp/mockRecommendations";
+import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
@@ -178,10 +177,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslations(context.locale, [
-        "common",
-        "navigation",
-      ])),
+      ...(await serverSideTranslationsWithCommon(context.locale)),
     },
     revalidate: 10,
   };

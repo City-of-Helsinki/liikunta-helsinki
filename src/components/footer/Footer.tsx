@@ -1,10 +1,11 @@
 import { Footer as HDSFooter, LogoLanguage } from "hds-react";
 import React from "react";
+import { useTranslation } from "next-i18next";
 
-import useRouter from "../../domain/i18nRouter/useRouter";
+import useRouter from "../../domain/i18n/router/useRouter";
 import { NavigationItem } from "../../types";
 import mockCategories from "../../client/tmp/mockCategories";
-import NextLink from "../../domain/i18nRouter/Link";
+import NextLink from "../../domain/i18n/router/Link";
 import SearchShortcuts from "../../components/searchShortcuts/SearchShortcuts";
 import styles from "./footer.module.scss";
 
@@ -27,13 +28,15 @@ type Props = {
 };
 
 function Footer({ navigationItems }: Props) {
+  const { t: tCommon } = useTranslation("common");
+  const { t } = useTranslation("footer");
   const { locale } = useRouter();
   const logoLanguage: LogoLanguage = locale === "sv" ? "sv" : "fi";
   const categories = mockCategories;
 
   return (
     <HDSFooter
-      title="Liikunta"
+      title={tCommon("site_name")}
       className={styles.footer}
       logoLanguage={logoLanguage}
     >
@@ -58,19 +61,19 @@ function Footer({ navigationItems }: Props) {
           />
         ))}
       </HDSFooter.Navigation>
-      <HDSFooter.Utilities backToTopLabel="Takaisin alkuun">
+      <HDSFooter.Utilities backToTopLabel={t("back_to_top_label")}>
         <HDSFooter.Item
           className={styles.FooterUtilities}
           href="#"
-          label="Anna palautetta"
+          label={t("give_feedback")}
         />
       </HDSFooter.Utilities>
       <HDSFooter.Base
-        copyrightHolder="Copyright"
-        copyrightText="Kaikki oikeudet pidätetään"
+        copyrightHolder={t("copyright_holder")}
+        copyrightText={t("copyright_text")}
       >
-        <HDSFooter.Item href="#" label="Tietoa palvelusta" />
-        <HDSFooter.Item href="#" label="Saavutettavuusseloste" />
+        <HDSFooter.Item href="#" label={t("about_us")} />
+        <HDSFooter.Item href="#" label={t("accessibility_statement")} />
       </HDSFooter.Base>
     </HDSFooter>
   );

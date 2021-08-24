@@ -3,7 +3,7 @@ import { LoadingSpinner } from "hds-react";
 
 import getEventsAsItems from "../../util/events/getEventsAsItems";
 import eventFragment from "../../util/events/eventFragment";
-import useRouter from "../../domain/i18nRouter/useRouter";
+import useRouter from "../../domain/i18n/router/useRouter";
 import Section from "../../components/section/Section";
 import List from "../../components/list/List";
 import CondensedCard from "../../components/card/CondensedCard";
