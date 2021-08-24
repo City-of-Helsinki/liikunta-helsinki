@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { Koros, IconLocation } from "hds-react";
 
 import { SearchResult } from "../../types";
@@ -8,14 +8,16 @@ import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPat
 import useSearch from "../../hooks/useSearch";
 import capitalize from "../../util/capitalize";
 import getTranslation from "../../util/getTranslation";
-import { getNodes } from "../../client/utils";
+import { getNodes, getQlLanguage } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import useSearchQuery from "../../domain/unifiedSearch/useSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import seoFragment from "../../domain/seo/cmsSeoFragment";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
+import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import Section from "../../components/section/Section";
 import SearchResultCard from "../../components/card/SearchResultCard";
 import SearchList from "../../components/list/SearchList";
@@ -63,6 +65,20 @@ export const SEARCH_QUERY = gql`
   ${unifiedSearchVenueFragment}
 `;
 
+export const SEARCH_PAGE_QUERY = gql`
+  query SearchPageQuery($languageCode: LanguageCodeEnum!) {
+    page(id: "/search", idType: URI) {
+      translation(language: $languageCode) {
+        seo {
+          ...seoFragment
+        }
+      }
+    }
+  }
+
+  ${seoFragment}
+`;
+
 const emptyConnection = {
   edges: [],
 };
@@ -73,6 +89,11 @@ export default function Search() {
   const { data, loading, fetchMore } = useSearchQuery(SEARCH_QUERY, {
     first: BLOCK_SIZE,
     after: "",
+  });
+  const searchPageQueryResult = useQuery(SEARCH_PAGE_QUERY, {
+    variables: {
+      languageCode: getQlLanguage(router.locale),
+    },
   });
   const { getSearchRoute } = useSearch();
 
@@ -108,7 +129,11 @@ export default function Search() {
   };
 
   return (
-    <Page title="Search" description="Search">
+    <Page
+      {...getPageMetaPropsFromSEO(
+        searchPageQueryResult?.data?.page?.translation?.seo
+      )}
+    >
       <SearchHeader
         showMode={ShowMode.LIST}
         count={count}
@@ -194,6 +219,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   // view.
   await cmsClient.pageQuery({
     nextContext: context,
+    query: SEARCH_PAGE_QUERY,
+    variables: {
+      languageCode: getQlLanguage(context.locale),
+    },
   });
 
   return {
