@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Button, IconSearch } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
+import { useTranslation } from "next-i18next";
 
 import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
 import useRouter from "../../../domain/i18n/router/useRouter";
@@ -36,6 +37,7 @@ type Props = {
 };
 
 function SearchPageSearchForm({ showTitle = true }: Props) {
+  const { t } = useTranslation("search_page_search_form");
   const router = useRouter();
   const { search } = useSearch();
   const urlSearchParams = getURLSearchParamsFromAsPath(router.asPath);
@@ -87,13 +89,13 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
 
   return (
     <div>
-      {showTitle && <Text variant="h1">Mitä etsit?</Text>}
+      {showTitle && <Text variant="h1">{t("title")}</Text>}
       <form role="search" className={styles.form} onSubmit={handleSubmit}>
         <SuggestionInput
           name="q"
           id="q"
-          label="Haku"
-          placeholder="Kirjoita hakusana, esim. uimahalli tai jooga"
+          label={t("free_text_search.label")}
+          placeholder={t("free_text_search.placeholder")}
           value={searchText}
           onChange={handleSearchTextChange}
           onSelectedItemChange={handleSelectSuggestion}
@@ -113,7 +115,7 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
           className={styles.submitButton}
           iconLeft={<IconSearch />}
         >
-          Hae
+          {t("do_search")}
         </Button>
       </form>
     </div>
