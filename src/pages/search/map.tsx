@@ -1,15 +1,17 @@
 import dynamic from "next/dynamic";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
-import { getNodes } from "../../client/utils";
+import { getNodes, getQlLanguage } from "../../client/utils";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
 import useSearchQuery from "../../domain/unifiedSearch/useSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
-import Page from "../../components/page/Page";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import seoFragment from "../../domain/seo/cmsSeoFragment";
+import Page from "../../components/page/Page";
+import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import SearchHeader, {
   ShowMode,
@@ -50,6 +52,20 @@ export const MAP_SEARCH_QUERY = gql`
   ${unifiedSearchVenueFragment}
 `;
 
+export const MAP_SEARCH_PAGE_QUERY = gql`
+  query MapSearchPageQuery($languageCode: LanguageCodeEnum!) {
+    page(id: "/map-search", idType: URI) {
+      translation(language: $languageCode) {
+        seo {
+          ...seoFragment
+        }
+      }
+    }
+  }
+
+  ${seoFragment}
+`;
+
 const emptyConnection = {
   edges: [],
 };
@@ -70,6 +86,11 @@ export default function MapSearch() {
   const router = useRouter();
   const { data } = useSearchQuery(MAP_SEARCH_QUERY, {
     first: 100,
+  });
+  const mapSearchPageQuery = useQuery(MAP_SEARCH_PAGE_QUERY, {
+    variables: {
+      languageCode: getQlLanguage(router.locale),
+    },
   });
 
   // https://stackoverflow.com/a/64634759
@@ -92,7 +113,11 @@ export default function MapSearch() {
   const count = data?.unifiedSearch?.count;
 
   return (
-    <Page title="Map" description="Map">
+    <Page
+      {...getPageMetaPropsFromSEO(
+        mapSearchPageQuery?.data?.page?.translation?.seo
+      )}
+    >
       <SearchHeader
         showMode={ShowMode.MAP}
         count={count}
@@ -109,6 +134,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   await cmsClient.pageQuery({
     nextContext: context,
+    query: MAP_SEARCH_PAGE_QUERY,
+    variables: {
+      languageCode: getQlLanguage(context.locale),
+    },
   });
 
   return {
