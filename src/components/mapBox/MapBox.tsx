@@ -37,10 +37,7 @@ function MapBox({
           target="_blank"
         >
           {t("open_map")}
-          <IconLinkExternal
-            size="xs"
-            aria-label="Avautuu uudessa välilehdessä"
-          />
+          <IconLinkExternal size="xs" aria-label={t("opens_in_new_tab")} />
         </a>
       </div>
       <iframe

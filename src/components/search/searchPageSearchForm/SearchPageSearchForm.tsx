@@ -103,6 +103,7 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
             id: suggestion.label,
             label: suggestion.label,
           }))}
+          toggleButtonAriaLabel={t("free_text_search.toggle_button_aria_label")}
         />
         <AdministrativeDivisionDropdown
           id="administrativeDivisionId"

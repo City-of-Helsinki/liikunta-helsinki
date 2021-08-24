@@ -3,6 +3,7 @@ import { UrlObject } from "url";
 import React from "react";
 import { IconLinkExternal, IconAngleRight } from "hds-react";
 import classNames from "classnames";
+import { useTranslation } from "next-i18next";
 
 import Link from "../../domain/i18n/router/Link";
 import Text from "../text/Text";
@@ -47,6 +48,8 @@ function InfoBlockLink({
   label,
   href,
 }: InfoBlockContentLinkProps) {
+  const { t } = useTranslation("info_block");
+
   if (external) {
     return (
       <a
@@ -55,7 +58,7 @@ function InfoBlockLink({
         rel="noreferrer noopener"
         target="_blank"
       >
-        {label} <IconLinkExternal aria-label="Avautuu uudessa välilehdessä" />
+        {label} <IconLinkExternal aria-label={t("link.opens_in_new_tab")} />
       </a>
     );
   }
