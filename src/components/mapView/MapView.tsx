@@ -6,6 +6,7 @@ import {
   Marker,
   Popup,
 } from "@monsonjeremy/react-leaflet";
+import { useTranslation } from "next-i18next";
 import "leaflet/dist/leaflet.css";
 
 import venueIcon from "./VenueIcon";
@@ -26,6 +27,8 @@ type Props = {
 };
 
 function MapView({ items = [] }: Props) {
+  const { t } = useTranslation("map_view");
+
   return (
     <MapContainer
       center={DEFAULT_POSITION}
@@ -36,7 +39,9 @@ function MapView({ items = [] }: Props) {
       maxZoom={MAX_ZOOM}
     >
       <TileLayer
-        attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
+        attribution={`&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> ${t(
+          "open_street_map_contributors"
+        )}`}
         url={TILE_URL}
       />
       {items?.map((item) => {
@@ -52,7 +57,7 @@ function MapView({ items = [] }: Props) {
           >
             <Popup className={styles.popup}>
               <Text variant="body">{item.title}</Text>
-              <Link href={item.href}>Näytä sivu</Link>
+              <Link href={item.href}>{t("go_to_venue")}</Link>
             </Popup>
           </Marker>
         );
