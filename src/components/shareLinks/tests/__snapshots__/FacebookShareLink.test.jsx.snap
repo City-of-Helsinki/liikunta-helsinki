@@ -2,8 +2,8 @@
 
 exports[`<FacebookShareLink /> matches snapshot 1`] = `
 <button
-  aria-label="Jaa Facebookissa"
-  title="Jaa Facebookissa"
+  aria-label="facebook"
+  title="facebook"
   type="button"
 >
   <svg
