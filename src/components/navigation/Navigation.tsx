@@ -1,8 +1,9 @@
 import { UrlObject } from "url";
 
 import React from "react";
-import { Navigation as HDSNavigation, IconSignout } from "hds-react";
+import { Navigation as HDSNavigation } from "hds-react";
 import classNames from "classnames";
+import { useTranslation } from "next-i18next";
 
 import I18nLink from "../../domain/i18nRouter/Link";
 import useRouter from "../../domain/i18nRouter/useRouter";
@@ -12,9 +13,6 @@ import styles from "./navigation.module.scss";
 function persistLanguageChoice(language: string) {
   document.cookie = `NEXT_LOCALE=${language}; SameSite=Strict`;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {};
 
 type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
   href: string | UrlObject;
@@ -44,6 +42,8 @@ function Navigation({
   languages,
   variant = "default",
 }: Props) {
+  const { t: tCommon } = useTranslation("common");
+  const { t } = useTranslation("navigation");
   const { locale, push, route, query } = useRouter();
 
   const handleLanguageClick = (event) => {
@@ -57,10 +57,10 @@ function Navigation({
       className={classNames(styles.navigation, {
         [styles.default]: variant === "default",
       })}
-      title="Liikunta Helsinki"
-      menuToggleAriaLabel="menu"
+      title={tCommon("site_name")}
+      menuToggleAriaLabel={t("menu_toggle_aria_label")}
       skipTo={`#${mainContentId}`}
-      skipToContentLabel="Siirry suoraan sisältöön"
+      skipToContentLabel={t("skip_to_content_label")}
       onTitleClick={() => push("/")}
       logoLanguage={locale === "sv" ? "sv" : "fi"}
     >
@@ -78,29 +78,6 @@ function Navigation({
         ))}
       </HDSNavigation.Row>
       <HDSNavigation.Actions>
-        <HDSNavigation.User
-          authenticated={true}
-          buttonAriaLabel=""
-          label=""
-          onSignIn={noop}
-          userName="Liza Liikkuja"
-        >
-          <HDSNavigation.Item
-            as="a"
-            href="#"
-            label="Link"
-            onClick={noop}
-            variant="secondary"
-          />
-          <HDSNavigation.Item
-            as="a"
-            href="#"
-            icon={<IconSignout aria-hidden />}
-            label="Sign out"
-            onClick={noop}
-            variant="supplementary"
-          />
-        </HDSNavigation.User>
         <HDSNavigation.LanguageSelector label={locale.toUpperCase()}>
           {languages.map((language) => (
             <HDSNavigation.Item

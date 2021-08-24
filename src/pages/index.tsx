@@ -1,6 +1,8 @@
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 import { Collection, Item, Recommendation } from "../types";
 import initializeCmsApollo from "../client/cmsApolloClient";
@@ -176,6 +178,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
+      ...(await serverSideTranslations(context.locale, [
+        "common",
+        "navigation",
+      ])),
     },
     revalidate: 10,
   };

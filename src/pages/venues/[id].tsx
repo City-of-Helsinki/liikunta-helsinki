@@ -11,6 +11,7 @@ import React from "react";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { staticGenerationLogger } from "../../domain/logger";
 import { Address, Item, Point, Recommendation } from "../../types";
@@ -485,6 +486,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       props: {
         initialApolloState: cmsClient.cache.extract(),
         initialNextApiApolloState: nextApiClient.cache.extract(),
+        ...(await serverSideTranslations(context.locale, [
+          "common",
+          "navigation",
+        ])),
       },
       revalidate: 10,
     };

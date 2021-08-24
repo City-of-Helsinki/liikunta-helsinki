@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { gql } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getNodes } from "../../client/utils";
@@ -113,6 +114,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
+      ...(await serverSideTranslations(context.locale, [
+        "common",
+        "navigation",
+      ])),
     },
     revalidate: 10,
   };
