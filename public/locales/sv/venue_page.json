@@ -1,0 +1,19 @@
+{
+  "link.info.label": "SV: Verkkosivu",
+  "link.facebook.label": "Facebook",
+  "link.youtube.label": "YouTube",
+  "link.instagram.label": "Instagram",
+  "link.twitter.label": "Twitter",
+  "link.hsl_directions.label": "SV: Reittiohjeet (HSL)",
+  "link.google_directions.label": "SV: Reittiohjeet (Google)",
+  "back_to_search_aria_label": "SV: Hakuun",
+  "block.opening_hours.open_now_label": "SV: Nyt auki",
+  "block.opening_hours.label": "SV: Aukioloaika",
+  "block.location.label": "SV: Paikka",
+  "link.map.label": "SV: Avaa kartta",
+  "block.other_information.label": "SV: Muut tiedot",
+  "block.route.label": "SV: Löydä perille",
+  "content.description": "SV: Kuvaus",
+  "share_sport": "SV: Jaa liikunta",
+  "map_box.title": "SV: Sijainti"
+}

@@ -11,11 +11,11 @@ import React from "react";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
+import { useTranslation } from "next-i18next";
 
 import { staticGenerationLogger } from "../../domain/logger";
-import { Address, Item, Point, Recommendation } from "../../types";
+import { Address, Point } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
-import mockRecommendations from "../../client/tmp/mockRecommendations";
 import initializeNextApiApolloClient, {
   useNextApiApolloClient,
 } from "../../client/nextApiApolloClient";
@@ -31,9 +31,6 @@ import InfoBlock from "../../components/infoBlock/InfoBlock";
 import ShareLinks from "../../components/shareLinks/ShareLinks";
 import MapBox from "../../components/mapBox/MapBox";
 import Hr from "../../components/hr/Hr";
-import Section from "../../components/section/Section";
-import List from "../../components/list/List";
-import Card from "../../components/card/DefaultCard";
 import styles from "./venue.module.scss";
 import renderAddressToString from "../../util/renderAddressToString";
 import hash from "../../util/hash";
@@ -75,18 +72,6 @@ export const VENUE_QUERY = gql`
     }
   }
 `;
-
-function getRecommendationsAsItems(recommendations: Recommendation[]): Item[] {
-  return recommendations.map((recommendation) => ({
-    ...recommendation,
-    href: recommendation.href,
-    keywords: recommendation.keywords.map((keyword) => ({
-      label: keyword,
-      href: `keywords/${encodeURIComponent(keyword)}`,
-      isHighlighted: keyword === "Maksuton",
-    })),
-  }));
-}
 
 function pruneId(idWithSource: string): string {
   const [, id] = idWithSource.split(":");
@@ -143,6 +128,7 @@ function getGoogleDirectionsUrl(
 }
 
 export function VenuePageContent() {
+  const { t } = useTranslation("venue_page");
   const router = useRouter();
   const id = router.query.id as string;
   const { getSearchRoute } = useSearch();
@@ -204,27 +190,27 @@ export function VenuePageContent() {
   const links = [
     {
       url: infoUrl,
-      name: "Verkkosivu",
+      name: t("link.website"),
       id: "web",
     },
     {
       url: facebook,
-      name: "Facebook",
+      name: t("link.facebook"),
       id: "fb",
     },
     {
       url: youtube,
-      name: "YouTube",
+      name: t("link.youtube"),
       id: "yt",
     },
     {
       url: instagram,
-      name: "Instagram",
+      name: t("link.instagram"),
       id: "ig",
     },
     {
       url: twitter,
-      name: "Twitter",
+      name: t("link.twitter"),
       id: "tw",
     },
   ];
@@ -233,7 +219,7 @@ export function VenuePageContent() {
       external
       key="hsl"
       href={getHSLDirections(null, directionPoint)}
-      label="Reittiohjeet (HSL)"
+      label={t("link.hsl_directions.label")}
     />
   );
   const googleInfoLink = (
@@ -241,7 +227,7 @@ export function VenuePageContent() {
       external
       key="google"
       href={getGoogleDirectionsUrl(null, directionPoint)}
-      label="Reittiohjeet (Google)"
+      label={t("link.google_directions.label")}
     />
   );
   const infoLines = [
@@ -260,8 +246,6 @@ export function VenuePageContent() {
   const temperature = null;
   const organizer = null;
   const shortDescription = null;
-
-  const recommendationItems = getRecommendationsAsItems(mockRecommendations);
 
   return (
     <>
@@ -308,7 +292,11 @@ export function VenuePageContent() {
             {openingHours && (
               <InfoBlock
                 icon={<IconClock />}
-                name={isOpen ? "Nyt auki" : "Aukioloaika"}
+                name={
+                  isOpen
+                    ? t("block.opening_hours.open_now_label")
+                    : t("block.opening_hours.label")
+                }
                 contents={[openingHours]}
               />
             )}
@@ -323,7 +311,7 @@ export function VenuePageContent() {
             )}
             <InfoBlock
               icon={<IconLocation />}
-              name="Paikka"
+              name={t("block.location.label")}
               contents={[
                 <InfoBlock.List
                   key="address"
@@ -332,13 +320,13 @@ export function VenuePageContent() {
                 <InfoBlock.Link
                   key="map-link"
                   href={`/map?venue=${id}`}
-                  label="Avaa kartta"
+                  label={t("link.map.label")}
                 />,
               ]}
             />
             <InfoBlock
               icon={<IconInfoCircle />}
-              name="Muut tiedot"
+              name={t("block.other_information.label")}
               contents={[
                 <InfoBlock.List
                   key="contact-details"
@@ -366,7 +354,7 @@ export function VenuePageContent() {
             />
             <InfoBlock
               icon={<IconMap />}
-              name="Löydä perille"
+              name={t("block.route.label")}
               contents={[
                 <InfoBlock.List key="directions-hsl" items={[hslInfoLink]} />,
                 <InfoBlock.List
@@ -399,7 +387,7 @@ export function VenuePageContent() {
             )}
           </aside>
           <div className={styles.content}>
-            <Text variant="h3">Kuvaus</Text>
+            <Text variant="h3">{t("content.description")}</Text>
             {shortDescription && (
               <Text variant="body-l" className={styles.description}>
                 {shortDescription}
@@ -410,11 +398,11 @@ export function VenuePageContent() {
                 {paragraph}
               </Text>
             ))}
-            <Text variant="h3">Jaa liikunta</Text>
+            <Text variant="h3">{t("share_sport")}</Text>
             <ShareLinks />
             <Hr />
             <MapBox
-              title="Sijainti"
+              title={t("map_box.title")}
               serviceMapUrl={`https://palvelukartta.hel.fi/fi/embed/unit/${pruneId(
                 id
               )}`}
@@ -426,13 +414,6 @@ export function VenuePageContent() {
         </div>
       </article>
       <UpcomingEventsSection linkedId={id} />
-      <Section title="Muuta samankaltaista liikuntaa" color="white">
-        <List
-          items={recommendationItems.map((item) => (
-            <Card key={item.id} {...item} />
-          ))}
-        />
-      </Section>
     </>
   );
 }
@@ -486,7 +467,9 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       props: {
         initialApolloState: cmsClient.cache.extract(),
         initialNextApiApolloState: nextApiClient.cache.extract(),
-        ...(await serverSideTranslationsWithCommon(context.locale)),
+        ...(await serverSideTranslationsWithCommon(context.locale, [
+          "venue_page",
+        ])),
       },
       revalidate: 10,
     };
