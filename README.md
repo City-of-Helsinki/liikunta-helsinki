@@ -28,7 +28,20 @@ Builds the production application in the `.next` folder.
 Production build can be run locally with `yarn start`.
 
 ###`yarn test`
+
 Launches the test runner in the interactive watch mode.
+
+###`yarn get-translations`
+
+Fetches translations from the CMS and generates translations files of them in `.json` format into `public/locales`.
+
+## Internationalization
+
+Translation files can be refreshed by running `yarn get-translations`.
+
+Translations are sourced from the content management system.
+
+The `next-i18next` library is used to distribute translations in the application. Required translations are marked with `serverSideTranslationsWithCommon` which automatically includes some common translations or with `serverSideTranslations` if the defaults are not useful.
 
 ## Contact
 
