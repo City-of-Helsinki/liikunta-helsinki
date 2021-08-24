@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IconCross, Button, IconSearch, IconMenuHamburger } from "hds-react";
+import { useTranslation } from "next-i18next";
 
 import Text from "../../text/Text";
 import styles from "./searchHeader.module.scss";
@@ -17,6 +18,7 @@ type Props = {
 };
 
 function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
+  const { t } = useTranslation("search_header");
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
@@ -34,7 +36,7 @@ function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
                 fullWidth
                 onClick={() => setCollapsed(true)}
               >
-                Sulje hakuehdot
+                {t("close_search_controls")}
               </Button>
             </div>
           )}
@@ -47,10 +49,12 @@ function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
                   iconLeft={<IconMenuHamburger />}
                   onClick={switchShowMode}
                 >
-                  Näytä listana
+                  {t("show_as_a_list")}
                 </Button>
                 <div className={styles.countAndTags}>
-                  <Text variant="h3">{count} hakutulosta</Text>
+                  <Text variant="h3">
+                    {count} {t("search_results_count_label")}
+                  </Text>
                 </div>
                 <Button
                   variant="secondary"
@@ -58,7 +62,7 @@ function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
                   iconLeft={<IconSearch />}
                   onClick={() => setCollapsed(false)}
                 >
-                  Näytä haku
+                  {t("show_search_parameters")}
                 </Button>
               </>
             )}

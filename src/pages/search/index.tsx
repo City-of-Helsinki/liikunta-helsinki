@@ -233,6 +233,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       initialApolloState: cmsClient.cache.extract(),
       ...(await serverSideTranslationsWithCommon(context.locale, [
         "search_page",
+        "search_header",
       ])),
     },
     revalidate: 10,
