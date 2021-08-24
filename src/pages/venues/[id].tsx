@@ -190,27 +190,27 @@ export function VenuePageContent() {
   const links = [
     {
       url: infoUrl,
-      name: t("link.website"),
+      name: t("link.info.label"),
       id: "web",
     },
     {
       url: facebook,
-      name: t("link.facebook"),
+      name: t("link.facebook.label"),
       id: "fb",
     },
     {
       url: youtube,
-      name: t("link.youtube"),
+      name: t("link.youtube.label"),
       id: "yt",
     },
     {
       url: instagram,
-      name: t("link.instagram"),
+      name: t("link.instagram.label"),
       id: "ig",
     },
     {
       url: twitter,
-      name: t("link.twitter"),
+      name: t("link.twitter.label"),
       id: "tw",
     },
   ];
@@ -469,6 +469,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         initialNextApiApolloState: nextApiClient.cache.extract(),
         ...(await serverSideTranslationsWithCommon(context.locale, [
           "venue_page",
+          "map_box",
         ])),
       },
       revalidate: 10,

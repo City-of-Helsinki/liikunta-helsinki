@@ -1,5 +1,6 @@
 import { IconLinkExternal, IconLocation } from "hds-react";
 import React from "react";
+import { useTranslation } from "next-i18next";
 
 import Text from "../text/Text";
 import InfoBlock from "../infoBlock/InfoBlock";
@@ -20,6 +21,8 @@ function MapBox({
   placeAddress,
   links,
 }: Props) {
+  const { t } = useTranslation("map_box");
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>
@@ -33,7 +36,7 @@ function MapBox({
           rel="noopener noreferrer"
           target="_blank"
         >
-          Avaa kartta
+          {t("open_map")}
           <IconLinkExternal
             size="xs"
             aria-label="Avautuu uudessa välilehdessä"
