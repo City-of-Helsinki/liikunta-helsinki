@@ -8,6 +8,7 @@ import initializeCmsApollo from "../client/cmsApolloClient";
 import { getQlLanguage } from "../client/utils";
 import mockCategories from "../client/tmp/mockCategories";
 import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
+import seoFragment from "../domain/seo/cmsSeoFragment";
 import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import List from "../components/list/List";
@@ -17,6 +18,7 @@ import Hero from "../components/hero/Hero";
 import HeroImage from "../components/hero/HeroImage";
 import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
 import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
+import getPageMetaPropsFromSEO from "../components/page/getPageMetaPropsFromSEO";
 
 export const LANDING_PAGE_QUERY = gql`
   query LandingPageQuery($languageCode: LanguageCodeEnum!) {
@@ -35,7 +37,12 @@ export const LANDING_PAGE_QUERY = gql`
         heroLink
       }
     }
-    pageBy(uri: "/") {
+    page(id: "/", idType: URI) {
+      translation(language: $languageCode) {
+        seo {
+          ...seoFragment
+        }
+      }
       modules {
         ... on LayoutCollection {
           collection {
@@ -51,6 +58,8 @@ export const LANDING_PAGE_QUERY = gql`
       }
     }
   }
+
+  ${seoFragment}
 `;
 
 function getCollectionsAsItems(collections: Collection[] | null): Item[] {
@@ -84,7 +93,7 @@ export default function HomePage() {
 
   const landingPage = data?.landingPage?.translation;
   const collectionItems: Item[] = getCollectionsAsItems(
-    data?.pageBy?.modules
+    data?.page?.modules
       .filter((module) => "collection" in module)
       .map((module) => module.collection) ?? []
   );
@@ -93,7 +102,7 @@ export default function HomePage() {
     data?.landingPage?.desktopImage?.edges[0]?.node?.mediaItemUrl;
 
   return (
-    <Page title="Liikunta-Helsinki" description="Liikunta-helsinki">
+    <Page {...getPageMetaPropsFromSEO(data?.page?.translation?.seo)}>
       {landingPage && (
         <>
           <HeroImage desktopImageUri={heroImage} />
