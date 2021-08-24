@@ -1,0 +1,10 @@
+{
+  "no_results.title": "FI: Sorry no search results were found for the search criteria you selected",
+  "no_results.description": "FI: Try changing your search criteria and you\\'re sure to find something to do!",
+  "show_on_map": "Näytä kartalla",
+  "search_results_count_label": "hakutulosta",
+  "is_loading_more": "Ladataan lisää",
+  "n_more_locations": "sijaintia lisää",
+  "do_show_more_locations": "Näytä lisää sijainteja",
+  "no_more_results": "Ei enempää hakutuloksia"
+}

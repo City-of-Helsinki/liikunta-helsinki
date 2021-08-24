@@ -1,6 +1,7 @@
 import React, { Ref, forwardRef } from "react";
 import classNames from "classnames";
 import { Button, LoadingSpinner, IconMap, IconSearch } from "hds-react";
+import { useTranslation } from "next-i18next";
 
 import styles from "./searchList.module.scss";
 import Text from "../text/Text";
@@ -29,6 +30,7 @@ const SearchList = forwardRef(
     }: Props,
     ref: Ref<HTMLLIElement>
   ) => {
+    const { t } = useTranslation("search_list");
     const resultsLeft = count ? count - items.length : 0;
     const a11yIndex = (Math.floor(items.length / blockSize) - 1) * blockSize;
     const loadedMoreAmount = hasNext ? blockSize : count - items.length;
@@ -37,8 +39,8 @@ const SearchList = forwardRef(
       return (
         <InfoTemplate
           icon={IconSearch}
-          title="Sorry no search results were found for the search criteria you selected"
-          description="Try changing your search criteria and you're sure to find something to do!"
+          title={t("no_results.title")}
+          description={t("no_results.description")}
         />
       );
     }
@@ -52,10 +54,10 @@ const SearchList = forwardRef(
               iconLeft={<IconMap />}
               className={styles.showOnMap}
             >
-              Näytä kartalla
+              {t("show_on_map")}
             </Button>
             <Text variant="h2" className={styles.resultCount} role="status">
-              {count} hakutulosta
+              {count} {t("search_results_count_label")}
             </Text>
           </div>
         )}
@@ -69,8 +71,8 @@ const SearchList = forwardRef(
                   ref={ref}
                   aria-label={
                     loading
-                      ? "Ladataan lisää"
-                      : `${loadedMoreAmount} sijaintia lisää`
+                      ? t("is_loading_more")
+                      : `${loadedMoreAmount} ${t("n_more_locations")}`
                   }
                 />
               )}
@@ -83,10 +85,10 @@ const SearchList = forwardRef(
           <>
             {hasNext ? (
               <Button onClick={onLoadMore} className={styles.loadMore}>
-                Näytä lisää sijainteja ({resultsLeft})
+                {t("do_show_more_locations")} ({resultsLeft})
               </Button>
             ) : (
-              <Text variant="body">Ei enempää hakutuloksia</Text>
+              <Text variant="body">{t("no_more_results")}</Text>
             )}
           </>
         )}
