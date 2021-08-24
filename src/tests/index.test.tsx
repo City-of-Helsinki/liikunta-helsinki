@@ -17,7 +17,7 @@ const getMocks = () => [
     result: {
       data: {
         landingPage: mockLandingPage,
-        pageBy: { modules: [] },
+        page: { translation: { seo: {} }, modules: [] },
       },
     },
   },
