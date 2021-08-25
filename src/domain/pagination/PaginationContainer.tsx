@@ -10,7 +10,14 @@ import styles from "./paginationContainer.module.scss";
 import { FetchMoreFunction } from "./types";
 
 const a11yListItemFactory =
-  ({ a11yIndex, ref, loadedMoreAmount, loading }) =>
+  ({
+    a11yIndex,
+    ref,
+    loadedMoreAmount,
+    loading,
+    loadingMoreLabel,
+    nMoreResultsLabel,
+  }) =>
   ({ className, children, index }) => {
     const item = <li className={className}>{children}</li>;
 
@@ -22,7 +29,9 @@ const a11yListItemFactory =
             tabIndex={-1}
             ref={ref}
             aria-label={
-              loading ? "Ladataan lisää" : `${loadedMoreAmount} sijaintia lisää`
+              loading
+                ? loadingMoreLabel
+                : `${loadedMoreAmount} ${nMoreResultsLabel}`
             }
           />
           {item}
@@ -44,6 +53,8 @@ type Props = {
   showNoMoreItemsToLoadNotice?: boolean;
   showMoreLabel: string;
   noMoreResultsLabel: string;
+  loadingMoreLabel: string;
+  nMoreResultsLabel: string;
 };
 
 export default function PaginationContainer({
@@ -56,6 +67,8 @@ export default function PaginationContainer({
   showNoMoreItemsToLoadNotice = false,
   showMoreLabel,
   noMoreResultsLabel,
+  loadingMoreLabel,
+  nMoreResultsLabel,
 }: Props) {
   const ref = useRef<HTMLLIElement>(null);
   const { fetchMore, loadedMoreAmount, a11yIndex, resultsLeft } =
@@ -76,7 +89,14 @@ export default function PaginationContainer({
     });
   };
 
-  const Li = a11yListItemFactory({ a11yIndex, ref, loadedMoreAmount, loading });
+  const Li = a11yListItemFactory({
+    a11yIndex,
+    ref,
+    loadedMoreAmount,
+    loading,
+    loadingMoreLabel,
+    nMoreResultsLabel,
+  });
   const hasNextPage = pageInfo?.hasNextPage;
 
   return (
