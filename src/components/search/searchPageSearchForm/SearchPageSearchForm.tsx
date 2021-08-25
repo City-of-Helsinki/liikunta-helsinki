@@ -35,13 +35,14 @@ const SUGGESTION_QUERY = gql`
 
 type Props = {
   showTitle?: boolean;
+  searchRoute?: "/search" | "/search/map";
 };
 
-function SearchPageSearchForm({ showTitle = true }: Props) {
+function SearchPageSearchForm({ showTitle = true, searchRoute }: Props) {
   const { t } = useTranslation("search_page_search_form");
   const searchParameters = useSearchParameters();
   const router = useRouter();
-  const { search } = useSearch();
+  const { search } = useSearch({ searchRoute });
   const [searchText, setSearchText] = useState<string | undefined>(
     searchParameters.q
   );

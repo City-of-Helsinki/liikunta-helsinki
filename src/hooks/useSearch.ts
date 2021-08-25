@@ -37,11 +37,16 @@ function getQueryString(search: Search): string {
   return new URLSearchParams(searchParamsWithoutEmpty).toString();
 }
 
-function useSearch() {
+type Config = {
+  searchRoute?: "/search" | "/search/map";
+};
+
+function useSearch(config?: Config) {
+  const searchRoute = config?.searchRoute ?? "/search";
   const router = useRouter();
   const searchBasePath =
-    i18nRoutes["/search"].find(({ locale }) => locale === router.locale)
-      ?.source ?? "/search";
+    i18nRoutes[searchRoute].find(({ locale }) => locale === router.locale)
+      ?.source ?? searchRoute;
 
   const getSearchRoute = useCallback(
     (search: Search) => {

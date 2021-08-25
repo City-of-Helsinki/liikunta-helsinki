@@ -122,7 +122,9 @@ export default function MapSearch() {
         showMode={ShowMode.MAP}
         count={count}
         switchShowMode={switchShowMode}
-        searchForm={<SearchPageSearchForm showTitle={false} />}
+        searchForm={
+          <SearchPageSearchForm showTitle={false} searchRoute="/search/map" />
+        }
       />
       <MapView items={searchResultItems} />
     </Page>
