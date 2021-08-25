@@ -62,9 +62,7 @@ export default function PaginationContainer({
     useA11yPagination({
       moreResultsAnnouncerRef: ref,
       fetchMore: originalFetchMore,
-      hasNextPage: pageInfo.hasNextPage,
       visibleCount: elements.length,
-      count: pageInfo.count,
       totalCount,
       pageSize,
     });

@@ -12,8 +12,6 @@ import { FetchMoreFunction } from "./types";
 type Options<TData = any, TVariables = OperationVariables> = {
   fetchMore: FetchMoreFunction<TData, TVariables>;
   moreResultsAnnouncerRef: React.RefObject<HTMLElement>;
-  hasNextPage: boolean;
-  count: number;
   totalCount: number;
   pageSize: number;
   visibleCount: number;
@@ -37,8 +35,6 @@ export default function useA11yPagination<
 >({
   fetchMore: fetchMoreBase,
   moreResultsAnnouncerRef,
-  hasNextPage,
-  count,
   totalCount,
   pageSize,
   visibleCount,
@@ -59,9 +55,16 @@ export default function useA11yPagination<
     [fetchMoreBase, moreResultsAnnouncerRef]
   );
 
-  const resultsLeft = totalCount ? totalCount - visibleCount : 0;
-  const a11yIndex = (Math.floor(count / pageSize) - 1) * pageSize;
-  const loadedMoreAmount = hasNextPage ? pageSize : totalCount - count;
+  const totalBlocks = Math.ceil(totalCount / pageSize);
+  const currentBlock = Math.ceil(visibleCount / pageSize);
+  const previousBlock = currentBlock === 1 ? null : currentBlock - 1;
+  const resultsLeft = totalCount - visibleCount;
+  // Index after the items of a single page
+  const a11yIndex = previousBlock * pageSize;
+  const lasBlockSize =
+    totalCount - Math.floor(totalCount / pageSize) * pageSize;
+  const loadedMoreAmount =
+    currentBlock === totalBlocks ? lasBlockSize : pageSize;
 
   return {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
