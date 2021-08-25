@@ -15,7 +15,7 @@ function stringifyQueryValue(value: string | string[]): string {
 
 export default function useSearchParameters() {
   const {
-    query: { q = "*", administrativeDivisionId },
+    query: { q, administrativeDivisionId },
   } = useRouter();
 
   return {

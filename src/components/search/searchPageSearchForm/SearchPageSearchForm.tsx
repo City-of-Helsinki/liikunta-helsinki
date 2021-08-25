@@ -3,9 +3,10 @@ import { Button, IconSearch } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
+import { useEffect } from "react";
 
-import getURLSearchParamsFromAsPath from "../../../util/getURLSearchParamsFromAsPath";
 import useRouter from "../../../domain/i18n/router/useRouter";
+import useSearchParameters from "../../../domain/unifiedSearch/useSearchParameters";
 import queryPersister from "../../../util/queryPersister";
 // eslint-disable-next-line max-len
 import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
@@ -38,14 +39,15 @@ type Props = {
 
 function SearchPageSearchForm({ showTitle = true }: Props) {
   const { t } = useTranslation("search_page_search_form");
+  const searchParameters = useSearchParameters();
   const router = useRouter();
   const { search } = useSearch();
-  const urlSearchParams = getURLSearchParamsFromAsPath(router.asPath);
-  const [searchText, setSearchText] = useState<string>(
-    urlSearchParams.get("q") ?? ""
+  const [searchText, setSearchText] = useState<string | undefined>(
+    searchParameters.q
   );
-  const [administrativeDivisionId, setAdministrativeDivisionId] =
-    useState<string>(urlSearchParams.get("administrativeDivisionId") ?? "");
+  const [administrativeDivisionId, setAdministrativeDivisionId] = useState<
+    string | undefined
+  >(searchParameters.administrativeDivisionId);
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
@@ -87,6 +89,10 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
   const suggestions =
     data?.unifiedSearchCompletionSuggestions?.suggestions ?? [];
 
+  useEffect(() => {
+    setSearchText(searchParameters.q);
+  }, [searchParameters.q]);
+
   return (
     <div>
       {showTitle && <Text variant="h1">{t("title")}</Text>}
@@ -96,7 +102,7 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
           id="q"
           label={t("free_text_search.label")}
           placeholder={t("free_text_search.placeholder")}
-          value={searchText}
+          value={searchText || ""}
           onChange={handleSearchTextChange}
           onSelectedItemChange={handleSelectSuggestion}
           suggestions={suggestions.map((suggestion) => ({
@@ -109,7 +115,7 @@ function SearchPageSearchForm({ showTitle = true }: Props) {
           id="administrativeDivisionId"
           name="administrativeDivisionId"
           onChange={handleAdminDivisionChange}
-          value={administrativeDivisionId}
+          value={administrativeDivisionId || ""}
         />
         <Button
           type="submit"
