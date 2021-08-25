@@ -51,6 +51,8 @@ export default function SelectedEventsSection({
       },
     },
     fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: true,
   });
 
   return render({
