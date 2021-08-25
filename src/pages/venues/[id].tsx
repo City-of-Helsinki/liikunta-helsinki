@@ -12,7 +12,9 @@ import classNames from "classnames";
 import { useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
+import Image from "next/image";
 
+import noImagePlaceholder from "../../../public/no_image.svg";
 import { staticGenerationLogger } from "../../domain/logger";
 import { Address, Point } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
@@ -260,7 +262,17 @@ export function VenuePageContent() {
             <IconArrowLeft aria-hidden="true" />
           </button>
           <div className={styles.image}>
-            <img src={image} alt="" />
+            <Image
+              // Circumvents next's hostname check. The images are hosted in
+              // multiple locations and it's not possible for us to compile
+              // a thorough list.
+              loader={({ src }) => src}
+              src={image ? image : noImagePlaceholder}
+              alt=""
+              layout="fill"
+              objectFit="cover"
+              priority
+            />
           </div>
           <div className={styles.content}>
             {keywords && (
