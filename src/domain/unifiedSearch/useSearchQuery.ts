@@ -33,7 +33,11 @@ export default function useSearchQuery<TData = any>(
     "variables"
   >
 ) {
-  const { q, administrativeDivisionId, ontologyTreeId } = useSearchParameters();
+  const {
+    q = "*",
+    administrativeDivisionId,
+    ontologyTreeId,
+  } = useSearchParameters();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { fetchMore, ...delegated } = useQuery(query, {
