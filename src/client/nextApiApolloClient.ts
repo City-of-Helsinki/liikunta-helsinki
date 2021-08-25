@@ -11,9 +11,11 @@ import { useMemo } from "react";
 
 import Config from "../config";
 import { logger } from "../domain/logger";
-import initializeApolloClient from "./initializeApolloClient";
+import { initializeApolloClient, MutableReference } from "./utils";
 
-let apiApolloClient: ApolloClient<NormalizedCacheObject>;
+const apiApolloClient = new MutableReference<
+  ApolloClient<NormalizedCacheObject>
+>();
 
 function getHttpLink(uri: string) {
   let options: HttpOptions = {
@@ -45,11 +47,11 @@ function createNextApiApolloClient() {
 }
 
 export default function initializeNextApiApolloClient(initialState = null) {
-  return initializeApolloClient(
+  return initializeApolloClient({
     initialState,
-    apiApolloClient,
-    createNextApiApolloClient
-  );
+    mutableCachedClient: apiApolloClient,
+    createClient: createNextApiApolloClient,
+  });
 }
 
 export function useNextApiApolloClient(initialState = null) {

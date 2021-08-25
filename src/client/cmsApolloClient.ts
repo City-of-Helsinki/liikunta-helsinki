@@ -1,12 +1,12 @@
-import { InMemoryCache } from "@apollo/client";
+import { InMemoryCache, NormalizedCacheObject } from "@apollo/client";
 import { useMemo } from "react";
 
 import Config from "../config";
-import initializeApolloClient from "./initializeApolloClient";
+import { initializeApolloClient, MutableReference } from "./utils";
 import LiikuntaApolloClient from "./LiikuntaApolloClient";
 import { sortMenuItems } from "./utils";
 
-let cmsApolloClient: LiikuntaApolloClient;
+const cmsApolloClient = new MutableReference<LiikuntaApolloClient>();
 
 function createCmsApolloClient() {
   return new LiikuntaApolloClient({
@@ -32,17 +32,18 @@ function createCmsApolloClient() {
 }
 
 export default function initializeCmsApollo(initialState = null) {
-  return initializeApolloClient(
+  return initializeApolloClient<NormalizedCacheObject, LiikuntaApolloClient>({
     initialState,
-    cmsApolloClient,
-    createCmsApolloClient
-  );
+    mutableCachedClient: cmsApolloClient,
+    createClient: createCmsApolloClient,
+  });
 }
 
 export function useCmsApollo(initialState) {
-  const store = useMemo(() => initializeCmsApollo(initialState), [
-    initialState,
-  ]);
+  const store = useMemo(
+    () => initializeCmsApollo(initialState),
+    [initialState]
+  );
 
   return store;
 }
