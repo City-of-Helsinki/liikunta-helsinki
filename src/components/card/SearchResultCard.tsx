@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
+import noImagePlaceholder from "../../../public/no_image.svg";
 import InfoBlock from "../infoBlock/InfoBlock";
 import { Item } from "../../types";
 import Card from "./Card";
@@ -31,15 +32,22 @@ function SearchResultCard({
       </Card.Content>
       <Card.CtaButton className={styles.button}>{ctaLabel}</Card.CtaButton>
       <Card.Keywords keywords={keywords} className={styles.keywords} />
-      {image && <Card.Image image={image} />}
-      {!image && (
-        <Card.Image
-          className={styles.placeholderCard}
-          image={
-            <Image src="/placeholder_image_missing.png" layout="fill" alt="" />
-          }
-        />
-      )}
+      <Card.Image
+        className={styles.placeholderCard}
+        image={
+          <Image
+            // Circumvents next's hostname check. The images are hosted in
+            // multiple locations and it's not possible for us to compile
+            // a thorough list.
+            loader={({ src }) => src}
+            src={image ?? noImagePlaceholder}
+            alt=""
+            className={styles.placeholderCard}
+            layout="fill"
+            objectFit="cover"
+          />
+        }
+      />
     </Card>
   );
 }
