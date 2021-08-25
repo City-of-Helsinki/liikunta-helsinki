@@ -1,5 +1,7 @@
 {
   "share_sport": "Jaa liikunta",
   "show_more_events": "Näytä lisää",
-  "no_more_events": "Ei enempää tapahtumia"
+  "no_more_events": "Ei enempää tapahtumia",
+  "loading_more_events_label": "Ladataan lisää",
+  "n_more_events_label": "tapahtumaa lisää"
 }

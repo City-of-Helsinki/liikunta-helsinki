@@ -58,6 +58,8 @@ function CollectionItemList({
         pageSize={pageSize}
         showMoreLabel={t("show_more_events")}
         noMoreResultsLabel={t("no_more_events")}
+        loadingMoreLabel={t("loading_more_events_label")}
+        nMoreResultsLabel={t("n_more_events_label")}
       />
     </Section>
   );

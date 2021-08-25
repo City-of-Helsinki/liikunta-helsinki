@@ -1,5 +1,7 @@
 {
   "share_sport": "SV: Jaa liikunta",
   "show_more_events": "SV: Näytä lisää",
-  "no_more_events": "SV: Ei enempää tapahtumia"
+  "no_more_events": "SV: Ei enempää tapahtumia",
+  "loading_more_events_label": "EV: Ladataan lisää",
+  "n_more_events_label": "SV: tapahtumaa lisää"
 }
