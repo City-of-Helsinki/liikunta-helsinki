@@ -256,7 +256,7 @@ export function VenuePageContent() {
           <button
             type="button"
             className={styles.backToSearch}
-            aria-label="Hakuun"
+            aria-label={t("back_to_search_aria_label")}
             onClick={handleBackToSearchClick}
           >
             <IconArrowLeft aria-hidden="true" />
