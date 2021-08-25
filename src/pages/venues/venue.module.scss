@@ -44,7 +44,7 @@
       [control] 2.5rem
       [content] 1fr
       [aside] 1fr;
-    grid-template-rows: initial;
+    grid-template-rows: [control content aside] 1fr;
 
     column-gap: $spacing-layout-s;
   }
@@ -79,10 +79,13 @@
   & > .image {
     grid-area: content;
     margin: 0 calc(-1 * #{$spacing-xs});
+    position: relative;
+    height: 24rem;
 
     @include breakpoints.respond-above(m) {
       grid-area: content;
       margin: 0;
+      height: unset;
     }
   }
   & > .content {
