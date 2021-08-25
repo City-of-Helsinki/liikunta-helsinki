@@ -12,5 +12,8 @@ module.exports = {
   moduleNameMapper: {
     "^.+\\.module\\.(css|sass|scss)$":
       "<rootDir>/.jest/identity-obj-proxy-esm.js",
+    // Handle image imports
+    // https://jestjs.io/docs/webpack#handling-static-assets
+    "^.+\\.(jpg|jpeg|png|gif|webp|svg)$": `<rootDir>/.jest/__mocks__/fileMock.js`,
   },
 };
