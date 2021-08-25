@@ -15,6 +15,7 @@ type Props = {
   count: number;
   blockSize: number;
   switchShowMode: () => void;
+  listRef: Ref<HTMLUListElement>;
 };
 
 const SearchList = forwardRef(
@@ -27,6 +28,7 @@ const SearchList = forwardRef(
       items,
       blockSize,
       switchShowMode,
+      listRef,
     }: Props,
     ref: Ref<HTMLLIElement>
   ) => {
@@ -61,7 +63,10 @@ const SearchList = forwardRef(
             </Text>
           </div>
         )}
-        <ul className={classNames(styles.list, styles.searchResult)}>
+        <ul
+          ref={listRef}
+          className={classNames(styles.list, styles.searchResult)}
+        >
           {items.map((node: React.ReactElement, index: number) => (
             <React.Fragment key={node.key}>
               {a11yIndex > 0 && a11yIndex === index && (
