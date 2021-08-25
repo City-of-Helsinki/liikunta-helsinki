@@ -471,6 +471,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
           "venue_page",
           "map_box",
           "share_links",
+          "upcoming_events_section",
         ])),
       },
       revalidate: 10,

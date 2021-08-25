@@ -1,5 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import { LoadingSpinner } from "hds-react";
+import { useTranslation } from "next-i18next";
 
 import getEventsAsItems from "../../util/events/getEventsAsItems";
 import eventFragment from "../../util/events/eventFragment";
@@ -27,6 +28,7 @@ type Props = {
 
 // This component expects to find the apiApolloClient from Context
 export default function UpcomingEventsSection({ linkedId }: Props) {
+  const { t } = useTranslation("upcoming_events_section");
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { loading, error, data } = useQuery(UPCOMING_EVENTS_QUERY, {
@@ -67,7 +69,7 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
   }
 
   return (
-    <Section title="Seuravat tapahtumat" koros="storm" contentWidth="s">
+    <Section title={t("title")} koros="storm" contentWidth="s">
       <List
         variant="grid-3"
         items={eventItems.map((item) => (
