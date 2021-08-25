@@ -6,13 +6,27 @@ import {
 } from "@apollo/client";
 
 import searchApolloClient from "../../client/searchApolloClient";
-import useRouter from "../../domain/i18n/router/useRouter";
-import useSearchParameters from "../../domain/unifiedSearch/useSearchParameters";
+import useRouter from "../i18n/router/useRouter";
+import useUnifiedSearchParameters from "./useUnifiedSearchParams";
 
 const appToUnifiedSearchLanguageMap = {
   fi: "FINNISH",
   sv: "SWEDISH",
   en: "ENGLISH",
+};
+
+const defaultPagination = {
+  after: "",
+  first: 10,
+};
+
+// Add ID that matches the sports ontology tree branch that has the Culture,
+// sports and leisure department (KuVa) as its parent.
+// https://www.hel.fi/palvelukarttaws/rest/v4/ontologytree/551
+const SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID = 551;
+
+const FIXED_FILTERS = {
+  ontologyTreeId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
 };
 
 type UnifiedSearchVariables = {
@@ -25,7 +39,7 @@ type UnifiedSearchVariables = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function useSearchQuery<TData = any>(
+export default function useUnifiedSearchQuery<TData = any>(
   query: DocumentNode | TypedDocumentNode<TData, UnifiedSearchVariables>,
   variables?: UnifiedSearchVariables,
   otherOptions?: Omit<
@@ -33,21 +47,19 @@ export default function useSearchQuery<TData = any>(
     "variables"
   >
 ) {
-  const {
-    q = "*",
-    administrativeDivisionId,
-    ontologyTreeId,
-  } = useSearchParameters();
+  const searchParams = useUnifiedSearchParameters();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { fetchMore, ...delegated } = useQuery(query, {
     client: searchApolloClient,
     ssr: false,
     variables: {
-      q,
       language: appToUnifiedSearchLanguageMap[locale],
-      ontologyTreeId,
-      administrativeDivisionId,
+      ...FIXED_FILTERS,
+      ...defaultPagination,
+      // Default query; everything
+      q: "*",
+      ...searchParams,
       ...variables,
     },
     fetchPolicy: "cache-and-network",
@@ -57,7 +69,7 @@ export default function useSearchQuery<TData = any>(
 
   const handleFetchMore = (variables: Partial<UnifiedSearchVariables>) =>
     fetchMore({
-      variables: { q, administrativeDivisionId, ontologyTreeId, ...variables },
+      variables: { ...variables },
     });
 
   return {

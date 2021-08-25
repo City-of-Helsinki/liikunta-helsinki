@@ -4,15 +4,17 @@ import { gql, useQuery } from "@apollo/client";
 import { Koros, IconLocation, IconClock } from "hds-react";
 import { useTranslation } from "next-i18next";
 import { parse, isWithinInterval } from "date-fns";
+import { useEffect } from "react";
 
 import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
-import useSearch from "../../hooks/useSearch";
 import capitalize from "../../util/capitalize";
 import getTranslation from "../../util/getTranslation";
 import { getNodes, getQlLanguage } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
-import useSearchQuery from "../../domain/unifiedSearch/useSearchQuery";
+import useSetUnifiedSearchParams from "../../domain/unifiedSearch/useSetUnifiedSearchParams";
+import useUnifiedSearchParameters from "../../domain/unifiedSearch/useUnifiedSearchParams";
+import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
@@ -107,31 +109,44 @@ export default function Search() {
   const { t } = useTranslation("search_page");
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { data, loading, fetchMore } = useSearchQuery(SEARCH_QUERY, {
-    first: BLOCK_SIZE,
-    after: "",
-  });
+  const scrollTo = router.query?.scrollTo;
+  const searchParams = useUnifiedSearchParameters();
+  const { data, loading, fetchMore } = useUnifiedSearchQuery(SEARCH_QUERY);
+  const { getSearchRoute, setUnifiedSearchParams } =
+    useSetUnifiedSearchParams();
   const searchPageQueryResult = useQuery(SEARCH_PAGE_QUERY, {
     variables: {
       languageCode: getQlLanguage(router.locale),
     },
   });
-  const { getSearchRoute } = useSearch();
+  const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);
+  const listRef = useRef<HTMLUListElement | null>(null);
 
   const searchResults = getNodes<SearchResult>(
     data?.unifiedSearch ?? emptyConnection
   );
 
-  const moreResultsAnnouncerRef = useRef<HTMLLIElement>(null);
   const count = data?.unifiedSearch?.count;
   const pageInfo = data?.unifiedSearch?.pageInfo;
   const afterCursor = pageInfo?.endCursor;
 
   const onLoadMore = () => {
-    fetchMore({
+    const pagination = {
       first: BLOCK_SIZE,
       after: afterCursor,
-    }).then(() => {
+    };
+    setUnifiedSearchParams(
+      {
+        ...pagination,
+        ...searchParams,
+      },
+      "replace",
+      {
+        scroll: false,
+      }
+    );
+
+    fetchMore(pagination).then(() => {
       moreResultsAnnouncerRef.current &&
         moreResultsAnnouncerRef.current.focus();
     });
@@ -149,6 +164,22 @@ export default function Search() {
     );
   };
 
+  useEffect(() => {
+    const listElement = listRef.current;
+
+    if (scrollTo) {
+      const listItemElement = listElement?.querySelector(
+        decodeURIComponent(scrollTo.toString())
+      );
+
+      if (listItemElement) {
+        listItemElement.scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [scrollTo]);
+
   return (
     <Page
       {...getPageMetaPropsFromSEO(
@@ -165,6 +196,7 @@ export default function Search() {
         <Koros className={styles.koros} />
         <SearchList
           ref={moreResultsAnnouncerRef}
+          listRef={listRef}
           loading={loading}
           onLoadMore={onLoadMore}
           count={count}
@@ -173,7 +205,7 @@ export default function Search() {
           switchShowMode={switchShowMode}
           items={searchResults.map((searchResult) => {
             const item = {
-              id: searchResult.venue.meta.id,
+              id: `tprek_${searchResult.venue.meta.id}`,
               title: getTranslation(searchResult.venue.name, locale),
               infoLines: [],
               href: {

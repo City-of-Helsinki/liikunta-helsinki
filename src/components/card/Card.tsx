@@ -232,6 +232,7 @@ function Card({ children, id, className }: CardProps) {
     // hampering the UX for keyboard or screen reader users.
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <article
+      id={id}
       onMouseDown={handleWrapperMouseDown}
       onMouseUp={handleWrapperMouseUp}
       className={classNames(styles.card, className)}

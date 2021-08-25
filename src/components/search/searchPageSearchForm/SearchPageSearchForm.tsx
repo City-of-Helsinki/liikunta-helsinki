@@ -5,14 +5,14 @@ import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
 import { useEffect } from "react";
 
-import useRouter from "../../../domain/i18n/router/useRouter";
-import useSearchParameters from "../../../domain/unifiedSearch/useSearchParameters";
-import queryPersister from "../../../util/queryPersister";
+import useUnifiedSearchParams from "../../../domain/unifiedSearch/useUnifiedSearchParams";
 // eslint-disable-next-line max-len
 import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
-import Text from "../../text/Text";
-import useSearch, { Filters } from "../../../hooks/useSearch";
+import useRouter from "../../../domain/i18n/router/useRouter";
+import useSetUnifiedSearchParams from "../../../domain/unifiedSearch/useSetUnifiedSearchParams";
+import { UnifiedSearchParameters } from "../../../domain/unifiedSearch/types";
 import searchApolloClient from "../../../client/searchApolloClient";
+import Text from "../../text/Text";
 import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
@@ -40,23 +40,22 @@ type Props = {
 
 function SearchPageSearchForm({ showTitle = true, searchRoute }: Props) {
   const { t } = useTranslation("search_page_search_form");
-  const searchParameters = useSearchParameters();
+  const unifiedSearchParams = useUnifiedSearchParams();
   const router = useRouter();
-  const { search } = useSearch({ searchRoute });
+  const { setUnifiedSearchParams } = useSetUnifiedSearchParams({ searchRoute });
   const [searchText, setSearchText] = useState<string | undefined>(
-    searchParameters.q
+    unifiedSearchParams.q
   );
   const [administrativeDivisionId, setAdministrativeDivisionId] = useState<
     string | undefined
-  >(searchParameters.administrativeDivisionId);
+  >(unifiedSearchParams.administrativeDivisionId);
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
-  const doSearch = (query: Filters) => {
-    queryPersister.persistQuery(query);
-    search(query, "replace");
+  const doSearch = (query: UnifiedSearchParameters) => {
+    setUnifiedSearchParams(query, "replace");
   };
 
   const handleSubmit = (e) => {
@@ -91,8 +90,8 @@ function SearchPageSearchForm({ showTitle = true, searchRoute }: Props) {
     data?.unifiedSearchCompletionSuggestions?.suggestions ?? [];
 
   useEffect(() => {
-    setSearchText(searchParameters.q);
-  }, [searchParameters.q]);
+    setSearchText(unifiedSearchParams.q);
+  }, [unifiedSearchParams.q]);
 
   return (
     <div>
