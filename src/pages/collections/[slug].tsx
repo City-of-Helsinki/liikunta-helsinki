@@ -33,6 +33,8 @@ function CollectionItemList({
   queryResult: { loading, error, fetchMore, items, pageInfo, totalCount },
   pageSize,
 }: CollectionItemListProps) {
+  const { t } = useTranslation("collection_page");
+
   // In case of an error, silently fail.
   if (error) {
     return null;
@@ -54,6 +56,8 @@ function CollectionItemList({
         pageInfo={pageInfo}
         totalCount={totalCount}
         pageSize={pageSize}
+        showMoreLabel={t("show_more_events")}
+        noMoreResultsLabel={t("no_more_events")}
       />
     </Section>
   );

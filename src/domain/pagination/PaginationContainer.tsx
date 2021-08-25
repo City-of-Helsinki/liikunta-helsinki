@@ -42,6 +42,8 @@ type Props = {
   totalCount: number;
   pageSize: number;
   showNoMoreItemsToLoadNotice?: boolean;
+  showMoreLabel: string;
+  noMoreResultsLabel: string;
 };
 
 export default function PaginationContainer({
@@ -52,6 +54,8 @@ export default function PaginationContainer({
   totalCount,
   pageSize,
   showNoMoreItemsToLoadNotice = false,
+  showMoreLabel,
+  noMoreResultsLabel,
 }: Props) {
   const ref = useRef<HTMLLIElement>(null);
   const { fetchMore, loadedMoreAmount, a11yIndex, resultsLeft } =
@@ -85,11 +89,11 @@ export default function PaginationContainer({
         <>
           {hasNextPage ? (
             <Button onClick={handleLoadMore} className={styles.loadMore}>
-              Näytä lisää ({resultsLeft})
+              {showMoreLabel} ({resultsLeft})
             </Button>
           ) : (
             showNoMoreItemsToLoadNotice && (
-              <Text variant="body">Ei enempää hakutuloksia</Text>
+              <Text variant="body">{noMoreResultsLabel}</Text>
             )
           )}
         </>
