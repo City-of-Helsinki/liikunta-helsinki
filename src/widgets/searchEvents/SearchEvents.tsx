@@ -59,6 +59,7 @@ export default function SearchEventsSection({ url, render, pageSize }: Props) {
     },
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: true,
   });
 
   return render({
