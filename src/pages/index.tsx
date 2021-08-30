@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 
 import { Collection, Item } from "../types";
+import collectionFragment from "../util/collectionFragment";
 import initializeCmsApollo from "../client/cmsApolloClient";
 import { getQlLanguage } from "../client/utils";
 import mockCategories from "../client/tmp/mockCategories";
@@ -46,25 +47,7 @@ export const LANDING_PAGE_QUERY = gql`
       modules {
         ... on LayoutCollection {
           collection {
-            id
-            translation(language: $languageCode) {
-              slug
-              title
-              description
-              image
-            }
-            modules {
-              ... on EventSelected {
-                module
-                events
-                title
-              }
-              ... on EventSearch {
-                module
-                title
-                url
-              }
-            }
+            ...collectionFragment
           }
         }
       }
@@ -72,12 +55,13 @@ export const LANDING_PAGE_QUERY = gql`
   }
 
   ${seoFragment}
+  ${collectionFragment}
 `;
 
 function getEventCountForCollection(collection: Collection): number {
   let totalEvents = 0;
 
-  collection.modules.forEach((collectionModule) => {
+  collection.translation.modules.forEach((collectionModule) => {
     if (collectionModule.module === "event_selected") {
       totalEvents = totalEvents + collectionModule.events.length;
     }

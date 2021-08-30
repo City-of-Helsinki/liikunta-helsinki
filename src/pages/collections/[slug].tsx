@@ -8,8 +8,8 @@ import { useTranslation } from "next-i18next";
 import { ItemQueryResult } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import { getQlLanguage } from "../../client/utils";
+import collectionFragment from "../../util/collectionFragment";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
-import seoFragment from "../../domain/seo/cmsSeoFragment";
 import SelectedEvents from "../../widgets/selectedEvents/SelectedEvents";
 import SearchEvents from "../../widgets/searchEvents/SearchEvents";
 import PaginationContainer from "../../domain/pagination/PaginationContainer";
@@ -68,32 +68,11 @@ function CollectionItemList({
 export const COLLECTION_PAGE_QUERY = gql`
   query CollectionPageQuery($languageCode: LanguageCodeEnum!, $slug: ID!) {
     collection(id: $slug, idType: SLUG) {
-      id
-      backgroundColor
-      translation(language: $languageCode) {
-        title
-        description
-        image
-        modules {
-          ... on EventSelected {
-            module
-            events
-            title
-          }
-          ... on EventSearch {
-            module
-            title
-            url
-          }
-        }
-        seo {
-          ...seoFragment
-        }
-      }
+      ...collectionFragment
     }
   }
 
-  ${seoFragment}
+  ${collectionFragment}
 `;
 
 const PAGE_SIZE = 10;
