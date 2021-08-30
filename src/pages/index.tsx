@@ -53,6 +53,18 @@ export const LANDING_PAGE_QUERY = gql`
               description
               image
             }
+            modules {
+              ... on EventSelected {
+                module
+                events
+                title
+              }
+              ... on EventSearch {
+                module
+                title
+                url
+              }
+            }
           }
         }
       }
@@ -61,6 +73,18 @@ export const LANDING_PAGE_QUERY = gql`
 
   ${seoFragment}
 `;
+
+function getEventCountForCollection(collection: Collection): number {
+  let totalEvents = 0;
+
+  collection.modules.forEach((collectionModule) => {
+    if (collectionModule.module === "event_selected") {
+      totalEvents = totalEvents + collectionModule.events.length;
+    }
+  });
+
+  return totalEvents;
+}
 
 function getCollectionsAsItems(collections: Collection[] | null): Item[] {
   return collections.map((collection) => ({
@@ -73,7 +97,7 @@ function getCollectionsAsItems(collections: Collection[] | null): Item[] {
     },
     keywords: [
       {
-        label: "120 kpl",
+        label: `${getEventCountForCollection(collection)} kpl`,
         href: "",
       },
     ],
