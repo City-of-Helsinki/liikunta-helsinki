@@ -166,19 +166,21 @@ type CardKeywordsProps = {
 function CardKeywords({ keywords, className }: CardKeywordsProps) {
   return (
     <ul className={classNames(styles.keywords, className)}>
-      {keywords.map(({ label, href, isHighlighted }) => {
-        const key = typeof label === "string" ? label : label.key;
+      {keywords
+        .filter(({ label }) => label !== null)
+        .map(({ label, href, isHighlighted }) => {
+          const key = typeof label === "string" ? label : label.key;
 
-        return (
-          <li key={key} className={styles.keyword}>
-            <Keyword
-              keyword={label}
-              href={href}
-              color={isHighlighted ? "tramLight20" : undefined}
-            />
-          </li>
-        );
-      })}
+          return (
+            <li key={key} className={styles.keyword}>
+              <Keyword
+                keyword={label}
+                href={href}
+                color={isHighlighted ? "tramLight20" : undefined}
+              />
+            </li>
+          );
+        })}
     </ul>
   );
 }
