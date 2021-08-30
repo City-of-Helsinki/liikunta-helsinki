@@ -26,7 +26,7 @@ export type Language = {
 };
 
 export type Keyword = {
-  label: string;
+  label: string | JSX.Element;
   isHighlighted?: boolean;
   href: string | UrlObject;
 };
