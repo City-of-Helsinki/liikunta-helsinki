@@ -1,4 +1,6 @@
 {
   "show_results_on_map": "EN: Näytä kartalla",
-  "read_more": "EN: Lue lisää"
+  "read_more": "EN: Lue lisää",
+  "block.opening_hours.open_now_label": "EN: Nyt auki",
+  "block.opening_hours.label": "EN: Aukioloaika"
 }

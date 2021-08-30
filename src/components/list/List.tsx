@@ -18,11 +18,17 @@ type Props = {
     | "grid-3"
     | "grid-2";
   li?: React.ComponentType<ListItemProps>;
+  listContainerRef?:
+    | React.RefObject<null | HTMLUListElement>
+    | ((node?: Element) => void);
 };
 
-function List({ items, variant = "default", li: Li }: Props) {
+function List({ items, variant = "default", li: Li, listContainerRef }: Props) {
   return (
-    <ul className={classNames(styles.list, styles[variant])}>
+    <ul
+      ref={listContainerRef}
+      className={classNames(styles.list, styles[variant])}
+    >
       {items.map((node: React.ReactElement, index: number) =>
         React.createElement(
           Li ?? "li",

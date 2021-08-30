@@ -77,13 +77,13 @@ export type Connection<T> = {
   edges: Node<T>[];
 };
 
-type EventSelected = {
+export type EventSelected = {
   module: "event_selected";
   events: string[];
   title: string;
 };
 
-type EventSearch = {
+export type EventSearch = {
   module: "event_search";
   url: string;
   title: string;
