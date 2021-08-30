@@ -5,15 +5,18 @@ import { useEffect } from "react";
 import groupBy from "lodash.groupby";
 import { LoadingSpinner } from "hds-react";
 
+import { Locale } from "../../config";
 import { Collection, EventSearch } from "../../types";
 import getEventQueryFromCMSEventSearch from "../../util/events/getEventQueryFromCMSEventSearch";
 import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
 import { logger } from "../../domain/logger";
 import styles from "./collectionCountLabel.module.scss";
+import useRouter from "../../domain/i18n/router/useRouter";
 
 async function resolveEventCountForEventSearch(
   eventSearchCollectionModule: EventSearch,
-  client
+  client,
+  locale: Locale
 ): Promise<number> {
   const query = getEventQueryFromCMSEventSearch(
     eventSearchCollectionModule.url
@@ -30,6 +33,11 @@ async function resolveEventCountForEventSearch(
     variables: {
       where: query,
     },
+    context: {
+      headers: {
+        "Accept-Language": locale,
+      },
+    },
   });
 
   return result?.data?.events?.totalCount as number;
@@ -37,7 +45,8 @@ async function resolveEventCountForEventSearch(
 
 async function resolveCounts(
   modules: Collection["translation"]["modules"],
-  apiClient
+  apiClient,
+  locale: Locale
 ) {
   const { event_selected: eventSelected = [], event_search: eventSearch = [] } =
     groupBy(modules, "module");
@@ -47,7 +56,7 @@ async function resolveCounts(
   );
   const eventSearchResults = await Promise.all(
     eventSearch.map((module) =>
-      resolveEventCountForEventSearch(module, apiClient)
+      resolveEventCountForEventSearch(module, apiClient, locale)
     )
   );
   const eventSearchCount = eventSearchResults.reduce(
@@ -69,6 +78,7 @@ export default function CollectionCountLabel({
   defer = false,
 }: Props) {
   const { t } = useTranslation("collection_count_label");
+  const { locale } = useRouter();
   const apiClient = useNextApiApolloClient();
   const [loading, setLoading] = useState<boolean>();
   const [error, setError] = useState<boolean>();
@@ -80,7 +90,7 @@ export default function CollectionCountLabel({
 
     if (!ignore && !defer) {
       setLoading(true);
-      resolveCounts(modules, apiClient)
+      resolveCounts(modules, apiClient, locale)
         .then((count) => {
           setTotalEventCount(count);
         })
