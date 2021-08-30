@@ -10,7 +10,7 @@ type Props = {
   blackOnMobile?: boolean;
   color?: "engelLight50" | "tramLight20";
   hideOnMobile?: boolean;
-  keyword: string;
+  keyword: string | JSX.Element;
   href: string | UrlObject;
 };
 
