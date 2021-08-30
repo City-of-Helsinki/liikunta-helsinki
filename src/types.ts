@@ -77,6 +77,18 @@ export type Connection<T> = {
   edges: Node<T>[];
 };
 
+type EventSelected = {
+  module: "event_selected";
+  events: string[];
+  title: string;
+};
+
+type EventSearch = {
+  module: "event_search";
+  url: string;
+  title: string;
+};
+
 export type Collection = {
   id: string;
   translation?: {
@@ -85,6 +97,7 @@ export type Collection = {
     image?: string;
     slug: string;
   };
+  modules: Array<EventSelected | EventSearch>;
 };
 
 export type LocalizedString = {
