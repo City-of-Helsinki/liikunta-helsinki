@@ -3,6 +3,18 @@ import Head from "next/head";
 
 import RouteMeta from "./RouteMeta";
 
+function replaceAll(str: string, find: string, replace: string) {
+  return str.replace(new RegExp(find, "g"), replace);
+}
+
+function unescapeDash(str?: string): string {
+  if (!str) {
+    return str;
+  }
+
+  return replaceAll(str, "&#x2d;", "-");
+}
+
 export type Props = React.ComponentProps<typeof RouteMeta> & {
   // Title of page, required for accessibility: pages should have unique titles
   // so that screen reader users are able to determine when the current page is
@@ -34,7 +46,7 @@ function PageMeta({
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{unescapeDash(title)}</title>
         {description && <meta name="description" content={description} />}
         <meta property="og:title" content={openGraphTitle} />
         {description && (
