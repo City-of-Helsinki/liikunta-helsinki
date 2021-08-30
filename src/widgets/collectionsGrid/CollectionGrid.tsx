@@ -40,9 +40,11 @@ export default function CollectionGrid({ collections }: Props) {
         const item = getCollectionAsItem(collection);
         const keywords = [
           {
-            label: (
+            // Only use the label count component in the browser to ensure that
+            // the client it uses it ready.
+            label: process.browser ? (
               <CollectionCountLabel collection={collection} defer={!inView} />
-            ),
+            ) : null,
             href: "",
           },
         ];
