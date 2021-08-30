@@ -172,19 +172,25 @@ function getDayOfWeekName(dateTime: string, locale: DateLocale = fi): string {
   return format(new Date(dateTime), "EEEEEE", { locale });
 }
 
-function humanizeOpeningHour(
+export function humanizeOpeningHour(
   openingHour: OpeningHour,
-  locale: Locale = "fi"
+  locale: Locale = "fi",
+  variant: "long" | "short" = "long"
 ): string | null {
   if (openingHour?.times.length === 0) {
     return null;
+  }
+
+  const times = humanizeTimes(openingHour?.times, microCopy[locale]);
+
+  if (variant === "short") {
+    return times;
   }
 
   const dayOfWeekName = getDayOfWeekName(
     openingHour?.date,
     dateLocales[locale]
   );
-  const times = humanizeTimes(openingHour?.times, microCopy[locale]);
 
   return `${dayOfWeekName} ${times}`;
 }

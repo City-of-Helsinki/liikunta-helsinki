@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
 import { GetStaticPropsContext } from "next";
 import { gql, useQuery } from "@apollo/client";
-import { Koros, IconLocation } from "hds-react";
+import { Koros, IconLocation, IconClock } from "hds-react";
 import { useTranslation } from "next-i18next";
+import { parse, isWithinInterval } from "date-fns";
 
-import { SearchResult } from "../../types";
+import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
 import useSearch from "../../hooks/useSearch";
 import capitalize from "../../util/capitalize";
@@ -27,6 +28,7 @@ import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";
 import styles from "./search.module.scss";
+import { humanizeOpeningHour } from "../../util/time/humanizeOpeningHoursForWeek";
 
 const BLOCK_SIZE = 10;
 
@@ -83,6 +85,23 @@ export const SEARCH_PAGE_QUERY = gql`
 const emptyConnection = {
   edges: [],
 };
+
+function getIsOpenNow(times: Time[]): boolean {
+  const now = new Date();
+  let isOpenNow = false;
+
+  times.forEach((time) => {
+    const start = parse(time.startTime, "HH:mm:ss", new Date());
+    const end = parse(time.endTime, "HH:mm:ss", new Date());
+    const interval = { start, end };
+
+    if (isWithinInterval(now, interval)) {
+      isOpenNow = true;
+    }
+  });
+
+  return isOpenNow;
+}
 
 export default function Search() {
   const { t } = useTranslation("search_page");
@@ -176,34 +195,59 @@ export default function Search() {
             };
             const streetAddress =
               searchResult.venue.location.address.streetAddress;
+            const openingHourTimesToday =
+              searchResult.venue?.openingHours?.today ?? [];
+            const isOpenNow = getIsOpenNow(openingHourTimesToday);
+            const humanizedOpeningHoursForToday = humanizeOpeningHour(
+              {
+                date: new Date().toJSON(),
+                times: openingHourTimesToday,
+              },
+              locale,
+              "short"
+            );
+            const infoBlocks = [
+              <InfoBlock
+                key="location"
+                target="card"
+                icon={<IconLocation />}
+                name={
+                  streetAddress
+                    ? getTranslation(
+                        searchResult.venue.location.address.streetAddress,
+                        locale
+                      )
+                    : null
+                }
+                contents={[
+                  <InfoBlock.Link
+                    key="map-link"
+                    href={`/map?venue=${item.id}`}
+                    label={t("show_results_on_map")}
+                  />,
+                ]}
+              />,
+              humanizedOpeningHoursForToday ? (
+                <InfoBlock
+                  key="openingHours"
+                  target="card"
+                  icon={<IconClock />}
+                  name={
+                    isOpenNow
+                      ? t("block.opening_hours.open_now_label")
+                      : t("block.opening_hours.label")
+                  }
+                  contents={[humanizedOpeningHoursForToday]}
+                />
+              ) : null,
+            ].filter((item) => item);
 
             return (
               <SearchResultCard
                 key={item.id}
                 item={item}
                 ctaLabel={t("read_more")}
-                infoBlocks={[
-                  <InfoBlock
-                    key="location"
-                    target="card"
-                    icon={<IconLocation />}
-                    name={
-                      streetAddress
-                        ? getTranslation(
-                            searchResult.venue.location.address.streetAddress,
-                            locale
-                          )
-                        : null
-                    }
-                    contents={[
-                      <InfoBlock.Link
-                        key="map-link"
-                        href={`/map?venue=${item.id}`}
-                        label={t("show_results_on_map")}
-                      />,
-                    ]}
-                  />,
-                ]}
+                infoBlocks={infoBlocks}
               />
             );
           })}
