@@ -124,6 +124,9 @@ export type Venue = {
       label: LocalizedString;
     }
   ];
+  openingHours: {
+    today: Time[];
+  };
 };
 
 export type SearchResult = {
@@ -198,6 +201,7 @@ export type AnyObject = Record<string, unknown>;
 
 export type Context = {
   language?: Locale;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataSources?: any;
 };
 

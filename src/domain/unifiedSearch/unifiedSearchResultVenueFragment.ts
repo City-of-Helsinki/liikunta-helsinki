@@ -16,6 +16,15 @@ const unifiedSearchVenueFragment = gql`
     images {
       url
     }
+    openingHours {
+      today {
+        startTime
+        endTime
+        endTimeOnNextDay
+        fullDay
+        resourceState
+      }
+    }
     location {
       address {
         streetAddress {

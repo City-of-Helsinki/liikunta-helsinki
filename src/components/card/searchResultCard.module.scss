@@ -18,6 +18,8 @@
   }
 
   .content {
+    width: 100%;
+
     @include breakpoints.respond-above(m) {
       padding-top: 0;
       padding-bottom: $spacing-m;
@@ -53,8 +55,16 @@
 
   .infoBlocks {
     list-style-type: none;
+    display: grid;
     margin: 0;
     padding: 0;
+    width: 100%;
+    gap: $spacing-s;
+
+    @include breakpoints.respond-above(s) {
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-m;
+    }
   }
 
   @include breakpoints.respond-above(m) {
