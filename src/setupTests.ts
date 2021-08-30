@@ -17,3 +17,27 @@ jest.mock("react-i18next", () => ({
     };
   },
 }));
+
+global.IntersectionObserver = class IntersectionObserver {
+  readonly root: Element | Document | null;
+  readonly rootMargin: string;
+  readonly thresholds: ReadonlyArray<number>;
+
+  constructor() {}
+
+  disconnect() {
+    return null;
+  }
+
+  observe() {
+    return null;
+  }
+
+  takeRecords() {
+    return null;
+  }
+
+  unobserve() {
+    return null;
+  }
+};
