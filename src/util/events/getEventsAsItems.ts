@@ -11,10 +11,7 @@ import fi from "date-fns/locale/fi";
 
 import { Item, Event, Keyword, EventOffer } from "../../types";
 
-function getIsCloseInTimeKeyword({
-  startTime,
-  infoUrl,
-}: Event): Keyword | null {
+function getIsCloseInTimeKeyword({ startTime }: Event): Keyword | null {
   const now = new Date();
   const startTimeAsDate = new Date(startTime);
   const isToday = isWithinInterval(startTimeAsDate, {
