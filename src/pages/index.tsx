@@ -2,12 +2,16 @@ import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
+import { useEffect } from "react";
 
 import { Collection, Item } from "../types";
 import collectionFragment from "../util/collectionFragment";
 import initializeCmsApollo from "../client/cmsApolloClient";
 import { getQlLanguage } from "../client/utils";
 import mockCategories from "../client/tmp/mockCategories";
+import getEventQueryFromCMSEventSearch from "../util/events/getEventQueryFromCMSEventSearch";
+import { useNextApiApolloClient } from "../client/nextApiApolloClient";
 import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../domain/seo/cmsSeoFragment";
 import Page from "../components/page/Page";
@@ -58,16 +62,80 @@ export const LANDING_PAGE_QUERY = gql`
   ${collectionFragment}
 `;
 
-function getEventCountForCollection(collection: Collection): number {
-  let totalEvents = 0;
+type CollectionCountLabelProps = {
+  collection: Collection;
+};
 
-  collection.translation.modules.forEach((collectionModule) => {
-    if (collectionModule.module === "event_selected") {
-      totalEvents = totalEvents + collectionModule.events.length;
-    }
-  });
+function CollectionCountLabel({ collection }: CollectionCountLabelProps) {
+  const apiClient = useNextApiApolloClient();
+  const [loading, setLoading] = useState<boolean>();
+  const [totalEventCount, setTotalEventCount] = useState<boolean>();
 
-  return totalEvents;
+  useEffect(() => {
+    const resolveCounts = async (
+      modules: Collection["translation"]["modules"]
+    ) => {
+      setLoading(true);
+
+      const { eventSelected, eventSearch } = modules.reduce(
+        (acc, module) => {
+          if (module.module === "event_selected") {
+            return {
+              ...acc,
+              eventSelected: [...acc.eventSelected, module],
+            };
+          }
+
+          return {
+            ...acc,
+            eventSearch: [...acc.eventSearch, module],
+          };
+        },
+        { eventSelected: [], eventSearch: [] }
+      );
+      const eventSelectedCount = eventSelected.reduce(
+        (acc, module) => acc + module.events.length,
+        0
+      );
+      const eventSearchResults = await Promise.all(
+        eventSearch.map((module) => {
+          const query = getEventQueryFromCMSEventSearch(module.url);
+
+          return apiClient.query({
+            query: gql`
+              query SearchEventsCountQuery($where: EventQuery!) {
+                events(where: $where) {
+                  totalCount
+                }
+              }
+            `,
+            variables: {
+              where: query,
+            },
+          });
+        })
+      );
+      const eventSearchCount = eventSearchResults.reduce(
+        (acc, eventSearchResult) =>
+          acc + eventSearchResult?.data?.events?.totalCount,
+        0
+      );
+
+      return eventSelectedCount + eventSearchCount;
+    };
+
+    resolveCounts(collection.translation.modules)
+      .then((count) => {
+        setTotalEventCount(count);
+      })
+      .finally(() => setLoading(false));
+  }, [apiClient, collection.translation.modules]);
+
+  if (loading) {
+    return null;
+  }
+
+  return <>{totalEventCount} kpl</>;
 }
 
 function getCollectionsAsItems(collections: Collection[] | null): Item[] {
@@ -81,7 +149,7 @@ function getCollectionsAsItems(collections: Collection[] | null): Item[] {
     },
     keywords: [
       {
-        label: `${getEventCountForCollection(collection)} kpl`,
+        label: <CollectionCountLabel collection={collection} />,
         href: "",
       },
     ],

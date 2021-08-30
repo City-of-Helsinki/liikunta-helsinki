@@ -4,6 +4,7 @@ import { ItemQueryResult } from "../../types";
 import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
 import eventFragment from "../../util/events/eventFragment";
 import getEventsAsItems from "../../util/events/getEventsAsItems";
+import getEventQueryFromCMSEventSearch from "../../util/events/getEventQueryFromCMSEventSearch";
 import useRouter from "../../domain/i18n/router/useRouter";
 
 const SEARCH_EVENTS_QUERY = gql`
@@ -27,16 +28,6 @@ const SEARCH_EVENTS_QUERY = gql`
   ${eventFragment}
 `;
 
-function getEventQuery(url: string) {
-  const params = new URL(url).searchParams;
-  const { super_event_type, ...restOfQuery } = Object.fromEntries(params);
-
-  return {
-    ...restOfQuery,
-    superEventType: super_event_type,
-  };
-}
-
 type Props = {
   url: string;
   render: <TVariables>(renderProps: ItemQueryResult<TVariables>) => JSX.Element;
@@ -49,7 +40,11 @@ export default function SearchEventsSection({ url, render, pageSize }: Props) {
   const locale = router.locale ?? router.defaultLocale;
   const { data, ...queryResult } = useQuery(SEARCH_EVENTS_QUERY, {
     client: nextApiApolloClient,
-    variables: { where: getEventQuery(url), first: pageSize, after: "" },
+    variables: {
+      where: getEventQueryFromCMSEventSearch(url),
+      first: pageSize,
+      after: "",
+    },
     skip: !process.browser,
     ssr: false,
     context: {
