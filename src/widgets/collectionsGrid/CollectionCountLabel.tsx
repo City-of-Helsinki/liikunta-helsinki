@@ -108,7 +108,7 @@ export default function CollectionCountLabel({
     return () => {
       ignore = true;
     };
-  }, [apiClient, collection?.translation?.modules, defer]);
+  }, [apiClient, collection?.translation?.modules, defer, locale]);
 
   if (error) {
     return null;
