@@ -75,11 +75,12 @@ export default function CollectionCountLabel({
   const [totalEventCount, setTotalEventCount] = useState<boolean>();
 
   useEffect(() => {
+    const modules = collection?.translation?.modules ?? [];
     let ignore = false;
 
     if (!ignore && !defer) {
       setLoading(true);
-      resolveCounts(collection.translation.modules, apiClient)
+      resolveCounts(modules, apiClient)
         .then((count) => {
           setTotalEventCount(count);
         })
@@ -97,7 +98,7 @@ export default function CollectionCountLabel({
     return () => {
       ignore = true;
     };
-  }, [apiClient, collection.translation.modules, defer]);
+  }, [apiClient, collection?.translation?.modules, defer]);
 
   if (error) {
     return null;
