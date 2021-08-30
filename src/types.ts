@@ -96,8 +96,8 @@ export type Collection = {
     description?: string;
     image?: string;
     slug: string;
+    modules: Array<EventSelected | EventSearch>;
   };
-  modules: Array<EventSelected | EventSearch>;
 };
 
 export type LocalizedString = {
