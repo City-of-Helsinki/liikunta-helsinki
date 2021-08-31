@@ -15,12 +15,7 @@ function getCollectionAsItem(collection?: Collection): Item {
       pathname: "/collections/[slug]",
       query: { slug: collection.translation?.slug },
     },
-    keywords: [
-      {
-        label: <CollectionCountLabel collection={collection} />,
-        href: "",
-      },
-    ],
+    keywords: [],
     image: collection.translation?.image,
   };
 }
