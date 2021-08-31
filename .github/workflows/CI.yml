@@ -60,7 +60,7 @@ jobs:
         # Prefer offline to check cache before downloading
         run: yarn --prefer-offline
       - name: Run tests
-        run: yarn test --coverage
+        run: yarn test --coverage --runInBand
         env:
           NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
           NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
