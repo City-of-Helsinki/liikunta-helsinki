@@ -54,5 +54,5 @@ describe("App", () => {
     await waitFor(() =>
       expect(screen.getByText("Kesän parhaat uimarannat")).toBeInTheDocument()
     );
-  });
+  }, 50000);
 });
