@@ -137,8 +137,8 @@ export default function Search() {
     };
     setUnifiedSearchParams(
       {
-        ...pagination,
         ...searchParams,
+        ...pagination,
       },
       "replace",
       {
