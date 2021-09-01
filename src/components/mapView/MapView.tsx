@@ -30,39 +30,47 @@ function MapView({ items = [] }: Props) {
   const { t } = useTranslation("map_view");
 
   return (
-    <MapContainer
-      center={DEFAULT_POSITION}
-      zoom={DEFAULT_ZOOM}
+    <div
+      aria-hidden={false}
+      tabIndex={-1}
+      aria-label={t("map_accessibility_statement")}
       className={styles.mapView}
-      maxBounds={BOUNDARIES}
-      minZoom={MIN_ZOOM}
-      maxZoom={MAX_ZOOM}
     >
-      <TileLayer
-        attribution={`&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> ${t(
-          "open_street_map_contributors"
-        )}`}
-        url={TILE_URL}
-      />
-      {items?.map((item) => {
-        if (!item.location) {
-          return null;
-        }
+      <MapContainer
+        center={DEFAULT_POSITION}
+        zoom={DEFAULT_ZOOM}
+        maxBounds={BOUNDARIES}
+        minZoom={MIN_ZOOM}
+        maxZoom={MAX_ZOOM}
+        attributionControl={false}
+      >
+        <TileLayer
+          attribution={`&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> ${t(
+            "open_street_map_contributors"
+          )}`}
+          url={TILE_URL}
+        />
+        {items?.map((item) => {
+          if (!item.location) {
+            return null;
+          }
 
-        return (
-          <Marker
-            key={item.id}
-            position={[item.location[1], item.location[0]]}
-            icon={venueIcon}
-          >
-            <Popup className={styles.popup}>
-              <Text variant="body">{item.title}</Text>
-              <Link href={item.href}>{t("go_to_venue")}</Link>
-            </Popup>
-          </Marker>
-        );
-      })}
-    </MapContainer>
+          return (
+            <Marker
+              key={item.id}
+              position={[item.location[1], item.location[0]]}
+              icon={venueIcon}
+              keyboard={false}
+            >
+              <Popup className={styles.popup}>
+                <Text variant="body">{item.title}</Text>
+                <Link href={item.href}>{t("go_to_venue")}</Link>
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MapContainer>
+    </div>
   );
 }
 
