@@ -117,6 +117,7 @@ export default function MapSearch() {
       {...getPageMetaPropsFromSEO(
         mapSearchPageQuery?.data?.page?.translation?.seo
       )}
+      showFooter={false}
     >
       <SearchHeader
         showMode={ShowMode.MAP}

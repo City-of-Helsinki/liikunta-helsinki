@@ -6,6 +6,7 @@ export type LayoutComponentProps = {
   children: React.ReactNode;
   menuItems: NavigationItem[];
   languages: Language[];
+  showFooter?: boolean;
   navigationVariant?: "default" | "white";
 };
 

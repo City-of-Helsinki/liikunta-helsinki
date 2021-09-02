@@ -12,6 +12,7 @@ function Layout({
   languages,
   menuItems,
   navigationVariant,
+  showFooter = true,
 }: LayoutComponentProps) {
   return (
     <div className={styles.Layout}>
@@ -24,7 +25,7 @@ function Layout({
       <main id={MAIN_CONTENT_ID} className={styles.main}>
         {children}
       </main>
-      <Footer navigationItems={menuItems} />
+      {showFooter && <Footer navigationItems={menuItems} />}
     </div>
   );
 }
