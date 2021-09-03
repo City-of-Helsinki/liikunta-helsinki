@@ -5,12 +5,13 @@
 .section {
   --section-padding: #{$spacing-layout-l};
   --section-background: #{$color-black-5};
+  --section-row-gap: #{$spacing-layout-m};
 
   grid-column: 1 / -1 !important;
   display: inherit;
   grid-template-columns: inherit;
   grid-template-rows: inherit;
-  row-gap: $spacing-layout-m;
+  row-gap: var(--section-row-gap);
   padding: var(--section-padding) 0;
   position: relative;
 
@@ -34,6 +35,10 @@
 
   &.s {
     @include utils.get-layout-columns(s);
+  }
+
+  &.tight {
+    --section-row-gap: #{$spacing-layout-s};
   }
 
   &:last-child {
