@@ -63,7 +63,12 @@ function SearchPageSearchForm({ showTitle = true, searchRoute }: Props) {
 
     const q = e.target.q.value;
 
-    doSearch({ q, administrativeDivisionId });
+    doSearch({
+      q,
+      ...(administrativeDivisionId && {
+        administrativeDivisionId,
+      }),
+    });
   };
 
   const handleSearchTextChange = (value: string) => {
