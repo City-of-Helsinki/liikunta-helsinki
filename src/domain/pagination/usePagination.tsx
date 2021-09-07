@@ -47,7 +47,12 @@ export default function useA11yPagination<
       const result = await fetchMoreBase(fetchMoreOptions);
 
       if (moreResultsAnnouncerRef.current) {
-        moreResultsAnnouncerRef.current.focus();
+        // The announcer element is hidden from visual users and as such may
+        // exist in an unnatural place (visually) on the rendered page. If so,
+        // the browser can scroll into an unexpected position. This is true for
+        // instance when the announcer element is absolutely positioned within
+        // a grid.
+        moreResultsAnnouncerRef.current.focus({ preventScroll: true });
       }
 
       return result;
