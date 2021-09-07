@@ -1,11 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-} from "@monsonjeremy/react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { useTranslation } from "next-i18next";
 import "leaflet/dist/leaflet.css";
 
