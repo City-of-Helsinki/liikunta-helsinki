@@ -35,3 +35,18 @@
     }
   }
 }
+
+.clusterIcon {
+  // color-bus with reduced opacity
+  background: rgba(114, 114, 161, 0.75);
+
+  & > div {
+    background: $color-bus;
+  }
+
+  & > div > span {
+    color: $color-white;
+    font-size: $fontsize-body-l;
+    font-weight: 500;
+  }
+}
