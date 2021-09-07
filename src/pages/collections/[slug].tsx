@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import Image from "next/image";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
+import { LoadingSpinner } from "hds-react";
 
 import { ItemQueryResult } from "../../types";
 import initializeCmsApollo from "../../client/cmsApolloClient";
@@ -30,7 +31,15 @@ type CollectionItemListProps = {
 
 function CollectionItemList({
   title,
-  queryResult: { loading, error, fetchMore, items, pageInfo, totalCount },
+  queryResult: {
+    loading,
+    error,
+    fetchMore,
+    items,
+    pageInfo,
+    totalCount,
+    previousData,
+  },
   pageSize,
 }: CollectionItemListProps) {
   const { t } = useTranslation("collection_page");
@@ -38,6 +47,14 @@ function CollectionItemList({
   // In case of an error, silently fail.
   if (error) {
     return null;
+  }
+
+  if (loading && !previousData) {
+    return (
+      <Section>
+        <LoadingSpinner />
+      </Section>
+    );
   }
 
   // In case there are no events
