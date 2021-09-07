@@ -1,6 +1,6 @@
 import { UrlObject } from "url";
 
-import React from "react";
+import React, { useState } from "react";
 import { IconLinkExternal, IconAngleRight } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
@@ -93,6 +93,29 @@ function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
   );
 }
 
+type InfoBlockCollapseProps = {
+  title: string;
+  icon: React.ReactElement;
+  items: React.ReactElement[];
+};
+
+function InfoBlockCollapse({ title, items, icon }: InfoBlockCollapseProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  return (
+    <div
+      className={[styles.collapse, isOpen ? styles.isOpen : ""].join(" ")}
+      onClick={() => setIsOpen((prevState) => !prevState)}
+    >
+      <Text variant="body-l">
+        {title} {icon}
+      </Text>
+
+      {items}
+    </div>
+  );
+}
+
 type Props = {
   icon: React.ReactElement;
   name: string;
@@ -143,5 +166,6 @@ function InfoBlock({ icon, name, contents, target = "body" }: Props) {
 
 InfoBlock.Link = InfoBlockLink;
 InfoBlock.List = InfoBlockList;
+InfoBlock.Collapse = InfoBlockCollapse;
 
 export default InfoBlock;

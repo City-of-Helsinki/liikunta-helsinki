@@ -1,10 +1,12 @@
 import { IconLinkExternal, IconLocation } from "hds-react";
 import React from "react";
 import { useTranslation } from "next-i18next";
+import { IconAngleDown } from "hds-react";
 
 import Text from "../text/Text";
 import InfoBlock from "../infoBlock/InfoBlock";
 import styles from "./mapBox.module.scss";
+import { AccessibilitySentences } from "../../types";
 
 type Props = {
   title: string;
@@ -12,6 +14,7 @@ type Props = {
   placeName: string;
   placeAddress: string;
   links?: React.ReactElement<React.ComponentProps<typeof InfoBlock.Link>>[];
+  accessibilitySentences?: AccessibilitySentences[];
 };
 
 function MapBox({
@@ -20,6 +23,7 @@ function MapBox({
   placeName,
   placeAddress,
   links,
+  accessibilitySentences,
 }: Props) {
   const { t } = useTranslation("map_box");
 
@@ -52,6 +56,18 @@ function MapBox({
         <Text variant="body-l">{placeAddress}</Text>
         {links && (
           <InfoBlock.List key="route-directions" inline items={links} />
+        )}
+        {accessibilitySentences && (
+          <InfoBlock.Collapse
+            title="Esteettömyystiedot"
+            icon={<IconAngleDown />}
+            items={accessibilitySentences.map((group) => (
+              <>
+                <Text variant="h5">{group.groupName}</Text>
+                <InfoBlock.List key={group.groupName} items={group.sentences} />
+              </>
+            ))}
+          />
         )}
       </div>
     </div>

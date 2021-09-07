@@ -23,6 +23,31 @@ export const formTranslationObject = (obj, field) => {
   };
 };
 
+export const formAccessibilitySentences = (data) => {
+  const translationsLanguages = ["fi", "en", "sv"];
+  const table = { fi: [], en: [], sv: [] };
+  translationsLanguages.forEach((language) => {
+    data?.accessibility_sentences?.forEach((group) => {
+      const key = `sentence_group_${language}`;
+      const groupValue = group[key];
+
+      const existing = table[language].find(
+        (obj) => obj?.groupName === groupValue
+      );
+      if (!existing) {
+        table[language].push({
+          groupName: groupValue,
+          sentences: [group[`sentence_${language}`]],
+        });
+      } else {
+        const index = table[language].indexOf(existing);
+        table[language][index].sentences.push(group[`sentence_${language}`]);
+      }
+    });
+  });
+  return table;
+};
+
 export function getTprekId(source = "tprek", id: string): string | null {
   if (!source || !id) {
     return null;
@@ -62,5 +87,6 @@ export function translateVenue(
     streetAddress: pickLocale(data.streetAddress, language),
     infoUrl: pickLocale(data.infoUrl, language),
     telephone: pickLocale(data.telephone, language),
+    accessibilitySentences: pickLocale(data.accessibilitySentences, language),
   } as VenueDetails<string>;
 }

@@ -50,6 +50,10 @@ export const VENUE_QUERY = gql`
       image
       infoUrl
       name
+      accessibilitySentences {
+        groupName
+        sentences
+      }
       openingHours {
         date
         times {
@@ -181,6 +185,8 @@ export function VenuePageContent() {
     locale
   );
   const isOpen = data?.venue?.isOpen;
+  const accessibilitySentences = data?.venue?.accessibilitySentences;
+  console.log(accessibilitySentences);
 
   const simplifiedAddress = [streetAddress, addressLocality].join(", ");
   const directionPoint = {
@@ -424,6 +430,7 @@ export function VenuePageContent() {
               placeName={name}
               placeAddress={simplifiedAddress}
               links={[hslInfoLink, googleInfoLink]}
+              accessibilitySentences={accessibilitySentences}
             />
           </div>
         </div>

@@ -45,6 +45,11 @@ const typeDefs = gql`
     label: String
   }
 
+  type AccessibilitySentences {
+    groupName: String
+    sentences: [String]
+  }
+
   type Venue {
     addressLocality: String
     dataSource: String
@@ -62,6 +67,7 @@ const typeDefs = gql`
     isOpen: Boolean
     ontologyTree: [Ontology]!
     ontologyWords: [Ontology]!
+    accessibilitySentences: [AccessibilitySentences]
   }
 `;
 

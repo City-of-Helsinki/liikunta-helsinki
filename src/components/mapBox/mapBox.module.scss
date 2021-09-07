@@ -48,6 +48,10 @@
 .meta {
   margin-top: $spacing-s;
 
+  a {
+    color: $color-copper-dark;
+  }
+
   & > *:not(:last-child) {
     margin-bottom: $spacing-s;
   }
