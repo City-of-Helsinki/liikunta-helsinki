@@ -48,11 +48,13 @@ type Props = Omit<React.ComponentProps<typeof PageMeta>, "languages"> &
   > & {
     children: React.ReactNode;
     layoutComponent?: LayoutComponent;
+    showFooter?: boolean;
   };
 
 function Page({
   children,
   layoutComponent: Layout = DefaultLayout,
+  showFooter,
   navigationVariant,
   ...rest
 }: Props) {
@@ -73,6 +75,7 @@ function Page({
         menuItems={menuItems}
         languages={languages}
         navigationVariant={navigationVariant}
+        showFooter={showFooter}
       >
         {children}
       </Layout>
