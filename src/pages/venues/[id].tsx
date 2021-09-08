@@ -21,7 +21,6 @@ import initializeCmsApollo from "../../client/cmsApolloClient";
 import initializeNextApiApolloClient, {
   useNextApiApolloClient,
 } from "../../client/nextApiApolloClient";
-import useSetUnifiedSearchParams from "../../domain/unifiedSearch/useSetUnifiedSearchParams";
 import queryPersister from "../../util/queryPersister";
 import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
@@ -133,7 +132,6 @@ export function VenuePageContent() {
   const { t } = useTranslation("venue_page");
   const router = useRouter();
   const id = router.query.id as string;
-  const { getSearchRoute } = useSetUnifiedSearchParams();
   const locale = router.locale ?? router.defaultLocale;
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
@@ -284,9 +282,12 @@ export function VenuePageContent() {
                   <li key={keyword.id}>
                     <Keyword
                       keyword={keyword.label}
-                      href={getSearchRoute({
-                        ontology: keyword.label.toLowerCase(),
-                      })}
+                      href={{
+                        pathname: "/search",
+                        query: {
+                          ontology: keyword.label.toLowerCase(),
+                        },
+                      }}
                     />
                   </li>
                 ))}

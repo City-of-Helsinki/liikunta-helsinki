@@ -3,7 +3,7 @@ import { TextInput, Button, IconSearch } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
-import useSetUnifiedSearchParams from "../../../domain/unifiedSearch/useSetUnifiedSearchParams";
+import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
 import Link from "../../../domain/i18n/router/Link";
 import Text from "../../text/Text";
 import SecondaryLink from "../../link/SecondaryLink";
@@ -11,12 +11,12 @@ import styles from "./landingPageSearchForm.module.scss";
 
 function LandingPageSearchForm() {
   const { t } = useTranslation("landing_page_search_form");
-  const { setUnifiedSearchParams } = useSetUnifiedSearchParams();
+  const { setFilters } = useUnifiedSearch();
   const [searchText, setSearchText] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setUnifiedSearchParams({ q: searchText });
+    setFilters({ q: [searchText] }, "/search");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
