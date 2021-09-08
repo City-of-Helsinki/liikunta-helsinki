@@ -12,8 +12,7 @@ import capitalize from "../../util/capitalize";
 import getTranslation from "../../util/getTranslation";
 import { getNodes, getQlLanguage } from "../../client/utils";
 import initializeCmsApollo from "../../client/cmsApolloClient";
-import useSetUnifiedSearchParams from "../../domain/unifiedSearch/useSetUnifiedSearchParams";
-import useUnifiedSearchParameters from "../../domain/unifiedSearch/useUnifiedSearchParams";
+import useUnifiedSearch from "../../domain/unifiedSearch/useUnifiedSearch";
 import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
@@ -110,10 +109,8 @@ export default function Search() {
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const scrollTo = router.query?.scrollTo;
-  const searchParams = useUnifiedSearchParameters();
+  const { filters, setFilters } = useUnifiedSearch();
   const { data, loading, fetchMore } = useUnifiedSearchQuery(SEARCH_QUERY);
-  const { getSearchRoute, setUnifiedSearchParams } =
-    useSetUnifiedSearchParams();
   const searchPageQueryResult = useQuery(SEARCH_PAGE_QUERY, {
     variables: {
       languageCode: getQlLanguage(router.locale),
@@ -135,16 +132,10 @@ export default function Search() {
       first: BLOCK_SIZE,
       after: afterCursor,
     };
-    setUnifiedSearchParams(
-      {
-        ...searchParams,
-        ...pagination,
-      },
-      "replace",
-      {
-        scroll: false,
-      }
-    );
+    setFilters({
+      ...filters,
+      ...pagination,
+    });
 
     fetchMore(pagination).then(() => {
       moreResultsAnnouncerRef.current &&
@@ -218,9 +209,11 @@ export default function Search() {
                 const label = getTranslation(word.label, locale);
                 return {
                   label: capitalize(label),
-                  href: getSearchRoute({
-                    ontology: label.toLowerCase(),
-                  }),
+                  href: {
+                    query: {
+                      ontology: label.toLowerCase(),
+                    },
+                  },
                 };
               }),
               image: searchResult.venue.images[0]?.url,

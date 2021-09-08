@@ -7,7 +7,7 @@ import {
 
 import searchApolloClient from "../../client/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
-import useUnifiedSearchParameters from "./useUnifiedSearchParams";
+import useUnifiedSearch from "./useUnifiedSearch";
 
 const appToUnifiedSearchLanguageMap = {
   fi: "FINNISH",
@@ -47,7 +47,9 @@ export default function useUnifiedSearchQuery<TData = any>(
     "variables"
   >
 ) {
-  const searchParams = useUnifiedSearchParameters();
+  const {
+    filters: { q, ...searchParams },
+  } = useUnifiedSearch();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { fetchMore, ...delegated } = useQuery(query, {
@@ -58,7 +60,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       ...FIXED_FILTERS,
       ...defaultPagination,
       // Default query; everything
-      q: "*",
+      q: q?.join(" ") ?? "*",
       ...searchParams,
       ...variables,
     },

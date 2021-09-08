@@ -3,16 +3,13 @@ import { Button, IconSearch, IconCross, LoadingSpinner } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
-import { useEffect } from "react";
 
 // eslint-disable-next-line max-len
 import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
 import useAdministrativeDivisions from "../../../widgets/administrativeDivisionDropdown/useAdministrativeDivisions";
-import useUnifiedSearchParams from "../../../domain/unifiedSearch/useUnifiedSearchParams";
+import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
 import useRouter from "../../../domain/i18n/router/useRouter";
 import Link from "../../../domain/i18n/router/Link";
-import useSetUnifiedSearchParams from "../../../domain/unifiedSearch/useSetUnifiedSearchParams";
-import { UnifiedSearchParameters } from "../../../domain/unifiedSearch/types";
 import searchApolloClient from "../../../client/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../client/utils";
 import getTranslation from "../../../util/getTranslation";
@@ -47,36 +44,29 @@ function SearchPageSearchForm({
   searchRoute = "/search",
 }: Props) {
   const { t } = useTranslation("search_page_search_form");
-  const unifiedSearchParams = useUnifiedSearchParams();
+  const { filterList, modifyFilters, getFiltersWithout, filters } =
+    useUnifiedSearch();
   const router = useRouter();
-  const { setUnifiedSearchParams } = useSetUnifiedSearchParams({ searchRoute });
-  const [searchText, setSearchText] = useState<string | undefined>(
-    unifiedSearchParams.q
-  );
+  const [searchText, setSearchText] = useState<string | null>(null);
   const [administrativeDivisionId, setAdministrativeDivisionId] = useState<
     string | undefined
-  >(unifiedSearchParams.administrativeDivisionId);
+  >(filters.administrativeDivisionId);
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
   const administrativeDivisionsQuery = useAdministrativeDivisions();
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
-  const doSearch = (query: UnifiedSearchParameters) => {
-    setUnifiedSearchParams(query, "replace");
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const q = e.target.q.value;
 
-    doSearch({
-      q,
-      ...(administrativeDivisionId && {
-        administrativeDivisionId,
-      }),
+    modifyFilters({
+      q: [q],
+      administrativeDivisionId,
     });
+    setSearchText("");
   };
 
   const handleSearchTextChange = (value: string) => {
@@ -92,29 +82,11 @@ function SearchPageSearchForm({
   };
 
   const handleSelectSuggestion = (suggestion: Suggestion) => {
-    doSearch({ q: suggestion.label });
+    modifyFilters({ q: [suggestion.label] });
   };
 
   const handleAdminDivisionChange = (administrativeDivisionId: string) => {
     setAdministrativeDivisionId(administrativeDivisionId);
-  };
-
-  const getQueryParametersWithout = (parameterName: string) => {
-    const nextParameters = Object.entries(unifiedSearchParams).reduce(
-      (acc, [key, value]) => {
-        if (key === parameterName) {
-          return acc;
-        }
-
-        return {
-          ...acc,
-          [key]: value,
-        };
-      },
-      {}
-    );
-
-    return new URLSearchParams(nextParameters).toString();
   };
 
   const getSearchParameterLabel = (
@@ -148,10 +120,6 @@ function SearchPageSearchForm({
   const suggestions =
     data?.unifiedSearchCompletionSuggestions?.suggestions ?? [];
 
-  useEffect(() => {
-    setSearchText(unifiedSearchParams.q);
-  }, [unifiedSearchParams.q]);
-
   return (
     <div>
       {showTitle && <Text variant="h1">{t("title")}</Text>}
@@ -176,11 +144,11 @@ function SearchPageSearchForm({
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionId || ""}
         />
-        {Object.entries(unifiedSearchParams).length > 0 && (
+        {filterList.length > 0 && (
           <div className={styles.searchAsFilters}>
-            {Object.entries(unifiedSearchParams).map(([key, value]) => (
+            {filterList.map(({ key, value }) => (
               <Keyword
-                key={key}
+                key={`${key}-${value}`}
                 color="black"
                 icon={IconCross}
                 aria-label={`${t(
@@ -188,7 +156,7 @@ function SearchPageSearchForm({
                 )}: ${getSearchParameterLabel(key, value)}`}
                 keyword={getSearchParameterLabel(key, value)}
                 href={{
-                  search: getQueryParametersWithout(key),
+                  query: getFiltersWithout(key, value.toString()),
                 }}
               />
             ))}
