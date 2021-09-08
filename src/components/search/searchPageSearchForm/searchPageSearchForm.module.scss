@@ -19,6 +19,13 @@
   @include breakpoints.respond-above(s) {
     .submitButton {
       grid-column: 4;
+      align-self: flex-start;
+    }
+  }
+
+  @include breakpoints.respond-above(s) {
+    .searchAsFilters {
+      grid-column: 1 / span 3;
     }
   }
 }

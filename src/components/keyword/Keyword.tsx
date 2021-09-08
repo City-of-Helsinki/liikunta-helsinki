@@ -8,10 +8,14 @@ import styles from "./keyword.module.scss";
 
 type Props = {
   blackOnMobile?: boolean;
-  color?: "engelLight50" | "tramLight20";
+  color?: "engelLight50" | "tramLight20" | "black";
   hideOnMobile?: boolean;
   keyword: string | JSX.Element;
   href: string | UrlObject;
+  icon?: React.ComponentType<{
+    className?: string;
+  }>;
+  "aria-label"?: string;
 };
 
 const Keyword = ({
@@ -20,16 +24,21 @@ const Keyword = ({
   hideOnMobile,
   keyword,
   href,
+  icon: Icon,
+  ...rest
 }: Props) => {
   return (
     <Link href={href}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a
+        {...rest}
         className={classNames(styles.keyword, color && styles[color], {
           [styles.blackOnMobile]: blackOnMobile,
           [styles.hideOnMobile]: hideOnMobile,
+          [styles.withIcon]: Icon,
         })}
       >
+        {Icon && <Icon className={styles.icon} />}
         {keyword}
       </a>
     </Link>
