@@ -174,6 +174,14 @@ class UnifiedSearch {
         const safePreviousValue = Array.isArray(previousValue)
           ? previousValue
           : [previousValue];
+
+        if (safePreviousValue.includes(value[0])) {
+          return {
+            ...acc,
+            [key]: safePreviousValue,
+          };
+        }
+
         const nextValues = [...safePreviousValue, ...value].filter(
           (item) => item
         );
