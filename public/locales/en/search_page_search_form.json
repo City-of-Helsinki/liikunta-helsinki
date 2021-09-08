@@ -4,5 +4,6 @@
   "free_text_search.placeholder": "EN: Kirjoita hakusana, esim. uimahalli tai jooga",
   "do_search": "EN: Hae",
   "toggle_button_aria_label": "EN: Avaa valikko",
-  "remove_filter_aria_label": "EN: Poista suodatin"
+  "remove_filter_aria_label": "EN: Poista suodatin",
+  "clear_filters": "EN: Tyhjennä hakuehdot"
 }

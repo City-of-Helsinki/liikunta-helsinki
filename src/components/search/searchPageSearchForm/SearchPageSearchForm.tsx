@@ -5,22 +5,23 @@ import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
 import { useEffect } from "react";
 
-import useUnifiedSearchParams from "../../../domain/unifiedSearch/useUnifiedSearchParams";
 // eslint-disable-next-line max-len
 import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
+import useAdministrativeDivisions from "../../../widgets/administrativeDivisionDropdown/useAdministrativeDivisions";
+import useUnifiedSearchParams from "../../../domain/unifiedSearch/useUnifiedSearchParams";
 import useRouter from "../../../domain/i18n/router/useRouter";
+import Link from "../../../domain/i18n/router/Link";
 import useSetUnifiedSearchParams from "../../../domain/unifiedSearch/useSetUnifiedSearchParams";
 import { UnifiedSearchParameters } from "../../../domain/unifiedSearch/types";
 import searchApolloClient from "../../../client/searchApolloClient";
+import { getUnifiedSearchLanguage } from "../../../client/utils";
+import getTranslation from "../../../util/getTranslation";
 import Text from "../../text/Text";
 import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
-import { getUnifiedSearchLanguage } from "../../../client/utils";
-import styles from "./searchPageSearchForm.module.scss";
 import Keyword from "../../keyword/Keyword";
-import useAdministrativeDivisions from "../../../widgets/administrativeDivisionDropdown/useAdministrativeDivisions";
-import getTranslation from "../../../util/getTranslation";
+import styles from "./searchPageSearchForm.module.scss";
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -41,7 +42,10 @@ type Props = {
   searchRoute?: "/search" | "/search/map";
 };
 
-function SearchPageSearchForm({ showTitle = true, searchRoute }: Props) {
+function SearchPageSearchForm({
+  showTitle = true,
+  searchRoute = "/search",
+}: Props) {
   const { t } = useTranslation("search_page_search_form");
   const unifiedSearchParams = useUnifiedSearchParams();
   const router = useRouter();
@@ -172,22 +176,29 @@ function SearchPageSearchForm({ showTitle = true, searchRoute }: Props) {
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionId || ""}
         />
-        <div className={styles.searchAsFilters}>
-          {Object.entries(unifiedSearchParams).map(([key, value]) => (
-            <Keyword
-              key={key}
-              color="black"
-              icon={IconCross}
-              aria-label={`${t(
-                "remove_filter_aria_label"
-              )}: ${getSearchParameterLabel(key, value)}`}
-              keyword={getSearchParameterLabel(key, value)}
-              href={{
-                search: getQueryParametersWithout(key),
-              }}
-            />
-          ))}
-        </div>
+        {Object.entries(unifiedSearchParams).length > 0 && (
+          <div className={styles.searchAsFilters}>
+            {Object.entries(unifiedSearchParams).map(([key, value]) => (
+              <Keyword
+                key={key}
+                color="black"
+                icon={IconCross}
+                aria-label={`${t(
+                  "remove_filter_aria_label"
+                )}: ${getSearchParameterLabel(key, value)}`}
+                keyword={getSearchParameterLabel(key, value)}
+                href={{
+                  search: getQueryParametersWithout(key),
+                }}
+              />
+            ))}
+            <Link href={searchRoute}>
+              <a className={styles.clearSearchParameters}>
+                {t("clear_filters")}
+              </a>
+            </Link>
+          </div>
+        )}
         <Button
           type="submit"
           className={styles.submitButton}
