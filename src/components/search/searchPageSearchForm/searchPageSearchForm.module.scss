@@ -26,6 +26,7 @@
   .searchAsFilters {
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     margin: -$spacing-3-xs;
 
     & > * {
