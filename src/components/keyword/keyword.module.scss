@@ -1,4 +1,5 @@
 @use 'breakpoints';
+@import "variables";
 
 .keyword {
   height: auto;
@@ -42,5 +43,18 @@
   &.tramLight20 {
     background-color: var(--color-tram-light);
     color: var(--color-black);
+  }
+
+  &.black {
+    background-color: $color-black;
+    color: $color-white;
+  }
+
+  &.withIcon {
+    padding-left: 0.25rem;
+  }
+
+  .icon {
+    padding-right: 0.25rem;
   }
 }
