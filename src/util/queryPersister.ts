@@ -4,7 +4,7 @@ type AnyObject = Record<string, unknown>;
 
 const QUERY_KEY = "liikunta:qp";
 
-class QueryPersister {
+export class QueryPersister {
   persistQuery<T extends AnyObject = AnyObject>(query: T) {
     logger.info(`Trying to persist query`);
 
