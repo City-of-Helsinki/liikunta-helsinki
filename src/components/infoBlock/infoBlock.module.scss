@@ -91,6 +91,10 @@
     display: flex;
     align-items: center;
     color: $color-copper-dark;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   > ul {
