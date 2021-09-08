@@ -18,6 +18,7 @@ import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearch
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
+import { logger } from "../../domain/logger";
 import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
 import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
@@ -92,12 +93,38 @@ function getIsOpenNow(times: Time[]): boolean {
   let isOpenNow = false;
 
   times.forEach((time) => {
-    const start = parse(time.startTime, "HH:mm:ss", new Date());
-    const end = parse(time.endTime, "HH:mm:ss", new Date());
-    const interval = { start, end };
+    // If this time means that the place is closed, we can't use it to determine
+    // whether it is open.
+    if (time.resourceState === "closed") {
+      return;
+    }
 
-    if (isWithinInterval(now, interval)) {
+    // If the time targets the full day and is not closed, it should mean that
+    // it's open in some capacity. Check TimeResourceState to know more about
+    // the variants.
+    if (time.fullDay) {
       isOpenNow = true;
+      return;
+    }
+
+    const startTime = time.startTime;
+    const endTime = time.endTime;
+
+    // If either startTime or endTime is missing, we can't build an interval and
+    // can't check whether the this time means that the place is open.
+    if (!startTime || !endTime) {
+      return;
+    }
+
+    const start = parse(startTime, "HH:mm:ss", new Date());
+    const end = parse(endTime, "HH:mm:ss", new Date());
+
+    try {
+      if (isWithinInterval(now, { start, end })) {
+        isOpenNow = true;
+      }
+    } catch (e) {
+      logger.error(e);
     }
   });
 
