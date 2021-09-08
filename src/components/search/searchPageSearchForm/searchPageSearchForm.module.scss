@@ -23,9 +23,27 @@
     }
   }
 
-  @include breakpoints.respond-above(s) {
-    .searchAsFilters {
+  .searchAsFilters {
+    display: flex;
+    align-items: baseline;
+    margin: -$spacing-3-xs;
+
+    & > * {
+      margin: $spacing-3-xs;
+    }
+
+    @include breakpoints.respond-above(s) {
       grid-column: 1 / span 3;
     }
+  }
+
+  .clearSearchParameters {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    height: 1.8rem;
+
+    color: $color-black;
+    font-weight: 500;
   }
 }
