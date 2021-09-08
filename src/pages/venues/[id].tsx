@@ -186,7 +186,6 @@ export function VenuePageContent() {
   );
   const isOpen = data?.venue?.isOpen;
   const accessibilitySentences = data?.venue?.accessibilitySentences;
-  console.log(accessibilitySentences);
 
   const simplifiedAddress = [streetAddress, addressLocality].join(", ");
   const directionPoint = {

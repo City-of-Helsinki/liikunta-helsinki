@@ -40,6 +40,12 @@ const getMocks = () => [
           isOpen: false,
           ontologyTree: [],
           ontologyWords: [],
+          accessibilitySentences: [
+            {
+              groupName: "Pääsisäänkäynti",
+              sentences: ["Erottuu selkeästi", "Ahdas tuulikaappi"],
+            },
+          ],
         },
       },
     },
