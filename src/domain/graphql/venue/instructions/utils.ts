@@ -26,6 +26,7 @@ export const formTranslationObject = (obj, field) => {
 export const formAccessibilitySentences = (data) => {
   const translationsLanguages = ["fi", "en", "sv"];
   const table = { fi: [], en: [], sv: [] };
+
   translationsLanguages.forEach((language) => {
     data?.accessibility_sentences?.forEach((group) => {
       const key = `sentence_group_${language}`;
