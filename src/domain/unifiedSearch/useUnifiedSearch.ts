@@ -1,7 +1,9 @@
 import { useCallback, useMemo } from "react";
 import { NextRouter, useRouter } from "next/router";
 
-import queryPersister from "../../util/queryPersister";
+import defaultQueryPersister, {
+  QueryPersister,
+} from "../../util/queryPersister";
 import { UnifiedSearchParameters } from "./types";
 
 function stringifyQueryValue(value?: string | string[]): string | undefined {
@@ -21,7 +23,7 @@ function makeArray(value?: string | string[]): string[] | undefined {
     return value;
   }
 
-  return value.includes(",") ? value.split(",") : [value];
+  return [value];
 }
 
 function parseNumber(value?: string | string[]): number | undefined {
@@ -76,16 +78,21 @@ type SpreadFilter = {
   value: string | number;
 };
 
-class UnifiedSearch {
+export class UnifiedSearch {
   router: NextRouter;
   filterConfig: FilterConfig[];
+  queryPersister: QueryPersister;
 
-  constructor(router: NextRouter) {
+  constructor(
+    router: NextRouter,
+    queryPersister: QueryPersister = defaultQueryPersister
+  ) {
     this.router = router;
     this.filterConfig = [
       { type: "array", key: "q" },
       { type: "string", key: "administrativeDivisionId" },
     ];
+    this.queryPersister = queryPersister;
   }
 
   get filters(): UnifiedSearchParameters {
@@ -105,15 +112,6 @@ class UnifiedSearch {
       ...filters,
       after: stringifyQueryValue(after),
       first: parseNumber(first),
-    });
-  }
-
-  setFilters(search: UnifiedSearchParameters, pathname?: string) {
-    queryPersister.persistQuery(search);
-
-    this.router.replace({
-      pathname,
-      query: search,
     });
   }
 
@@ -140,6 +138,15 @@ class UnifiedSearch {
     });
 
     return filters.filter((item) => item?.value) as SpreadFilter[];
+  }
+
+  setFilters(search: UnifiedSearchParameters, pathname?: string) {
+    this.queryPersister.persistQuery(search);
+
+    this.router.replace({
+      pathname,
+      query: search,
+    });
   }
 
   getSearchParamsFromFilters(filters: SpreadFilter[]): UnifiedSearchParameters {
