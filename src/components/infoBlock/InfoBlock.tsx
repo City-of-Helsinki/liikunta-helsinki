@@ -116,11 +116,13 @@ function InfoBlockCollapse({
         " "
       )}
     >
-      <div onClick={() => setIsOpen((prevState) => !prevState)}>
-        <button aria-expanded={isOpen} className={titleClassName}>
-          {title} {icon}
-        </button>
-      </div>
+      <button
+        aria-expanded={isOpen}
+        className={titleClassName}
+        onClick={() => setIsOpen((prevState) => !prevState)}
+      >
+        {title} {icon}
+      </button>
 
       <div aria-hidden={!isOpen}>{items}</div>
     </div>
