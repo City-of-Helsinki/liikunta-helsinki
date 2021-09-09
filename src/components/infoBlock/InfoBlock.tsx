@@ -94,24 +94,35 @@ function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
 }
 
 type InfoBlockCollapseProps = {
-  title: string;
   icon: React.ReactElement;
   items: React.ReactElement[];
+  className?: string;
+  title: string;
+  titleClassName?: string;
 };
 
-function InfoBlockCollapse({ title, items, icon }: InfoBlockCollapseProps) {
+function InfoBlockCollapse({
+  items,
+  icon,
+  className,
+  title,
+  titleClassName,
+}: InfoBlockCollapseProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <div
-      className={[styles.collapse, isOpen ? styles.isOpen : ""].join(" ")}
-      onClick={() => setIsOpen((prevState) => !prevState)}
+      className={[styles.collapse, className, isOpen ? styles.isOpen : ""].join(
+        " "
+      )}
     >
-      <Text variant="body-l">
-        {title} {icon}
-      </Text>
+      <div onClick={() => setIsOpen((prevState) => !prevState)}>
+        <button aria-expanded={isOpen} className={titleClassName}>
+          {title} {icon}
+        </button>
+      </div>
 
-      {items}
+      <div aria-hidden={!isOpen}>{items}</div>
     </div>
   );
 }

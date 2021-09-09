@@ -86,23 +86,9 @@
   height: 2rem;
   overflow-y: hidden;
 
-  > :first-child {
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    color: $color-copper-dark;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  > ul {
-    list-style: disc inside;
-  }
-
-  > ul > li:last-child {
-    margin-bottom: $spacing-m;
+  button {
+    border: none;
+    height: 2rem;
   }
 }
 

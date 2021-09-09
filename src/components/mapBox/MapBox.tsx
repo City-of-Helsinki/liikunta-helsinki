@@ -59,11 +59,15 @@ function MapBox({
         )}
         {accessibilitySentences && (
           <InfoBlock.Collapse
+            className={styles.accessibilitySentences}
+            titleClassName={styles.accessibilityTitle}
             title={t("accessibility_sentences")}
-            icon={<IconAngleDown />}
+            icon={<IconAngleDown aria-hidden className={styles.icon} />}
             items={accessibilitySentences.map((group) => (
               <React.Fragment key={`accessibility-${group.groupName}`}>
-                <Text variant="h5">{group.groupName}</Text>
+                <Text variant="body-l" className={styles.groupName}>
+                  {group.groupName}
+                </Text>
                 <InfoBlock.List key={group.groupName} items={group.sentences} />
               </React.Fragment>
             ))}
