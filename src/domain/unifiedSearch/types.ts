@@ -1,6 +1,6 @@
 export type UnifiedSearchParameters = {
   q?: string[];
-  administrativeDivisionId?: string;
+  administrativeDivisionIds?: string[];
   ontologyTreeId?: number;
   after?: string;
   first?: number;

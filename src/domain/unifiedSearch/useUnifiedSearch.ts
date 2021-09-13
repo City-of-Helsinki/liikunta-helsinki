@@ -1,5 +1,7 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { NextRouter, useRouter } from "next/router";
+import queryString from "query-string";
+import fastDeepEqual from "fast-deep-equal/react";
 
 import defaultQueryPersister, {
   QueryPersister,
@@ -90,20 +92,21 @@ export class UnifiedSearch {
     this.router = router;
     this.filterConfig = [
       { type: "array", key: "q" },
-      { type: "string", key: "administrativeDivisionId" },
+      { type: "array", key: "administrativeDivisionIds" },
     ];
     this.queryPersister = queryPersister;
   }
 
+  get query() {
+    return queryString.parse(this.router.asPath.split(/\?/)[1]);
+  }
+
   get filters(): UnifiedSearchParameters {
-    const {
-      query,
-      query: { after, first },
-    } = this.router;
+    const { after, first } = this.query;
     const filters = this.filterConfig.reduce(
       (acc, filter) => ({
         ...acc,
-        ...filterConfigToObject(filter, query),
+        ...filterConfigToObject(filter, this.query),
       }),
       {}
     );
@@ -116,9 +119,8 @@ export class UnifiedSearch {
   }
 
   get filterList(): SpreadFilter[] {
-    const { query } = this.router;
     const filters = this.filterConfig.flatMap(({ type, key }) => {
-      const value = query[key];
+      const value = this.query[key];
 
       if (!value) {
         return null;
@@ -172,26 +174,23 @@ export class UnifiedSearch {
   }
 
   modifyFilters(search: Partial<UnifiedSearchParameters>) {
-    const { query } = this.router;
     const nextFilters = this.filterConfig.reduce((acc, { type, key }) => {
       const value = search[key];
-      const previousValue = query[key] ?? [];
+      const previousValue = this.query[key] ?? [];
 
       if (type === "array") {
-        const safePreviousValue = Array.isArray(previousValue)
+        const safeValues = Array.isArray(value) ? value : [value];
+        const safePreviousValues = Array.isArray(previousValue)
           ? previousValue
           : [previousValue];
-
-        if (safePreviousValue.includes(value[0])) {
-          return {
-            ...acc,
-            [key]: safePreviousValue,
-          };
-        }
-
-        const nextValues = [...safePreviousValue, ...value].filter(
-          (item) => item
+        const valuesWithoutDuplicates = safeValues.filter(
+          (safeValue) => !previousValue.includes(safeValue)
         );
+
+        const nextValues = [
+          ...safePreviousValues,
+          ...valuesWithoutDuplicates,
+        ].filter((item) => item);
 
         return {
           ...acc,
@@ -219,6 +218,16 @@ export class UnifiedSearch {
 export default function useUnifiedSearch() {
   const router = useRouter();
   const unifiedSearch = useMemo(() => new UnifiedSearch(router), [router]);
+  const filters = useRef(unifiedSearch.filters);
+  const filterList = useRef(unifiedSearch.filterList);
+
+  if (!fastDeepEqual(filters.current, unifiedSearch.filters)) {
+    filters.current = unifiedSearch.filters;
+  }
+
+  if (!fastDeepEqual(filterList.current, unifiedSearch.filterList)) {
+    filterList.current = unifiedSearch.filterList;
+  }
 
   const setFilters = useCallback(
     (search: UnifiedSearchParameters, pathname?: string) => {
@@ -239,8 +248,8 @@ export default function useUnifiedSearch() {
   );
 
   return {
-    filters: unifiedSearch.filters,
-    filterList: unifiedSearch.filterList,
+    filters: filters.current,
+    filterList: filterList.current,
     setFilters,
     modifyFilters,
     getFiltersWithout,

@@ -1,5 +1,7 @@
 {
   "label": "SV: Paikka",
   "placeholder": "SV: Valitse Paikka",
-  "toggle_button_aria_label": "SV: Avaa valikko"
+  "toggle_button_aria_label": "SV: Avaa valikko",
+  "selected_item_remove_button_aria_label": "SV: Poista {value}",
+  "clear_button_aria_label": "SV: Poista kaikki valinnat"
 }

@@ -1,5 +1,7 @@
 {
   "label": "Paikka",
   "placeholder": "Valitse Paikka",
-  "toggle_button_aria_label": "Avaa valikko"
+  "toggle_button_aria_label": "Avaa valikko",
+  "selected_item_remove_button_aria_label": "Poista {value}",
+  "clear_button_aria_label": "Poista kaikki valinnat"
 }

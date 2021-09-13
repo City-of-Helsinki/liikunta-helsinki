@@ -1,3 +1,5 @@
+import queryString from "query-string";
+
 import { UnifiedSearch } from "../useUnifiedSearch";
 
 class MockQueryPersister {
@@ -14,16 +16,20 @@ function getUnifiedSearch(router) {
   return new UnifiedSearch(router, new MockQueryPersister());
 }
 
+function getAsPath(values) {
+  return `/search?${queryString.stringify(values)}`;
+}
+
 describe("UnifiedSearch", () => {
   describe("get filters", () => {
     it("filters should return expected values", () => {
       expect(
         getUnifiedSearch({
-          query: {
+          asPath: getAsPath({
             q: ["swimming", "aurinkolahti"],
             first: 10,
             after: "cursor",
-          },
+          }),
         }).filters
       ).toMatchInlineSnapshot(`
               Object {
@@ -41,10 +47,10 @@ describe("UnifiedSearch", () => {
   describe("get filterList", () => {
     it("should return a filter value list", () => {
       const unifiedSearch = getUnifiedSearch({
-        query: {
+        asPath: getAsPath({
           q: ["A", "B"],
-          administrativeDivisionId: "123",
-        },
+          administrativeDivisionIds: ["123"],
+        }),
       });
 
       expect(unifiedSearch.filterList).toMatchInlineSnapshot(`
@@ -58,7 +64,7 @@ describe("UnifiedSearch", () => {
             "value": "B",
           },
           Object {
-            "key": "administrativeDivisionId",
+            "key": "administrativeDivisionIds",
             "value": "123",
           },
         ]
@@ -69,9 +75,9 @@ describe("UnifiedSearch", () => {
   describe("setFilters", () => {
     it("should set filters with expected values", () => {
       const mockRouter = {
-        query: {
+        asPath: getAsPath({
           q: ["B"],
-        },
+        }),
         replace: jest.fn(),
       };
       const unifiedSearch = getUnifiedSearch(mockRouter);
@@ -109,12 +115,14 @@ describe("UnifiedSearch", () => {
       const filterObject = unifiedSearch.getSearchParamsFromFilters([
         { key: "q", value: "A" },
         { key: "q", value: "B" },
-        { key: "administrativeDivisionId", value: "123" },
+        { key: "administrativeDivisionIds", value: "123" },
       ]);
 
       expect(filterObject).toMatchInlineSnapshot(`
         Object {
-          "administrativeDivisionId": "123",
+          "administrativeDivisionIds": Array [
+            "123",
+          ],
           "q": Array [
             "A",
             "B",
@@ -127,16 +135,16 @@ describe("UnifiedSearch", () => {
   describe("modifyFilters", () => {
     it("should extend currently selected filters", () => {
       const mockRouter = {
-        query: {
+        asPath: getAsPath({
           q: ["A"],
-        },
+        }),
         replace: jest.fn(),
       };
       const unifiedSearch = getUnifiedSearch(mockRouter);
 
       unifiedSearch.modifyFilters({
         q: ["B"],
-        administrativeDivisionId: "123",
+        administrativeDivisionIds: ["123"],
       });
 
       expect(mockRouter.replace.mock.calls[0]).toMatchInlineSnapshot(`
@@ -144,7 +152,9 @@ describe("UnifiedSearch", () => {
           Object {
             "pathname": undefined,
             "query": Object {
-              "administrativeDivisionId": "123",
+              "administrativeDivisionIds": Array [
+                "123",
+              ],
               "q": Array [
                 "A",
                 "B",
@@ -159,9 +169,9 @@ describe("UnifiedSearch", () => {
   describe("getFiltersWithout", () => {
     it("should drop the key,string pair that matches the parameters", () => {
       const mockRouter = {
-        query: {
+        asPath: getAsPath({
           q: ["A", "B"],
-        },
+        }),
       };
       const unifiedSearch = getUnifiedSearch(mockRouter);
 
