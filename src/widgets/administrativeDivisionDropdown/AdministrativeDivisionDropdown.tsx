@@ -1,4 +1,3 @@
-import { IconLocation } from "hds-react";
 import { useTranslation } from "next-i18next";
 
 import { Option } from "../../types";
@@ -10,25 +9,27 @@ import useAdministrativeDivisions from "./useAdministrativeDivisions";
 type Props = {
   label?: string;
   placeholder?: string;
-  onChange: (administrativeDivisionOption: string) => void;
+  onChange: (administrativeDivisionOption: string[]) => void;
   id?: string;
   name?: string;
-  value?: string;
+  value?: string[];
 };
 
 export default function AdministrativeDivisionDropdown({
   label: userLabel,
   placeholder: userPlaceholder,
   onChange,
-  value,
+  value = [],
   ...delegated
 }: Props) {
   const { t } = useTranslation("administrative_division_dropdown");
   const { locale } = useRouter();
   const { data, loading, error } = useAdministrativeDivisions();
 
-  const handleOnChange = (option: Option) => {
-    onChange(option?.value);
+  const handleOnChange = (options: Option[]) => {
+    const values = options.map((option) => option?.value);
+
+    onChange(values);
   };
 
   if (error) {
@@ -51,22 +52,30 @@ export default function AdministrativeDivisionDropdown({
       value: administrativeDivision.id,
     })
   );
-  const defaultValue = options.find((option) => option.value === value);
+  const hydratedValues = options.filter((option) =>
+    value.includes(option.value)
+  );
 
   return (
     <Combobox
       {...delegated}
-      multiselect={false}
-      defaultValue={defaultValue}
+      multiselect
+      value={hydratedValues}
       label={label}
       options={options}
       onChange={handleOnChange}
       placeholder={placeholder}
-      icon={<IconLocation />}
+      // The design asks for an icon, but HDS does not allow icons for the
+      // multiSelect variant of an combobox.
+      // icon={<IconLocation />}
       // The options list will break without this option because the data has
       // duplicate labels.
       virtualized
       toggleButtonAriaLabel={t("toggle_button_aria_label")}
+      selectedItemRemoveButtonAriaLabel={t(
+        "selected_item_remove_button_aria_label"
+      )}
+      clearButtonAriaLabel={t("clear_button_aria_label")}
     />
   );
 }

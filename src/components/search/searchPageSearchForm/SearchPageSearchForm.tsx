@@ -48,9 +48,9 @@ function SearchPageSearchForm({
     useUnifiedSearch();
   const router = useRouter();
   const [searchText, setSearchText] = useState<string | null>(null);
-  const [administrativeDivisionId, setAdministrativeDivisionId] = useState<
-    string | undefined
-  >(filters.administrativeDivisionId);
+  const [administrativeDivisionIds, setAdministrativeDivisionIds] = useState<
+    string[]
+  >(filters.administrativeDivisionIds);
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
@@ -58,17 +58,19 @@ function SearchPageSearchForm({
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   useEffect(() => {
-    setAdministrativeDivisionId(filters.administrativeDivisionId);
-  }, [filters.administrativeDivisionId]);
+    setAdministrativeDivisionIds(filters.administrativeDivisionIds);
+  }, [filters.administrativeDivisionIds]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const q = e.target.q.value;
 
+    console.log(administrativeDivisionIds);
+
     modifyFilters({
       q: [q],
-      administrativeDivisionId,
+      administrativeDivisionIds,
     });
     setSearchText("");
   };
@@ -89,15 +91,16 @@ function SearchPageSearchForm({
     modifyFilters({ q: [suggestion.label] });
   };
 
-  const handleAdminDivisionChange = (administrativeDivisionId: string) => {
-    setAdministrativeDivisionId(administrativeDivisionId);
+  const handleAdminDivisionChange = (administrativeDivisionIds: string[]) => {
+    console.log(administrativeDivisionIds);
+    setAdministrativeDivisionIds(administrativeDivisionIds);
   };
 
   const getSearchParameterLabel = (
     key: string,
     value: string | number
   ): string | JSX.Element => {
-    if (key === "administrativeDivisionId") {
+    if (key === "administrativeDivisionIds") {
       if (administrativeDivisionsQuery.loading) {
         return <LoadingSpinner />;
       }
@@ -146,7 +149,7 @@ function SearchPageSearchForm({
           id="administrativeDivisionId"
           name="administrativeDivisionId"
           onChange={handleAdminDivisionChange}
-          value={administrativeDivisionId || ""}
+          value={administrativeDivisionIds}
         />
         {filterList.length > 0 && (
           <div className={styles.searchAsFilters}>
