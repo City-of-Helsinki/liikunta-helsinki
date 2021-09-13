@@ -18,6 +18,7 @@ type Props = {
   variant?: "default" | "contained";
   koros?: "none" | React.ComponentProps<typeof Koros>["type"];
   contentWidth?: "m" | "s";
+  rowGap?: "normal" | "tight";
 };
 
 function Section({
@@ -28,6 +29,7 @@ function Section({
   variant = "default",
   koros = "none",
   contentWidth = "m",
+  rowGap = "normal",
 }: Props) {
   const titleComponent = <Text variant="h2">{title}</Text>;
 
@@ -38,6 +40,7 @@ function Section({
         styles[color],
         styles[variant],
         styles[contentWidth],
+        styles[rowGap],
         {
           [styles.hasKoros]: koros !== "none",
         }

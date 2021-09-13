@@ -72,8 +72,12 @@ function Footer({ navigationItems }: Props) {
         copyrightHolder={t("copyright_holder")}
         copyrightText={t("copyright_text")}
       >
-        <HDSFooter.Item href="#" label={t("about_us")} />
-        <HDSFooter.Item href="#" label={t("accessibility_statement")} />
+        <HDSFooter.Item href="/about" label={t("about_us")} as={Link} />
+        <HDSFooter.Item
+          href="/accessibility"
+          label={t("accessibility_statement")}
+          as={Link}
+        />
       </HDSFooter.Base>
     </HDSFooter>
   );
