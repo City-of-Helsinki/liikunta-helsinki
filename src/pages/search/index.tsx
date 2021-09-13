@@ -333,6 +333,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         "search_page_search_form",
         "administrative_division_dropdown",
         "search_list",
+        "multi_select_combobox",
       ])),
     },
     revalidate: 10,
