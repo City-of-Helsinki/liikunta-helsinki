@@ -12,7 +12,7 @@ import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTransl
 import Section from "../../components/section/Section";
 import Text from "../../components/text/Text";
 
-export const ACCESSIBILITY_PAGE_QUERY = gql`
+export const ABOUT_PAGE_QUERY = gql`
   query AccessibilityPageQuery($languageCode: LanguageCodeEnum!) {
     page(id: "/about", idType: URI) {
       translation(language: $languageCode) {
@@ -30,7 +30,7 @@ export const ACCESSIBILITY_PAGE_QUERY = gql`
 export default function AboutPage() {
   const router = useRouter();
   const language = getQlLanguage(router.locale ?? router.defaultLocale);
-  const { data } = useQuery(ACCESSIBILITY_PAGE_QUERY, {
+  const { data } = useQuery(ABOUT_PAGE_QUERY, {
     variables: {
       languageCode: language,
     },
@@ -59,7 +59,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   await cmsClient.pageQuery({
     nextContext: context,
-    query: ACCESSIBILITY_PAGE_QUERY,
+    query: ABOUT_PAGE_QUERY,
     variables: {
       languageCode: language,
     },
