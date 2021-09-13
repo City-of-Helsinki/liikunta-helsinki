@@ -1,7 +1,4 @@
 {
   "label": "EN: Paikka",
-  "placeholder": "EN: Valitse Paikka",
-  "toggle_button_aria_label": "EN: Avaa valikko",
-  "selected_item_remove_button_aria_label": "EN: Poista {value}",
-  "clear_button_aria_label": "EN: Poista kaikki valinnat"
+  "placeholder": "EN: Valitse Paikka"
 }

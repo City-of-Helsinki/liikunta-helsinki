@@ -1,9 +1,8 @@
 import { useTranslation } from "next-i18next";
 
-import { Option } from "../../types";
-import Combobox from "../../components/combobox/Combobox";
-import useRouter from "../../domain/i18n/router/useRouter";
 import getTranslation from "../../util/getTranslation";
+import useRouter from "../../domain/i18n/router/useRouter";
+import MultiSelectCombobox from "../../components/multiSelectCombobox/MultiSelectCombobox";
 import useAdministrativeDivisions from "./useAdministrativeDivisions";
 
 type Props = {
@@ -18,19 +17,11 @@ type Props = {
 export default function AdministrativeDivisionDropdown({
   label: userLabel,
   placeholder: userPlaceholder,
-  onChange,
-  value = [],
   ...delegated
 }: Props) {
   const { t } = useTranslation("administrative_division_dropdown");
   const { locale } = useRouter();
   const { data, loading, error } = useAdministrativeDivisions();
-
-  const handleOnChange = (options: Option[]) => {
-    const values = options.map((option) => option?.value);
-
-    onChange(values);
-  };
 
   if (error) {
     return null;
@@ -44,12 +35,6 @@ export default function AdministrativeDivisionDropdown({
     return <div />;
   }
 
-  const filterLogic = (options: Option[], search: string) => {
-    return options.filter((option) =>
-      option.label.toLowerCase().includes(search.toLowerCase())
-    );
-  };
-
   const label = userLabel || t("label");
   const placeholder = userPlaceholder || t("placeholder");
   const options = data.administrativeDivisions.map(
@@ -58,31 +43,13 @@ export default function AdministrativeDivisionDropdown({
       value: administrativeDivision.id,
     })
   );
-  const hydratedValues = options.filter((option) =>
-    value.includes(option.value)
-  );
 
   return (
-    <Combobox
+    <MultiSelectCombobox
       {...delegated}
-      multiselect
-      value={hydratedValues}
       label={label}
       options={options}
-      onChange={handleOnChange}
       placeholder={placeholder}
-      // The design asks for an icon, but HDS does not allow icons for the
-      // multiSelect variant of an combobox.
-      // icon={<IconLocation />}
-      // The options list will break without this option because the data has
-      // duplicate labels.
-      virtualized
-      toggleButtonAriaLabel={t("toggle_button_aria_label")}
-      selectedItemRemoveButtonAriaLabel={t(
-        "selected_item_remove_button_aria_label"
-      )}
-      clearButtonAriaLabel={t("clear_button_aria_label")}
-      filter={filterLogic}
     />
   );
 }
