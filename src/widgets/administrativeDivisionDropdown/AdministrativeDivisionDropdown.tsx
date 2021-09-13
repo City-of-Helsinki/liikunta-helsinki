@@ -44,6 +44,12 @@ export default function AdministrativeDivisionDropdown({
     return <div />;
   }
 
+  const filterLogic = (options: Option[], search: string) => {
+    return options.filter((option) =>
+      option.label.toLowerCase().includes(search.toLowerCase())
+    );
+  };
+
   const label = userLabel || t("label");
   const placeholder = userPlaceholder || t("placeholder");
   const options = data.administrativeDivisions.map(
@@ -76,6 +82,7 @@ export default function AdministrativeDivisionDropdown({
         "selected_item_remove_button_aria_label"
       )}
       clearButtonAriaLabel={t("clear_button_aria_label")}
+      filter={filterLogic}
     />
   );
 }
