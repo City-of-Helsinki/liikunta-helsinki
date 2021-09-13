@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Button, IconSearch, IconCross, LoadingSpinner } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
@@ -56,6 +56,10 @@ function SearchPageSearchForm({
   });
   const administrativeDivisionsQuery = useAdministrativeDivisions();
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
+
+  useEffect(() => {
+    setAdministrativeDivisionId(filters.administrativeDivisionId);
+  }, [filters.administrativeDivisionId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
