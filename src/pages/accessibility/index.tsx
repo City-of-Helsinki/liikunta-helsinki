@@ -6,7 +6,6 @@ import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
 import initializeCmsApollo from "../../client/cmsApolloClient";
 import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import { getQlLanguage } from "../../client/utils";
-import { LANDING_PAGE_QUERY } from "../index";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import Page from "../../components/page/Page";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
@@ -60,7 +59,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   await cmsClient.pageQuery({
     nextContext: context,
-    query: LANDING_PAGE_QUERY,
+    query: ACCESSIBILITY_PAGE_QUERY,
     variables: {
       languageCode: language,
     },
@@ -69,9 +68,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale, [
-        "home_page",
-      ])),
+      ...(await serverSideTranslationsWithCommon(context.locale)),
     },
     revalidate: 10,
   };
