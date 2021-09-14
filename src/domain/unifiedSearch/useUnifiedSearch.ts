@@ -50,29 +50,45 @@ function dropUndefined(obj: Record<string, unknown>) {
   return objectWithoutUndefined;
 }
 
-function filterConfigToObject({ type, key }: FilterConfig, values) {
-  if (type === "array") {
-    return {
-      [key]: makeArray(values[key]),
-    };
-  }
-
+function parseIntoValue(
+  value: string | string[],
+  type: FilterConfig["type"]
+): string | number {
   if (type === "string") {
-    return {
-      [key]: stringifyQueryValue(values[key]),
-    };
+    return stringifyQueryValue(value);
   }
 
   if (type === "number") {
+    return parseNumber(value);
+  }
+}
+
+function filterConfigToObject(
+  { type, key, storeBehaviour }: FilterConfig,
+  values
+) {
+  const value = values[key];
+
+  if (storeBehaviour === "list" || storeBehaviour === "accumulating") {
+    const valueAsArray = makeArray(value);
+
     return {
-      [key]: parseNumber(values[key]),
+      [key]: valueAsArray?.map((value) => parseIntoValue(value, type)),
+    };
+  }
+
+  if (type === "string" || type === "number") {
+    const parsedValue = parseIntoValue(value, type);
+
+    return {
+      [key]: parsedValue,
     };
   }
 }
 
 type FilterConfig = {
-  type: "string" | "array" | "number";
-  rule?: "accumulating";
+  type: "string" | "number";
+  storeBehaviour?: "list" | "accumulating";
   key: string;
 };
 
@@ -92,9 +108,13 @@ export class UnifiedSearch {
   ) {
     this.router = router;
     this.filterConfig = [
-      { type: "array", key: "q", rule: "accumulating" },
-      { type: "array", key: "administrativeDivisionIds" },
-      { type: "array", key: "ontologyTreeIds" },
+      { type: "string", storeBehaviour: "accumulating", key: "q" },
+      {
+        type: "string",
+        storeBehaviour: "list",
+        key: "administrativeDivisionIds",
+      },
+      { type: "number", storeBehaviour: "list", key: "ontologyTreeIds" },
     ];
     this.queryPersister = queryPersister;
   }
@@ -121,14 +141,15 @@ export class UnifiedSearch {
   }
 
   get filterList(): SpreadFilter[] {
-    const filters = this.filterConfig.flatMap(({ type, key }) => {
+    const filters = this.filterConfig.flatMap((filterConfig) => {
+      const { key } = filterConfig;
       const value = this.query[key];
 
       if (!value) {
         return null;
       }
 
-      if (type === "array" && Array.isArray(value)) {
+      if (this.getIsArrayKind(filterConfig) && Array.isArray(value)) {
         return value.map((value: string) => ({
           key,
           value,
@@ -142,6 +163,13 @@ export class UnifiedSearch {
     });
 
     return filters.filter((item) => item?.value) as SpreadFilter[];
+  }
+
+  getIsArrayKind(filterConfig: FilterConfig): boolean {
+    return (
+      filterConfig.storeBehaviour === "list" ||
+      filterConfig.storeBehaviour === "accumulating"
+    );
   }
 
   setFilters(search: UnifiedSearchParameters, pathname?: string) {
@@ -159,7 +187,7 @@ export class UnifiedSearch {
         (filterConfig) => filterConfig.key === key
       );
 
-      if (config.type === "array") {
+      if (this.getIsArrayKind(config)) {
         const nextValue = [...(acc[key] ?? []), value];
 
         return {
@@ -176,11 +204,12 @@ export class UnifiedSearch {
   }
 
   modifyFilters(search: Partial<UnifiedSearchParameters>) {
-    const nextFilters = this.filterConfig.reduce((acc, { type, key, rule }) => {
+    const nextFilters = this.filterConfig.reduce((acc, filterConfig) => {
+      const { key, storeBehaviour } = filterConfig;
       const value = search[key];
       const previousValue = this.query[key] ?? [];
 
-      if (type === "array") {
+      if (this.getIsArrayKind(filterConfig)) {
         const safeValues = Array.isArray(value) ? value : [value];
         const safePreviousValues = Array.isArray(previousValue)
           ? previousValue
@@ -188,7 +217,7 @@ export class UnifiedSearch {
 
         let nextValues: string[];
 
-        if (rule === "accumulating") {
+        if (storeBehaviour === "accumulating") {
           nextValues = [...safePreviousValues, ...safeValues];
         } else {
           nextValues = safeValues;
