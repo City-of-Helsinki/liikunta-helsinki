@@ -5,6 +5,7 @@ import {
   useQuery,
 } from "@apollo/client";
 
+import { SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../constants";
 import searchApolloClient from "../../client/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
 import useUnifiedSearch from "./useUnifiedSearch";
@@ -19,11 +20,6 @@ const defaultPagination = {
   after: "",
   first: 10,
 };
-
-// Add ID that matches the sports ontology tree branch that has the Culture,
-// sports and leisure department (KuVa) as its parent.
-// https://www.hel.fi/palvelukarttaws/rest/v4/ontologytree/551
-const SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID = 551;
 
 const FIXED_FILTERS = {
   ontologyTreeId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
