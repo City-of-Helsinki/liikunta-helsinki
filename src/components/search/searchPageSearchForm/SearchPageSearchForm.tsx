@@ -7,6 +7,8 @@ import { useTranslation } from "next-i18next";
 // eslint-disable-next-line max-len
 import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
 import useAdministrativeDivisions from "../../../widgets/administrativeDivisionDropdown/useAdministrativeDivisions";
+import OntologyTreeDropdown from "../../../widgets/ontologyTreeDropdown/OntologyTreeDropdown";
+import useOntologyTree from "../../../widgets/ontologyTreeDropdown/useOntologyTree";
 import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
 import useRouter from "../../../domain/i18n/router/useRouter";
 import Link from "../../../domain/i18n/router/Link";
@@ -51,15 +53,23 @@ function SearchPageSearchForm({
   const [administrativeDivisionIds, setAdministrativeDivisionIds] = useState<
     string[]
   >(filters.administrativeDivisionIds);
+  const [ontologyTreeIds, setOntologyTreeIds] = useState<string[]>(
+    filters.ontologyTreeIds
+  );
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
   const administrativeDivisionsQuery = useAdministrativeDivisions();
+  const ontologyTreeQuery = useOntologyTree();
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   useEffect(() => {
     setAdministrativeDivisionIds(filters.administrativeDivisionIds);
   }, [filters.administrativeDivisionIds]);
+
+  useEffect(() => {
+    setOntologyTreeIds(filters.ontologyTreeIds);
+  }, [filters.ontologyTreeIds]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,6 +79,7 @@ function SearchPageSearchForm({
     modifyFilters({
       q: [q],
       administrativeDivisionIds,
+      ontologyTreeIds,
     });
     setSearchText("");
   };
@@ -93,6 +104,10 @@ function SearchPageSearchForm({
     setAdministrativeDivisionIds(administrativeDivisionIds);
   };
 
+  const handleOntologyChange = (ontologyIds: string[]) => {
+    setOntologyTreeIds(ontologyIds);
+  };
+
   const getSearchParameterLabel = (
     key: string,
     value: string | number
@@ -112,6 +127,22 @@ function SearchPageSearchForm({
       }
 
       return getTranslation(divisionData.name, router.locale);
+    }
+
+    if (key === "ontologyTreeIds") {
+      if (ontologyTreeQuery.loading) {
+        return <LoadingSpinner />;
+      }
+
+      const ontologyTreeData = ontologyTreeQuery.ontologyTree?.find(
+        (tree) => tree.id === value
+      );
+
+      if (!ontologyTreeData) {
+        return "Could not find ontology tree name";
+      }
+
+      return getTranslation(ontologyTreeData.name, router.locale);
     }
 
     if (typeof value === "string") {
@@ -141,6 +172,14 @@ function SearchPageSearchForm({
             label: suggestion.label,
           }))}
           toggleButtonAriaLabel={t("free_text_search.toggle_button_aria_label")}
+        />
+        <OntologyTreeDropdown
+          id="ontologyTreeIds"
+          name="ontologyTreeIds"
+          label={t("ontology_tree_ids.label")}
+          placeholder={t("ontology_tree_ids.placeholder")}
+          onChange={handleOntologyChange}
+          value={ontologyTreeIds}
         />
         <AdministrativeDivisionDropdown
           id="administrativeDivisionId"

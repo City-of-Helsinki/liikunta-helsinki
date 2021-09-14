@@ -42,6 +42,7 @@ export const SEARCH_QUERY = gql`
     $language: UnifiedSearchLanguage!
     $ontologyTreeId: ID!
     $administrativeDivisionIds: [ID!]
+    $ontologyTreeIds: [ID!]
   ) {
     unifiedSearch(
       q: $q
@@ -51,6 +52,7 @@ export const SEARCH_QUERY = gql`
       languages: [$language]
       ontologyTreeId: $ontologyTreeId
       administrativeDivisionIds: $administrativeDivisionIds
+      ontologyTreeIds: $ontologyTreeIds
     ) {
       count
       pageInfo {

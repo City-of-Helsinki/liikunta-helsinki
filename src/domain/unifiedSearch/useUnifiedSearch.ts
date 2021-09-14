@@ -94,6 +94,7 @@ export class UnifiedSearch {
     this.filterConfig = [
       { type: "array", key: "q", rule: "accumulating" },
       { type: "array", key: "administrativeDivisionIds" },
+      { type: "array", key: "ontologyTreeIds" },
     ];
     this.queryPersister = queryPersister;
   }
