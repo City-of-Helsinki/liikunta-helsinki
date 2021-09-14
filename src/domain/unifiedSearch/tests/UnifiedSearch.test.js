@@ -155,6 +155,7 @@ describe("UnifiedSearch", () => {
               "administrativeDivisionIds": Array [
                 "123",
               ],
+              "ontologyTreeIds": Array [],
               "q": Array [
                 "A",
                 "B",
