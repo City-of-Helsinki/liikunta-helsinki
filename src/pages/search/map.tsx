@@ -2,20 +2,20 @@ import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 
-import initializeCmsApollo from "../../client/cmsApolloClient";
-import { getNodes, getQlLanguage } from "../../client/utils";
-import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
+import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
+import { getNodes, getQlLanguage } from "../../common/apollo/utils";
+import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
 import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
-import Page from "../../components/page/Page";
-import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
-import SearchPageSearchForm from "../../widgets/searchPageSearchForm/SearchPageSearchForm";
+import Page from "../../common/components/page/Page";
+import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
+import SearchPageSearchForm from "../../domain/search/searchPageSearchForm/SearchPageSearchForm";
 import SearchHeader, {
   ShowMode,
-} from "../../components/search/searchHeader/SearchHeader";
+} from "../../domain/search/searchHeader/SearchHeader";
 import { Connection, MapItem, SearchResult } from "../../types";
 
 // This query is placeholder for now. When UnifiedSearch supports search by radius or
@@ -94,9 +94,12 @@ export default function MapSearch() {
   });
 
   // https://stackoverflow.com/a/64634759
-  const MapView = dynamic(() => import("../../components/mapView/MapView"), {
-    ssr: false,
-  });
+  const MapView = dynamic(
+    () => import("../../common/components/mapView/MapView"),
+    {
+      ssr: false,
+    }
+  );
 
   const searchResultItems: MapItem[] = getSearchResultsAsItems(
     data?.unifiedSearch ?? emptyConnection

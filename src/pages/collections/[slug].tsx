@@ -7,20 +7,20 @@ import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "hds-react";
 
 import { ItemQueryResult } from "../../types";
-import initializeCmsApollo from "../../client/cmsApolloClient";
-import { getQlLanguage } from "../../client/utils";
-import collectionFragment from "../../util/collectionFragment";
+import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
+import { getQlLanguage } from "../../common/apollo/utils";
+import collectionFragment from "../../domain/collections/collectionFragment";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
-import SelectedEvents from "../../widgets/selectedEvents/SelectedEvents";
-import SearchEvents from "../../widgets/searchEvents/SearchEvents";
+import SelectedEvents from "../../domain/events/selectedEvents/SelectedEvents";
+import SearchEvents from "../../domain/events/searchEvents/SearchEvents";
 import PaginationContainer from "../../domain/pagination/PaginationContainer";
-import Page from "../../components/page/Page";
-import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
-import Text from "../../components/text/Text";
-import Section from "../../components/section/Section";
-import ShareLinks from "../../components/shareLinks/ShareLinks";
-import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
-import CondensedCard from "../../components/card/CondensedCard";
+import Page from "../../common/components/page/Page";
+import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
+import Text from "../../common/components/text/Text";
+import Section from "../../common/components/section/Section";
+import ShareLinks from "../../common/components/shareLinks/ShareLinks";
+import HtmlToReact from "../../common/components/htmlToReact/HtmlToReact";
+import CondensedCard from "../../common/components/card/CondensedCard";
 import styles from "./collection.module.scss";
 
 type CollectionItemListProps = {

@@ -7,11 +7,11 @@ import { parse, isWithinInterval } from "date-fns";
 import { useEffect } from "react";
 
 import { SearchResult, Time } from "../../types";
-import getURLSearchParamsFromAsPath from "../../util/getURLSearchParamsFromAsPath";
-import capitalize from "../../util/capitalize";
-import getTranslation from "../../util/getTranslation";
-import { getNodes, getQlLanguage } from "../../client/utils";
-import initializeCmsApollo from "../../client/cmsApolloClient";
+import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
+import capitalize from "../../common/utils/capitalize";
+import getTranslation from "../../common/utils/getTranslation";
+import { getNodes, getQlLanguage } from "../../common/apollo/utils";
+import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import useUnifiedSearch from "../../domain/unifiedSearch/useUnifiedSearch";
 import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
@@ -19,18 +19,18 @@ import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import { logger } from "../../domain/logger";
-import SearchPageSearchForm from "../../widgets/searchPageSearchForm/SearchPageSearchForm";
-import Page from "../../components/page/Page";
-import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
-import Section from "../../components/section/Section";
-import SearchResultCard from "../../components/card/SearchResultCard";
-import SearchList from "../../components/list/SearchList";
-import InfoBlock from "../../components/infoBlock/InfoBlock";
+import SearchPageSearchForm from "../../domain/search/searchPageSearchForm/SearchPageSearchForm";
+import Page from "../../common/components/page/Page";
+import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
+import Section from "../../common/components/section/Section";
+import SearchResultCard from "../../common/components/card/SearchResultCard";
+import SearchList from "../../common/components/list/SearchList";
+import InfoBlock from "../../common/components/infoBlock/InfoBlock";
 import SearchHeader, {
   ShowMode,
-} from "../../components/search/searchHeader/SearchHeader";
+} from "../../domain/search/searchHeader/SearchHeader";
 import styles from "./search.module.scss";
-import { humanizeOpeningHour } from "../../util/time/humanizeOpeningHoursForWeek";
+import { humanizeOpeningHour } from "../../common/utils/time/humanizeOpeningHoursForWeek";
 
 const BLOCK_SIZE = 10;
 

@@ -18,25 +18,25 @@ import Image from "next/image";
 import noImagePlaceholder from "../../../public/no_image.svg";
 import { staticGenerationLogger } from "../../domain/logger";
 import { Address, Point } from "../../types";
-import initializeCmsApollo from "../../client/cmsApolloClient";
+import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import initializeNextApiApolloClient, {
   useNextApiApolloClient,
-} from "../../client/nextApiApolloClient";
-import queryPersister from "../../util/queryPersister";
-import humanizeOpeningHoursForWeek from "../../util/time/humanizeOpeningHoursForWeek";
+} from "../../domain/clients/nextApiApolloClient";
+import queryPersister from "../../common/utils/queryPersister";
+import humanizeOpeningHoursForWeek from "../../common/utils/time/humanizeOpeningHoursForWeek";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
-import UpcomingEventsSection from "../../widgets/upcomingEventsSection/UpcomingEventsSection";
-import Keyword from "../../components/keyword/Keyword";
-import Page from "../../components/page/Page";
-import Text from "../../components/text/Text";
-import InfoBlock from "../../components/infoBlock/InfoBlock";
-import ShareLinks from "../../components/shareLinks/ShareLinks";
-import MapBox from "../../components/mapBox/MapBox";
-import Hr from "../../components/hr/Hr";
+import UpcomingEventsSection from "../../domain/events/upcomingEventsSection/UpcomingEventsSection";
+import Keyword from "../../common/components/keyword/Keyword";
+import Page from "../../common/components/page/Page";
+import Text from "../../common/components/text/Text";
+import InfoBlock from "../../common/components/infoBlock/InfoBlock";
+import ShareLinks from "../../common/components/shareLinks/ShareLinks";
+import MapBox from "../../common/components/mapBox/MapBox";
+import Hr from "../../common/components/hr/Hr";
 import styles from "./venue.module.scss";
-import renderAddressToString from "../../util/renderAddressToString";
-import hash from "../../util/hash";
-import capitalize from "../../util/capitalize";
+import renderAddressToString from "../../common/utils/renderAddressToString";
+import hash from "../../common/utils/hash";
+import capitalize from "../../common/utils/capitalize";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
