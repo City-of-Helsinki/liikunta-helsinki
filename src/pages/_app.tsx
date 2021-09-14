@@ -7,14 +7,14 @@ import Error from "next/error";
 import { appWithTranslation } from "next-i18next";
 import "nprogress/nprogress.css";
 
-import { useCmsApollo } from "../client/cmsApolloClient";
+import { useCmsApollo } from "../domain/clients/cmsApolloClient";
 import useRouter from "../domain/i18n/router/useRouter";
 import AppMeta from "../domain/seo/meta/AppMeta";
 import "../styles/globals.scss";
 
 const TopProgressBar = dynamic(
   () => {
-    return import("../components/topProgressBar/TopProgressBar");
+    return import("../common/components/topProgressBar/TopProgressBar");
   },
   { ssr: false }
 );

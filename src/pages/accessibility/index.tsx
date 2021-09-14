@@ -2,15 +2,15 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 
-import HtmlToReact from "../../components/htmlToReact/HtmlToReact";
-import initializeCmsApollo from "../../client/cmsApolloClient";
-import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
-import { getQlLanguage } from "../../client/utils";
+import HtmlToReact from "../../common/components/htmlToReact/HtmlToReact";
+import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
+import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
+import { getQlLanguage } from "../../common/apollo/utils";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
-import Page from "../../components/page/Page";
+import Page from "../../common/components/page/Page";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
-import Section from "../../components/section/Section";
-import Text from "../../components/text/Text";
+import Section from "../../common/components/section/Section";
+import Text from "../../common/components/text/Text";
 
 export const ACCESSIBILITY_PAGE_QUERY = gql`
   query AccessibilityPageQuery($languageCode: LanguageCodeEnum!) {

@@ -4,8 +4,8 @@ import { OperationVariables } from "@apollo/client";
 
 import { PageInfo } from "../../types";
 import useA11yPagination from "./usePagination";
-import Text from "../../components/text/Text";
-import List from "../../components/list/List";
+import Text from "../../common/components/text/Text";
+import List from "../../common/components/list/List";
 import styles from "./paginationContainer.module.scss";
 import { FetchMoreFunction } from "./types";
 

@@ -5,7 +5,7 @@ import fastDeepEqual from "fast-deep-equal/react";
 
 import defaultQueryPersister, {
   QueryPersister,
-} from "../../util/queryPersister";
+} from "../../common/utils/queryPersister";
 import { UnifiedSearchParameters } from "./types";
 
 function stringifyQueryValue(value?: string | string[]): string | undefined {

@@ -6,7 +6,7 @@ import {
 } from "@apollo/client";
 
 import { SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../constants";
-import searchApolloClient from "../../client/searchApolloClient";
+import searchApolloClient from "../unifiedSearch/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
 import useUnifiedSearch from "./useUnifiedSearch";
 

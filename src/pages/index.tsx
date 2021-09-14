@@ -3,20 +3,20 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 
-import collectionFragment from "../util/collectionFragment";
-import initializeCmsApollo from "../client/cmsApolloClient";
-import { getQlLanguage } from "../client/utils";
-import mockCategories from "../client/tmp/mockCategories";
+import collectionFragment from "../domain/collections/collectionFragment";
+import initializeCmsApollo from "../domain/clients/cmsApolloClient";
+import { getQlLanguage } from "../common/apollo/utils";
+import mockCategories from "../domain/clients/tmp/mockCategories";
 import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../domain/seo/cmsSeoFragment";
-import CollectionGrid from "../widgets/collectionsGrid/CollectionGrid";
-import Page from "../components/page/Page";
-import Section from "../components/section/Section";
-import Hero from "../components/hero/Hero";
-import HeroImage from "../components/hero/HeroImage";
-import LandingPageSearchForm from "../widgets/landingPageSearchForm/LandingPageSearchForm";
-import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
-import getPageMetaPropsFromSEO from "../components/page/getPageMetaPropsFromSEO";
+import CollectionGrid from "../domain/collections/collectionsGrid/CollectionGrid";
+import Page from "../common/components/page/Page";
+import Section from "../common/components/section/Section";
+import Hero from "../common/components/hero/Hero";
+import HeroImage from "../common/components/hero/HeroImage";
+import LandingPageSearchForm from "../domain/search/landingPageSearchForm/LandingPageSearchForm";
+import SearchShortcuts from "../common/components/searchShortcuts/SearchShortcuts";
+import getPageMetaPropsFromSEO from "../common/components/page/getPageMetaPropsFromSEO";
 
 export const LANDING_PAGE_QUERY = gql`
   query LandingPageQuery($languageCode: LanguageCodeEnum!) {

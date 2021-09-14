@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render, screen, waitFor } from "./utils";
 import App, { LANDING_PAGE_QUERY } from "../pages/index";
-import { PAGE_QUERY } from "../components/page/Page";
+import { PAGE_QUERY } from "../common/components/page/Page";
 import mockLandingPage from "./mockData/landingPage";
 import mockMenus from "./mockData/mockMenus";
 
