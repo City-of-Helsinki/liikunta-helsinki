@@ -3,15 +3,14 @@ import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useEffect } from "react";
 import groupBy from "lodash.groupby";
-import { LoadingSpinner } from "hds-react";
 
 import { Locale } from "../../config";
 import { Collection, EventSearch } from "../../types";
 import getEventQueryFromCMSEventSearch from "../../util/events/getEventQueryFromCMSEventSearch";
 import { useNextApiApolloClient } from "../../client/nextApiApolloClient";
 import { logger } from "../../domain/logger";
-import styles from "./collectionCountLabel.module.scss";
 import useRouter from "../../domain/i18n/router/useRouter";
+import SmallSpinner from "../../components/spinners/SmallSpinner";
 
 async function resolveEventCountForEventSearch(
   eventSearchCollectionModule: EventSearch,
@@ -115,7 +114,7 @@ export default function CollectionCountLabel({
   }
 
   if (loading) {
-    return <LoadingSpinner className={styles.spinner} />;
+    return <SmallSpinner />;
   }
 
   return (
