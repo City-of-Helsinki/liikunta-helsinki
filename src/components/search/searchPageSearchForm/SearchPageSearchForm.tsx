@@ -66,8 +66,6 @@ function SearchPageSearchForm({
 
     const q = e.target.q.value;
 
-    console.log(administrativeDivisionIds);
-
     modifyFilters({
       q: [q],
       administrativeDivisionIds,
@@ -92,7 +90,6 @@ function SearchPageSearchForm({
   };
 
   const handleAdminDivisionChange = (administrativeDivisionIds: string[]) => {
-    console.log(administrativeDivisionIds);
     setAdministrativeDivisionIds(administrativeDivisionIds);
   };
 
