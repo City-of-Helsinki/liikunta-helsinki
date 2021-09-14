@@ -1,12 +1,10 @@
-import { useTranslation } from "next-i18next";
-
 import getTranslation from "../../util/getTranslation";
 import useRouter from "../../domain/i18n/router/useRouter";
 import MultiSelectCombobox from "../../components/multiSelectCombobox/MultiSelectCombobox";
 import useAdministrativeDivisions from "./useAdministrativeDivisions";
 
 type Props = {
-  label?: string;
+  label: string;
   placeholder?: string;
   onChange: (administrativeDivisionOption: string[]) => void;
   id?: string;
@@ -14,12 +12,7 @@ type Props = {
   value?: string[];
 };
 
-export default function AdministrativeDivisionDropdown({
-  label: userLabel,
-  placeholder: userPlaceholder,
-  ...delegated
-}: Props) {
-  const { t } = useTranslation("administrative_division_dropdown");
+export default function AdministrativeDivisionDropdown(props: Props) {
   const { locale } = useRouter();
   const { data, error } = useAdministrativeDivisions();
 
@@ -27,20 +20,11 @@ export default function AdministrativeDivisionDropdown({
     return null;
   }
 
-  const label = userLabel || t("label");
-  const placeholder = userPlaceholder || t("placeholder");
   const administrativeDivisions = data?.administrativeDivisions ?? [];
   const options = administrativeDivisions.map((administrativeDivision) => ({
     label: getTranslation(administrativeDivision.name, locale),
     value: administrativeDivision.id,
   }));
 
-  return (
-    <MultiSelectCombobox
-      {...delegated}
-      label={label}
-      options={options}
-      placeholder={placeholder}
-    />
-  );
+  return <MultiSelectCombobox {...props} options={options} />;
 }
