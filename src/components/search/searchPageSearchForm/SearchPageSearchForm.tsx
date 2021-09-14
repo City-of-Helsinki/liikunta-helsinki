@@ -54,7 +54,7 @@ function SearchPageSearchForm({
   const [administrativeDivisionIds, setAdministrativeDivisionIds] = useState<
     string[]
   >(filters.administrativeDivisionIds);
-  const [ontologyTreeIds, setOntologyTreeIds] = useState<string[]>(
+  const [ontologyTreeIds, setOntologyTreeIds] = useState<number[]>(
     filters.ontologyTreeIds
   );
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
@@ -106,7 +106,7 @@ function SearchPageSearchForm({
   };
 
   const handleOntologyChange = (ontologyIds: string[]) => {
-    setOntologyTreeIds(ontologyIds);
+    setOntologyTreeIds(ontologyIds.map((id) => Number(id)));
   };
 
   const getSearchParameterLabel = (
@@ -180,7 +180,7 @@ function SearchPageSearchForm({
           label={t("ontology_tree_ids.label")}
           placeholder={t("ontology_tree_ids.placeholder")}
           onChange={handleOntologyChange}
-          value={ontologyTreeIds}
+          value={ontologyTreeIds?.map((id) => id.toString())}
         />
         <AdministrativeDivisionDropdown
           id="administrativeDivisionId"

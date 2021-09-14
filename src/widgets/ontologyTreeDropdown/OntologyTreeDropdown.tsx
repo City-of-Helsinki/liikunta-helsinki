@@ -20,9 +20,9 @@ export default function OntologyTreeDropdown(props: Props) {
     return null;
   }
 
-  const options = ontologyTree.map((administrativeDivision) => ({
-    label: getTranslation(administrativeDivision.name, locale),
-    value: administrativeDivision.id,
+  const options = ontologyTree.map((ontologyTree) => ({
+    label: getTranslation(ontologyTree.name, locale),
+    value: ontologyTree.id,
   }));
 
   return <MultiSelectCombobox {...props} options={options} />;
