@@ -12,7 +12,7 @@ import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTransl
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import Page from "../../components/page/Page";
 import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
-import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
+import SearchPageSearchForm from "../../widgets/searchPageSearchForm/SearchPageSearchForm";
 import SearchHeader, {
   ShowMode,
 } from "../../components/search/searchHeader/SearchHeader";

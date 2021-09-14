@@ -14,7 +14,7 @@ import Page from "../components/page/Page";
 import Section from "../components/section/Section";
 import Hero from "../components/hero/Hero";
 import HeroImage from "../components/hero/HeroImage";
-import LandingPageSearchForm from "../components/search/landingPageSearchForm/LandingPageSearchForm";
+import LandingPageSearchForm from "../widgets/landingPageSearchForm/LandingPageSearchForm";
 import SearchShortcuts from "../components/searchShortcuts/SearchShortcuts";
 import getPageMetaPropsFromSEO from "../components/page/getPageMetaPropsFromSEO";
 

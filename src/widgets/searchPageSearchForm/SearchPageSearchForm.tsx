@@ -5,22 +5,22 @@ import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
 
 // eslint-disable-next-line max-len
-import AdministrativeDivisionDropdown from "../../../widgets/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
-import useAdministrativeDivisions from "../../../widgets/administrativeDivisionDropdown/useAdministrativeDivisions";
-import OntologyTreeDropdown from "../../../widgets/ontologyTreeDropdown/OntologyTreeDropdown";
-import useOntologyTree from "../../../widgets/ontologyTreeDropdown/useOntologyTree";
-import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
-import useRouter from "../../../domain/i18n/router/useRouter";
-import Link from "../../../domain/i18n/router/Link";
-import searchApolloClient from "../../../client/searchApolloClient";
-import { getUnifiedSearchLanguage } from "../../../client/utils";
-import getTranslation from "../../../util/getTranslation";
-import Text from "../../text/Text";
+import AdministrativeDivisionDropdown from "../administrativeDivisionDropdown/AdministrativeDivisionDropdown";
+import useAdministrativeDivisions from "../administrativeDivisionDropdown/useAdministrativeDivisions";
+import OntologyTreeDropdown from "../ontologyTreeDropdown/OntologyTreeDropdown";
+import useOntologyTree from "../ontologyTreeDropdown/useOntologyTree";
+import useUnifiedSearch from "../../domain/unifiedSearch/useUnifiedSearch";
+import useRouter from "../../domain/i18n/router/useRouter";
+import Link from "../../domain/i18n/router/Link";
+import searchApolloClient from "../../client/searchApolloClient";
+import { getUnifiedSearchLanguage } from "../../client/utils";
+import getTranslation from "../../util/getTranslation";
+import Text from "../../components/text/Text";
 import SuggestionInput, {
   Suggestion,
-} from "../../suggestionInput/SuggestionInput";
-import Keyword from "../../keyword/Keyword";
-import SmallSpinner from "../../spinners/SmallSpinner";
+} from "../../components/suggestionInput/SuggestionInput";
+import Keyword from "../../components/keyword/Keyword";
+import SmallSpinner from "../../components/spinners/SmallSpinner";
 import styles from "./searchPageSearchForm.module.scss";
 
 const SUGGESTION_QUERY = gql`
