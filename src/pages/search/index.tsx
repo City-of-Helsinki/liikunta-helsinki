@@ -19,7 +19,7 @@ import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import { logger } from "../../domain/logger";
-import SearchPageSearchForm from "../../components/search/searchPageSearchForm/SearchPageSearchForm";
+import SearchPageSearchForm from "../../widgets/searchPageSearchForm/SearchPageSearchForm";
 import Page from "../../components/page/Page";
 import getPageMetaPropsFromSEO from "../../components/page/getPageMetaPropsFromSEO";
 import Section from "../../components/section/Section";

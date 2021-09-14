@@ -3,10 +3,10 @@ import { TextInput, Button, IconSearch } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
-import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
-import Link from "../../../domain/i18n/router/Link";
-import Text from "../../text/Text";
-import SecondaryLink from "../../link/SecondaryLink";
+import useUnifiedSearch from "../../domain/unifiedSearch/useUnifiedSearch";
+import Link from "../../domain/i18n/router/Link";
+import Text from "../../components/text/Text";
+import SecondaryLink from "../../components/link/SecondaryLink";
 import styles from "./landingPageSearchForm.module.scss";
 
 function LandingPageSearchForm() {
