@@ -7,5 +7,7 @@
   "remove_filter_aria_label": "EN: Poista suodatin",
   "clear_filters": "EN: Tyhjennä hakuehdot",
   "ontology_tree_ids.label": "EN: Paikka",
-  "ontology_tree_ids.placeholder": "EN: Valitse paikka"
+  "ontology_tree_ids.placeholder": "EN: Valitse paikka",
+  "administrative_division_dropdown.label": "EN: Alue",
+  "administrative_division_dropdown.placeholder": "EN: Valitse alue"
 }

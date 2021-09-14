@@ -185,6 +185,8 @@ function SearchPageSearchForm({
         <AdministrativeDivisionDropdown
           id="administrativeDivisionId"
           name="administrativeDivisionId"
+          label={t("administrative_division_dropdown.label")}
+          placeholder={t("administrative_division_dropdown.placeholder")}
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionIds}
         />
