@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Button, IconSearch, IconCross, LoadingSpinner } from "hds-react";
+import { Button, IconSearch, IconCross } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
@@ -20,6 +20,7 @@ import SuggestionInput, {
   Suggestion,
 } from "../../suggestionInput/SuggestionInput";
 import Keyword from "../../keyword/Keyword";
+import SmallSpinner from "../../spinners/SmallSpinner";
 import styles from "./searchPageSearchForm.module.scss";
 
 const SUGGESTION_QUERY = gql`
@@ -114,7 +115,7 @@ function SearchPageSearchForm({
   ): string | JSX.Element => {
     if (key === "administrativeDivisionIds") {
       if (administrativeDivisionsQuery.loading) {
-        return <LoadingSpinner />;
+        return <SmallSpinner color="white" />;
       }
 
       const divisionData =
@@ -131,7 +132,7 @@ function SearchPageSearchForm({
 
     if (key === "ontologyTreeIds") {
       if (ontologyTreeQuery.loading) {
-        return <LoadingSpinner />;
+        return <SmallSpinner color="white" />;
       }
 
       const ontologyTreeData = ontologyTreeQuery.ontologyTree?.find(

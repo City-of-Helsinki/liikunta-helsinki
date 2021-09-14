@@ -1,0 +1,12 @@
+.spinner.spinner {
+  --spinner-size: 1rem;
+  --spinner-thickness: 0.15rem;
+
+  &.black {
+    --spinner-color: var(--color-black);
+  }
+
+  &.white {
+    --spinner-color: var(--color-white);
+  }
+}
