@@ -72,6 +72,7 @@ function filterConfigToObject({ type, key }: FilterConfig, values) {
 
 type FilterConfig = {
   type: "string" | "array" | "number";
+  rule?: "accumulating";
   key: string;
 };
 
@@ -91,7 +92,7 @@ export class UnifiedSearch {
   ) {
     this.router = router;
     this.filterConfig = [
-      { type: "array", key: "q" },
+      { type: "array", key: "q", rule: "accumulating" },
       { type: "array", key: "administrativeDivisionIds" },
     ];
     this.queryPersister = queryPersister;
@@ -174,7 +175,7 @@ export class UnifiedSearch {
   }
 
   modifyFilters(search: Partial<UnifiedSearchParameters>) {
-    const nextFilters = this.filterConfig.reduce((acc, { type, key }) => {
+    const nextFilters = this.filterConfig.reduce((acc, { type, key, rule }) => {
       const value = search[key];
       const previousValue = this.query[key] ?? [];
 
@@ -183,18 +184,22 @@ export class UnifiedSearch {
         const safePreviousValues = Array.isArray(previousValue)
           ? previousValue
           : [previousValue];
-        const valuesWithoutDuplicates = safeValues.filter(
-          (safeValue) => !previousValue.includes(safeValue)
-        );
 
-        const nextValues = [
-          ...safePreviousValues,
-          ...valuesWithoutDuplicates,
-        ].filter((item) => item);
+        let nextValues: string[];
+
+        if (rule === "accumulating") {
+          nextValues = [...safePreviousValues, ...safeValues];
+        } else {
+          nextValues = safeValues;
+        }
+
+        const nextValuesWithoutDuplicates = [
+          ...Array.from(new Set(nextValues)),
+        ];
 
         return {
           ...acc,
-          [key]: nextValues,
+          [key]: nextValuesWithoutDuplicates.filter((item) => item),
         };
       }
 
