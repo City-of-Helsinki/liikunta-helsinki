@@ -6,6 +6,7 @@ import {
   IconQuestionCircle,
   IconInfoCircle,
   IconMap,
+  IconAngleDown,
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
@@ -240,6 +241,22 @@ export function VenuePageContent() {
       label={t("link.google_directions.label")}
     />
   );
+  const accessibilitySentencesCollapse = (
+    <InfoBlock.Collapse
+      className={styles.accessibilitySentences}
+      titleClassName={styles.accessibilityTitle}
+      title={t("map_box.accessibility_sentences")}
+      icon={<IconAngleDown aria-hidden className={styles.icon} />}
+      items={accessibilitySentences.map((group) => (
+        <React.Fragment key={`accessibility-${group.groupName}`}>
+          <Text variant="body-l" className={styles.groupName}>
+            {group.groupName}
+          </Text>
+          <InfoBlock.List key={group.groupName} items={group.sentences} />
+        </React.Fragment>
+      ))}
+    />
+  );
   const infoLines = [
     {
       id: "address",
@@ -429,7 +446,7 @@ export function VenuePageContent() {
               placeName={name}
               placeAddress={simplifiedAddress}
               links={[hslInfoLink, googleInfoLink]}
-              accessibilitySentences={accessibilitySentences}
+              accessibilitySentences={accessibilitySentencesCollapse}
             />
           </div>
         </div>

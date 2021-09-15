@@ -196,3 +196,44 @@
     }
   }
 }
+
+.accessibilitySentences {
+  margin-top: -$spacing-s;
+
+  @include breakpoints.respond-above(s) {
+    margin-top: -$spacing-2-xs;
+  }
+
+  .accessibilityTitle {
+    display: flex;
+    align-items: center;
+    color: $color-copper-dark;
+    font-weight: 700;
+    font-size: 1.2rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .icon {
+    margin-left: $spacing-s;
+  }
+
+  .groupName {
+    font-weight: 700;
+    margin: $spacing-xs 0 $spacing-xs;
+  }
+
+  // Apply list styles to InfoBlock.List
+  > div > ul {
+    list-style: disc outside;
+    margin-left: $spacing-s;
+    padding-left: $spacing-s;
+    font-size: $fontsize-body-s;
+  }
+
+  > div > ul > li:last-child {
+    margin-bottom: $spacing-xs;
+  }
+}

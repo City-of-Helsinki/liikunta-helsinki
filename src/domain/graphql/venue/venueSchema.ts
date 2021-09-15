@@ -67,7 +67,7 @@ const typeDefs = gql`
     isOpen: Boolean
     ontologyTree: [Ontology]!
     ontologyWords: [Ontology]!
-    accessibilitySentences: [AccessibilitySentences]
+    accessibilitySentences: [AccessibilitySentences]!
   }
 `;
 

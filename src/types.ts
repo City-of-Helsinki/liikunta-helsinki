@@ -175,7 +175,9 @@ export type VenueDetails<T = TranslationsObject> = {
   telephone: T | null;
   ontologyTree: Ontology[];
   ontologyWords: Ontology[];
-  accessibilitySentences: AccessibilityTranslationsObject;
+  accessibilitySentences:
+    | AccessibilityTranslationsObject
+    | AccessibilitySentences;
 };
 
 export type Source = typeof Sources[keyof typeof Sources];

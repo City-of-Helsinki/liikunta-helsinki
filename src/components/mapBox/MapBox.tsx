@@ -1,12 +1,10 @@
 import { IconLinkExternal, IconLocation } from "hds-react";
 import React from "react";
 import { useTranslation } from "next-i18next";
-import { IconAngleDown } from "hds-react";
 
 import Text from "../text/Text";
 import InfoBlock from "../infoBlock/InfoBlock";
 import styles from "./mapBox.module.scss";
-import { AccessibilitySentences } from "../../types";
 
 type Props = {
   title: string;
@@ -14,7 +12,9 @@ type Props = {
   placeName: string;
   placeAddress: string;
   links?: React.ReactElement<React.ComponentProps<typeof InfoBlock.Link>>[];
-  accessibilitySentences?: AccessibilitySentences[];
+  accessibilitySentences?: React.ReactElement<
+    React.ComponentProps<typeof InfoBlock.Collapse>
+  >;
 };
 
 function MapBox({
@@ -57,22 +57,7 @@ function MapBox({
         {links && (
           <InfoBlock.List key="route-directions" inline items={links} />
         )}
-        {accessibilitySentences && (
-          <InfoBlock.Collapse
-            className={styles.accessibilitySentences}
-            titleClassName={styles.accessibilityTitle}
-            title={t("accessibility_sentences")}
-            icon={<IconAngleDown aria-hidden className={styles.icon} />}
-            items={accessibilitySentences.map((group) => (
-              <React.Fragment key={`accessibility-${group.groupName}`}>
-                <Text variant="body-l" className={styles.groupName}>
-                  {group.groupName}
-                </Text>
-                <InfoBlock.List key={group.groupName} items={group.sentences} />
-              </React.Fragment>
-            ))}
-          />
-        )}
+        {accessibilitySentences}
       </div>
     </div>
   );
