@@ -137,6 +137,8 @@ describe("UnifiedSearch", () => {
       const mockRouter = {
         asPath: getAsPath({
           q: ["A"],
+          ontologyTreeIds: [404],
+          administrativeDivisionIds: ["123"],
         }),
         replace: jest.fn(),
       };
@@ -144,7 +146,7 @@ describe("UnifiedSearch", () => {
 
       unifiedSearch.modifyFilters({
         q: ["B"],
-        administrativeDivisionIds: ["123"],
+        administrativeDivisionIds: undefined,
       });
 
       expect(mockRouter.replace.mock.calls[0]).toMatchInlineSnapshot(`
@@ -152,10 +154,10 @@ describe("UnifiedSearch", () => {
           Object {
             "pathname": undefined,
             "query": Object {
-              "administrativeDivisionIds": Array [
-                "123",
+              "administrativeDivisionIds": Array [],
+              "ontologyTreeIds": Array [
+                "404",
               ],
-              "ontologyTreeIds": Array [],
               "q": Array [
                 "A",
                 "B",
