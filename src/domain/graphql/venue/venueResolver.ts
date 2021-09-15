@@ -55,6 +55,13 @@ const Venue = {
 
     return ontologyWords;
   },
+  accessibilitySentences({ accessibilitySentences }) {
+    if (!accessibilitySentences) {
+      return [];
+    }
+
+    return accessibilitySentences;
+  },
 };
 
 export default Venue;

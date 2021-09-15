@@ -6,6 +6,7 @@ import {
   IconQuestionCircle,
   IconInfoCircle,
   IconMap,
+  IconAngleDown,
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
@@ -49,6 +50,10 @@ export const VENUE_QUERY = gql`
       image
       infoUrl
       name
+      accessibilitySentences {
+        groupName
+        sentences
+      }
       openingHours {
         date
         times {
@@ -179,6 +184,7 @@ export function VenuePageContent() {
     locale
   );
   const isOpen = data?.venue?.isOpen;
+  const accessibilitySentences = data?.venue?.accessibilitySentences;
 
   const simplifiedAddress = [streetAddress, addressLocality].join(", ");
   const directionPoint = {
@@ -231,6 +237,22 @@ export function VenuePageContent() {
       key="google"
       href={getGoogleDirectionsUrl(null, directionPoint)}
       label={t("link.google_directions.label")}
+    />
+  );
+  const accessibilitySentencesCollapse = (
+    <InfoBlock.Collapse
+      className={styles.accessibilitySentences}
+      titleClassName={styles.accessibilityTitle}
+      title={t("map_box.accessibility_sentences")}
+      icon={<IconAngleDown aria-hidden className={styles.icon} />}
+      items={accessibilitySentences.map((group) => (
+        <React.Fragment key={`accessibility-${group.groupName}`}>
+          <Text variant="body-l" className={styles.groupName}>
+            {group.groupName}
+          </Text>
+          <InfoBlock.List key={group.groupName} items={group.sentences} />
+        </React.Fragment>
+      ))}
     />
   );
   const infoLines = [
@@ -425,6 +447,7 @@ export function VenuePageContent() {
               placeName={name}
               placeAddress={simplifiedAddress}
               links={[hslInfoLink, googleInfoLink]}
+              accessibilitySentences={accessibilitySentencesCollapse}
             />
           </div>
         </div>

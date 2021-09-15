@@ -152,6 +152,17 @@ export type TranslationsObject = {
   sv?: string;
 };
 
+export type AccessibilitySentences = {
+  groupName: string;
+  sentences: string[];
+};
+
+export type AccessibilityTranslationsObject = {
+  fi?: AccessibilitySentences[];
+  en?: AccessibilitySentences[];
+  sv?: AccessibilitySentences[];
+};
+
 export type Point = {
   type: "Point";
   coordinates: number[];
@@ -177,6 +188,9 @@ export type VenueDetails<T = TranslationsObject> = {
   telephone: T | null;
   ontologyTree: Ontology[];
   ontologyWords: Ontology[];
+  accessibilitySentences:
+    | AccessibilityTranslationsObject
+    | AccessibilitySentences;
 };
 
 export type Source = typeof Sources[keyof typeof Sources];

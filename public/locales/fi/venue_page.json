@@ -15,5 +15,6 @@
   "block.route.label": "Löydä perille",
   "content.description": "Kuvaus",
   "share_sport": "Jaa liikunta",
-  "map_box.title": "Sijainti"
+  "map_box.title": "Sijainti",
+  "map_box.accessibility_sentences": "Esteettömyystiedot"
 }

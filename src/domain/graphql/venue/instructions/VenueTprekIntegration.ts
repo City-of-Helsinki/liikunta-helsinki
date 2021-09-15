@@ -1,11 +1,10 @@
-import axios from "axios";
-
 import { VenueDetails } from "../../../../types";
 import {
   translateVenue,
   formTranslationObject,
   getPointFromLongAndLat,
   getTprekId,
+  formAccessibilitySentences,
 } from "./utils";
 import VenueEnricher from "./VenueEnricher";
 import VenueResolverIntegration from "./VenueResolverIntegration";
@@ -93,6 +92,7 @@ export default class VenueTprekIntegration extends VenueResolverIntegration<Tpre
       streetAddress: formTranslationObject(data, "street_address"),
       addressLocality: formTranslationObject(data, "address_city"),
       infoUrl: formTranslationObject(data, "www"),
+      accessibilitySentences: formAccessibilitySentences(data),
       telephone: {
         fi: data?.phone ?? null,
         sv: data?.phone ?? null,

@@ -80,3 +80,18 @@
     }
   }
 }
+
+.collapse {
+  width: 100%;
+  height: 2rem;
+  overflow-y: hidden;
+
+  button {
+    border: none;
+    height: 2rem;
+  }
+}
+
+.isOpen {
+  height: auto;
+}

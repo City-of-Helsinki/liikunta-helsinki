@@ -1,7 +1,7 @@
 import { UrlObject } from "url";
 
 import React from "react";
-import { IconLinkExternal, IconAngleRight } from "hds-react";
+import { IconLinkExternal, IconAngleRight, useAccordion } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
@@ -20,9 +20,18 @@ type InfoBlockContentListProps = {
   inline?: boolean;
 };
 
+type InfoBlockCollapseProps = {
+  icon: React.ReactElement;
+  items: Array<string | React.ReactElement>;
+  className?: string;
+  title: string;
+  titleClassName?: string;
+};
+
 type InfoBlockContent =
   | React.ReactElement<InfoBlockContentLinkProps>
   | React.ReactElement<InfoBlockContentListProps>
+  | React.ReactElement<InfoBlockCollapseProps>
   | string;
 
 function getKey(item: InfoBlockContent): string {
@@ -93,6 +102,43 @@ function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
   );
 }
 
+function InfoBlockCollapse({
+  items,
+  icon,
+  className,
+  title,
+  titleClassName,
+}: InfoBlockCollapseProps) {
+  const { isOpen, buttonProps, contentProps } = useAccordion({
+    initiallyOpen: false,
+  });
+  const nonEmptyItems = items.filter((item) => item);
+
+  if (nonEmptyItems.length === 0) {
+    return null;
+  }
+
+  return (
+    <div
+      className={[styles.collapse, className, isOpen ? styles.isOpen : ""].join(
+        " "
+      )}
+    >
+      <button
+        aria-expanded={isOpen}
+        className={titleClassName}
+        {...buttonProps}
+      >
+        {title} {icon}
+      </button>
+
+      <div aria-hidden={!isOpen} {...contentProps}>
+        {items}
+      </div>
+    </div>
+  );
+}
+
 type Props = {
   icon: React.ReactElement;
   name: string;
@@ -143,5 +189,6 @@ function InfoBlock({ icon, name, contents, target = "body" }: Props) {
 
 InfoBlock.Link = InfoBlockLink;
 InfoBlock.List = InfoBlockList;
+InfoBlock.Collapse = InfoBlockCollapse;
 
 export default InfoBlock;

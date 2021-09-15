@@ -12,6 +12,9 @@ type Props = {
   placeName: string;
   placeAddress: string;
   links?: React.ReactElement<React.ComponentProps<typeof InfoBlock.Link>>[];
+  accessibilitySentences?: React.ReactElement<
+    React.ComponentProps<typeof InfoBlock.Collapse>
+  >;
 };
 
 function MapBox({
@@ -20,6 +23,7 @@ function MapBox({
   placeName,
   placeAddress,
   links,
+  accessibilitySentences,
 }: Props) {
   const { t } = useTranslation("map_box");
 
@@ -53,6 +57,7 @@ function MapBox({
         {links && (
           <InfoBlock.List key="route-directions" inline items={links} />
         )}
+        {accessibilitySentences}
       </div>
     </div>
   );
