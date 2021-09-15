@@ -225,6 +225,10 @@
     margin: $spacing-xs 0 $spacing-xs;
   }
 
+  > div {
+    padding-left: $spacing-xs;
+  }
+
   // Apply list styles to InfoBlock.List
   > div > ul {
     list-style: disc outside;
