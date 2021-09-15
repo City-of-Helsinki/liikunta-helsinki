@@ -206,14 +206,23 @@ export class UnifiedSearch {
   modifyFilters(search: Partial<UnifiedSearchParameters>) {
     const nextFilters = this.filterConfig.reduce((acc, filterConfig) => {
       const { key, storeBehaviour } = filterConfig;
+      const isInSearch = Object.keys(search).includes(key);
       const value = search[key];
       const previousValue = this.query[key] ?? [];
 
       if (this.getIsArrayKind(filterConfig)) {
-        const safeValues = Array.isArray(value) ? value : [value];
         const safePreviousValues = Array.isArray(previousValue)
           ? previousValue
           : [previousValue];
+
+        if (!isInSearch) {
+          return {
+            ...acc,
+            [key]: safePreviousValues,
+          };
+        }
+
+        const safeValues = Array.isArray(value) ? value : [value];
 
         let nextValues: string[];
 
@@ -230,6 +239,13 @@ export class UnifiedSearch {
         return {
           ...acc,
           [key]: nextValuesWithoutDuplicates.filter((item) => item),
+        };
+      }
+
+      if (!isInSearch) {
+        return {
+          ...acc,
+          [key]: previousValue,
         };
       }
 
