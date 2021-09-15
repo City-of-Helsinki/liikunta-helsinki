@@ -20,33 +20,10 @@
 
   // align utility links to right also now when there are no SoMe items
   @include breakpoints.respond-above(m) {
-    > div > div:nth-child(3) {
+    > div > div:nth-child(2) {
       display: grid;
       justify-items: end;
       justify-content: unset;
-    }
-  }
-
-  .hr {
-    background-color: var(--footer-divider-color);
-    border: 0;
-    height: 1px;
-    margin: 0 0 $spacing-xs;
-    width: 100%;
-
-    @include breakpoints.respond-above(m) {
-      margin: 0 0 $spacing-m;
-    }
-  }
-
-  .searchShortcuts {
-    padding: 0 $spacing-m $spacing-m;
-
-    // The footer uses a different content width as compared to the content of
-    // the page. That's why we have to override the base width that's originally
-    // set by the List component.
-    & > ul {
-      --base-list-item-width: 11rem; // 176px
     }
   }
 }

@@ -4,9 +4,7 @@ import { useTranslation } from "next-i18next";
 
 import useRouter from "../../domain/i18n/router/useRouter";
 import { NavigationItem } from "../../types";
-import mockCategories from "../../client/tmp/mockCategories";
 import NextLink from "../../domain/i18n/router/Link";
-import SearchShortcuts from "../../components/searchShortcuts/SearchShortcuts";
 import styles from "./footer.module.scss";
 
 type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
@@ -32,7 +30,6 @@ function Footer({ navigationItems }: Props) {
   const { t } = useTranslation("footer");
   const { locale } = useRouter();
   const logoLanguage: LogoLanguage = locale === "sv" ? "sv" : "fi";
-  const categories = mockCategories;
 
   return (
     <HDSFooter
@@ -40,16 +37,6 @@ function Footer({ navigationItems }: Props) {
       className={styles.footer}
       logoLanguage={logoLanguage}
     >
-      <div className={styles.searchShortcuts}>
-        <hr className={styles.hr} aria-hidden="true" />
-        <SearchShortcuts
-          shortcuts={categories.map((category, i) => ({
-            id: i.toString(),
-            label: category.label,
-            icon: category.icon,
-          }))}
-        />
-      </div>
       <HDSFooter.Navigation>
         {navigationItems.map((navigationItem) => (
           <HDSFooter.Item
