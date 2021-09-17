@@ -6,7 +6,7 @@ import useOntologyTree from "./useOntologyTree";
 type Props = {
   label: string;
   placeholder: string;
-  onChange: (administrativeDivisionOption: string[]) => void;
+  onChange: (ontologyTreeIds: string[]) => void;
   id?: string;
   name?: string;
   value?: string[];
