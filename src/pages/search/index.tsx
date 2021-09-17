@@ -40,7 +40,6 @@ export const SEARCH_QUERY = gql`
     $first: Int
     $after: String
     $language: UnifiedSearchLanguage!
-    $ontologyTreeId: ID!
     $administrativeDivisionIds: [ID!]
     $ontologyTreeIds: [ID!]
   ) {
@@ -50,7 +49,6 @@ export const SEARCH_QUERY = gql`
       first: $first
       after: $after
       languages: [$language]
-      ontologyTreeId: $ontologyTreeId
       administrativeDivisionIds: $administrativeDivisionIds
       ontologyTreeIds: $ontologyTreeIds
     ) {

@@ -21,14 +21,10 @@ const defaultPagination = {
   first: 10,
 };
 
-const FIXED_FILTERS = {
-  ontologyTreeId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
-};
-
 type UnifiedSearchVariables = {
   q?: string;
   language?: typeof appToUnifiedSearchLanguageMap[keyof typeof appToUnifiedSearchLanguageMap];
-  ontologyTreeId?: number;
+  ontologyTreeIds?: number[];
   administrativeDivisionId?: string;
   first?: number;
   after?: string;
@@ -44,7 +40,12 @@ export default function useUnifiedSearchQuery<TData = any>(
   >
 ) {
   const {
-    filters: { q, ...searchParams },
+    filters: {
+      q,
+      // By default filter by the sports dept. ontology tree id
+      ontologyTreeIds = [SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID],
+      ...searchParams
+    },
   } = useUnifiedSearch();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
@@ -53,10 +54,10 @@ export default function useUnifiedSearchQuery<TData = any>(
     ssr: false,
     variables: {
       language: appToUnifiedSearchLanguageMap[locale],
-      ...FIXED_FILTERS,
       ...defaultPagination,
       // Default query; everything
       q: q?.join(" ") ?? "*",
+      ontologyTreeIds,
       ...searchParams,
       ...variables,
     },
