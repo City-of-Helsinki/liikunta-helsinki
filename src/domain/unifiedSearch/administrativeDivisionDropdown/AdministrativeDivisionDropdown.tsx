@@ -6,7 +6,7 @@ import useAdministrativeDivisions from "./useAdministrativeDivisions";
 type Props = {
   label: string;
   placeholder?: string;
-  onChange: (administrativeDivisionOption: string[]) => void;
+  onChange: (administrativeDivisionIds: string[]) => void;
   id?: string;
   name?: string;
   value?: string[];
