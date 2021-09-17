@@ -26,8 +26,8 @@ export const MAP_SEARCH_QUERY = gql`
     $first: Int
     $after: String
     $language: UnifiedSearchLanguage!
-    $ontologyTreeId: ID!
     $administrativeDivisionId: ID
+    $ontologyTreeIds: [ID!]
   ) {
     unifiedSearch(
       q: $q
@@ -35,8 +35,8 @@ export const MAP_SEARCH_QUERY = gql`
       first: $first
       after: $after
       languages: [$language]
-      ontologyTreeId: $ontologyTreeId
       administrativeDivisionId: $administrativeDivisionId
+      ontologyTreeIds: $ontologyTreeIds
     ) {
       count
       edges {
