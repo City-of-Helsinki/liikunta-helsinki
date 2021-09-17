@@ -26,7 +26,7 @@ export const MAP_SEARCH_QUERY = gql`
     $first: Int
     $after: String
     $language: UnifiedSearchLanguage!
-    $administrativeDivisionId: ID
+    $administrativeDivisionIds: [ID!]
     $ontologyTreeIds: [ID!]
   ) {
     unifiedSearch(
@@ -35,7 +35,7 @@ export const MAP_SEARCH_QUERY = gql`
       first: $first
       after: $after
       languages: [$language]
-      administrativeDivisionId: $administrativeDivisionId
+      administrativeDivisionIds: $administrativeDivisionIds
       ontologyTreeIds: $ontologyTreeIds
     ) {
       count

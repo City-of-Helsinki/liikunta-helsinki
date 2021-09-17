@@ -183,8 +183,8 @@ function SearchPageSearchForm({
           value={ontologyTreeIds?.map((id) => id.toString())}
         />
         <AdministrativeDivisionDropdown
-          id="administrativeDivisionId"
-          name="administrativeDivisionId"
+          id="administrativeDivisionIds"
+          name="administrativeDivisionIds"
           label={t("administrative_division_dropdown.label")}
           placeholder={t("administrative_division_dropdown.placeholder")}
           onChange={handleAdminDivisionChange}

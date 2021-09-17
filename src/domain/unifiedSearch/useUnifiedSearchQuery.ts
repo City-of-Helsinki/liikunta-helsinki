@@ -25,7 +25,7 @@ type UnifiedSearchVariables = {
   q?: string;
   language?: typeof appToUnifiedSearchLanguageMap[keyof typeof appToUnifiedSearchLanguageMap];
   ontologyTreeIds?: number[];
-  administrativeDivisionId?: string;
+  administrativeDivisionIds?: string[];
   first?: number;
   after?: string;
 };
