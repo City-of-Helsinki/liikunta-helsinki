@@ -133,6 +133,10 @@ function getGoogleDirectionsUrl(
   return `https://www.google.com/maps/dir/${from}/${to}/`;
 }
 
+// Keywords that target only sport events. Can be array of values, separated by commas.
+// If in the future we have more keywords and want to require all them, change keyword -> keyword_AND
+const SPORT_EVENT_KEYWORDS = ["yso:p916"];
+
 export function VenuePageContent() {
   const { t } = useTranslation("venue_page");
   const router = useRouter();
@@ -452,7 +456,7 @@ export function VenuePageContent() {
           </div>
         </div>
       </article>
-      <UpcomingEventsSection linkedId={id} />
+      <UpcomingEventsSection linkedId={id} keywords={SPORT_EVENT_KEYWORDS} />
     </>
   );
 }

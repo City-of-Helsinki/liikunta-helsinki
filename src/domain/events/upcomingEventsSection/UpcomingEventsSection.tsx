@@ -24,10 +24,11 @@ const UPCOMING_EVENTS_QUERY = gql`
 
 type Props = {
   linkedId: string;
+  keywords: string[];
 };
 
 // This component expects to find the apiApolloClient from Context
-export default function UpcomingEventsSection({ linkedId }: Props) {
+export default function UpcomingEventsSection({ linkedId, keywords }: Props) {
   const { t } = useTranslation("upcoming_events_section");
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
@@ -38,6 +39,7 @@ export default function UpcomingEventsSection({ linkedId }: Props) {
         start: "now",
         sort: "start_time",
         superEventType: "none",
+        keywords: keywords,
       },
       first: 6,
     },

@@ -110,11 +110,8 @@ type LinkedEventQuery = {
   translation?: string;
   page?: number;
   pageSize?: number;
+  keywords?: string[];
 };
-
-// Keywords that target only sport events. Can be array of values, separated by commas.
-// If in the future we have more keywords and want to require all them, change keyword -> keyword_AND
-const SPORT_EVENT_KEYWORDS = ["yso:p916"];
 
 // https://api.hel.fi/linkedevents/v1
 export default class Linked extends RESTDataSource {
@@ -147,6 +144,10 @@ export default class Linked extends RESTDataSource {
         return params.set("page_size", value.toString());
       }
 
+      if (key === "keywords" && Array.isArray(value)) {
+        return params.set("keyword", value.join(","));
+      }
+
       if (typeof value === "string") {
         params.set(key, value);
       }
@@ -163,8 +164,6 @@ export default class Linked extends RESTDataSource {
     if (language && !linkedEventQuery.translation) {
       params.set("translation", language);
     }
-
-    params.set("keyword", SPORT_EVENT_KEYWORDS.join(","));
 
     return this.get(`event?${params.toString()}`);
   }
