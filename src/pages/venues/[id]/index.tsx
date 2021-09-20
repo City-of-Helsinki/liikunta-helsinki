@@ -13,6 +13,7 @@ import classNames from "classnames";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
+import { useInView } from "react-intersection-observer";
 
 import noImagePlaceholder from "../../../../public/no_image.svg";
 import { Address, Point } from "../../../types";
@@ -27,6 +28,7 @@ import humanizeOpeningHoursForWeek from "../../../common/utils/time/humanizeOpen
 import serverSideTranslationsWithCommon from "../../../domain/i18n/serverSideTranslationsWithCommon";
 import { getLocaleOrError } from "../../../domain/i18n/router/utils";
 import UpcomingEventsSection from "../../../domain/events/upcomingEventsSection/UpcomingEventsSection";
+import VenuesByOntologyWords from "../../../domain/unifiedSearch/venuesByOntologyWords/VenuesByOntologyWords";
 import Keyword from "../../../common/components/keyword/Keyword";
 import Page from "../../../common/components/page/Page";
 import Text from "../../../common/components/text/Text";
@@ -34,9 +36,11 @@ import InfoBlock from "../../../common/components/infoBlock/InfoBlock";
 import ShareLinks from "../../../common/components/shareLinks/ShareLinks";
 import MapBox from "../../../common/components/mapBox/MapBox";
 import Hr from "../../../common/components/hr/Hr";
-import styles from "./venue.module.scss";
+import Section from "../../../common/components/section/Section";
 import renderAddressToString from "../../../common/utils/renderAddressToString";
 import hash from "../../../common/utils/hash";
+import capitalize from "../../../common/utils/capitalize";
+import styles from "./venue.module.scss";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -142,6 +146,7 @@ export function VenuePageContent() {
   const router = useRouter();
   const id = router.query.id as string;
   const locale = router.locale ?? router.defaultLocale;
+  const [similarPlacesSectionRef, similarPlacesInView] = useInView();
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
@@ -266,10 +271,11 @@ export function VenuePageContent() {
       info: simplifiedAddress,
     },
   ];
-  const keywords = data?.venue?.ontologyWords?.map((ontology) => ({
-    label: ontology.label,
+  const ontologyWords = data?.venue?.ontologyWords?.map((ontology) => ({
+    label: capitalize(ontology.label),
     id: ontology.id,
   }));
+  const ontologyWordIds = ontologyWords.map((ontologyWord) => ontologyWord.id);
 
   // Data that can't be found from the API at this point
   const temperature = null;
@@ -303,12 +309,12 @@ export function VenuePageContent() {
             />
           </div>
           <div className={styles.content}>
-            {keywords && (
+            {ontologyWords && (
               <ul
                 className={styles.keywords}
                 aria-label={t("a11y_keywords_group_name")}
               >
-                {keywords.map((keyword) => (
+                {ontologyWords.map((keyword) => (
                   <li key={keyword.id}>
                     <Keyword
                       keyword={keyword.label}
@@ -467,6 +473,15 @@ export function VenuePageContent() {
         </div>
       </article>
       <UpcomingEventsSection linkedId={id} keywords={SPORT_EVENT_KEYWORDS} />
+      <Section
+        ref={similarPlacesSectionRef}
+        title={t("other_sports_section.title")}
+        color="white"
+      >
+        {similarPlacesInView && (
+          <VenuesByOntologyWords ontologyWordIds={ontologyWordIds} />
+        )}
+      </Section>
     </>
   );
 }

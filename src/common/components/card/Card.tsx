@@ -68,8 +68,13 @@ function CardPre({ children, className }: CardPreProps) {
   );
 }
 
+type InfoLineObject = {
+  text: string;
+  icon: React.ReactNode;
+};
+
 type CardInfoLinesProps = Partial<React.ComponentProps<typeof Text>> & {
-  infoLines: string[];
+  infoLines: (InfoLineObject | string)[];
   className?: string;
 };
 
@@ -92,16 +97,33 @@ function CardInfoLines({
 
   return (
     <div className={classNames(styles.infoLines, className)}>
-      {infoLines.map((infoLine) => (
-        <HtmlToReact
-          key={infoLine}
-          components={{
-            p: P,
-          }}
-        >
-          {infoLine}
-        </HtmlToReact>
-      ))}
+      {infoLines.map((infoLine) => {
+        if (typeof infoLine === "string") {
+          return (
+            <HtmlToReact
+              key={infoLine}
+              components={{
+                p: P,
+              }}
+            >
+              {infoLine}
+            </HtmlToReact>
+          );
+        }
+
+        return (
+          <span className={styles.infoLineObject} key={infoLine.text}>
+            {infoLine.icon}
+            <HtmlToReact
+              components={{
+                p: P,
+              }}
+            >
+              {infoLine.text}
+            </HtmlToReact>
+          </span>
+        );
+      })}
     </div>
   );
 }

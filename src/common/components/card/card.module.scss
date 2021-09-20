@@ -128,8 +128,11 @@
     padding-bottom: 0;
     display: flex;
     align-items: flex-end;
+    flex-wrap: wrap;
     position: relative;
     z-index: 100;
+    height: max-content;
+    align-self: flex-end;
 
     @include breakpoints.respond-above(m) {
       padding-bottom: var(--content-padding);
@@ -184,6 +187,15 @@
 
         @include breakpoints.respond-above(m) {
           display: initial;
+        }
+      }
+
+      .infoLineObject {
+        display: flex;
+        align-items: center;
+
+        & > *:first-child {
+          margin-right: $spacing-2-xs;
         }
       }
     }
