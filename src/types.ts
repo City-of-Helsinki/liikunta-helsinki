@@ -31,11 +31,16 @@ export type Keyword = {
   href: string | UrlObject;
 };
 
+type ItemInfoLineObject = {
+  text: string;
+  icon: React.ReactNode;
+};
+
 export type Item = {
   id: string;
   title: string;
   pre?: string;
-  infoLines: string[];
+  infoLines: (ItemInfoLineObject | string)[];
   keywords: Keyword[];
   href: string | UrlObject;
   location?: number[];
