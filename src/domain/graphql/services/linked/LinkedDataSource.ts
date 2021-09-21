@@ -110,6 +110,7 @@ type LinkedEventQuery = {
   translation?: string;
   page?: number;
   pageSize?: number;
+  keywords?: string[];
 };
 
 // https://api.hel.fi/linkedevents/v1
@@ -141,6 +142,10 @@ export default class Linked extends RESTDataSource {
 
       if (key === "pageSize" && typeof value === "number") {
         return params.set("page_size", value.toString());
+      }
+
+      if (key === "keywords" && Array.isArray(value)) {
+        return params.set("keyword", value.join(","));
       }
 
       if (typeof value === "string") {
