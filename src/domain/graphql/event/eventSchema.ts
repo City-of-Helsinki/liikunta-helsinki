@@ -10,7 +10,7 @@ const typeDefs = gql`
     language: String
     text: String
     translation: String
-    keywords: [String]
+    keywords: [String!]
   }
 
   extend type Query {
