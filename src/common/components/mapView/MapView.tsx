@@ -20,8 +20,20 @@ import {
 } from "./mapConstants";
 import styles from "./mapView.module.scss";
 
+const HiddenDivIcon = L.DivIcon.extend({
+  _setIconStyles(img: HTMLImageElement, name: string) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    L.DivIcon.prototype._setIconStyles.call(this, img, name);
+
+    img.setAttribute("aria-hidden", "true");
+  },
+});
+
 function createCustomClusterIcon(cluster) {
-  return L.divIcon({
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return new HiddenDivIcon({
     html: `<div><span>${cluster.getChildCount()}</span></div>`,
     className: [
       "leaflet-marker-icon",
