@@ -18,31 +18,17 @@ import {
   MIN_ZOOM,
   TILE_URL,
 } from "./mapConstants";
+import { A11yHiddenDivIcon } from "./A11yHiddenIcon";
 import styles from "./mapView.module.scss";
 
 // Overwrite default keyboard value (true) in order to force all plugins to use
 // marker variants without keyboard support.
 L.Marker.prototype.options.keyboard = false;
 
-const HiddenDivIcon = L.DivIcon.extend({
-  _setIconStyles(img: HTMLImageElement, name: string) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    L.DivIcon.prototype._setIconStyles.call(this, img, name);
-
-    img.setAttribute("aria-hidden", "true");
-    // The Marker react-leaflet-markercluster uses must be configured with
-    // `keyboard: false` for tabindex to be controllable here. Otherwise the
-    // icons of this class will have their tabindex attribute overwritten by the
-    // add icon routine in the Market class.
-    img.setAttribute("tabindex", "-1");
-  },
-});
-
 function createCustomClusterIcon(cluster) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return new HiddenDivIcon({
+  return new A11yHiddenDivIcon({
     html: `<div tabindex="-1"><span tabindex="-1">${cluster.getChildCount()}</span></div>`,
     className: [
       "leaflet-marker-icon",

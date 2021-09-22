@@ -1,19 +1,6 @@
-import L from "leaflet";
+import { A11yHiddenIcon } from "./A11yHiddenIcon";
 
-const MapAriaHiddenIcon = L.Icon.extend({
-  _setIconStyles(img: HTMLImageElement, name: string) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    L.Icon.prototype._setIconStyles.call(this, img, name);
-
-    img.setAttribute("aria-hidden", "true");
-    img.setAttribute("tabindex", "-1");
-  },
-});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const venueIcon = new MapAriaHiddenIcon({
+const venueIcon = new A11yHiddenIcon({
   iconUrl: "/images/venue-icon.svg",
   iconRetinaUrl: "/images/venue-icon.svg",
   iconAnchor: null,
