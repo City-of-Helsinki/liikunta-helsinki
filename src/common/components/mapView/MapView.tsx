@@ -20,6 +20,10 @@ import {
 } from "./mapConstants";
 import styles from "./mapView.module.scss";
 
+// Overwrite default keyboard value (true) in order to force all plugins to use
+// marker variants without keyboard support.
+L.Marker.prototype.options.keyboard = false;
+
 const HiddenDivIcon = L.DivIcon.extend({
   _setIconStyles(img: HTMLImageElement, name: string) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -27,6 +31,11 @@ const HiddenDivIcon = L.DivIcon.extend({
     L.DivIcon.prototype._setIconStyles.call(this, img, name);
 
     img.setAttribute("aria-hidden", "true");
+    // The Marker react-leaflet-markercluster uses must be configured with
+    // `keyboard: false` for tabindex to be controllable here. Otherwise the
+    // icons of this class will have their tabindex attribute overwritten by the
+    // add icon routine in the Market class.
+    img.setAttribute("tabindex", "-1");
   },
 });
 
@@ -34,7 +43,7 @@ function createCustomClusterIcon(cluster) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return new HiddenDivIcon({
-    html: `<div><span>${cluster.getChildCount()}</span></div>`,
+    html: `<div tabindex="-1"><span tabindex="-1">${cluster.getChildCount()}</span></div>`,
     className: [
       "leaflet-marker-icon",
       "marker-cluster marker-cluster-small",
@@ -89,7 +98,6 @@ function MapView({ items = [] }: Props) {
                 key={item.id}
                 position={[item.location[1], item.location[0]]}
                 icon={venueIcon}
-                keyboard={false}
               >
                 <Popup className={styles.popup}>
                   <Text variant="body">{item.title}</Text>
