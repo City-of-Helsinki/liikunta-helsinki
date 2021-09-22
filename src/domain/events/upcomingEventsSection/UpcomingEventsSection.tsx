@@ -1,6 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import { LoadingSpinner } from "hds-react";
 import { useTranslation } from "next-i18next";
+import { RefObject } from "react";
 
 import getEventsAsItems from "../utils/getEventsAsItems";
 import eventFragment from "../eventFragment";
@@ -25,14 +26,25 @@ const UPCOMING_EVENTS_QUERY = gql`
 type Props = {
   linkedId: string;
   keywords: string[];
+  containerRef?: RefObject<HTMLElement> | ((node?: HTMLElement) => void);
+  defer?: boolean;
 };
 
 // This component expects to find the apiApolloClient from Context
-export default function UpcomingEventsSection({ linkedId, keywords }: Props) {
+export default function UpcomingEventsSection({
+  linkedId,
+  keywords,
+  containerRef,
+  defer = false,
+}: Props) {
   const { t } = useTranslation("upcoming_events_section");
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { loading, error, data } = useQuery(UPCOMING_EVENTS_QUERY, {
+  const {
+    loading,
+    error,
+    data = null,
+  } = useQuery(UPCOMING_EVENTS_QUERY, {
     variables: {
       where: {
         location: linkedId,
@@ -43,7 +55,8 @@ export default function UpcomingEventsSection({ linkedId, keywords }: Props) {
       },
       first: 6,
     },
-    skip: !process.browser,
+    skip: !process.browser || defer,
+    ssr: false,
     context: {
       headers: {
         "Accept-Language": locale,
@@ -51,10 +64,6 @@ export default function UpcomingEventsSection({ linkedId, keywords }: Props) {
     },
     fetchPolicy: "cache-and-network",
   });
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   // In case of an error, silently fail.
   if (error) {
@@ -66,12 +75,18 @@ export default function UpcomingEventsSection({ linkedId, keywords }: Props) {
   );
 
   // In case there are no upcoming events, hide the section.
-  if (eventItems.length === 0) {
+  if (eventItems.length === 0 && data !== null) {
     return null;
   }
 
   return (
-    <Section title={t("title")} koros="storm" contentWidth="s">
+    <Section
+      title={t("title")}
+      koros="storm"
+      contentWidth="s"
+      ref={containerRef}
+    >
+      {loading && <LoadingSpinner />}
       <List
         variant="grid-3"
         gap="m"
