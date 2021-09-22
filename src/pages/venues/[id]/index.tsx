@@ -146,7 +146,12 @@ export function VenuePageContent() {
   const router = useRouter();
   const id = router.query.id as string;
   const locale = router.locale ?? router.defaultLocale;
-  const [similarPlacesSectionRef, similarPlacesInView] = useInView();
+  const [upcomingEventsSectionRef, upcomingEventsInView] = useInView({
+    triggerOnce: true,
+  });
+  const [similarPlacesSectionRef, similarPlacesInView] = useInView({
+    triggerOnce: true,
+  });
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
@@ -472,7 +477,12 @@ export function VenuePageContent() {
           </div>
         </div>
       </article>
-      <UpcomingEventsSection linkedId={id} keywords={SPORT_EVENT_KEYWORDS} />
+      <UpcomingEventsSection
+        containerRef={upcomingEventsSectionRef}
+        defer={!upcomingEventsInView}
+        linkedId={id}
+        keywords={SPORT_EVENT_KEYWORDS}
+      />
       <Section
         ref={similarPlacesSectionRef}
         title={t("other_sports_section.title")}
