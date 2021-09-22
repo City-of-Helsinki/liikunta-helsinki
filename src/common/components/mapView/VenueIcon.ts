@@ -7,6 +7,7 @@ const MapAriaHiddenIcon = L.Icon.extend({
     L.Icon.prototype._setIconStyles.call(this, img, name);
 
     img.setAttribute("aria-hidden", "true");
+    img.setAttribute("tabindex", "-1");
   },
 });
 
