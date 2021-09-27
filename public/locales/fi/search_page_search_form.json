@@ -9,5 +9,6 @@
   "ontology_tree_ids.label": "Paikka",
   "ontology_tree_ids.placeholder": "Valitse paikka",
   "administrative_division_dropdown.label": "Alue",
-  "administrative_division_dropdown.placeholder": "Valitse alue"
+  "administrative_division_dropdown.placeholder": "Valitse alue",
+  "is_open_now.label": "Avoinna nyt"
 }

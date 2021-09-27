@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Button, IconSearch, IconCross } from "hds-react";
+import { Button, IconSearch, IconCross, Checkbox } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
@@ -57,6 +57,9 @@ function SearchPageSearchForm({
   const [ontologyTreeIds, setOntologyTreeIds] = useState<number[]>(
     filters.ontologyTreeIds
   );
+  const [isOpenNow, setIsOpenNow] = useState<boolean>(
+    filters.isOpenNow ?? false
+  );
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
@@ -72,15 +75,23 @@ function SearchPageSearchForm({
     setOntologyTreeIds(filters.ontologyTreeIds);
   }, [filters.ontologyTreeIds]);
 
+  useEffect(() => {
+    setIsOpenNow(filters.isOpenNow);
+  }, [filters.isOpenNow]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const q = e.target.q.value;
+    const isOpenNowValue = e.target.isOpenNow.checked;
+    // Use undefined when false to hide from UI layer
+    const isOpenNow = isOpenNowValue ? isOpenNowValue : undefined;
 
     modifyFilters({
       q: [q],
       administrativeDivisionIds,
       ontologyTreeIds,
+      isOpenNow,
     });
     setSearchText("");
   };
@@ -109,9 +120,13 @@ function SearchPageSearchForm({
     setOntologyTreeIds(ontologyIds.map((id) => Number(id)));
   };
 
+  const handleIsOpenNowChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsOpenNow(e.target.checked);
+  };
+
   const getSearchParameterLabel = (
     key: string,
-    value: string | number
+    value: string | number | boolean
   ): string | JSX.Element => {
     if (key === "administrativeDivisionIds") {
       if (administrativeDivisionsQuery.loading) {
@@ -144,6 +159,10 @@ function SearchPageSearchForm({
       }
 
       return getTranslation(ontologyTreeData.name, router.locale);
+    }
+
+    if (key === "isOpenNow") {
+      return t("is_open_now.label");
     }
 
     if (typeof value === "string") {
@@ -189,6 +208,13 @@ function SearchPageSearchForm({
           placeholder={t("administrative_division_dropdown.placeholder")}
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionIds}
+        />
+        <Checkbox
+          id="isOpenNow"
+          name="isOpenNow"
+          label={t("is_open_now.label")}
+          checked={isOpenNow}
+          onChange={handleIsOpenNowChange}
         />
         {filterList.length > 0 && (
           <div className={styles.searchAsFilters}>

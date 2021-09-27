@@ -36,6 +36,14 @@ function parseNumber(value?: string | string[]): number | undefined {
   return Number(value);
 }
 
+function parseBoolean(value?: string | string[]): boolean | undefined {
+  if (!value || Array.isArray(value)) {
+    return;
+  }
+
+  return value === "true";
+}
+
 function dropUndefined(obj: Record<string, unknown>) {
   const objectWithoutUndefined = {};
 
@@ -53,13 +61,16 @@ function dropUndefined(obj: Record<string, unknown>) {
 function parseIntoValue(
   value: string | string[],
   type: FilterConfig["type"]
-): string | number {
-  if (type === "string") {
-    return stringifyQueryValue(value);
-  }
-
-  if (type === "number") {
-    return parseNumber(value);
+): string | number | boolean {
+  switch (type) {
+    case "string":
+      return stringifyQueryValue(value);
+    case "number":
+      return parseNumber(value);
+    case "boolean":
+      return parseBoolean(value);
+    default:
+      throw Error(`Type "${type}" is not supported`);
   }
 }
 
@@ -77,7 +88,7 @@ function filterConfigToObject(
     };
   }
 
-  if (type === "string" || type === "number") {
+  if (type === "string" || type === "number" || type === "boolean") {
     const parsedValue = parseIntoValue(value, type);
 
     return {
@@ -87,14 +98,14 @@ function filterConfigToObject(
 }
 
 type FilterConfig = {
-  type: "string" | "number";
+  type: "string" | "number" | "boolean";
   storeBehaviour?: "list" | "accumulating";
   key: string;
 };
 
 type SpreadFilter = {
   key: string;
-  value: string | number;
+  value: string | number | boolean;
 };
 
 export class UnifiedSearch {
@@ -115,6 +126,7 @@ export class UnifiedSearch {
         key: "administrativeDivisionIds",
       },
       { type: "number", storeBehaviour: "list", key: "ontologyTreeIds" },
+      { type: "boolean", key: "isOpenNow" },
     ];
     this.queryPersister = queryPersister;
   }
@@ -245,7 +257,7 @@ export class UnifiedSearch {
       if (!isInSearch) {
         return {
           ...acc,
-          [key]: previousValue,
+          [key]: previousValue[0],
         };
       }
 

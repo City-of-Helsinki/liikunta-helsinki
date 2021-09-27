@@ -29,12 +29,14 @@ describe("UnifiedSearch", () => {
             q: ["swimming", "aurinkolahti"],
             first: 10,
             after: "cursor",
+            isOpenNow: true,
           }),
         }).filters
       ).toMatchInlineSnapshot(`
               Object {
                 "after": "cursor",
                 "first": 10,
+                "isOpenNow": true,
                 "q": Array [
                   "swimming",
                   "aurinkolahti",
