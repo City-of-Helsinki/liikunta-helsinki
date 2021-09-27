@@ -97,6 +97,18 @@ function filterConfigToObject(
   }
 }
 
+function getSafeArrayValue(value?: string | string[]) {
+  if (!value) {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  return [value];
+}
+
 type FilterConfig = {
   type: "string" | "number" | "boolean";
   storeBehaviour?: "list" | "accumulating";
@@ -220,12 +232,10 @@ export class UnifiedSearch {
       const { key, storeBehaviour } = filterConfig;
       const isInSearch = Object.keys(search).includes(key);
       const value = search[key];
-      const previousValue = this.query[key] ?? [];
+      const previousValue = this.query[key];
 
       if (this.getIsArrayKind(filterConfig)) {
-        const safePreviousValues = Array.isArray(previousValue)
-          ? previousValue
-          : [previousValue];
+        const safePreviousValues = getSafeArrayValue(previousValue);
 
         if (!isInSearch) {
           return {
@@ -257,7 +267,7 @@ export class UnifiedSearch {
       if (!isInSearch) {
         return {
           ...acc,
-          [key]: previousValue[0],
+          [key]: previousValue,
         };
       }
 
