@@ -9,5 +9,6 @@
   "ontology_tree_ids.label": "SV: Paikka",
   "ontology_tree_ids.placeholder": "SV: Valitse paikka",
   "administrative_division_dropdown.label": "SV: Alue",
-  "administrative_division_dropdown.placeholder": "SV: Valitse alue"
+  "administrative_division_dropdown.placeholder": "SV: Valitse alue",
+  "is_open_now.label": "SV: Avoinna nyt",
 }

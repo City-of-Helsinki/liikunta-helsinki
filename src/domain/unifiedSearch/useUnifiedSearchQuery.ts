@@ -26,6 +26,7 @@ type UnifiedSearchVariables = {
   language?: typeof appToUnifiedSearchLanguageMap[keyof typeof appToUnifiedSearchLanguageMap];
   ontologyTreeIds?: number[];
   administrativeDivisionIds?: string[];
+  openAt?: string;
   first?: number;
   after?: string;
 };
@@ -44,6 +45,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       q,
       // By default filter by the sports dept. ontology tree id
       ontologyTreeIds = [SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID],
+      isOpenNow,
       ...searchParams
     },
   } = useUnifiedSearch();
@@ -58,6 +60,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       // Default query; everything
       q: q?.join(" ") ?? "*",
       ontologyTreeIds,
+      openAt: isOpenNow ? "now" : null,
       ...searchParams,
       ...variables,
     },

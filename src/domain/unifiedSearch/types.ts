@@ -5,4 +5,5 @@ export type UnifiedSearchParameters = {
   after?: string;
   first?: number;
   ontology?: string;
+  isOpenNow?: boolean;
 };
