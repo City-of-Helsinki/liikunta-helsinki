@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { Button, IconSearch, IconCross, Checkbox } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
@@ -22,6 +28,20 @@ import SuggestionInput, {
 import Keyword from "../../../common/components/keyword/Keyword";
 import SmallSpinner from "../../../common/components/spinners/SmallSpinner";
 import styles from "./searchPageSearchForm.module.scss";
+
+type IntermediaryValue = string[] | string | number | number[] | boolean;
+
+function useIntermediaryState<S extends IntermediaryValue>(
+  value: S
+): [S, Dispatch<SetStateAction<S>>] {
+  const [intermediaryValue, setIntermediaryValue] = useState<S>(value);
+
+  useEffect(() => {
+    setIntermediaryValue(value);
+  }, [value]);
+
+  return [intermediaryValue, setIntermediaryValue];
+}
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -51,13 +71,12 @@ function SearchPageSearchForm({
     useUnifiedSearch();
   const router = useRouter();
   const [searchText, setSearchText] = useState<string | null>(null);
-  const [administrativeDivisionIds, setAdministrativeDivisionIds] = useState<
-    string[]
-  >(filters.administrativeDivisionIds);
-  const [ontologyTreeIds, setOntologyTreeIds] = useState<number[]>(
+  const [administrativeDivisionIds, setAdministrativeDivisionIds] =
+    useIntermediaryState<string[]>(filters.administrativeDivisionIds);
+  const [ontologyTreeIds, setOntologyTreeIds] = useIntermediaryState<number[]>(
     filters.ontologyTreeIds
   );
-  const [isOpenNow, setIsOpenNow] = useState<boolean>(
+  const [isOpenNow, setIsOpenNow] = useIntermediaryState<boolean>(
     filters.isOpenNow ?? false
   );
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
@@ -66,18 +85,6 @@ function SearchPageSearchForm({
   const administrativeDivisionsQuery = useAdministrativeDivisions();
   const ontologyTreeQuery = useOntologyTree();
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
-
-  useEffect(() => {
-    setAdministrativeDivisionIds(filters.administrativeDivisionIds);
-  }, [filters.administrativeDivisionIds]);
-
-  useEffect(() => {
-    setOntologyTreeIds(filters.ontologyTreeIds);
-  }, [filters.ontologyTreeIds]);
-
-  useEffect(() => {
-    setIsOpenNow(filters.isOpenNow);
-  }, [filters.isOpenNow]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
