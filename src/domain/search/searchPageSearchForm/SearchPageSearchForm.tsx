@@ -28,6 +28,7 @@ import SuggestionInput, {
 import Keyword from "../../../common/components/keyword/Keyword";
 import SmallSpinner from "../../../common/components/spinners/SmallSpinner";
 import Checkbox from "../../../common/components/checkbox/Checkbox";
+import DateInput from "../../../common/components/dateInput/DateInput";
 import styles from "./searchPageSearchForm.module.scss";
 import useOntologyWords from "../../unifiedSearch/useOntologyWords";
 
@@ -81,6 +82,9 @@ function SearchPageSearchForm({
   const [isOpenNow, setIsOpenNow] = useIntermediaryState<boolean>(
     filters.isOpenNow ?? false
   );
+  const [openAt, setOpenAt] = useIntermediaryState<string | null>(
+    filters.openAt
+  );
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
@@ -102,6 +106,7 @@ function SearchPageSearchForm({
       administrativeDivisionIds,
       ontologyTreeIds,
       isOpenNow,
+      openAt,
     });
     setSearchText("");
   };
@@ -131,7 +136,13 @@ function SearchPageSearchForm({
   };
 
   const handleIsOpenNowChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOpenAt(null);
     setIsOpenNow(e.target.checked);
+  };
+
+  const handleOpenAtChange = (date: string) => {
+    setIsOpenNow(false);
+    setOpenAt(date);
   };
 
   const getSearchParameterLabel = (
@@ -235,13 +246,25 @@ function SearchPageSearchForm({
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionIds}
         />
-        <Checkbox
-          id="isOpenNow"
-          name="isOpenNow"
-          label={t("is_open_now.label")}
-          checked={isOpenNow}
-          onChange={handleIsOpenNowChange}
-        />
+        <div className={styles.inputStack}>
+          <DateInput
+            id="openAt"
+            name="openAt"
+            label={t("open_at.label")}
+            placeholder={t("open_at.label")}
+            language={router.locale as "en" | "fi" | "sv"}
+            initialMonth={new Date()}
+            onChange={handleOpenAtChange}
+            value={openAt}
+          />
+          <Checkbox
+            id="isOpenNow"
+            name="isOpenNow"
+            label={t("is_open_now.label")}
+            checked={isOpenNow}
+            onChange={handleIsOpenNowChange}
+          />
+        </div>
         {filterList.length > 0 && (
           <div className={styles.searchAsFilters}>
             {filterList.map(({ key, value }) => (

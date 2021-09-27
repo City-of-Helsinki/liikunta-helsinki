@@ -47,4 +47,10 @@
     color: $color-black;
     font-weight: 500;
   }
+
+  .inputStack {
+    & > *:not(:last-child) {
+      margin-bottom: $spacing-s;
+    }
+  }
 }

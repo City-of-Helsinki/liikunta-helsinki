@@ -35,4 +35,7 @@ $sizes: (
     white-space: nowrap;
     width: 1px;
   }
+  & > div > input {
+    border-color: transparent !important;
+  }
 }

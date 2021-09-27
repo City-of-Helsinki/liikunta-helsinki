@@ -10,5 +10,6 @@
   "ontology_tree_ids.placeholder": "Valitse paikka",
   "administrative_division_dropdown.label": "Alue",
   "administrative_division_dropdown.placeholder": "Valitse alue",
-  "is_open_now.label": "Avoinna nyt"
+  "is_open_now.label": "Avoinna nyt",
+  "open_at.label": "Valitse ajankohta"
 }

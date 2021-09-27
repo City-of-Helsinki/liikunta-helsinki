@@ -44,11 +44,11 @@ function parseBoolean(value?: string | string[]): boolean | undefined {
   return value === "true";
 }
 
-function dropUndefined(obj: Record<string, unknown>) {
+function dropUndefinedOrNull(obj: Record<string, unknown>) {
   const objectWithoutUndefined = {};
 
   Object.entries(obj).forEach(([key, value]) => {
-    if (value === undefined) {
+    if (value === undefined || value === null) {
       return;
     }
 
@@ -146,6 +146,7 @@ export class UnifiedSearch {
       { type: "number", storeBehaviour: "list", key: "ontologyTreeIds" },
       { type: "string", storeBehaviour: "list", key: "ontologyWordIds" },
       { type: "boolean", key: "isOpenNow" },
+      { type: "string", key: "openAt" },
     ];
     this.queryPersister = queryPersister;
   }
@@ -164,7 +165,7 @@ export class UnifiedSearch {
       {}
     );
 
-    return dropUndefined({
+    return dropUndefinedOrNull({
       ...filters,
       after: stringifyQueryValue(after),
       first: parseNumber(first),
@@ -291,7 +292,7 @@ export class UnifiedSearch {
         [key]: value,
       };
     }, {});
-    this.setFilters(dropUndefined(nextFilters));
+    this.setFilters(dropUndefinedOrNull(nextFilters));
   }
 
   getFiltersWithout(key: string, value: string) {
