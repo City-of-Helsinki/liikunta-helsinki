@@ -1,0 +1,6 @@
+@use "utils";
+@import "variables";
+
+.dateInput {
+  @include utils.override-hds-input-styles();
+}

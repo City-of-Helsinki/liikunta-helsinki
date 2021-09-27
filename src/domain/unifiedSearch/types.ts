@@ -7,4 +7,5 @@ export type UnifiedSearchParameters = {
   first?: number;
   ontology?: string;
   isOpenNow?: boolean;
+  openAt?: string;
 };

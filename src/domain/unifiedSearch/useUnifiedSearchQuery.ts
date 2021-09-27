@@ -5,10 +5,25 @@ import {
   useQuery,
 } from "@apollo/client";
 
-import { HELSINKI_OCD_DIVISION_ID, SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../constants";
+import {
+  HELSINKI_OCD_DIVISION_ID,
+  SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
+} from "../../constants";
 import searchApolloClient from "../unifiedSearch/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
 import useUnifiedSearch from "./useUnifiedSearch";
+
+function getOpenAt(openAt: string, isOpenNow: boolean) {
+  if (openAt) {
+    return openAt;
+  }
+
+  if (isOpenNow) {
+    return "now";
+  }
+
+  return null;
+}
 
 const appToUnifiedSearchLanguageMap = {
   fi: "FINNISH",
@@ -48,6 +63,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       // Limit results inside Helsinki when there is no administrative division(s) selected
       administrativeDivisionIds = [HELSINKI_OCD_DIVISION_ID],
       isOpenNow,
+      openAt,
       ...searchParams
     },
   } = useUnifiedSearch();
@@ -63,7 +79,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       q: q?.join(" ") ?? "*",
       ontologyTreeIds,
       administrativeDivisionIds,
-      openAt: isOpenNow ? "now" : null,
+      openAt: getOpenAt(openAt, isOpenNow),
       ...searchParams,
       ...variables,
     },
