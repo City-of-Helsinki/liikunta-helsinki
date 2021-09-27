@@ -5,7 +5,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Button, IconSearch, IconCross, Checkbox } from "hds-react";
+import { Button, IconSearch, IconCross } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
@@ -27,6 +27,7 @@ import SuggestionInput, {
 } from "../../../common/components/suggestionInput/SuggestionInput";
 import Keyword from "../../../common/components/keyword/Keyword";
 import SmallSpinner from "../../../common/components/spinners/SmallSpinner";
+import Checkbox from "../../../common/components/checkbox/Checkbox";
 import styles from "./searchPageSearchForm.module.scss";
 
 type IntermediaryValue = string[] | string | number | number[] | boolean;
