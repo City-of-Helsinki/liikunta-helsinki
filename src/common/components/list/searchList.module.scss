@@ -46,7 +46,16 @@
 
   @include breakpoints.respond-above(s) {
     flex-direction: row;
-    justify-content: unset;
+    justify-content: space-between;
+  }
+}
+
+.rowGroup {
+  display: flex;
+  align-items: center;
+
+  & > *:not(:last-child) {
+    margin-right: $spacing-m;
   }
 }
 

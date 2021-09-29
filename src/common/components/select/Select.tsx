@@ -4,14 +4,23 @@ import { Select as HDSSelect, SelectProps } from "hds-react";
 import { Option } from "../../../types";
 import styles from "./select.module.scss";
 
+type Props<Option> = SelectProps<Option> & {
+  noOutline?: boolean;
+};
+
 export default function Select({
   className,
+  noOutline = false,
   ...delegated
-}: SelectProps<Option>) {
+}: Props<Option>) {
   return (
     <HDSSelect
       {...delegated}
-      className={classNames(styles.select, className)}
+      className={classNames(
+        styles.select,
+        { [styles.selectNoOutline]: !noOutline },
+        className
+      )}
     />
   );
 }

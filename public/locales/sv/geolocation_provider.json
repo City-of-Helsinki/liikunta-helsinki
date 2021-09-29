@@ -1,0 +1,7 @@
+{
+  "error.title": "SV: Sijaintia ei voitu käyttää",
+  "error.description.permission_denied": "SV: Et ole myöntänyt lupaa sijaintisi käyttämiseen",
+  "error.description.generic": "SV: Sijaintia ei ole saatavilla",
+  "a11ymessage.title": "SV:  Etsitään paikkaa",
+  "a11ymessage.description": "SV: Yritäme käyttää selaimesi tarjoamaa paikkatietoa"
+}

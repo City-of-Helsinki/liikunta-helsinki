@@ -281,3 +281,8 @@ export type ItemQueryResult<TVariables = OperationVariables> = Omit<
   pageInfo: PageInfo;
   totalCount: number;
 };
+
+export type Coordinates = {
+  latitude: number;
+  longitude: number;
+};

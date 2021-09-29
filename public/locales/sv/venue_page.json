@@ -16,5 +16,6 @@
   "content.description": "SV: Kuvaus",
   "share_sport": "SV: Jaa liikunta",
   "map_box.title": "SV: Sijainti",
-  "map_box.accessibility_sentences": "SV: Esteettömyystiedot"
+  "map_box.accessibility_sentences": "SV: Esteettömyystiedot",
+  "other_sports_section.title": "SV: Muuta samankaltaista liikuntaa"
 }

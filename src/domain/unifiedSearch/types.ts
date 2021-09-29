@@ -8,4 +8,6 @@ export type UnifiedSearchParameters = {
   ontology?: string;
   isOpenNow?: boolean;
   openAt?: Date;
+  orderBy?: "distance";
+  orderDir?: "asc" | "desc";
 };
