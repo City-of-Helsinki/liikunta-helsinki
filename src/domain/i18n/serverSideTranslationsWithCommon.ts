@@ -9,6 +9,7 @@ const COMMON_TRANSLATIONS = [
   "card",
   "info_block",
   "date_time_picker",
+  "geolocation_provider",
 ];
 
 export default async function serverSideTranslationsWithCommon(

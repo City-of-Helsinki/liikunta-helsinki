@@ -9,6 +9,8 @@ import {
   HELSINKI_OCD_DIVISION_ID,
   SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
 } from "../../constants";
+import { Coordinates } from "../../types";
+import useGeolocation from "../../common/geolocation/useGeolocation";
 import searchApolloClient from "../unifiedSearch/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
 import useUnifiedSearch from "./useUnifiedSearch";
@@ -23,6 +25,28 @@ function getOpenAt(openAt: Date, isOpenNow: boolean) {
   }
 
   return null;
+}
+
+function getOrderByDistance(
+  position: Coordinates | undefined,
+  orderBy: "distance",
+  orderDir?: "asc" | "desc"
+) {
+  if (orderBy !== "distance" || !position) {
+    return;
+  }
+
+  const orderDirTpUSDistanceOrder = {
+    asc: "ASCENDING",
+    desc: "DESCENDING",
+    null: undefined,
+  } as const;
+
+  return {
+    latitude: position.latitude,
+    longitude: position.longitude,
+    order: orderDir ? orderDirTpUSDistanceOrder[orderDir] : null,
+  };
 }
 
 const appToUnifiedSearchLanguageMap = {
@@ -44,6 +68,11 @@ type UnifiedSearchVariables = {
   openAt?: string;
   first?: number;
   after?: string;
+  orderByDistance?: {
+    latitude: number;
+    longitude: number;
+    order?: "ASCENDING" | "DESCENDING";
+  };
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,9 +93,14 @@ export default function useUnifiedSearchQuery<TData = any>(
       administrativeDivisionIds = [HELSINKI_OCD_DIVISION_ID],
       isOpenNow,
       openAt,
+      orderBy,
+      orderDir,
       ...searchParams
     },
   } = useUnifiedSearch();
+  const { geolocation } = useGeolocation({
+    skip: orderBy !== "distance",
+  });
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { fetchMore, ...delegated } = useQuery(query, {
@@ -80,6 +114,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       ontologyTreeIds,
       administrativeDivisionIds,
       openAt: getOpenAt(openAt, isOpenNow),
+      orderByDistance: getOrderByDistance(geolocation, orderBy, orderDir),
       ...searchParams,
       ...variables,
     },

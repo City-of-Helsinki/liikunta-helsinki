@@ -6,5 +6,9 @@
   "is_loading_more": "Ladataan lisää",
   "n_more_locations": "sijaintia lisää",
   "do_show_more_locations": "Näytä lisää sijainteja",
-  "no_more_results": "Ei enempää hakutuloksia"
+  "no_more_results": "Ei enempää hakutuloksia",
+  "order_by.alphabetical": "Aakkosjärjestyksessä",
+  "order_by.relevance": "Osuvuuden mukaan",
+  "order_by.distance": "Lähimmät ensin",
+  "order_by.label": "Järjestys"
 }

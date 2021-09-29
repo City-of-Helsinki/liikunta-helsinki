@@ -130,6 +130,7 @@ type FilterConfig = {
   type: "string" | "number" | "boolean" | "date";
   storeBehaviour?: "list" | "accumulating";
   key: string;
+  filterListBehaviour?: "hidden";
 };
 
 type SpreadFilter = {
@@ -164,6 +165,8 @@ export class UnifiedSearch {
       { type: "string", storeBehaviour: "list", key: "ontologyWordIds" },
       { type: "boolean", key: "isOpenNow" },
       { type: "date", key: "openAt" },
+      { type: "string", key: "orderBy", filterListBehaviour: "hidden" },
+      { type: "string", key: "orderDir", filterListBehaviour: "hidden" },
     ];
     this.queryPersister = queryPersister;
   }
@@ -190,25 +193,27 @@ export class UnifiedSearch {
   }
 
   get filterList(): SpreadFilter[] {
-    const filters = this.filterConfig.flatMap((filterConfig) => {
-      const [key, value] = filterConfigToEntry(filterConfig, this.query);
+    const filters = this.filterConfig
+      .filter((filterConfig) => filterConfig.filterListBehaviour !== "hidden")
+      .flatMap((filterConfig) => {
+        const [key, value] = filterConfigToEntry(filterConfig, this.query);
 
-      if (!value) {
-        return null;
-      }
+        if (!value) {
+          return null;
+        }
 
-      if (this.getIsArrayKind(filterConfig) && Array.isArray(value)) {
-        return value.map((value: string) => ({
+        if (this.getIsArrayKind(filterConfig) && Array.isArray(value)) {
+          return value.map((value: string) => ({
+            key,
+            value,
+          }));
+        }
+
+        return {
           key,
           value,
-        }));
-      }
-
-      return {
-        key,
-        value,
-      };
-    });
+        };
+      });
 
     return filters.filter((item) => item?.value) as SpreadFilter[];
   }
@@ -272,11 +277,19 @@ export class UnifiedSearch {
     }, {});
   }
 
-  modifyFilters(search: Partial<UnifiedSearchParameters>) {
+  modifyFilters(
+    search: Partial<UnifiedSearchParameters>,
+    transitionOptions?: TransitionOptions
+  ) {
     const nextFilters = this.filterConfig.reduce((acc, filterConfig) => {
       const { key, storeBehaviour } = filterConfig;
       const isInSearch = Object.keys(search).includes(key);
       const value = search[key];
+
+      if (value === null) {
+        return acc;
+      }
+
       const previousValue = this.query[key];
 
       if (this.getIsArrayKind(filterConfig)) {
@@ -321,7 +334,11 @@ export class UnifiedSearch {
         [key]: value,
       };
     }, {});
-    this.setFilters(dropUndefinedOrNull(nextFilters));
+    this.setFilters(
+      dropUndefinedOrNull(nextFilters),
+      undefined,
+      transitionOptions
+    );
   }
 
   getQueryWithout(key: string, value: FilterValueType) {

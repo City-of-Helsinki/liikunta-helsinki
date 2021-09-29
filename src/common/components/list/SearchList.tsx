@@ -3,9 +3,14 @@ import classNames from "classnames";
 import { Button, LoadingSpinner, IconMap, IconSearch } from "hds-react";
 import { useTranslation } from "next-i18next";
 
-import styles from "./searchList.module.scss";
+import { Option } from "../../../types";
+import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
 import Text from "../text/Text";
 import InfoTemplate from "../infoTemplate/InfoTemplate";
+import styles from "./searchList.module.scss";
+import Select from "../select/Select";
+import SmallSpinner from "../spinners/SmallSpinner";
+import useGeolocation from "../../geolocation/useGeolocation";
 
 type Props = {
   items: React.ReactElement[];
@@ -33,6 +38,12 @@ const SearchList = forwardRef(
     ref: Ref<HTMLLIElement>
   ) => {
     const { t } = useTranslation("search_list");
+    const { modifyFilters, filters, filterList } = useUnifiedSearch();
+    const {
+      loading: loadingGeolocation,
+      called,
+      resolve,
+    } = useGeolocation({ skip: true });
     const resultsLeft = count ? count - items.length : 0;
 
     const getLoadedMoreAmount = () => {
@@ -58,6 +69,57 @@ const SearchList = forwardRef(
       );
     }
 
+    const handleOrderChange = async (option: Option) => {
+      const transitionOptions = {
+        shallow: true,
+      };
+
+      switch (option.value) {
+        case "distance-asc":
+          if (!called) {
+            // Wait until position is resolved. This defers querying search
+            // results until location is resolved, which will result in less UI
+            // states and a slightly better UX.
+            await resolve();
+          }
+
+          return modifyFilters(
+            {
+              orderBy: "distance",
+              orderDir: "asc",
+            },
+            transitionOptions
+          );
+        default:
+          return modifyFilters(
+            {
+              orderBy: null,
+              orderDir: null,
+            },
+            transitionOptions
+          );
+      }
+    };
+
+    const orderByOptions = [
+      {
+        label:
+          filterList.length > 0
+            ? t("order_by.relevance")
+            : t("order_by.alphabetical"),
+        value: "",
+      },
+      { label: t("order_by.distance"), value: "distance-asc" },
+    ];
+    const selectedOrderByOption = orderByOptions.find((option) => {
+      const selectedOptionValue =
+        filters.orderBy && filters.orderDir
+          ? `${filters.orderBy}-${filters.orderDir}`
+          : "";
+
+      return option.value === selectedOptionValue;
+    });
+
     return (
       <>
         {!loading && (
@@ -69,9 +131,23 @@ const SearchList = forwardRef(
             >
               {t("show_on_map")}
             </Button>
-            <Text variant="h2" className={styles.resultCount} role="status">
-              {count} {t("search_results_count_label")}
-            </Text>
+            <div className={styles.rowGroup}>
+              <Text variant="h2" className={styles.resultCount} role="status">
+                {count} {t("search_results_count_label")}
+              </Text>
+              <Select
+                label={t("order_by.label")}
+                value={selectedOrderByOption}
+                onChange={handleOrderChange}
+                options={orderByOptions}
+                icon={
+                  loadingGeolocation ? (
+                    <SmallSpinner aria-label="Etsitään paikkaa" />
+                  ) : null
+                }
+                noOutline
+              />
+            </div>
           </div>
         )}
         <ul

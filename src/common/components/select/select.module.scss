@@ -3,9 +3,13 @@
 .select {
   @include utils.override-hds-input-styles();
 
+  &noOutline {
+    & > div {
+      border-color: transparent;
+    }
+  }
+
   & > div {
     font-weight: 500;
-
-    border-color: transparent;
   }
 }

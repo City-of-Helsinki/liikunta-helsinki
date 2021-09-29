@@ -29,6 +29,7 @@ export const MAP_SEARCH_QUERY = gql`
     $administrativeDivisionIds: [ID!]
     $ontologyTreeIds: [ID!]
     $openAt: String
+    $orderByDistance: OrderByDistance
   ) {
     unifiedSearch(
       q: $q
@@ -39,6 +40,7 @@ export const MAP_SEARCH_QUERY = gql`
       administrativeDivisionIds: $administrativeDivisionIds
       ontologyTreeIds: $ontologyTreeIds
       openAt: $openAt
+      orderByDistance: $orderByDistance
     ) {
       count
       edges {
