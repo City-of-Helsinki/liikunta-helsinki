@@ -7,3 +7,5 @@ export const Sources = {
 // sports and leisure department (KuVa) as its parent.
 // https://www.hel.fi/palvelukarttaws/rest/v4/ontologytree/551
 export const SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID = 551;
+
+export const HELSINKI_OCD_DIVISION_ID = "ocd-division/country:fi/kunta:helsinki";
