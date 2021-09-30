@@ -5,7 +5,7 @@ import {
   useQuery,
 } from "@apollo/client";
 
-import { SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../constants";
+import { HELSINKI_OCD_DIVISION_ID, SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../constants";
 import searchApolloClient from "../unifiedSearch/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
 import useUnifiedSearch from "./useUnifiedSearch";
@@ -45,6 +45,8 @@ export default function useUnifiedSearchQuery<TData = any>(
       q,
       // By default filter by the sports dept. ontology tree id
       ontologyTreeIds = [SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID],
+      // Limit results inside Helsinki when there is no administrative division(s) selected
+      administrativeDivisionIds = [HELSINKI_OCD_DIVISION_ID],
       isOpenNow,
       ...searchParams
     },
@@ -60,6 +62,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       // Default query; everything
       q: q?.join(" ") ?? "*",
       ontologyTreeIds,
+      administrativeDivisionIds,
       openAt: isOpenNow ? "now" : null,
       ...searchParams,
       ...variables,
