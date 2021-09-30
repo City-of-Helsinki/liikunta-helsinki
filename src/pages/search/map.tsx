@@ -87,7 +87,7 @@ function getSearchResultsAsItems(
 export default function MapSearch() {
   const router = useRouter();
   const { data } = useUnifiedSearchQuery(MAP_SEARCH_QUERY, {
-    first: 100,
+    first: 10000,
   });
   const mapSearchPageQuery = useQuery(MAP_SEARCH_PAGE_QUERY, {
     variables: {
