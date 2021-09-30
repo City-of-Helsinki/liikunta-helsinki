@@ -14,7 +14,7 @@ type AdministrativeDivision = {
 
 const ADMINISTRATIVE_DIVISION_QUERY = gql`
   {
-    administrativeDivisions {
+    administrativeDivisions(helsinkiCommonOnly: true) {
       id
       type
       name {
@@ -25,18 +25,6 @@ const ADMINISTRATIVE_DIVISION_QUERY = gql`
     }
   }
 `;
-
-function filterNeighborhoods(
-  administrativeDivisions: AdministrativeDivision[]
-) {
-  if (!administrativeDivisions) {
-    return administrativeDivisions;
-  }
-
-  return administrativeDivisions.filter(
-    (division) => division.type === "neighborhood"
-  );
-}
 
 function sortAdministrativeDivisionsAlphabetically(
   administrativeDivisions: AdministrativeDivision[],
@@ -67,7 +55,7 @@ export default function useAdministrativeDivisions() {
   return {
     data: {
       administrativeDivisions: sortAdministrativeDivisionsAlphabetically(
-        filterNeighborhoods(data?.administrativeDivisions),
+        data?.administrativeDivisions,
         locale
       ),
     },
