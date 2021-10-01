@@ -73,6 +73,8 @@ function MapView({ items = [] }: Props) {
           chunkedLoading
           showCoverageOnHover={false}
           iconCreateFunction={createCustomClusterIcon}
+          maxClusterRadius={60}
+          animate={false}
         >
           {items?.map((item) => {
             if (!item.location) {
