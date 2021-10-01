@@ -6,7 +6,6 @@ import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
 import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
-import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
@@ -44,14 +43,26 @@ export const MAP_SEARCH_QUERY = gql`
       edges {
         node {
           venue {
-            ...unifiedSearchVenueFragment
+            meta {
+              id
+            }
+            name {
+              fi
+              sv
+              en
+            }
+            location {
+              geoLocation {
+                geometry {
+                  coordinates
+                }
+              }
+            }
           }
         }
       }
     }
   }
-
-  ${unifiedSearchVenueFragment}
 `;
 
 export const MAP_SEARCH_PAGE_QUERY = gql`
