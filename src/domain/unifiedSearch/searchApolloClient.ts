@@ -9,12 +9,13 @@ import { relayStylePagination } from "@apollo/client/utilities";
 
 import Config from "../../config";
 import apolloErrorLink from "../../common/apollo/apolloErrorLink";
+import { excludeArgs } from "../../common/apollo/utils";
 
 const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        unifiedSearch: relayStylePagination(),
+        unifiedSearch: relayStylePagination(excludeArgs(["after"])),
       },
     },
   },

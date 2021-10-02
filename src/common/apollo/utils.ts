@@ -2,6 +2,16 @@ import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 
 import { Connection, MenuItem } from "../../types";
 
+export const excludeArgs =
+  (excludedArgs: string[]) =>
+  (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    args: Record<string, any> | null
+  ) =>
+    args
+      ? Object.keys(args).filter((key: string) => !excludedArgs.includes(key))
+      : false;
+
 export function getNodes<T>(connection: Connection<T>): T[] {
   return connection.edges.map(({ node }) => node);
 }
