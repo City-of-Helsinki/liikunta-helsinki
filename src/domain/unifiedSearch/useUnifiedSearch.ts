@@ -120,6 +120,12 @@ type SpreadFilter = {
   value: string | number | boolean;
 };
 
+type TransitionOptions = {
+  shallow?: boolean;
+  locale?: string | false;
+  scroll?: boolean;
+};
+
 export class UnifiedSearch {
   router: NextRouter;
   filterConfig: FilterConfig[];
@@ -196,13 +202,21 @@ export class UnifiedSearch {
     );
   }
 
-  setFilters(search: UnifiedSearchParameters, pathname?: string) {
+  setFilters(
+    search: UnifiedSearchParameters,
+    pathname?: string,
+    options?: TransitionOptions
+  ) {
     this.queryPersister.persistQuery(search);
 
-    this.router.replace({
-      pathname,
-      query: search,
-    });
+    this.router.replace(
+      {
+        pathname,
+        query: search,
+      },
+      null,
+      options
+    );
   }
 
   getSearchParamsFromFilters(filters: SpreadFilter[]): UnifiedSearchParameters {
@@ -303,20 +317,21 @@ export default function useUnifiedSearch() {
   }
 
   const setFilters = useCallback(
-    (search: UnifiedSearchParameters, pathname?: string) => {
-      unifiedSearch.setFilters(search, pathname);
+    (...params: Parameters<typeof unifiedSearch.setFilters>) => {
+      unifiedSearch.setFilters(...params);
     },
     [unifiedSearch]
   );
 
   const modifyFilters = useCallback(
-    (search: Partial<UnifiedSearchParameters>) =>
-      unifiedSearch.modifyFilters(search),
+    (...params: Parameters<typeof unifiedSearch.modifyFilters>) =>
+      unifiedSearch.modifyFilters(...params),
     [unifiedSearch]
   );
 
   const getFiltersWithout = useCallback(
-    (key: string, value: string) => unifiedSearch.getFiltersWithout(key, value),
+    (...params: Parameters<typeof unifiedSearch.getFiltersWithout>) =>
+      unifiedSearch.getFiltersWithout(...params),
     [unifiedSearch]
   );
 
