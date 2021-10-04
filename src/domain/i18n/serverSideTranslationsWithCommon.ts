@@ -8,6 +8,7 @@ const COMMON_TRANSLATIONS = [
   "footer",
   "card",
   "info_block",
+  "date_time_picker",
 ];
 
 export default async function serverSideTranslationsWithCommon(

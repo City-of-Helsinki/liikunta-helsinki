@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import React, { useRef, useState } from "react";
 import { Button, IconSearch, IconCross } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
@@ -21,6 +15,8 @@ import Link from "../../i18n/router/Link";
 import searchApolloClient from "../../../domain/unifiedSearch/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../common/apollo/utils";
 import getTranslation from "../../../common/utils/getTranslation";
+import formatDateTimeIntoLocaleString from "../../../common/utils/formatDateTimeIntoLocaleString";
+import useIntermediaryState from "../../../common/hooks/useIntermediaryState";
 import Text from "../../../common/components/text/Text";
 import SuggestionInput, {
   Suggestion,
@@ -28,23 +24,9 @@ import SuggestionInput, {
 import Keyword from "../../../common/components/keyword/Keyword";
 import SmallSpinner from "../../../common/components/spinners/SmallSpinner";
 import Checkbox from "../../../common/components/checkbox/Checkbox";
-import DateInput from "../../../common/components/dateInput/DateInput";
+import DateTimePicker from "../../../common/components/dateTimePicker/DateTimePicker";
 import styles from "./searchPageSearchForm.module.scss";
 import useOntologyWords from "../../unifiedSearch/useOntologyWords";
-
-type IntermediaryValue = string[] | string | number | number[] | boolean;
-
-function useIntermediaryState<S extends IntermediaryValue>(
-  value: S
-): [S, Dispatch<SetStateAction<S>>] {
-  const [intermediaryValue, setIntermediaryValue] = useState<S>(value);
-
-  useEffect(() => {
-    setIntermediaryValue(value);
-  }, [value]);
-
-  return [intermediaryValue, setIntermediaryValue];
-}
 
 const SUGGESTION_QUERY = gql`
   query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
@@ -82,9 +64,7 @@ function SearchPageSearchForm({
   const [isOpenNow, setIsOpenNow] = useIntermediaryState<boolean>(
     filters.isOpenNow ?? false
   );
-  const [openAt, setOpenAt] = useIntermediaryState<string | null>(
-    filters.openAt
-  );
+  const [openAt, setOpenAt] = useIntermediaryState<Date | null>(filters.openAt);
   const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
     client: searchApolloClient,
   });
@@ -140,14 +120,14 @@ function SearchPageSearchForm({
     setIsOpenNow(e.target.checked);
   };
 
-  const handleOpenAtChange = (date: string) => {
+  const handleOpenAtChange = (date: Date) => {
     setIsOpenNow(false);
     setOpenAt(date);
   };
 
   const getSearchParameterLabel = (
     key: string,
-    value: string | number | boolean
+    value: string | number | boolean | Date
   ): string | JSX.Element => {
     if (key === "administrativeDivisionIds") {
       if (administrativeDivisionsQuery.loading) {
@@ -202,6 +182,10 @@ function SearchPageSearchForm({
       return t("is_open_now.label");
     }
 
+    if (value instanceof Date) {
+      return formatDateTimeIntoLocaleString(value, router.locale);
+    }
+
     if (typeof value === "string") {
       return value;
     }
@@ -247,15 +231,13 @@ function SearchPageSearchForm({
           value={administrativeDivisionIds}
         />
         <div className={styles.inputStack}>
-          <DateInput
+          <DateTimePicker
             id="openAt"
             name="openAt"
             label={t("open_at.label")}
-            placeholder={t("open_at.label")}
-            language={router.locale as "en" | "fi" | "sv"}
-            initialMonth={new Date()}
-            onChange={handleOpenAtChange}
             value={openAt}
+            onChange={handleOpenAtChange}
+            locale={router.locale}
           />
           <Checkbox
             id="isOpenNow"

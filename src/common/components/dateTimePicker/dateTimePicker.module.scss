@@ -1,0 +1,65 @@
+@use "utils";
+@import "variables";
+
+.dropdown {
+  position: relative;
+
+  &.open .dropdownButton,
+  &:focus-within .dropdownButton {
+    border-color: $color-black;
+  }
+
+  .dropdownButton {
+    @include utils.override-hds-input-styles();
+
+    height: 3.5rem; // Hardcoded height value of HDS input elements
+    padding: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    border: 2px solid transparent;
+    background: $color-white;
+
+    &:hover {
+      border-color: $color-black;
+    }
+
+    &Icon {
+      flex-basis: calc(3rem + 4px); // Icon width in HDS input controls
+    }
+
+    &TextContent {
+      text-align: start;
+      flex-grow: 1;
+    }
+  }
+
+  .dropdownContent {
+    &.open {
+      position: absolute;
+      list-style-type: none;
+      margin: 0;
+      padding: 1.2rem 1.2rem;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      flex-flow: column;
+
+      background: $color-white;
+      border: 2px solid $color-black-90;
+      border-top: 1px solid $color-black-20;
+      transform: translateY(-2px);
+
+      & > *:not(:last-child) {
+        margin-bottom: $spacing-s;
+      }
+    }
+
+    .buttonRow {
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+}

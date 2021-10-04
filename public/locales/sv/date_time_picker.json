@@ -1,0 +1,9 @@
+{
+  "select": "SV: Valitse",
+  "close": "SV: Sulje",
+  "date_input.label": "SV: Päivä",
+  "date_input.helper_text": "SV: Käytä muotoa P.K.VVVV",
+  "time_input.label": "SV: Aika",
+  "time_input.hours_label": "SV: Tunnit",
+  "time_input.minutes_label": "SV: Minuutit"
+}

@@ -1,0 +1,9 @@
+{
+  "select": "Valitse",
+  "close": "Sulje",
+  "date_input.label": "Päivä",
+  "date_input.helper_text": "Käytä muotoa P.K.VVVV",
+  "time_input.label": "Aika",
+  "time_input.hours_label": "Tunnit",
+  "time_input.minutes_label": "Minuutit"
+}
