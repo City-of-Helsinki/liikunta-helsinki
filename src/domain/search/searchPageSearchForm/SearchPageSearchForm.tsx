@@ -52,7 +52,7 @@ function SearchPageSearchForm({
   searchRoute = "/search",
 }: Props) {
   const { t } = useTranslation("search_page_search_form");
-  const { filterList, modifyFilters, getFiltersWithout, filters } =
+  const { filterList, modifyFilters, getQueryWithout, filters } =
     useUnifiedSearch();
   const router = useRouter();
   const [searchText, setSearchText] = useState<string | null>(null);
@@ -259,7 +259,7 @@ function SearchPageSearchForm({
                 )}: ${getSearchParameterLabel(key, value)}`}
                 keyword={getSearchParameterLabel(key, value)}
                 href={{
-                  query: getFiltersWithout(key, value.toString()),
+                  query: getQueryWithout(key, value),
                 }}
               />
             ))}

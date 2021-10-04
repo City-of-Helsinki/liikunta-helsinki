@@ -23,26 +23,29 @@ function getAsPath(values) {
 describe("UnifiedSearch", () => {
   describe("get filters", () => {
     it("filters should return expected values", () => {
-      expect(
-        getUnifiedSearch({
-          asPath: getAsPath({
-            q: ["swimming", "aurinkolahti"],
-            first: 10,
-            after: "cursor",
-            isOpenNow: true,
-          }),
-        }).filters
-      ).toMatchInlineSnapshot(`
-              Object {
-                "after": "cursor",
-                "first": 10,
-                "isOpenNow": true,
-                "q": Array [
-                  "swimming",
-                  "aurinkolahti",
-                ],
-              }
-          `);
+      const filters = getUnifiedSearch({
+        asPath: getAsPath({
+          q: ["swimming", "aurinkolahti"],
+          first: 10,
+          after: "cursor",
+          isOpenNow: true,
+          openAt: new Date(2020, 11, 24, 12, 12).toJSON(),
+        }),
+      }).filters;
+
+      expect(filters).toMatchInlineSnapshot(`
+        Object {
+          "after": "cursor",
+          "first": 10,
+          "isOpenNow": true,
+          "openAt": 2020-12-24T10:12:00.000Z,
+          "q": Array [
+            "swimming",
+            "aurinkolahti",
+          ],
+        }
+      `);
+      expect(filters.openAt instanceof Date).toEqual(true);
     });
   });
 
@@ -182,17 +185,19 @@ describe("UnifiedSearch", () => {
     });
   });
 
-  describe("getFiltersWithout", () => {
+  describe("getQueryWithout", () => {
     it("should drop the key,string pair that matches the parameters", () => {
       const mockRouter = {
         asPath: getAsPath({
           q: ["A", "B"],
+          openAt: "2020-12-24T10:12:00.000Z",
         }),
       };
       const unifiedSearch = getUnifiedSearch(mockRouter);
 
-      expect(unifiedSearch.getFiltersWithout("q", "A")).toMatchInlineSnapshot(`
+      expect(unifiedSearch.getQueryWithout("q", "A")).toMatchInlineSnapshot(`
         Object {
+          "openAt": "2020-12-24T10:12:00.000Z",
           "q": Array [
             "B",
           ],
