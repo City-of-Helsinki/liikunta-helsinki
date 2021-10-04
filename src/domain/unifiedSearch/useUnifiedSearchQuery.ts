@@ -13,9 +13,9 @@ import searchApolloClient from "../unifiedSearch/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
 import useUnifiedSearch from "./useUnifiedSearch";
 
-function getOpenAt(openAt: string, isOpenNow: boolean) {
+function getOpenAt(openAt: Date, isOpenNow: boolean) {
   if (openAt) {
-    return openAt;
+    return openAt.toJSON();
   }
 
   if (isOpenNow) {

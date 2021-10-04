@@ -1,3 +1,5 @@
+import { ParsedUrlQueryInput } from "querystring";
+
 import { useCallback, useMemo, useRef } from "react";
 import { NextRouter, useRouter } from "next/router";
 import queryString from "query-string";
@@ -6,6 +8,7 @@ import fastDeepEqual from "fast-deep-equal/react";
 import defaultQueryPersister, {
   QueryPersister,
 } from "../../common/utils/queryPersister";
+import getIsDateValid from "../../common/utils/getIsValidDate";
 import { UnifiedSearchParameters } from "./types";
 
 function stringifyQueryValue(value?: string | string[]): string | undefined {
@@ -44,6 +47,20 @@ function parseBoolean(value?: string | string[]): boolean | undefined {
   return value === "true";
 }
 
+function parseDate(value?: string | string[]): Date | undefined {
+  if (!value || Array.isArray(value)) {
+    return;
+  }
+
+  const date = new Date(value);
+
+  if (date && getIsDateValid(date)) {
+    return date;
+  }
+
+  return;
+}
+
 function dropUndefinedOrNull(obj: Record<string, unknown>) {
   const objectWithoutUndefined = {};
 
@@ -61,7 +78,7 @@ function dropUndefinedOrNull(obj: Record<string, unknown>) {
 function parseIntoValue(
   value: string | string[],
   type: FilterConfig["type"]
-): string | number | boolean {
+): string | number | boolean | Date {
   switch (type) {
     case "string":
       return stringifyQueryValue(value);
@@ -69,31 +86,37 @@ function parseIntoValue(
       return parseNumber(value);
     case "boolean":
       return parseBoolean(value);
+    case "date":
+      return parseDate(value);
     default:
       throw Error(`Type "${type}" is not supported`);
   }
 }
 
-function filterConfigToObject(
+function filterConfigToEntry(
   { type, key, storeBehaviour }: FilterConfig,
   values
-) {
+): [
+  string,
+  string | number | boolean | Date | (string | number | boolean | Date)[]
+] {
   const value = values[key];
 
   if (storeBehaviour === "list" || storeBehaviour === "accumulating") {
     const valueAsArray = makeArray(value);
 
-    return {
-      [key]: valueAsArray?.map((value) => parseIntoValue(value, type)),
-    };
+    return [key, valueAsArray?.map((value) => parseIntoValue(value, type))];
   }
 
-  if (type === "string" || type === "number" || type === "boolean") {
+  if (
+    type === "string" ||
+    type === "number" ||
+    type === "boolean" ||
+    type === "date"
+  ) {
     const parsedValue = parseIntoValue(value, type);
 
-    return {
-      [key]: parsedValue,
-    };
+    return [key, parsedValue];
   }
 }
 
@@ -110,14 +133,14 @@ function getSafeArrayValue(value?: string | string[]) {
 }
 
 type FilterConfig = {
-  type: "string" | "number" | "boolean";
+  type: "string" | "number" | "boolean" | "date";
   storeBehaviour?: "list" | "accumulating";
   key: string;
 };
 
 type SpreadFilter = {
   key: string;
-  value: string | number | boolean;
+  value: string | number | boolean | Date;
 };
 
 type TransitionOptions = {
@@ -146,7 +169,7 @@ export class UnifiedSearch {
       { type: "number", storeBehaviour: "list", key: "ontologyTreeIds" },
       { type: "string", storeBehaviour: "list", key: "ontologyWordIds" },
       { type: "boolean", key: "isOpenNow" },
-      { type: "string", key: "openAt" },
+      { type: "date", key: "openAt" },
     ];
     this.queryPersister = queryPersister;
   }
@@ -157,13 +180,13 @@ export class UnifiedSearch {
 
   get filters(): UnifiedSearchParameters {
     const { after, first } = this.query;
-    const filters = this.filterConfig.reduce(
-      (acc, filter) => ({
+    const filters = this.filterConfig.reduce((acc, filter) => {
+      const [key, value] = filterConfigToEntry(filter, this.query);
+      return {
         ...acc,
-        ...filterConfigToObject(filter, this.query),
-      }),
-      {}
-    );
+        [key]: value,
+      };
+    }, {});
 
     return dropUndefinedOrNull({
       ...filters,
@@ -174,8 +197,7 @@ export class UnifiedSearch {
 
   get filterList(): SpreadFilter[] {
     const filters = this.filterConfig.flatMap((filterConfig) => {
-      const { key } = filterConfig;
-      const value = this.query[key];
+      const [key, value] = filterConfigToEntry(filterConfig, this.query);
 
       if (!value) {
         return null;
@@ -214,11 +236,24 @@ export class UnifiedSearch {
     this.router.replace(
       {
         pathname,
-        query: search,
+        query: this.getQueryObjectFromSearchParameters(search),
       },
       null,
       options
     );
+  }
+
+  getQueryObjectFromSearchParameters(
+    search: UnifiedSearchParameters
+  ): ParsedUrlQueryInput {
+    const { openAt, ...delegated } = search;
+
+    return {
+      ...delegated,
+      ...dropUndefinedOrNull({
+        openAt: openAt instanceof Date ? openAt.toJSON() : openAt,
+      }),
+    };
   }
 
   getSearchParamsFromFilters(filters: SpreadFilter[]): UnifiedSearchParameters {
@@ -295,12 +330,20 @@ export class UnifiedSearch {
     this.setFilters(dropUndefinedOrNull(nextFilters));
   }
 
-  getFiltersWithout(key: string, value: string) {
+  getQueryWithout(key: string, value: string | number | boolean | Date) {
     const nextFilters = this.filterList.filter((filter) => {
-      return filter.key !== key || filter.value !== value;
+      const keysDontMatch = filter.key !== key;
+
+      if (value instanceof Date && filter.value instanceof Date) {
+        return keysDontMatch || value.getTime() !== filter.value.getTime();
+      }
+
+      return keysDontMatch || filter.value !== value;
     });
 
-    return this.getSearchParamsFromFilters(nextFilters);
+    return this.getQueryObjectFromSearchParameters(
+      this.getSearchParamsFromFilters(nextFilters)
+    );
   }
 }
 
@@ -331,9 +374,9 @@ export default function useUnifiedSearch() {
     [unifiedSearch]
   );
 
-  const getFiltersWithout = useCallback(
-    (...params: Parameters<typeof unifiedSearch.getFiltersWithout>) =>
-      unifiedSearch.getFiltersWithout(...params),
+  const getQueryWithout = useCallback(
+    (...params: Parameters<typeof unifiedSearch.getQueryWithout>) =>
+      unifiedSearch.getQueryWithout(...params),
     [unifiedSearch]
   );
 
@@ -342,6 +385,6 @@ export default function useUnifiedSearch() {
     filterList: filterList.current,
     setFilters,
     modifyFilters,
-    getFiltersWithout,
+    getQueryWithout,
   };
 }
