@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import useIntermediaryState from "../../hooks/useIntermediaryState";
 import { Locale } from "../../../config";
 import getIsDateValid from "../../utils/getIsValidDate";
-import formatDateTimeIntoLocaleString from "../../utils/formatDateTimeIntoLocaleString";
+import { formatIntoDateTime } from "../../utils/time/format";
 import styles from "./dateTimePicker.module.scss";
 
 function getDate(value?: Date): string {
@@ -177,9 +177,7 @@ export default function DateTimePicker({
         onClick={handleToggleMenu}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        aria-label={
-          value ? `${label} ${formatDateTimeIntoLocaleString(value)}` : label
-        }
+        aria-label={value ? `${label} ${formatIntoDateTime(value)}` : label}
         className={styles.dropdownButton}
         ref={buttonRef}
       >
@@ -188,7 +186,7 @@ export default function DateTimePicker({
           className={styles.dropdownButtonIcon}
         />
         <span className={styles.dropdownButtonTextContent}>
-          {value ? formatDateTimeIntoLocaleString(value) : label}
+          {value ? formatIntoDateTime(value) : label}
         </span>
         <IconAngleDown
           aria-hidden="true"
