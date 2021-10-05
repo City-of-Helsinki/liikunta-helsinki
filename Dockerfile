@@ -1,5 +1,5 @@
 # =======================================
-FROM helsinkitest/node:12-slim as appbase
+FROM helsinkitest/node:14-slim as appbase
 # =======================================
 
 # Use non-root user
