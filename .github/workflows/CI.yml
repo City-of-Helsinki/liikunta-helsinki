@@ -60,8 +60,9 @@ jobs:
         # Prefer offline to check cache before downloading
         run: yarn --prefer-offline
       - name: Run tests
-        run: NODE_ICU_DATA=node_modules/full-icu yarn test --coverage --runInBand
+        run: yarn test --coverage --runInBand
         env:
+          NODE_ICU_DATA: node_modules/full-icu
           NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
           NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
       - name: Upload coverage report to Codecov
