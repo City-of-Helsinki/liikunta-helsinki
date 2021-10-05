@@ -10,12 +10,12 @@ import {
 } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { format } from "date-fns";
+import { format, isAfter, isBefore } from "date-fns";
 
 import useIntermediaryState from "../../hooks/useIntermediaryState";
 import { Locale } from "../../../config";
 import getIsDateValid from "../../utils/getIsValidDate";
-import { formatIntoDateTime } from "../../utils/time/format";
+import { formatIntoDateTime, formatIntoDate } from "../../utils/time/format";
 import styles from "./dateTimePicker.module.scss";
 
 function getDate(value?: Date): string {
@@ -164,6 +164,15 @@ export default function DateTimePicker({
     setIsOpen(false);
   };
 
+  const minDateError =
+    date && minDate && isBefore(date, minDate)
+      ? `${t("date_input.error.default_min_date")} (${formatIntoDate(minDate)})`
+      : "";
+  const maxDateError =
+    date && maxDate && isAfter(date, maxDate)
+      ? `${t("date_input.error.default_max_date")} (${formatIntoDate(minDate)})`
+      : "";
+
   return (
     <div
       ref={containerRef}
@@ -209,6 +218,7 @@ export default function DateTimePicker({
             language={locale as "en" | "fi" | "sv"}
             minDate={minDate}
             maxDate={maxDate}
+            errorText={minDateError || maxDateError}
           />
           <TimeInput
             id={id + "-time-input"}

@@ -5,5 +5,7 @@
   "date_input.helper_text": "EN: Käytä muotoa P.K.VVVV",
   "time_input.label": "EN: Aika",
   "time_input.hours_label": "EN: Tunnit",
-  "time_input.minutes_label": "EN: Minuutit"
+  "time_input.minutes_label": "EN: Minuutit",
+  "date_input.error.default_min_date": "EN: Valittu päivä on ennen aikaisinta sallittua päivää",
+  "date_input.error.default_max_date": "EN: Valittu päivä on myöhäisimmän sallitun päivän jälkeen"
 }
