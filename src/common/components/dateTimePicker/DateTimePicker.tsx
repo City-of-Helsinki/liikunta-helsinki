@@ -89,6 +89,8 @@ type Props = {
   locale?: Locale;
   minDate?: Date;
   maxDate?: Date;
+  minDateErrorMessage?: string;
+  maxDateErrorMessage?: string;
 };
 
 export default function DateTimePicker({
@@ -100,6 +102,8 @@ export default function DateTimePicker({
   locale = "fi",
   minDate,
   maxDate,
+  minDateErrorMessage,
+  maxDateErrorMessage,
 }: Props) {
   const dateString = getDate(value);
   const timeString = getTime(value);
@@ -164,13 +168,19 @@ export default function DateTimePicker({
     setIsOpen(false);
   };
 
+  const defaultMinDateErrorMessage = `${t(
+    "date_input.error.default_min_date"
+  )} (${formatIntoDate(minDate)})`;
+  const defaultMaxDateErrorMessage = `${t(
+    "date_input.error.default_max_date"
+  )} (${formatIntoDate(minDate)})`;
   const minDateError =
     date && minDate && isBefore(date, minDate)
-      ? `${t("date_input.error.default_min_date")} (${formatIntoDate(minDate)})`
+      ? minDateErrorMessage ?? defaultMinDateErrorMessage
       : "";
   const maxDateError =
     date && maxDate && isAfter(date, maxDate)
-      ? `${t("date_input.error.default_max_date")} (${formatIntoDate(minDate)})`
+      ? maxDateErrorMessage ?? defaultMaxDateErrorMessage
       : "";
 
   return (

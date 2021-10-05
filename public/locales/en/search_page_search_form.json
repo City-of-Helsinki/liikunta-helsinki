@@ -11,5 +11,7 @@
   "administrative_division_dropdown.label": "EN: Alue",
   "administrative_division_dropdown.placeholder": "EN: Valitse alue",
   "is_open_now.label": "EN: Avoinna nyt",
-  "open_at.label": "EN: Valitse ajankohta"
+  "open_at.label": "EN: Valitse ajankohta",
+  "open_at.error.min_date": "EN: Haku ei tue menneitä päiviä",
+  "open_at.error.max_date": "EN: Haku tukee vain seuraavaa 6 päivää"
 }
