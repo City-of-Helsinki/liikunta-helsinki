@@ -88,11 +88,15 @@ describe("UnifiedSearch", () => {
         q: ["B"],
       });
 
-      expect(mockRouter.replace).toHaveBeenLastCalledWith({
-        query: {
-          q: ["B"],
+      expect(mockRouter.replace).toHaveBeenLastCalledWith(
+        {
+          query: {
+            q: ["B"],
+          },
         },
-      });
+        null,
+        undefined
+      );
     });
 
     it("should allow targeting a path", () => {
@@ -103,10 +107,14 @@ describe("UnifiedSearch", () => {
 
       unifiedSearch.setFilters({}, "/search");
 
-      expect(mockRouter.replace).toHaveBeenLastCalledWith({
-        query: {},
-        pathname: "/search",
-      });
+      expect(mockRouter.replace).toHaveBeenLastCalledWith(
+        {
+          query: {},
+          pathname: "/search",
+        },
+        null,
+        undefined
+      );
     });
   });
 
@@ -166,6 +174,8 @@ describe("UnifiedSearch", () => {
               ],
             },
           },
+          null,
+          undefined,
         ]
       `);
     });

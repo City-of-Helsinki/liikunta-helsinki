@@ -64,8 +64,6 @@ export default function useUnifiedSearchQuery<TData = any>(
       ...searchParams,
       ...variables,
     },
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-only",
     ...otherOptions,
   });
 
