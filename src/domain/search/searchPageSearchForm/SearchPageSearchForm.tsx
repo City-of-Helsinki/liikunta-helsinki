@@ -241,6 +241,8 @@ function SearchPageSearchForm({
             locale={router.locale}
             minDate={new Date()}
             maxDate={add(new Date(), { days: 6 })}
+            minDateErrorMessage={t("open_at.error.min_date")}
+            maxDateErrorMessage={t("open_at.error.max_date")}
           />
           <Checkbox
             id="isOpenNow"
