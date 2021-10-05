@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { MockedResponse } from "@apollo/client/testing";
 import { NextRouter } from "next/router";
+import userEvent from "@testing-library/user-event";
 
 import TestProviders from "./TestProviders";
 
@@ -25,3 +26,5 @@ export * from "@testing-library/react";
 
 // override render method
 export { customRender as render };
+
+export { userEvent as userEvent };
