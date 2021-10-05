@@ -73,7 +73,6 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "full-icu": "^1.4.0",
     "jest": "^26.6.3",
     "jest-dom": "^4.0.0",
     "prettier": "^2.2.1",

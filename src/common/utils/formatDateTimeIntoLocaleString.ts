@@ -1,14 +1,6 @@
-import { Locale } from "../../config";
+import { format } from "date-fns";
 
-export default function formatDateTimeIntoLocaleString(
-  date: Date,
-  locale: Locale
-): string {
-  return date.toLocaleString(locale, {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+// https://hds.hel.fi/guidelines/data-formats
+export default function formatDateTimeIntoLocaleString(date: Date): string {
+  return format(date, "d.M.yyyy HH:mm");
 }

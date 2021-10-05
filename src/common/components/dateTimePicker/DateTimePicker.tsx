@@ -178,9 +178,7 @@ export default function DateTimePicker({
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-label={
-          value
-            ? `${label} ${formatDateTimeIntoLocaleString(value, locale)}`
-            : label
+          value ? `${label} ${formatDateTimeIntoLocaleString(value)}` : label
         }
         className={styles.dropdownButton}
         ref={buttonRef}
@@ -190,7 +188,7 @@ export default function DateTimePicker({
           className={styles.dropdownButtonIcon}
         />
         <span className={styles.dropdownButtonTextContent}>
-          {value ? formatDateTimeIntoLocaleString(value, locale) : label}
+          {value ? formatDateTimeIntoLocaleString(value) : label}
         </span>
         <IconAngleDown
           aria-hidden="true"

@@ -184,7 +184,7 @@ function SearchPageSearchForm({
     }
 
     if (value instanceof Date) {
-      return formatDateTimeIntoLocaleString(value, router.locale);
+      return formatDateTimeIntoLocaleString(value);
     }
 
     if (typeof value === "string") {
