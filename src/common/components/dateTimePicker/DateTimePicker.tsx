@@ -70,6 +70,25 @@ function getDateFromDateAndTimeString(
   return new Date(Number(Y), Number(M) - 1, Number(D), Number(H), Number(m));
 }
 
+function validateDate(
+  date: Date | undefined | null,
+  dateToCompare: Date | undefined | null,
+  fnc: (date: Date, dateToCompare: Date) => boolean,
+  message: string
+): string {
+  if (!date || !dateToCompare) {
+    return "";
+  }
+
+  const isError = fnc(date, dateToCompare);
+
+  if (isError) {
+    return message;
+  }
+
+  return "";
+}
+
 function useOnOutsideClick<T extends HTMLElement>(
   callback: () => void
 ): Ref<T | null> {
@@ -188,18 +207,19 @@ export default function DateTimePicker({
   const defaultMaxDateErrorMessage = `${t(
     "date_input.error.default_max_date"
   )} (${formatIntoDate(minDate)})`;
-  const minDateError =
-    intermediaryDate &&
-    minDate &&
-    isBefore(getDateFromDateString(intermediaryDate), minDate)
-      ? minDateErrorMessage ?? defaultMinDateErrorMessage
-      : "";
-  const maxDateError =
-    intermediaryDate &&
-    maxDate &&
-    isAfter(getDateFromDateString(intermediaryDate), maxDate)
-      ? maxDateErrorMessage ?? defaultMaxDateErrorMessage
-      : "";
+  const intermediaryDateObject = getDateFromDateString(intermediaryDate);
+  const minDateError = validateDate(
+    intermediaryDateObject,
+    minDate,
+    isBefore,
+    minDateErrorMessage ?? defaultMinDateErrorMessage
+  );
+  const maxDateError = validateDate(
+    intermediaryDateObject,
+    maxDate,
+    isAfter,
+    maxDateErrorMessage ?? defaultMaxDateErrorMessage
+  );
 
   return (
     <div
