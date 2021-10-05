@@ -9,6 +9,10 @@
     border-color: $color-black;
   }
 
+  &:focus-within .dropdownButton {
+    box-shadow: 0 0 0 3px $color-coat-of-arms;
+  }
+
   .dropdownButton {
     @include utils.override-hds-input-styles();
 
@@ -20,6 +24,7 @@
 
     border: 2px solid transparent;
     background: $color-white;
+    outline: none;
 
     &:hover {
       border-color: $color-black;
