@@ -87,6 +87,8 @@ type Props = {
   value?: Date;
   label: string;
   locale?: Locale;
+  minDate?: Date;
+  maxDate?: Date;
 };
 
 export default function DateTimePicker({
@@ -96,6 +98,8 @@ export default function DateTimePicker({
   onChange,
   value = null,
   locale = "fi",
+  minDate,
+  maxDate,
 }: Props) {
   const dateString = getDate(value);
   const timeString = getTime(value);
@@ -207,6 +211,8 @@ export default function DateTimePicker({
             value={intermediaryDate || ""}
             helperText={t("date_input.helper_text")}
             language={locale as "en" | "fi" | "sv"}
+            minDate={minDate}
+            maxDate={maxDate}
           />
           <TimeInput
             id={id + "-time-input"}
