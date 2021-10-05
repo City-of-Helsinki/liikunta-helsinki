@@ -168,6 +168,7 @@ describe("UnifiedSearch", () => {
               "ontologyTreeIds": Array [
                 "404",
               ],
+              "ontologyWordIds": Array [],
               "q": Array [
                 "A",
                 "B",
