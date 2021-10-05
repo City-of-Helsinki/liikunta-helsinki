@@ -3,7 +3,7 @@ import { Button, IconSearch, IconCross } from "hds-react";
 import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
-import { add } from "date-fns";
+import { add, startOfToday } from "date-fns";
 
 // eslint-disable-next-line max-len
 import AdministrativeDivisionDropdown from "../../unifiedSearch/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
@@ -239,8 +239,8 @@ function SearchPageSearchForm({
             value={openAt}
             onChange={handleOpenAtChange}
             locale={router.locale}
-            minDate={new Date()}
-            maxDate={add(new Date(), { days: 6 })}
+            minDate={startOfToday()}
+            maxDate={add(startOfToday(), { days: 6 })}
             minDateErrorMessage={t("open_at.error.min_date")}
             maxDateErrorMessage={t("open_at.error.max_date")}
           />
