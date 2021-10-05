@@ -62,6 +62,7 @@ jobs:
       - name: Run tests
         run: yarn test --coverage --runInBand
         env:
+          TZ: Europe/Helsinki
           NODE_ICU_DATA: node_modules/full-icu
           NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
           NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
