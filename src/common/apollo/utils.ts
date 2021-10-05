@@ -3,11 +3,7 @@ import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { Connection, MenuItem } from "../../types";
 
 export const excludeArgs =
-  (excludedArgs: string[]) =>
-  (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    args: Record<string, any> | null
-  ) =>
+  (excludedArgs: string[]) => (args: Record<string, unknown> | null) =>
     args
       ? Object.keys(args).filter((key: string) => !excludedArgs.includes(key))
       : false;
