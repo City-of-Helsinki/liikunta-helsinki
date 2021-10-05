@@ -29,6 +29,6 @@ describe("DateTimePicker", () => {
 
     expect(
       screen.getByLabelText(label, { exact: false }).textContent
-    ).toMatchInlineSnapshot(`"12/12/2012, 02:16 PM"`);
+    ).toMatchInlineSnapshot(`"12.12.2012 14:16"`);
   });
 });
