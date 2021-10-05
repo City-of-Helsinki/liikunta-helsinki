@@ -16,7 +16,7 @@ import Link from "../../i18n/router/Link";
 import searchApolloClient from "../../../domain/unifiedSearch/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../common/apollo/utils";
 import getTranslation from "../../../common/utils/getTranslation";
-import formatDateTimeIntoLocaleString from "../../../common/utils/formatDateTimeIntoLocaleString";
+import { formatIntoDateTime } from "../../../common/utils/time/format";
 import useIntermediaryState from "../../../common/hooks/useIntermediaryState";
 import Text from "../../../common/components/text/Text";
 import SuggestionInput, {
@@ -184,7 +184,7 @@ function SearchPageSearchForm({
     }
 
     if (value instanceof Date) {
-      return formatDateTimeIntoLocaleString(value);
+      return formatIntoDateTime(value);
     }
 
     if (typeof value === "string") {
