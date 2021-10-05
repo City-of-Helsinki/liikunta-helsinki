@@ -204,7 +204,7 @@ export default function DateTimePicker({
             name={name + "-date-input"}
             label={t("date_input.label")}
             onChange={handleDateChange}
-            value={intermediaryDate}
+            value={intermediaryDate || ""}
             helperText={t("date_input.helper_text")}
             language={locale as "en" | "fi" | "sv"}
           />
@@ -213,7 +213,7 @@ export default function DateTimePicker({
             name={name + "-time-input"}
             label={t("time_input.label")}
             onChange={handleTimeChange}
-            value={intermediaryTime}
+            value={intermediaryTime || ""}
             hoursLabel={t("time_input.hours_label")}
             minutesLabel={t("time_input.minutes_label")}
           />
