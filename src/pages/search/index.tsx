@@ -42,6 +42,7 @@ export const SEARCH_QUERY = gql`
     $language: UnifiedSearchLanguage!
     $administrativeDivisionIds: [ID!]
     $ontologyTreeIds: [ID!]
+    $ontologyWordIds: [ID!]
     $openAt: String
   ) {
     unifiedSearch(
@@ -52,6 +53,7 @@ export const SEARCH_QUERY = gql`
       languages: [$language]
       administrativeDivisionIds: $administrativeDivisionIds
       ontologyTreeIds: $ontologyTreeIds
+      ontologyWordIds: $ontologyWordIds
       openAt: $openAt
     ) {
       count
@@ -240,13 +242,13 @@ export default function Search() {
                   id: `tprek:${searchResult.venue.meta.id}`,
                 },
               },
-              keywords: searchResult.venue.ontologyWords.map((word) => {
-                const label = getTranslation(word.label, locale);
+              keywords: searchResult.venue.ontologyWords.map((ontology) => {
+                const label = getTranslation(ontology.label, locale);
                 return {
                   label: capitalize(label),
                   href: {
                     query: {
-                      ontology: label.toLowerCase(),
+                      ontologyWordIds: [ontology.id],
                     },
                   },
                 };

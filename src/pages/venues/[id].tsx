@@ -311,7 +311,7 @@ export function VenuePageContent() {
                       href={{
                         pathname: "/search",
                         query: {
-                          ontology: keyword.label.toLowerCase(),
+                          ontologyWordIds: [keyword.id],
                         },
                       }}
                     />

@@ -21,11 +21,13 @@ import styles from "./card.module.scss";
 
 type CardContextType = {
   linkRef: RefObject<HTMLAnchorElement>;
+  keywordsRef: RefObject<HTMLUListElement>;
   id: string;
 };
 
 const CardContext = React.createContext<CardContextType>({
   linkRef: null,
+  keywordsRef: null,
   id: null,
 });
 
@@ -164,8 +166,9 @@ type CardKeywordsProps = {
 };
 
 function CardKeywords({ keywords, className }: CardKeywordsProps) {
+  const { keywordsRef } = useContext(CardContext);
   return (
-    <ul className={classNames(styles.keywords, className)}>
+    <ul className={classNames(styles.keywords, className)} ref={keywordsRef}>
       {keywords
         .filter(({ label }) => label !== null)
         .map(({ label, href, isHighlighted }) => {
@@ -215,6 +218,7 @@ type CardProps = {
 
 function Card({ children, id, className }: CardProps) {
   const linkRef = useRef(null);
+  const keywordsRef = useRef<HTMLUListElement>(null);
   const downRef = useRef<Date>(null);
 
   const handleWrapperMouseDown = () => {
@@ -223,8 +227,13 @@ function Card({ children, id, className }: CardProps) {
 
   const handleWrapperMouseUp = (e: React.MouseEvent<HTMLElement>) => {
     const link = linkRef.current;
+    const keywords = keywordsRef.current;
     const up = new Date();
 
+    // ignore if click event comes from keywords (allow default behaviour)
+    if (keywords !== e.target && keywords.contains(e.target as Node)) {
+      return;
+    }
     // Invoke a click on link if
     // 1. The event did not bubble from the link itself
     // 2. The user is not attempting to select text
@@ -246,6 +255,7 @@ function Card({ children, id, className }: CardProps) {
       <CardContext.Provider
         value={{
           linkRef,
+          keywordsRef,
           id,
         }}
       >

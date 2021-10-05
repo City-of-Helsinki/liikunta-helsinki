@@ -144,6 +144,7 @@ export class UnifiedSearch {
         key: "administrativeDivisionIds",
       },
       { type: "number", storeBehaviour: "list", key: "ontologyTreeIds" },
+      { type: "string", storeBehaviour: "list", key: "ontologyWordIds" },
       { type: "boolean", key: "isOpenNow" },
     ];
     this.queryPersister = queryPersister;

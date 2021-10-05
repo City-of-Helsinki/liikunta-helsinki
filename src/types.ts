@@ -134,6 +134,7 @@ export type Venue = {
   };
   ontologyWords: [
     {
+      id: string;
       label: LocalizedString;
     }
   ];
