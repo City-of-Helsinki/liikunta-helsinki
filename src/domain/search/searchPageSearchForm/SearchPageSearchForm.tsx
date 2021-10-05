@@ -86,7 +86,7 @@ function SearchPageSearchForm({
   });
   const administrativeDivisionsQuery = useAdministrativeDivisions();
   const ontologyTreeQuery = useOntologyTree();
-  const ontologyWordsQuery = useOntologyWords({ id: filters.ontologyWordIds });
+  const ontologyWordsQuery = useOntologyWords({ ids: filters.ontologyWordIds });
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   const handleSubmit = (e) => {

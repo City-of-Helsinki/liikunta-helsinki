@@ -9,11 +9,11 @@ type OntologyWord = {
   label: LocalizedString;
 };
 
-type OntologyQueryVariables = { id: number[] };
+type OntologyQueryVariables = { ids: number[] };
 
 const ONTOLOGY_WORDS_QUERY = gql`
-  query OntologyWordsQuery($id: [ID!]) {
-    ontologyWords(id: $id) {
+  query OntologyWordsQuery($ids: [ID!]) {
+    ontologyWords(ids: $ids) {
       id
       label {
         fi
