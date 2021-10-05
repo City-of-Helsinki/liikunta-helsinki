@@ -223,6 +223,7 @@ export default function DateTimePicker({
               variant="secondary"
               onClick={handleSelectDateClick}
               size="small"
+              disabled={!(date && getIsDateValid(date))}
             >
               {t("select")}
             </Button>
