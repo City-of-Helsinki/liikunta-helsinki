@@ -34,6 +34,20 @@ function getTime(value?: Date): string {
   return format(value, "H.m");
 }
 
+function getDateFromDateString(dateString?: string): Date | undefined {
+  if (!dateString) {
+    return;
+  }
+
+  const [D, M, Y] = dateString.split(".");
+
+  if (!D || !M || !Y) {
+    return;
+  }
+
+  return new Date(Number(Y), Number(M) - 1, Number(D));
+}
+
 function getDateFromDateAndTimeString(
   dateString?: string,
   timeString?: string
@@ -175,11 +189,15 @@ export default function DateTimePicker({
     "date_input.error.default_max_date"
   )} (${formatIntoDate(minDate)})`;
   const minDateError =
-    date && minDate && isBefore(date, minDate)
+    intermediaryDate &&
+    minDate &&
+    isBefore(getDateFromDateString(intermediaryDate), minDate)
       ? minDateErrorMessage ?? defaultMinDateErrorMessage
       : "";
   const maxDateError =
-    date && maxDate && isAfter(date, maxDate)
+    intermediaryDate &&
+    maxDate &&
+    isAfter(getDateFromDateString(intermediaryDate), maxDate)
       ? maxDateErrorMessage ?? defaultMaxDateErrorMessage
       : "";
 
