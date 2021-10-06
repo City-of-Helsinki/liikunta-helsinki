@@ -10,7 +10,7 @@ import {
 } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { format, isAfter, isBefore } from "date-fns";
+import { format, isAfter, isBefore, parse } from "date-fns";
 
 import useIntermediaryState from "../../hooks/useIntermediaryState";
 import { Locale } from "../../../config";
@@ -39,13 +39,11 @@ function getDateFromDateString(dateString?: string): Date | undefined {
     return;
   }
 
-  const [D, M, Y] = dateString.split(".");
-
-  if (!D || !M || !Y) {
+  try {
+    return parse(dateString, "dd.MM.yyyy", new Date());
+  } catch (e) {
     return;
   }
-
-  return new Date(Number(Y), Number(M) - 1, Number(D));
 }
 
 function getDateFromDateAndTimeString(
@@ -56,18 +54,13 @@ function getDateFromDateAndTimeString(
     return;
   }
 
-  const [D, M, Y] = dateString.split(".");
-  const [H, m] = timeString.split(":");
-  const hasAllDateParts = [D, M, Y, H, m].reduce(
-    (acc, part) => acc && Boolean(part),
-    true
-  );
+  try {
+    const date = parse(dateString, "dd.MM.yyyy", new Date());
 
-  if (!hasAllDateParts) {
+    return parse(timeString, "HH:mm", date);
+  } catch (e) {
     return;
   }
-
-  return new Date(Number(Y), Number(M) - 1, Number(D), Number(H), Number(m));
 }
 
 function validateDate(
