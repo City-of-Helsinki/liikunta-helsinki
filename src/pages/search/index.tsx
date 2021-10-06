@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
-import capitalize from "../../common/utils/capitalize";
 import getTranslation from "../../common/utils/getTranslation";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
@@ -245,7 +244,7 @@ export default function Search() {
               keywords: searchResult.venue.ontologyWords.map((ontology) => {
                 const label = getTranslation(ontology.label, locale);
                 return {
-                  label: capitalize(label),
+                  label,
                   href: {
                     query: {
                       ontologyWordIds: [ontology.id],
