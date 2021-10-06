@@ -48,13 +48,6 @@ function Footer({ navigationItems }: Props) {
           />
         ))}
       </HDSFooter.Navigation>
-      <HDSFooter.Utilities backToTopLabel={t("back_to_top_label")}>
-        <HDSFooter.Item
-          className={styles.FooterUtilities}
-          href="#"
-          label={t("give_feedback")}
-        />
-      </HDSFooter.Utilities>
       <HDSFooter.Base
         copyrightHolder={t("copyright_holder")}
         copyrightText={t("copyright_text")}
