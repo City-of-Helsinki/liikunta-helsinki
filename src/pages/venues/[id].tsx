@@ -10,21 +10,22 @@ import {
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
-import { useRouter } from "next/router";
 import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 
 import noImagePlaceholder from "../../../public/no_image.svg";
-import { staticGenerationLogger } from "../../domain/logger";
 import { Address, Point } from "../../types";
+import { staticGenerationLogger } from "../../domain/logger";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import initializeNextApiApolloClient, {
   useNextApiApolloClient,
 } from "../../domain/clients/nextApiApolloClient";
+import useRouter from "../../domain/i18n/router/useRouter";
 import queryPersister from "../../common/utils/queryPersister";
 import humanizeOpeningHoursForWeek from "../../common/utils/time/humanizeOpeningHoursForWeek";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import { getLocaleOrError } from "../../domain/i18n/router/utils";
 import UpcomingEventsSection from "../../domain/events/upcomingEventsSection/UpcomingEventsSection";
 import Keyword from "../../common/components/keyword/Keyword";
 import Page from "../../common/components/page/Page";
@@ -509,12 +510,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       props: {
         initialApolloState: cmsClient.cache.extract(),
         initialNextApiApolloState: nextApiClient.cache.extract(),
-        ...(await serverSideTranslationsWithCommon(context.locale, [
-          "venue_page",
-          "map_box",
-          "share_links",
-          "upcoming_events_section",
-        ])),
+        ...(await serverSideTranslationsWithCommon(
+          getLocaleOrError(context.locale),
+          ["venue_page", "map_box", "share_links", "upcoming_events_section"]
+        )),
       },
       revalidate: 10,
     };

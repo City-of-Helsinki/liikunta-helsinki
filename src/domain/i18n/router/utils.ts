@@ -1,6 +1,7 @@
 import { UrlObject } from "url";
 
 import i18nRoutes from "../../../../i18nRoutes.config";
+import Config, { Locale } from "../../../config";
 
 // dynamic path: /venues/:id
 // segmented: /venues/[id]
@@ -52,4 +53,12 @@ export function stringifyUrlObject(url: UrlObject): string {
     .join("/");
 
   return `${pathname}${url.search || ""}`;
+}
+
+export function getLocaleOrError(locale: string): Locale {
+  if (!Config.locales.includes(locale)) {
+    throw Error(`Locale ${locale} is not supported`);
+  }
+
+  return locale as Locale;
 }

@@ -47,6 +47,6 @@ class Config {
   }
 }
 
-export type Locale = typeof Config.locales[number];
+export type Locale = "fi" | "sv" | "en";
 
 export default Config;

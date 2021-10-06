@@ -5,6 +5,7 @@ import { Navigation as HDSNavigation } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
+import { Locale } from "../../../config";
 import I18nLink from "../../../domain/i18n/router/Link";
 import useRouter from "../../../domain/i18n/router/useRouter";
 import { Language, NavigationItem } from "../../../types";
@@ -88,7 +89,7 @@ function Navigation({
               label={language.name}
               lang={language.slug}
               // Target current route with another locale
-              locale={language.slug}
+              locale={language.slug as Locale}
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               href={{
