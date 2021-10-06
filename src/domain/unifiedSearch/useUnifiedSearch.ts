@@ -11,6 +11,8 @@ import defaultQueryPersister, {
 import getIsDateValid from "../../common/utils/getIsValidDate";
 import { UnifiedSearchParameters } from "./types";
 
+type FilterValueType = string | number | boolean | Date;
+
 function stringifyQueryValue(value?: string | string[]): string | undefined {
   if (!value) {
     return;
@@ -78,7 +80,7 @@ function dropUndefinedOrNull(obj: Record<string, unknown>) {
 function parseIntoValue(
   value: string | string[],
   type: FilterConfig["type"]
-): string | number | boolean | Date {
+): FilterValueType {
   switch (type) {
     case "string":
       return stringifyQueryValue(value);
@@ -96,10 +98,7 @@ function parseIntoValue(
 function filterConfigToEntry(
   { type, key, storeBehaviour }: FilterConfig,
   values
-): [
-  string,
-  string | number | boolean | Date | (string | number | boolean | Date)[]
-] {
+): [string, FilterValueType | FilterValueType[]] {
   const value = values[key];
 
   if (storeBehaviour === "list" || storeBehaviour === "accumulating") {
@@ -140,7 +139,7 @@ type FilterConfig = {
 
 type SpreadFilter = {
   key: string;
-  value: string | number | boolean | Date;
+  value: FilterValueType;
 };
 
 type TransitionOptions = {
@@ -330,7 +329,7 @@ export class UnifiedSearch {
     this.setFilters(dropUndefinedOrNull(nextFilters));
   }
 
-  getQueryWithout(key: string, value: string | number | boolean | Date) {
+  getQueryWithout(key: string, value: FilterValueType) {
     const nextFilters = this.filterList.filter((filter) => {
       const keysDontMatch = filter.key !== key;
 
