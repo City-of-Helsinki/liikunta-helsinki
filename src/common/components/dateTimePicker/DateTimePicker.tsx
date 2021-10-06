@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, Ref, useCallback } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  Ref,
+  useCallback,
+  FocusEvent,
+} from "react";
 import {
   IconCalendar,
   IconAngleDown,
@@ -198,6 +205,16 @@ export default function DateTimePicker({
     setIsOpen(false);
   };
 
+  const handleWrapperOnBlur = (e: FocusEvent) => {
+    if (
+      process.browser &&
+      isOpen &&
+      !e.currentTarget.contains(e.relatedTarget as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+
   const defaultMinDateErrorMessage = `${t(
     "date_input.error.default_min_date"
   )} (${formatIntoDate(minDate)})`;
@@ -221,6 +238,7 @@ export default function DateTimePicker({
   return (
     <div
       ref={containerRef}
+      onBlur={handleWrapperOnBlur}
       onKeyDown={handleOnKeyDown}
       className={classNames(styles.dropdown, {
         [styles.open]: isOpen,
