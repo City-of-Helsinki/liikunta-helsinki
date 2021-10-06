@@ -108,7 +108,7 @@ function useOnOutsideClick<T extends HTMLElement>(
       document.removeEventListener("mousedown", listener);
       document.removeEventListener("touchstart", listener);
     };
-  }, [ref, callback]);
+  }, [callback]);
 
   return ref;
 }
