@@ -179,6 +179,10 @@ export default function DateTimePicker({
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
+      case "ArrowDown":
+        // Down arrow should not scroll the page
+        e.preventDefault();
+        return setIsOpen(true);
       case "Escape":
         return setIsOpen(false);
     }
