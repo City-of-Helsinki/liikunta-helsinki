@@ -107,12 +107,7 @@ function filterConfigToEntry(
     return [key, valueAsArray?.map((value) => parseIntoValue(value, type))];
   }
 
-  if (
-    type === "string" ||
-    type === "number" ||
-    type === "boolean" ||
-    type === "date"
-  ) {
+  if (["string", "number", "boolean", "date"].includes(type)) {
     const parsedValue = parseIntoValue(value, type);
 
     return [key, parsedValue];
