@@ -115,6 +115,4 @@ const SearchList = forwardRef(
 
 SearchList.displayName = "SearchList";
 
-function getLoadedMoreAmount() {}
-
 export default SearchList;
