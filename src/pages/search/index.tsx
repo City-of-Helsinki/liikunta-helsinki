@@ -16,6 +16,7 @@ import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQu
 import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import { getLocaleOrError } from "../../domain/i18n/router/utils";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import { logger } from "../../domain/logger";
 import SearchPageSearchForm from "../../domain/search/searchPageSearchForm/SearchPageSearchForm";
@@ -336,13 +337,16 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale, [
-        "search_page",
-        "search_header",
-        "search_page_search_form",
-        "search_list",
-        "multi_select_combobox",
-      ])),
+      ...(await serverSideTranslationsWithCommon(
+        getLocaleOrError(context.locale),
+        [
+          "search_page",
+          "search_header",
+          "search_page_search_form",
+          "search_list",
+          "multi_select_combobox",
+        ]
+      )),
     },
     revalidate: 10,
   };

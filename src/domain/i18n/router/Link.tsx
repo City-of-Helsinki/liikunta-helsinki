@@ -34,8 +34,9 @@ function getHrefThatAvoidsEscaping(
   return stringifyUrlObject(href);
 }
 
-type Props = React.PropsWithChildren<LinkProps> & {
+type Props = React.PropsWithChildren<Omit<LinkProps, "locale">> & {
   avoidEscaping?: true;
+  locale?: Locale | false;
 };
 
 export default function Link({ href, avoidEscaping, ...delegated }: Props) {

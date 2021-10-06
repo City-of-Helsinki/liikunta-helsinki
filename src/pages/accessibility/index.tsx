@@ -9,6 +9,7 @@ import { getQlLanguage } from "../../common/apollo/utils";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import Page from "../../common/components/page/Page";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import { getLocaleOrError } from "../../domain/i18n/router/utils";
 import Section from "../../common/components/section/Section";
 import Text from "../../common/components/text/Text";
 
@@ -68,7 +69,9 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale)),
+      ...(await serverSideTranslationsWithCommon(
+        getLocaleOrError(context.locale)
+      )),
     },
     revalidate: 10,
   };

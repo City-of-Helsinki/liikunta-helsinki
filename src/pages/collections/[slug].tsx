@@ -11,6 +11,7 @@ import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import { getQlLanguage } from "../../common/apollo/utils";
 import collectionFragment from "../../domain/collections/collectionFragment";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import { getLocaleOrError } from "../../domain/i18n/router/utils";
 import SelectedEvents from "../../domain/events/selectedEvents/SelectedEvents";
 import SearchEvents from "../../domain/events/searchEvents/SearchEvents";
 import PaginationContainer from "../../domain/pagination/PaginationContainer";
@@ -213,10 +214,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale, [
-        "collection_page",
-        "share_links",
-      ])),
+      ...(await serverSideTranslationsWithCommon(
+        getLocaleOrError(context.locale),
+        ["collection_page", "share_links"]
+      )),
     },
     revalidate: 10,
   };

@@ -8,6 +8,7 @@ import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsF
 import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
+import { getLocaleOrError } from "../../domain/i18n/router/utils";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import Page from "../../common/components/page/Page";
 import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
@@ -162,12 +163,15 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale, [
-        "search_header",
-        "search_page_search_form",
-        "map_view",
-        "multi_select_combobox",
-      ])),
+      ...(await serverSideTranslationsWithCommon(
+        getLocaleOrError(context.locale),
+        [
+          "search_header",
+          "search_page_search_form",
+          "map_view",
+          "multi_select_combobox",
+        ]
+      )),
     },
     revalidate: 10,
   };

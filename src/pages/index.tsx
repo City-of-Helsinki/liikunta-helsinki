@@ -8,6 +8,7 @@ import initializeCmsApollo from "../domain/clients/cmsApolloClient";
 import { getQlLanguage } from "../common/apollo/utils";
 import mockCategories from "../domain/clients/tmp/mockCategories";
 import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
+import { getLocaleOrError } from "../domain/i18n/router/utils";
 import seoFragment from "../domain/seo/cmsSeoFragment";
 import CollectionGrid from "../domain/collections/collectionsGrid/CollectionGrid";
 import Page from "../common/components/page/Page";
@@ -123,11 +124,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(context.locale, [
-        "home_page",
-        "landing_page_search_form",
-        "collection_count_label",
-      ])),
+      ...(await serverSideTranslationsWithCommon(
+        getLocaleOrError(context.locale),
+        ["home_page", "landing_page_search_form", "collection_count_label"]
+      )),
     },
     revalidate: 10,
   };
