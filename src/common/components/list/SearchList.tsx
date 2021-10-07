@@ -34,8 +34,19 @@ const SearchList = forwardRef(
   ) => {
     const { t } = useTranslation("search_list");
     const resultsLeft = count ? count - items.length : 0;
-    const a11yIndex = (Math.floor(items.length / blockSize) - 1) * blockSize;
-    const loadedMoreAmount = hasNext ? blockSize : count - items.length;
+
+    const getLoadedMoreAmount = () => {
+      const remainder = items.length % blockSize;
+      if (hasNext || remainder === 0) {
+        return blockSize;
+      }
+      return remainder;
+    };
+
+    const a11yIndex =
+      items.length % blockSize === 0
+        ? (Math.floor(items.length / blockSize) - 1) * blockSize
+        : items.length - getLoadedMoreAmount();
 
     if (count === 0) {
       return (
@@ -77,7 +88,7 @@ const SearchList = forwardRef(
                   aria-label={
                     loading
                       ? t("is_loading_more")
-                      : `${loadedMoreAmount} ${t("n_more_locations")}`
+                      : `${getLoadedMoreAmount()} ${t("n_more_locations")}`
                   }
                 />
               )}
