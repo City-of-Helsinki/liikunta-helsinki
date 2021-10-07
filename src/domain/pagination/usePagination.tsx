@@ -1,16 +1,7 @@
-import React from "react";
-import {
-  FetchMoreOptions,
-  FetchMoreQueryOptions,
-  OperationVariables,
-} from "@apollo/client";
-import { useCallback } from "react";
-
-import { FetchMoreFunction } from "./types";
+import React, { useLayoutEffect } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Options<TData = any, TVariables = OperationVariables> = {
-  fetchMore: FetchMoreFunction<TData, TVariables>;
+type Options = {
   moreResultsAnnouncerRef: React.RefObject<HTMLElement>;
   totalCount: number;
   pageSize: number;
@@ -23,42 +14,31 @@ type A11yHelpers = {
   resultsLeft: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ReturnValue<TData = any, TVariables = OperationVariables> = A11yHelpers & {
-  fetchMore: FetchMoreFunction<TData, TVariables>;
-};
-
-export default function useA11yPagination<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TData = any,
-  TVariables = OperationVariables
->({
-  fetchMore: fetchMoreBase,
+export default function useA11yPagination({
   moreResultsAnnouncerRef,
   totalCount,
   pageSize,
   visibleCount,
-}: Options<TData, TVariables>): ReturnValue<TData, TVariables> {
-  const fetchMore = useCallback(
-    async <K extends keyof TVariables>(
-      fetchMoreOptions: FetchMoreQueryOptions<TVariables, K, TData> &
-        FetchMoreOptions<TData, TVariables>
-    ) => {
-      const result = await fetchMoreBase(fetchMoreOptions);
+}: Options): A11yHelpers {
+  useLayoutEffect(() => {
+    if (moreResultsAnnouncerRef.current) {
+      // Render announcer to correct position without breaking flow of grid
+      // 1. Change announcer elements position to static
+      // 2. Take offsetTop value when position is static
+      // 3. Apply position absolute and offsetTop value to top style
+      moreResultsAnnouncerRef.current.style.position = "static";
+      const offsetTop = moreResultsAnnouncerRef?.current?.offsetTop;
+      moreResultsAnnouncerRef.current.style.position = "absolute";
+      moreResultsAnnouncerRef.current.style.top = `${offsetTop.toString()}px`;
 
-      if (moreResultsAnnouncerRef.current) {
-        // The announcer element is hidden from visual users and as such may
-        // exist in an unnatural place (visually) on the rendered page. If so,
-        // the browser can scroll into an unexpected position. This is true for
-        // instance when the announcer element is absolutely positioned within
-        // a grid.
-        moreResultsAnnouncerRef.current.focus({ preventScroll: true });
-      }
-
-      return result;
-    },
-    [fetchMoreBase, moreResultsAnnouncerRef]
-  );
+      // The announcer element is hidden from visual users and as such may
+      // exist in an unnatural place (visually) on the rendered page. If so,
+      // the browser can scroll into an unexpected position. This is true for
+      // instance when the announcer element is absolutely positioned within
+      // a grid.
+      moreResultsAnnouncerRef.current.focus({ preventScroll: true });
+    }
+  }, [totalCount, visibleCount, pageSize, moreResultsAnnouncerRef]);
 
   const totalBlocks = Math.ceil(totalCount / pageSize);
   const currentBlock = Math.ceil(visibleCount / pageSize);
@@ -72,9 +52,6 @@ export default function useA11yPagination<
     currentBlock === totalBlocks ? lasBlockSize : pageSize;
 
   return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    fetchMore,
     a11yIndex,
     loadedMoreAmount,
     resultsLeft,
