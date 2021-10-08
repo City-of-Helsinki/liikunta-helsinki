@@ -46,6 +46,7 @@ const unifiedSearchVenueFragment = gql`
       }
     }
     ontologyWords {
+      id
       label {
         fi
         sv

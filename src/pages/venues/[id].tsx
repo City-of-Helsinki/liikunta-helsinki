@@ -36,7 +36,6 @@ import Hr from "../../common/components/hr/Hr";
 import styles from "./venue.module.scss";
 import renderAddressToString from "../../common/utils/renderAddressToString";
 import hash from "../../common/utils/hash";
-import capitalize from "../../common/utils/capitalize";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -267,7 +266,7 @@ export function VenuePageContent() {
     },
   ];
   const keywords = data?.venue?.ontologyWords?.map((ontology) => ({
-    label: capitalize(ontology.label),
+    label: ontology.label,
     id: ontology.id,
   }));
 
@@ -311,7 +310,7 @@ export function VenuePageContent() {
                       href={{
                         pathname: "/search",
                         query: {
-                          ontology: keyword.label.toLowerCase(),
+                          ontologyWordIds: [keyword.id],
                         },
                       }}
                     />

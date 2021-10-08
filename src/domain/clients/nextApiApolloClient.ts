@@ -16,6 +16,7 @@ import {
   initializeApolloClient,
   MutableReference,
 } from "../../common/apollo/utils";
+import capitalize from "../../common/utils/capitalize";
 
 const apiApolloClient = new MutableReference<
   ApolloClient<NormalizedCacheObject>
@@ -47,6 +48,15 @@ const cache: InMemoryCache = new InMemoryCache({
     Query: {
       fields: {
         events: relayStylePagination(["type", "where"]),
+      },
+    },
+    Ontology: {
+      fields: {
+        label: {
+          read(label) {
+            return capitalize(label);
+          },
+        },
       },
     },
   },

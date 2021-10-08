@@ -164,6 +164,11 @@ type CardKeywordsProps = {
 };
 
 function CardKeywords({ keywords, className }: CardKeywordsProps) {
+  // stop propagation so link click is not simulated in Card component
+  const handleKeywordMouseUp = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    e.stopPropagation()
+  }
+
   return (
     <ul className={classNames(styles.keywords, className)}>
       {keywords
@@ -172,7 +177,7 @@ function CardKeywords({ keywords, className }: CardKeywordsProps) {
           const key = typeof label === "string" ? label : label.key;
 
           return (
-            <li key={key} className={styles.keyword}>
+            <li key={key} className={styles.keyword} onMouseUp={handleKeywordMouseUp}>
               <Keyword
                 keyword={label}
                 href={href}

@@ -29,6 +29,7 @@ import Keyword from "../../../common/components/keyword/Keyword";
 import SmallSpinner from "../../../common/components/spinners/SmallSpinner";
 import Checkbox from "../../../common/components/checkbox/Checkbox";
 import styles from "./searchPageSearchForm.module.scss";
+import useOntologyWords from "../../unifiedSearch/useOntologyWords";
 
 type IntermediaryValue = string[] | string | number | number[] | boolean;
 
@@ -85,6 +86,7 @@ function SearchPageSearchForm({
   });
   const administrativeDivisionsQuery = useAdministrativeDivisions();
   const ontologyTreeQuery = useOntologyTree();
+  const ontologyWordsQuery = useOntologyWords({ ids: filters.ontologyWordIds });
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   const handleSubmit = (e) => {
@@ -167,6 +169,22 @@ function SearchPageSearchForm({
       }
 
       return getTranslation(ontologyTreeData.name, router.locale);
+    }
+
+    if (key === "ontologyWordIds") {
+      if (ontologyWordsQuery.loading) {
+        return <SmallSpinner color="white" />;
+      }
+
+      const ontologyWordData = ontologyWordsQuery.ontologyWords?.find(
+        (ontology) => ontology.id === value
+      );
+
+      if (!ontologyWordData) {
+        return "Could not find ontology";
+      }
+
+      return getTranslation(ontologyWordData.label, router.locale);
     }
 
     if (key === "isOpenNow") {

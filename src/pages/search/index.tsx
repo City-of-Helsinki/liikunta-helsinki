@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
-import capitalize from "../../common/utils/capitalize";
 import getTranslation from "../../common/utils/getTranslation";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
@@ -42,6 +41,7 @@ export const SEARCH_QUERY = gql`
     $language: UnifiedSearchLanguage!
     $administrativeDivisionIds: [ID!]
     $ontologyTreeIds: [ID!]
+    $ontologyWordIds: [ID!]
     $openAt: String
   ) {
     unifiedSearch(
@@ -52,6 +52,7 @@ export const SEARCH_QUERY = gql`
       languages: [$language]
       administrativeDivisionIds: $administrativeDivisionIds
       ontologyTreeIds: $ontologyTreeIds
+      ontologyWordIds: $ontologyWordIds
       openAt: $openAt
     ) {
       count
@@ -240,13 +241,13 @@ export default function Search() {
                   id: `tprek:${searchResult.venue.meta.id}`,
                 },
               },
-              keywords: searchResult.venue.ontologyWords.map((word) => {
-                const label = getTranslation(word.label, locale);
+              keywords: searchResult.venue.ontologyWords.map((ontology) => {
+                const label = getTranslation(ontology.label, locale);
                 return {
-                  label: capitalize(label),
+                  label,
                   href: {
                     query: {
-                      ontology: label.toLowerCase(),
+                      ontologyWordIds: [ontology.id],
                     },
                   },
                 };
