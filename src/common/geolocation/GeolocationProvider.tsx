@@ -12,7 +12,7 @@ import sendNotification from "../utils/sendToast";
 import geolocationService from "./GeolocationService";
 
 type GeolocationContextType = {
-  geolocation: Coordinates | null;
+  coordinates: Coordinates | null;
   loading: boolean;
   called: boolean;
   error?: GeolocationPositionError;
@@ -20,7 +20,7 @@ type GeolocationContextType = {
 };
 
 const GeolocationContext = createContext<GeolocationContextType>({
-  geolocation: null,
+  coordinates: null,
   loading: false,
   called: false,
   resolve: () => Promise.resolve(),
@@ -88,7 +88,7 @@ export default function GeolocationProvider({ children }: Props) {
   return (
     <GeolocationContext.Provider
       value={{
-        geolocation: location,
+        coordinates: location,
         loading,
         error,
         called,

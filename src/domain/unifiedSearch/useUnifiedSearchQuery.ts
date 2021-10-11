@@ -97,7 +97,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       ...searchParams
     },
   } = useUnifiedSearch();
-  const { geolocation } = useGeolocation({
+  const geolocation = useGeolocation({
     skip: orderBy !== "distance",
   });
   const router = useRouter();
@@ -113,7 +113,11 @@ export default function useUnifiedSearchQuery<TData = any>(
       ontologyTreeIds,
       administrativeDivisionIds,
       openAt: getOpenAt(openAt, isOpenNow),
-      orderByDistance: getOrderByDistance(geolocation, orderBy, orderDir),
+      orderByDistance: getOrderByDistance(
+        geolocation.coordinates,
+        orderBy,
+        orderDir
+      ),
       ...searchParams,
       ...variables,
     },
