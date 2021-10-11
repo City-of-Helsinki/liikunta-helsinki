@@ -37,7 +37,7 @@ function Footer({ navigationItems }: Props) {
       className={styles.footer}
       logoLanguage={logoLanguage}
     >
-      <HDSFooter.Navigation>
+      <HDSFooter.Navigation variant="minimal">
         {navigationItems.map((navigationItem) => (
           <HDSFooter.Item
             key={navigationItem.id}
@@ -47,18 +47,17 @@ function Footer({ navigationItems }: Props) {
             href={navigationItem.url}
           />
         ))}
-      </HDSFooter.Navigation>
-      <HDSFooter.Base
-        copyrightHolder={t("copyright_holder")}
-        copyrightText={t("copyright_text")}
-      >
         <HDSFooter.Item href="/about" label={t("about_us")} as={Link} />
         <HDSFooter.Item
           href="/accessibility"
           label={t("accessibility_statement")}
           as={Link}
         />
-      </HDSFooter.Base>
+      </HDSFooter.Navigation>
+      <HDSFooter.Base
+        copyrightHolder={t("copyright_holder")}
+        copyrightText={t("copyright_text")}
+      ></HDSFooter.Base>
     </HDSFooter>
   );
 }
