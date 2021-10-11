@@ -6,9 +6,7 @@ type Config = {
   skip?: boolean;
 };
 
-export default function useGeolocation({
-  skip = false,
-}: Config | undefined = {}) {
+export default function useGeolocation({ skip = false }: Config = {}) {
   const { resolve, called, coordinates, ...delegated } =
     useGeolocationContext();
 
