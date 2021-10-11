@@ -80,16 +80,18 @@ const SearchList = forwardRef(
             // Wait until position is resolved. This defers querying search
             // results until location is resolved, which will result in less UI
             // states and a slightly better UX.
-            await resolve();
-          }
+            const geolocation = await resolve();
 
-          return modifyFilters(
-            {
-              orderBy: "distance",
-              orderDir: "asc",
-            },
-            transitionOptions
-          );
+            if (geolocation) {
+              return modifyFilters(
+                {
+                  orderBy: "distance",
+                  orderDir: "asc",
+                },
+                transitionOptions
+              );
+            }
+          }
         default:
           return modifyFilters(
             {
