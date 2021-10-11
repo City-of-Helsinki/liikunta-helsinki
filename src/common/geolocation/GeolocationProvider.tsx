@@ -43,42 +43,44 @@ export default function GeolocationProvider({ children }: Props) {
       return;
     }
 
-    setLoading(true);
-    let geolocation = null;
-
-    if ("geolocation" in navigator) {
-      sendNotification(
-        t("a11ymessage.title"),
-        t("a11ymessage.description"),
-        "info",
-        { invisible: true }
-      );
-
-      try {
-        geolocation = await geolocationService.getCurrentPosition();
-
-        setLocation(geolocation);
-      } catch (e) {
-        setLocation(null);
-        setError(e);
-        sendNotification(
-          t("error.title"),
-          t(
-            e.PERMISSION_DENIED
-              ? "error.description.permission_denied"
-              : "error.description.generic"
-          ),
-          "alert"
-        );
-      }
-
-      setLoading(false);
-      setCalled(true);
-    } else {
+    if (!("geolocation" in navigator)) {
       setLocation(null);
       setLoading(false);
       setCalled(true);
+
+      return;
     }
+
+    setLoading(true);
+    let geolocation = null;
+
+    sendNotification(
+      t("a11ymessage.title"),
+      t("a11ymessage.description"),
+      "info",
+      { invisible: true }
+    );
+
+    try {
+      geolocation = await geolocationService.getCurrentPosition();
+
+      setLocation(geolocation);
+    } catch (e) {
+      setLocation(null);
+      setError(e);
+      sendNotification(
+        t("error.title"),
+        t(
+          e.PERMISSION_DENIED
+            ? "error.description.permission_denied"
+            : "error.description.generic"
+        ),
+        "alert"
+      );
+    }
+
+    setLoading(false);
+    setCalled(true);
 
     return geolocation;
   }, [t]);
