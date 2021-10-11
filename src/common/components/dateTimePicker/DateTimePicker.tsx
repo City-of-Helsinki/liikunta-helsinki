@@ -221,10 +221,10 @@ export default function DateTimePicker({
 
   const defaultMinDateErrorMessage = `${t(
     "date_input.error.default_min_date"
-  )} (${formatIntoDate(minDate)})`;
+  )} (${minDate ? formatIntoDate(minDate) : null})`;
   const defaultMaxDateErrorMessage = `${t(
     "date_input.error.default_max_date"
-  )} (${formatIntoDate(minDate)})`;
+  )} (${maxDate ? formatIntoDate(maxDate) : null})`;
   const intermediaryDateObject = getDateFromDateString(intermediaryDate);
   const minDateError = validateDate(
     intermediaryDateObject,
