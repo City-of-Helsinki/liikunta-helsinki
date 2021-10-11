@@ -39,7 +39,6 @@ function getOrderByDistance(
   const orderDirTpUSDistanceOrder = {
     asc: "ASCENDING",
     desc: "DESCENDING",
-    null: undefined,
   } as const;
 
   return {
