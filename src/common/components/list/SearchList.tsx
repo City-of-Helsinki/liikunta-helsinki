@@ -141,11 +141,7 @@ const SearchList = forwardRef(
                 value={selectedOrderByOption}
                 onChange={handleOrderChange}
                 options={orderByOptions}
-                icon={
-                  geolocation.loading ? (
-                    <SmallSpinner aria-label="Etsitään paikkaa" />
-                  ) : null
-                }
+                icon={geolocation.loading ? <SmallSpinner /> : null}
                 noOutline
                 className={styles.orderbySelect}
               />
