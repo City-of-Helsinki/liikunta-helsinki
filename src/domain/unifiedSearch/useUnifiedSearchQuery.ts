@@ -27,6 +27,11 @@ function getOpenAt(openAt: Date, isOpenNow: boolean) {
   return null;
 }
 
+const orderDirToUnifiedSearchDistanceOrder = {
+  asc: "ASCENDING",
+  desc: "DESCENDING",
+} as const;
+
 function getOrderByDistance(
   position: Coordinates | undefined,
   orderBy: "distance",
@@ -36,15 +41,10 @@ function getOrderByDistance(
     return;
   }
 
-  const orderDirTpUSDistanceOrder = {
-    asc: "ASCENDING",
-    desc: "DESCENDING",
-  } as const;
-
   return {
     latitude: position.latitude,
     longitude: position.longitude,
-    order: orderDir ? orderDirTpUSDistanceOrder[orderDir] : null,
+    order: orderDir ? orderDirToUnifiedSearchDistanceOrder[orderDir] : null,
   };
 }
 
