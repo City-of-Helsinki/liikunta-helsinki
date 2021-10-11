@@ -191,6 +191,10 @@ export default function DateTimePicker({
         e.preventDefault();
         return setIsOpen(true);
       case "Escape":
+        if (buttonRef.current) {
+          buttonRef.current.focus();
+        }
+
         return setIsOpen(false);
     }
   };
