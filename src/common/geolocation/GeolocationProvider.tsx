@@ -43,6 +43,8 @@ export default function GeolocationProvider({ children }: Props) {
       return;
     }
 
+    setLoading(true);
+
     if (!("geolocation" in navigator)) {
       setLocation(null);
       setLoading(false);
@@ -51,7 +53,6 @@ export default function GeolocationProvider({ children }: Props) {
       return;
     }
 
-    setLoading(true);
     let geolocation = null;
 
     sendNotification(
