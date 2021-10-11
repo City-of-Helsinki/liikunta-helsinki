@@ -146,6 +146,7 @@ const SearchList = forwardRef(
                   ) : null
                 }
                 noOutline
+                className={styles.orderbySelect}
               />
             </div>
           </div>
