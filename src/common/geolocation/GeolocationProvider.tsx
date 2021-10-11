@@ -44,6 +44,7 @@ export default function GeolocationProvider({ children }: Props) {
     }
 
     setLoading(true);
+    let geolocation = null;
 
     if ("geolocation" in navigator) {
       sendNotification(
@@ -54,9 +55,9 @@ export default function GeolocationProvider({ children }: Props) {
       );
 
       try {
-        const coordinates = await geolocationService.getCurrentPosition();
+        geolocation = await geolocationService.getCurrentPosition();
 
-        setLocation(coordinates);
+        setLocation(geolocation);
       } catch (e) {
         setLocation(null);
         setError(e);
@@ -78,6 +79,8 @@ export default function GeolocationProvider({ children }: Props) {
       setLoading(false);
       setCalled(true);
     }
+
+    return geolocation;
   }, [t]);
 
   return (
