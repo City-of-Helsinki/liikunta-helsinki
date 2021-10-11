@@ -74,7 +74,7 @@ const SearchList = forwardRef(
         case "distance-asc":
           let location: Coordinates | void = geolocation.coordinates;
 
-          if (!geolocation.called) {
+          if (!geolocation.called || !geolocation.coordinates) {
             // Wait until position is resolved. This defers querying search
             // results until location is resolved, which will result in less UI
             // states and a slightly better UX.
