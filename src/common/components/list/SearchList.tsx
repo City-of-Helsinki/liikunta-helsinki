@@ -39,12 +39,7 @@ const SearchList = forwardRef(
   ) => {
     const { t } = useTranslation("search_list");
     const { modifyFilters, filters, filterList } = useUnifiedSearch();
-    const {
-      loading: loadingGeolocation,
-      called,
-      resolve,
-      geolocation,
-    } = useGeolocation({ skip: true });
+    const geolocation = useGeolocation({ skip: true });
     const resultsLeft = count ? count - items.length : 0;
 
     const getLoadedMoreAmount = () => {
@@ -77,13 +72,13 @@ const SearchList = forwardRef(
 
       switch (option.value) {
         case "distance-asc":
-          let location: Coordinates | void = geolocation;
+          let location: Coordinates | void = geolocation.coordinates;
 
-          if (!called) {
+          if (!geolocation.called) {
             // Wait until position is resolved. This defers querying search
             // results until location is resolved, which will result in less UI
             // states and a slightly better UX.
-            location = await resolve();
+            location = await geolocation.resolve();
           }
 
           if (location) {
@@ -147,7 +142,7 @@ const SearchList = forwardRef(
                 onChange={handleOrderChange}
                 options={orderByOptions}
                 icon={
-                  loadingGeolocation ? (
+                  geolocation.loading ? (
                     <SmallSpinner aria-label="Etsitään paikkaa" />
                   ) : null
                 }
