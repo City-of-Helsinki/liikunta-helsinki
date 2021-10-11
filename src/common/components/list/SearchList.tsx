@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Button, LoadingSpinner, IconMap, IconSearch } from "hds-react";
 import { useTranslation } from "next-i18next";
 
-import { Option } from "../../../types";
+import { Coordinates, Option } from "../../../types";
 import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
 import Text from "../text/Text";
 import InfoTemplate from "../infoTemplate/InfoTemplate";
@@ -43,6 +43,7 @@ const SearchList = forwardRef(
       loading: loadingGeolocation,
       called,
       resolve,
+      geolocation,
     } = useGeolocation({ skip: true });
     const resultsLeft = count ? count - items.length : 0;
 
@@ -76,22 +77,25 @@ const SearchList = forwardRef(
 
       switch (option.value) {
         case "distance-asc":
+          let location: Coordinates | void = geolocation;
+
           if (!called) {
             // Wait until position is resolved. This defers querying search
             // results until location is resolved, which will result in less UI
             // states and a slightly better UX.
-            const geolocation = await resolve();
-
-            if (geolocation) {
-              return modifyFilters(
-                {
-                  orderBy: "distance",
-                  orderDir: "asc",
-                },
-                transitionOptions
-              );
-            }
+            location = await resolve();
           }
+
+          if (location) {
+            return modifyFilters(
+              {
+                orderBy: "distance",
+                orderDir: "asc",
+              },
+              transitionOptions
+            );
+          }
+
         default:
           return modifyFilters(
             {
