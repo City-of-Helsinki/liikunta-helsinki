@@ -3,5 +3,5 @@
   "error.description.permission_denied": "Et ole myöntänyt lupaa sijaintisi käyttämiseen",
   "error.description.generic": "Sijaintia ei ole saatavilla",
   "a11ymessage.title": "Etsitään paikkaa",
-  "a11ymessage.description": "Yritäme käyttää selaimesi tarjoamaa paikkatietoa"
+  "a11ymessage.description": "Yritämme käyttää selaimesi tarjoamaa paikkatietoa"
 }
