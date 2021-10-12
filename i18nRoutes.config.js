@@ -11,6 +11,10 @@ const i18nRoutes = {
     { source: "/paikat/:id", locale: "fi" },
     { source: "/platser/:id", locale: "sv" },
   ],
+  "/venues/:id/map": [
+    { source: "/paikat/:id/kartta", locale: "fi" },
+    { source: "/platser/:id/karta", locale: "sv" },
+  ],
   "/collections/:slug": [
     { source: "/kokoelmat/:slug", locale: "fi" },
     { source: "/collections/:slug", locale: "sv" },

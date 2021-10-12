@@ -73,7 +73,7 @@ function InfoBlockLink({
   }
 
   return (
-    <Link href={href}>
+    <Link href={href} avoidEscaping>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className={styles.link}>
         <span>{label}</span> <IconAngleRight />

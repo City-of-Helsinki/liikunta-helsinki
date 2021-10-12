@@ -36,7 +36,7 @@ export const PAGE_FRAGMENT = gql`
 
 export const PAGE_QUERY = gql`
   ${PAGE_FRAGMENT}
-  query PageQuery($language: LanguageCodeFilterEnum) {
+  query PageQuery($menuLocation: MenuLocationEnum!) {
     ...PageFragment
   }
 `;
