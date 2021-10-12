@@ -38,11 +38,6 @@ export default function GeolocationProvider({ children }: Props) {
   const [error, setError] = useState<GeolocationPositionError | undefined>();
 
   const resolve = useCallback(async () => {
-    // Defer until we are in the browser environment
-    if (!process.browser) {
-      return;
-    }
-
     setLoading(true);
 
     if (!("geolocation" in navigator)) {
