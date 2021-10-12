@@ -25,7 +25,4 @@ module.exports = {
   images: {
     domains: ["liikunta.content.api.hel.fi"],
   },
-  experimental: {
-    scrollRestoration: true,
-  },
 };
