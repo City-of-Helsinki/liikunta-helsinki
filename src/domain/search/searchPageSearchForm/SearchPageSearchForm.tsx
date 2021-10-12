@@ -17,6 +17,7 @@ import searchApolloClient from "../../../domain/unifiedSearch/searchApolloClient
 import { getUnifiedSearchLanguage } from "../../../common/apollo/utils";
 import getTranslation from "../../../common/utils/getTranslation";
 import { formatIntoDateTime } from "../../../common/utils/time/format";
+import queryPersister from "../../../common/utils/queryPersister";
 import useIntermediaryState from "../../../common/hooks/useIntermediaryState";
 import Text from "../../../common/components/text/Text";
 import SuggestionInput, {
@@ -266,10 +267,18 @@ function SearchPageSearchForm({
                 href={{
                   query: getQueryWithout(key, value),
                 }}
+                onClick={() => {
+                  queryPersister.persistQuery(getQueryWithout(key, value));
+                }}
               />
             ))}
             <Link href={searchRoute}>
-              <a className={styles.clearSearchParameters}>
+              <a
+                className={styles.clearSearchParameters}
+                onClick={() => {
+                  queryPersister.persistQuery({});
+                }}
+              >
                 {t("clear_filters")}
               </a>
             </Link>
