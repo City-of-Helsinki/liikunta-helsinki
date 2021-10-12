@@ -165,17 +165,10 @@ export default function Search() {
       first: BLOCK_SIZE,
       after: afterCursor,
     };
-    setFilters(
-      {
-        ...filters,
-        ...pagination,
-      },
-      null,
-      {
-        scroll: false,
-        shallow: true,
-      }
-    );
+    setFilters(filters, null, {
+      scroll: false,
+      shallow: true,
+    });
 
     fetchMore(pagination).then(() => {
       moreResultsAnnouncerRef.current?.focus();
