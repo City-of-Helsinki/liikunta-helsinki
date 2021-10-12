@@ -16,6 +16,7 @@ type Props = {
     className?: string;
   }>;
   "aria-label"?: string;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
 const Keyword = ({
