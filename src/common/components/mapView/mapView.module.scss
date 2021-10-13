@@ -8,6 +8,7 @@
   height: calc(100vh - 120px);
   width: 100%;
   z-index: 1;
+  position: relative;
 
   // At breakpoint-s the logo shrinks a little, so we need to adjust map size to match that
   @include breakpoints.respond-above(s) {
