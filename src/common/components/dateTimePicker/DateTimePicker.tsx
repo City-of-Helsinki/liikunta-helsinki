@@ -261,9 +261,15 @@ export default function DateTimePicker({
           aria-hidden="true"
           className={styles.dropdownButtonIcon}
         />
-        <span className={styles.dropdownButtonTextContent}>
-          {value ? formatIntoDateTime(value) : label}
-        </span>
+        {value ? (
+          <span className={styles.dropdownButtonTextContentValue}>
+            {formatIntoDateTime(value)}
+          </span>
+        ) : (
+          <span className={styles.dropdownButtonTextContentPlaceholder}>
+            {label}
+          </span>
+        )}
         <IconAngleDown
           aria-hidden="true"
           className={styles.dropdownButtonIcon}
