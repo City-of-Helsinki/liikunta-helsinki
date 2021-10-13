@@ -15,7 +15,7 @@ type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
 
 const Link = ({ href, children, locale, ...rest }: LinkProps) => {
   return (
-    <NextLink href={href} locale={locale} avoidEscaping>
+    <NextLink href={href} locale={locale}>
       <a {...rest}>{children}</a>
     </NextLink>
   );

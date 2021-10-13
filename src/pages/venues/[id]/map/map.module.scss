@@ -1,0 +1,28 @@
+@use "breakpoints";
+@import "variables";
+
+.content {
+  --background-color: #{$color-engel-medium-light};
+  grid-column: 1 / -1 !important;
+}
+
+.title {
+  font-size: $fontsize-heading-m;
+  margin-left: $spacing-xl;
+}
+
+.mapHeader {
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color);
+  padding: 0 $spacing-m;
+  height: 4.375rem;
+
+  a {
+    margin-right: $spacing-m;
+
+    svg {
+      color: $color-black;
+    }
+  }
+}

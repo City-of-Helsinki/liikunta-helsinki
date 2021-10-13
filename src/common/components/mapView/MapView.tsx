@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import L from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { useTranslation } from "next-i18next";
@@ -43,9 +43,11 @@ function createCustomClusterIcon(cluster) {
 
 type Props = {
   items: MapItem[];
+  center?: LatLngExpression;
+  zoom?: number;
 };
 
-function MapView({ items = [] }: Props) {
+function MapView({ items = [], center, zoom }: Props) {
   const { t } = useTranslation("map_view");
 
   return (
@@ -56,8 +58,8 @@ function MapView({ items = [] }: Props) {
       className={styles.mapView}
     >
       <MapContainer
-        center={DEFAULT_POSITION}
-        zoom={DEFAULT_ZOOM}
+        center={center ?? DEFAULT_POSITION}
+        zoom={zoom ?? DEFAULT_ZOOM}
         maxBounds={BOUNDARIES}
         minZoom={MIN_ZOOM}
         maxZoom={MAX_ZOOM}

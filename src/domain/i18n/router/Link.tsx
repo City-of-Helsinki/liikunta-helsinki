@@ -35,17 +35,17 @@ function getHrefThatAvoidsEscaping(
 }
 
 type Props = React.PropsWithChildren<Omit<LinkProps, "locale">> & {
-  avoidEscaping?: true;
+  escape?: boolean;
   locale?: Locale | false;
 };
 
-export default function Link({ href, avoidEscaping, ...delegated }: Props) {
+export default function Link({ href, escape, ...delegated }: Props) {
   const router = useRouter();
   const locale = delegated.locale || router.locale;
   const i18nHref = getI18nHref(href, locale) ?? href;
-  const enhancedHref = avoidEscaping
-    ? getHrefThatAvoidsEscaping(i18nHref) ?? i18nHref
-    : i18nHref;
+  const enhancedHref = escape
+    ? i18nHref
+    : getHrefThatAvoidsEscaping(i18nHref) ?? i18nHref;
 
   return <NextLink {...delegated} href={enhancedHref} />;
 }
