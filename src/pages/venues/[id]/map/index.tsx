@@ -24,12 +24,22 @@ const MapView = dynamic(
   }
 );
 
-const VenueMapPageContent: React.FC = () => {
+export default function VenueMapPage(props) {
+  const nextApiApolloClient = useNextApiApolloClient(
+    props.initialNextApiApolloState
+  );
   const router = useRouter();
+  const locale = router.locale ?? router.defaultLocale;
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
     },
+    context: {
+      headers: {
+        "Accept-Language": locale,
+      },
+    },
+    client: nextApiApolloClient,
   });
 
   if (loading || error) {
@@ -53,38 +63,22 @@ const VenueMapPageContent: React.FC = () => {
   };
 
   return (
-    <div className={styles.content}>
-      <div className={styles.mapHeader}>
-        <Link href={backHref}>
-          <a aria-label="Takaisin paikkanäkymään">
-            <IconArrowLeft aria-hidden="true" size="l" />
-          </a>
-        </Link>
-        <h1 className={styles.title}>{title}</h1>
+    <Page title={title} showFooter={false}>
+      <div className={styles.content}>
+        <div className={styles.mapHeader}>
+          <Link href={backHref}>
+            <a aria-label="Takaisin paikkanäkymään">
+              <IconArrowLeft aria-hidden="true" size="l" />
+            </a>
+          </Link>
+          <h1 className={styles.title}>{title}</h1>
+        </div>
+        <MapView
+          zoom={20}
+          center={[location[1], location[0]]}
+          items={[venueMapItem]}
+        />
       </div>
-      <MapView
-        zoom={20}
-        center={[location[1], location[0]]}
-        items={[venueMapItem]}
-      />
-    </div>
-  );
-};
-
-export default function VenueMapPage(props) {
-  const nextApiApolloClient = useNextApiApolloClient(
-    props.initialNextApiApolloState
-  );
-
-  return (
-    <Page
-      title="Liikunta-Helsinki"
-      description="Liikunta-helsinki"
-      showFooter={false}
-    >
-      <ApolloProvider client={nextApiApolloClient}>
-        <VenueMapPageContent />
-      </ApolloProvider>
     </Page>
   );
 }
@@ -108,6 +102,11 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       query: VENUE_QUERY,
       variables: {
         id: context.params.id,
+      },
+      context: {
+        headers: {
+          "Accept-Language": context.locale ?? context.defaultLocale,
+        },
       },
     });
 
