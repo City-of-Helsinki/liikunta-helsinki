@@ -39,7 +39,7 @@ function CardTitle({ href, title, ...textProps }: CardTitleProps) {
 
   return (
     <Text as="h3" variant="body-l" className={styles.title} {...textProps}>
-      <Link href={href} avoidEscaping>
+      <Link href={href}>
         {/* <Link /> applies the href prop to <a> */}
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a
@@ -165,9 +165,11 @@ type CardKeywordsProps = {
 
 function CardKeywords({ keywords, className }: CardKeywordsProps) {
   // stop propagation so link click is not simulated in Card component
-  const handleKeywordMouseUp = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    e.stopPropagation()
-  }
+  const handleKeywordMouseUp = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+  };
 
   return (
     <ul className={classNames(styles.keywords, className)}>
@@ -177,7 +179,11 @@ function CardKeywords({ keywords, className }: CardKeywordsProps) {
           const key = typeof label === "string" ? label : label.key;
 
           return (
-            <li key={key} className={styles.keyword} onMouseUp={handleKeywordMouseUp}>
+            <li
+              key={key}
+              className={styles.keyword}
+              onMouseUp={handleKeywordMouseUp}
+            >
               <Keyword
                 keyword={label}
                 href={href}

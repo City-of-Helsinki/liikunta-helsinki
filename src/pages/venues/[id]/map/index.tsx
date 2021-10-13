@@ -55,12 +55,8 @@ const VenueMapPageContent: React.FC = () => {
   return (
     <div className={styles.content}>
       <div className={styles.mapHeader}>
-        <Link
-          href={backHref}
-          avoidEscaping
-          aria-label="Takaisin paikkanäkymään"
-        >
-          <a>
+        <Link href={backHref}>
+          <a aria-label="Takaisin paikkanäkymään">
             <IconArrowLeft aria-hidden="true" size="l" />
           </a>
         </Link>
