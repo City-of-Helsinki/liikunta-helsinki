@@ -58,7 +58,7 @@ type Props = {
 };
 
 export default function PaginationContainer({
-  fetchMore,
+  fetchMore: originalFetchMore,
   pageInfo,
   loading,
   elements,
@@ -71,12 +71,14 @@ export default function PaginationContainer({
   nMoreResultsLabel,
 }: Props) {
   const ref = useRef<HTMLLIElement>(null);
-  const { loadedMoreAmount, a11yIndex, resultsLeft } = useA11yPagination({
-    moreResultsAnnouncerRef: ref,
-    visibleCount: elements.length,
-    totalCount,
-    pageSize,
-  });
+  const { fetchMore, loadedMoreAmount, a11yIndex, resultsLeft } =
+    useA11yPagination({
+      moreResultsAnnouncerRef: ref,
+      fetchMore: originalFetchMore,
+      visibleCount: elements.length,
+      totalCount,
+      pageSize,
+    });
 
   const handleLoadMore = () => {
     fetchMore({

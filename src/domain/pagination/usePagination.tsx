@@ -1,44 +1,72 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
+import {
+  FetchMoreOptions,
+  FetchMoreQueryOptions,
+  OperationVariables,
+} from "@apollo/client";
+import { useCallback } from "react";
+
+import { FetchMoreFunction } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Options = {
+type Options<TData = any, TVariables = OperationVariables> = {
+  fetchMore: FetchMoreFunction<TData, TVariables>;
   moreResultsAnnouncerRef: React.RefObject<HTMLElement>;
   totalCount: number;
   pageSize: number;
   visibleCount: number;
 };
-
 type A11yHelpers = {
   a11yIndex: number;
   loadedMoreAmount: number;
   resultsLeft: number;
 };
 
-export default function useA11yPagination({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ReturnValue<TData = any, TVariables = OperationVariables> = A11yHelpers & {
+  fetchMore: FetchMoreFunction<TData, TVariables>;
+};
+
+export default function useA11yPagination<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TData = any,
+  TVariables = OperationVariables
+>({
+  fetchMore: fetchMoreBase,
   moreResultsAnnouncerRef,
   totalCount,
   pageSize,
   visibleCount,
-}: Options): A11yHelpers {
-  useLayoutEffect(() => {
-    if (moreResultsAnnouncerRef.current) {
-      // Render announcer to correct position without breaking flow of grid
-      // 1. Change announcer elements position to static
-      // 2. Take offsetTop value when position is static
-      // 3. Apply position absolute and offsetTop value to top style
-      moreResultsAnnouncerRef.current.style.position = "static";
-      const offsetTop = moreResultsAnnouncerRef?.current?.offsetTop;
-      moreResultsAnnouncerRef.current.style.position = "absolute";
-      moreResultsAnnouncerRef.current.style.top = `${offsetTop.toString()}px`;
+}: Options<TData, TVariables>): ReturnValue<TData, TVariables> {
+  const fetchMore = useCallback(
+    async <K extends keyof TVariables>(
+      fetchMoreOptions: FetchMoreQueryOptions<TVariables, K, TData> &
+        FetchMoreOptions<TData, TVariables>
+    ) => {
+      const result = await fetchMoreBase(fetchMoreOptions);
 
-      // The announcer element is hidden from visual users and as such may
-      // exist in an unnatural place (visually) on the rendered page. If so,
-      // the browser can scroll into an unexpected position. This is true for
-      // instance when the announcer element is absolutely positioned within
-      // a grid.
-      moreResultsAnnouncerRef.current.focus({ preventScroll: true });
-    }
-  }, [totalCount, visibleCount, pageSize, moreResultsAnnouncerRef]);
+      if (moreResultsAnnouncerRef.current) {
+        // Render announcer to correct position without breaking flow of grid
+        // 1. Change announcer elements position to static
+        // 2. Take offsetTop value when position is static
+        // 3. Apply position absolute and offsetTop value to top style
+        moreResultsAnnouncerRef.current.style.position = "static";
+        const offsetTop = moreResultsAnnouncerRef?.current?.offsetTop;
+        moreResultsAnnouncerRef.current.style.position = "absolute";
+        moreResultsAnnouncerRef.current.style.top = `${offsetTop.toString()}px`;
+
+        // The announcer element is hidden from visual users and as such may
+        // exist in an unnatural place (visually) on the rendered page. If so,
+        // the browser can scroll into an unexpected position. This is true for
+        // instance when the announcer element is absolutely positioned within
+        // a grid.
+        moreResultsAnnouncerRef.current.focus({ preventScroll: true });
+      }
+
+      return result;
+    },
+    [fetchMoreBase, moreResultsAnnouncerRef]
+  );
 
   const totalBlocks = Math.ceil(totalCount / pageSize);
   const currentBlock = Math.ceil(visibleCount / pageSize);
@@ -52,6 +80,9 @@ export default function useA11yPagination({
     currentBlock === totalBlocks ? lasBlockSize : pageSize;
 
   return {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    fetchMore,
     a11yIndex,
     loadedMoreAmount,
     resultsLeft,
