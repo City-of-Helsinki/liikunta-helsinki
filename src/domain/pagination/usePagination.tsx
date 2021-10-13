@@ -16,7 +16,6 @@ type Options<TData = any, TVariables = OperationVariables> = {
   pageSize: number;
   visibleCount: number;
 };
-
 type A11yHelpers = {
   a11yIndex: number;
   loadedMoreAmount: number;
@@ -47,6 +46,15 @@ export default function useA11yPagination<
       const result = await fetchMoreBase(fetchMoreOptions);
 
       if (moreResultsAnnouncerRef.current) {
+        // Render announcer to correct position without breaking flow of grid
+        // 1. Change announcer elements position to static
+        // 2. Take offsetTop value when position is static
+        // 3. Apply position absolute and offsetTop value to top style
+        moreResultsAnnouncerRef.current.style.position = "static";
+        const offsetTop = moreResultsAnnouncerRef?.current?.offsetTop;
+        moreResultsAnnouncerRef.current.style.position = "absolute";
+        moreResultsAnnouncerRef.current.style.top = `${offsetTop.toString()}px`;
+
         // The announcer element is hidden from visual users and as such may
         // exist in an unnatural place (visually) on the rendered page. If so,
         // the browser can scroll into an unexpected position. This is true for

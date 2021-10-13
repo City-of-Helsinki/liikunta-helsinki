@@ -24,18 +24,17 @@ type Props = {
 };
 
 function List({ items, variant = "default", li: Li, listContainerRef }: Props) {
+  const ListElement = Li ?? "li";
   return (
     <ul
       ref={listContainerRef}
       className={classNames(styles.list, styles[variant])}
     >
-      {items.map((node: React.ReactElement, index: number) =>
-        React.createElement(
-          Li ?? "li",
-          { key: node.key, className: styles.item, index },
-          node
-        )
-      )}
+      {items.map((node: React.ReactElement, index: number) => (
+        <ListElement key={node.key} index={index} className={styles.item}>
+          {node}
+        </ListElement>
+      ))}
     </ul>
   );
 }
