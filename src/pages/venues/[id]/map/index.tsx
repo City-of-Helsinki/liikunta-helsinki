@@ -30,7 +30,7 @@ export default function VenueMapPage(props) {
   );
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { data, loading, error } = useQuery(VENUE_QUERY, {
+  const { data, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
     },
@@ -42,16 +42,15 @@ export default function VenueMapPage(props) {
     client: nextApiApolloClient,
   });
 
-  if (loading || error) {
+  if (error) {
     return null;
   }
 
+  const title = data.venue?.name;
+  const venueId = data.venue?.id;
   const location = data.venue?.position?.coordinates;
   const lat = location[0];
   const lng = location[1];
-  const title = data.venue?.name;
-  const venueId = data.venue?.id;
-
   const venueMapItem = {
     id: venueId,
     title,
