@@ -1,4 +1,4 @@
-import { ApolloProvider, isApolloError, useQuery } from "@apollo/client";
+import { isApolloError, useQuery } from "@apollo/client";
 import { IconArrowLeft } from "hds-react";
 import { GetStaticPropsContext } from "next";
 import dynamic from "next/dynamic";
@@ -47,8 +47,11 @@ export default function VenueMapPage(props) {
   }
 
   const location = data.venue?.position?.coordinates;
+  const lat = location[0];
+  const lng = location[1];
   const title = data.venue?.name;
   const venueId = data.venue?.id;
+
   const venueMapItem = {
     id: venueId,
     title,
@@ -73,11 +76,7 @@ export default function VenueMapPage(props) {
           </Link>
           <h1 className={styles.title}>{title}</h1>
         </div>
-        <MapView
-          zoom={20}
-          center={[location[1], location[0]]}
-          items={[venueMapItem]}
-        />
+        <MapView zoom={20} center={[lng, lat]} items={[venueMapItem]} />
       </div>
     </Page>
   );
