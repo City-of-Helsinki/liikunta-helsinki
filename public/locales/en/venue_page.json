@@ -17,5 +17,6 @@
   "share_sport": "EN: Jaa liikunta",
   "map_box.title": "EN: Sijainti",
   "map_box.accessibility_sentences": "EN: Esteettömyystiedot",
-  "other_sports_section.title": "EN: Muuta samankaltaista liikuntaa"
+  "other_sports_section.title": "EN: Muuta samankaltaista liikuntaa",
+  "back_to_venue_page_aria_label": "EN: Takaisin liikuntapaikkasivulle"
 }

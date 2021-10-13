@@ -3,6 +3,7 @@ import { IconArrowLeft } from "hds-react";
 import { GetStaticPropsContext } from "next";
 import dynamic from "next/dynamic";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { VENUE_QUERY } from "..";
 import Page from "../../../../common/components/page/Page";
@@ -28,6 +29,7 @@ export default function VenueMapPage(props) {
   const nextApiApolloClient = useNextApiApolloClient(
     props.initialNextApiApolloState
   );
+  const { t } = useTranslation("venue_page");
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
   const { data, error } = useQuery(VENUE_QUERY, {
@@ -69,7 +71,7 @@ export default function VenueMapPage(props) {
       <div className={styles.content}>
         <div className={styles.mapHeader}>
           <Link href={backHref}>
-            <a aria-label="Takaisin paikkanäkymään">
+            <a aria-label={t("back_to_venue_page_aria_label")}>
               <IconArrowLeft aria-hidden="true" size="l" />
             </a>
           </Link>
