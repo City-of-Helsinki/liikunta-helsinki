@@ -22,8 +22,6 @@
     align-items: center;
     width: 100%;
 
-    font-size: $fontsize-body-l;
-
     border: 2px solid transparent;
     background: $color-white;
     outline: none;
@@ -36,9 +34,15 @@
       flex-basis: calc(3rem + 4px); // Icon width in HDS input controls
     }
 
-    &TextContent {
-      text-align: start;
+    &TextContentValue,
+    &TextContentPlaceholder {
       flex-grow: 1;
+
+      font-size: $fontsize-body-l;
+      text-align: start;
+    }
+    &TextContentPlaceholder {
+      color: $color-black-60;
     }
   }
 
