@@ -7,22 +7,22 @@
 }
 
 .title {
-  font-size: 24px;
-  margin-left: var(--spacing-xl);
+  font-size: $fontsize-heading-m;
+  margin-left: $spacing-xl;
 }
 
 .mapHeader {
   display: flex;
   align-items: center;
   background-color: var(--background-color);
-  padding: 0 1rem;
-  height: 70px;
+  padding: 0 $spacing-m;
+  height: 4.375rem;
 
   a {
-    margin-right: 1rem;
+    margin-right: $spacing-m;
 
     svg {
-      color: black;
+      color: $color-black;
     }
   }
 }
