@@ -82,7 +82,7 @@ async function saveTranslationDocumentToFileSystem(translationDocument) {
 
       await fs.writeFile(
         path.join(TRANSLATIONS_DESTINATION, language, fileName),
-        JSON.stringify(fileContentForLanguage, null, 2)
+        `${JSON.stringify(fileContentForLanguage, null, 2)}\n`
       );
     }
 
