@@ -18,6 +18,14 @@ import SearchHeader, {
 } from "../../domain/search/searchHeader/SearchHeader";
 import { Connection, MapItem, SearchResult } from "../../types";
 
+// https://stackoverflow.com/a/64634759
+const MapView = dynamic(
+  () => import("../../common/components/mapView/MapView"),
+  {
+    ssr: false,
+  }
+);
+
 // This query is placeholder for now. When UnifiedSearch supports search by radius or
 // something similar make changes to this query.
 export const MAP_SEARCH_QUERY = gql`
@@ -91,7 +99,7 @@ function getSearchResultsAsItems(
 ): MapItem[] {
   const searchResults = getNodes<SearchResult>(searchResultConnection);
   return searchResults.map((searchResult) => ({
-    id: searchResult.venue.name.fi,
+    id: `tprek:${searchResult.venue.meta.id}`,
     title: searchResult.venue.name.fi,
     href: `/venues/tprek:${searchResult.venue.meta.id}`,
     location: searchResult.venue.location.geoLocation.geometry.coordinates,
@@ -100,29 +108,34 @@ function getSearchResultsAsItems(
 
 export default function MapSearch() {
   const router = useRouter();
-  const { data } = useUnifiedSearchQuery(MAP_SEARCH_QUERY, {
-    first: 10000,
-  });
+  const venueId = router.query.venue as string;
   const mapSearchPageQuery = useQuery(MAP_SEARCH_PAGE_QUERY, {
     variables: {
       languageCode: getQlLanguage(router.locale),
     },
   });
-
-  // https://stackoverflow.com/a/64634759
-  const MapView = dynamic(
-    () => import("../../common/components/mapView/MapView"),
-    {
-      ssr: false,
-    }
-  );
+  const { data } = useUnifiedSearchQuery(MAP_SEARCH_QUERY, {
+    first: 10000,
+  });
 
   const searchResultItems: MapItem[] = getSearchResultsAsItems(
     data?.unifiedSearch ?? emptyConnection
   );
 
+  const showVenueFocusedMap =
+    typeof venueId === "string" && !!searchResultItems.length;
+
   const switchShowMode = () => {
     const searchParams = getURLSearchParamsFromAsPath(router.asPath);
+
+    // if venue was focused on map, we want to drop the query param
+    // when going back to search page
+    const venueParam = searchParams.get("venue");
+    if (venueParam) {
+      searchParams.delete("venue");
+      searchParams.append("scrollTo", `#${venueParam.replace(":", "_")}`);
+    }
+
     router.replace({
       pathname: "/search",
       query: searchParams.toString(),
@@ -146,7 +159,15 @@ export default function MapSearch() {
           <SearchPageSearchForm showTitle={false} searchRoute="/search/map" />
         }
       />
-      <MapView items={searchResultItems} />
+      {showVenueFocusedMap ? (
+        <MapView
+          key="focusedMap"
+          items={searchResultItems}
+          focusedItemId={venueId}
+        />
+      ) : (
+        <MapView items={searchResultItems} focusedItemId={venueId} />
+      )}
     </Page>
   );
 }

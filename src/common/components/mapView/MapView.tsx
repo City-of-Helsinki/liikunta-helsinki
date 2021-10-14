@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import L, { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -14,6 +14,7 @@ import {
   BOUNDARIES,
   DEFAULT_POSITION,
   DEFAULT_ZOOM,
+  FOCUSED_ITEM_DEFAULT_ZOOM,
   MAX_ZOOM,
   MIN_ZOOM,
   TILE_URL,
@@ -45,10 +46,32 @@ type Props = {
   items: MapItem[];
   center?: LatLngExpression;
   zoom?: number;
+  focusedItemId?: string;
 };
 
-function MapView({ items = [], center, zoom }: Props) {
+function MapView({ items = [], center, zoom, focusedItemId }: Props) {
   const { t } = useTranslation("map_view");
+  const focusedItem = useMemo(
+    () => items.find((item) => item.id === focusedItemId),
+    [items, focusedItemId]
+  );
+
+  const getFocusedItemPosition = (): LatLngExpression | null => {
+    if (focusedItem && focusedItem.location) {
+      const lat = focusedItem.location[1];
+      const lng = focusedItem.location[0];
+      return [lat, lng];
+    }
+    return null;
+  };
+
+  const getZoom = () => {
+    if (zoom) return zoom;
+    if (getFocusedItemPosition()) {
+      return FOCUSED_ITEM_DEFAULT_ZOOM;
+    }
+    return DEFAULT_ZOOM;
+  };
 
   return (
     <div
@@ -58,8 +81,8 @@ function MapView({ items = [], center, zoom }: Props) {
       className={styles.mapView}
     >
       <MapContainer
-        center={center ?? DEFAULT_POSITION}
-        zoom={zoom ?? DEFAULT_ZOOM}
+        center={getFocusedItemPosition() ?? center ?? DEFAULT_POSITION}
+        zoom={getZoom()}
         maxBounds={BOUNDARIES}
         minZoom={MIN_ZOOM}
         maxZoom={MAX_ZOOM}
@@ -78,16 +101,28 @@ function MapView({ items = [], center, zoom }: Props) {
           maxClusterRadius={60}
           animate={false}
         >
-          {items?.map((item) => {
+          {items.map((item) => {
             if (!item.location) {
               return null;
             }
+
+            // used to automatically open popup for focused map item
+            // react-leaflet doesn't seems to provide better wway to do this
+            const handleOpenPopup = (marker) => {
+              const isFocusedItem = focusedItemId && item.id === focusedItemId;
+              if (isFocusedItem) {
+                // doesn't work without setTimeout. There seems to be some asynchronity
+                // in leaflet libary when rendering markers.
+                setTimeout(() => marker?.openPopup());
+              }
+            };
 
             return (
               <Marker
                 key={item.id}
                 position={[item.location[1], item.location[0]]}
                 icon={venueIcon}
+                ref={handleOpenPopup}
               >
                 <Popup className={styles.popup}>
                   <Text variant="body">{item.title}</Text>

@@ -7,6 +7,8 @@ export const DEFAULT_POSITION: LatLngExpression = [60.16687, 24.943781];
 
 export const DEFAULT_ZOOM = 12;
 
+export const FOCUSED_ITEM_DEFAULT_ZOOM = 18;
+
 export const MIN_ZOOM = 11;
 
 export const MAX_ZOOM = 18;
