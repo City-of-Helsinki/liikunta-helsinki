@@ -255,23 +255,27 @@ function SearchPageSearchForm({
         </div>
         {filterList.length > 0 && (
           <div className={styles.searchAsFilters}>
-            {filterList.map(({ key, value }) => (
-              <Keyword
-                key={`${key}-${value}`}
-                color="black"
-                icon={IconCross}
-                aria-label={`${t(
-                  "remove_filter_aria_label"
-                )}: ${getSearchParameterLabel(key, value)}`}
-                keyword={getSearchParameterLabel(key, value)}
-                href={{
-                  query: getQueryWithout(key, value),
-                }}
-                onClick={() => {
-                  queryPersister.persistQuery(getQueryWithout(key, value));
-                }}
-              />
-            ))}
+            {filterList.map(({ key, value }) => {
+              const queryWithout = getQueryWithout(key, value);
+
+              return (
+                <Keyword
+                  key={`${key}-${value}`}
+                  color="black"
+                  icon={IconCross}
+                  aria-label={`${t(
+                    "remove_filter_aria_label"
+                  )}: ${getSearchParameterLabel(key, value)}`}
+                  keyword={getSearchParameterLabel(key, value)}
+                  href={{
+                    query: queryWithout,
+                  }}
+                  onClick={() => {
+                    queryPersister.persistQuery(queryWithout);
+                  }}
+                />
+              );
+            })}
             <Link href={searchRoute}>
               <a
                 className={styles.clearSearchParameters}

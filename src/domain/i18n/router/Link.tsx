@@ -9,7 +9,8 @@ import { Locale } from "../../../config";
 
 function getI18nHref(
   href: string | UrlObject,
-  locale: Locale
+  locale: Locale,
+  defaultPathname: string
 ): string | UrlObject | null {
   if (typeof href === "string") {
     // If the href is a string we are not able to confidently unpack the href
@@ -19,7 +20,7 @@ function getI18nHref(
 
   return {
     ...href,
-    pathname: getI18nPath(href.pathname, locale),
+    pathname: getI18nPath(href.pathname, locale) ?? defaultPathname,
   };
 }
 
@@ -42,7 +43,7 @@ type Props = React.PropsWithChildren<Omit<LinkProps, "locale">> & {
 export default function Link({ href, escape, ...delegated }: Props) {
   const router = useRouter();
   const locale = delegated.locale || router.locale;
-  const i18nHref = getI18nHref(href, locale) ?? href;
+  const i18nHref = getI18nHref(href, locale, router.pathname) ?? href;
   const enhancedHref = escape
     ? i18nHref
     : getHrefThatAvoidsEscaping(i18nHref) ?? i18nHref;
