@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { IconCross, Button, IconSearch, IconMenuHamburger } from "hds-react";
 import { useTranslation } from "next-i18next";
 
@@ -20,11 +20,12 @@ type Props = {
 function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
   const { t } = useTranslation("search_header");
   const [collapsed, setCollapsed] = useState<boolean>(true);
+  const formWrapper = useRef<HTMLDivElement>();
 
   return (
     <>
       {showMode === ShowMode.MAP && (
-        <div className={styles.searchHeader}>
+        <div ref={formWrapper} className={styles.searchHeader}>
           {!collapsed && (
             <div className={styles.searchMenu}>
               {searchForm}
@@ -60,7 +61,29 @@ function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
                   variant="secondary"
                   theme="black"
                   iconLeft={<IconSearch />}
-                  onClick={() => setCollapsed(false)}
+                  onClick={() => {
+                    setCollapsed(false);
+
+                    // This button comes after the actual form in the DOM order.
+                    // It's rendered out of the UI as the state changes to
+                    // !collapsed, but the focus is re-applied to elements that
+                    // come after the form elements.
+                    //
+                    // This makes the UX cumbersome when using a keyboard or a
+                    // screen reader. In order to improve the UX, we are moving
+                    // the focus to the beginning of the form when the user
+                    // opens it.
+                    //
+                    // Wait for form to be rendered into the DOM
+                    setTimeout(() => {
+                      const firstFormInput = formWrapper.current?.querySelector(
+                        "form input"
+                      ) as HTMLInputElement | null | undefined;
+
+                      // And focus the first input on it
+                      firstFormInput?.focus();
+                    }, 0);
+                  }}
                 >
                   {t("show_search_parameters")}
                 </Button>
