@@ -7,31 +7,14 @@ import useRouter from "./useRouter";
 import { getI18nPath, stringifyUrlObject } from "./utils";
 import { Locale } from "../../../config";
 
-function getI18nHref(
-  href: string | UrlObject,
-  locale: Locale,
-  defaultPathname: string
-): string | UrlObject | null {
-  if (typeof href === "string") {
-    // If the href is a string we are not able to confidently unpack the href
-    // into routes and params.
-    return null;
-  }
-
+function getI18nHref(href: UrlObject, locale: Locale, defaultPathname: string) {
   return {
     ...href,
     pathname: getI18nPath(href.pathname, locale) ?? defaultPathname,
   };
 }
 
-function getHrefThatAvoidsEscaping(
-  href: string | UrlObject | null
-): string | null {
-  if (!href || typeof href === "string") {
-    // If the href is a string it won't be unescaped
-    return null;
-  }
-
+function getHrefThatAvoidsEscaping(href: UrlObject | null) {
   return stringifyUrlObject(href);
 }
 
@@ -42,6 +25,12 @@ type Props = React.PropsWithChildren<Omit<LinkProps, "locale">> & {
 
 export default function Link({ href, escape, ...delegated }: Props) {
   const router = useRouter();
+
+  // Use string hrefs as is
+  if (typeof href === "string") {
+    return <NextLink {...delegated} href={href} />;
+  }
+
   const locale = delegated.locale || router.locale;
   const i18nHref = getI18nHref(href, locale, router.pathname) ?? href;
   const enhancedHref = escape
