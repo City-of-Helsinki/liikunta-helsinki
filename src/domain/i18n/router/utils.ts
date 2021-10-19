@@ -1,5 +1,7 @@
 import { UrlObject } from "url";
 
+import qs from "query-string";
+
 import i18nRoutes from "../../../../i18nRoutes.config";
 import Config, { Locale } from "../../../config";
 
@@ -43,16 +45,54 @@ export function getI18nPath(route: string, locale: string): string {
 
 const isDynamic = (part: string) => part.startsWith("[") && part.endsWith("]");
 const parseDynamicName = (part: string) => part.slice(1, -1);
+const queryToString = (
+  query: Record<string, unknown> | string | undefined,
+  usedQueryParts: string[]
+) => {
+  if (!query) {
+    return;
+  }
+
+  if (typeof query === "string") {
+    return query;
+  }
+
+  const queryWithoutUsed = Object.entries(query).reduce((acc, [key, value]) => {
+    if (usedQueryParts.includes(key)) {
+      return acc;
+    }
+
+    return {
+      ...acc,
+      [key]: value,
+    };
+  }, {});
+
+  const queryAsString = qs.stringify(queryWithoutUsed);
+
+  return queryAsString.length > 0 ? `?${queryAsString}` : null;
+};
 
 export function stringifyUrlObject(url: UrlObject): string {
+  const usedQueryParts = [];
   const pathname = url.pathname
     ?.split("/")
-    .map((part) =>
-      isDynamic(part) ? url.query[parseDynamicName(part)] ?? part : part
-    )
+    .map((part) => {
+      if (!isDynamic(part)) {
+        return part;
+      }
+
+      const dynamicPartName = parseDynamicName(part);
+
+      usedQueryParts.push(dynamicPartName);
+
+      return url.query?.[dynamicPartName] ?? part;
+    })
     .join("/");
 
-  return `${pathname}${url.search || ""}`;
+  const search = url.search ?? queryToString(url.query, usedQueryParts) ?? "";
+
+  return `${pathname}${search}`;
 }
 
 export function getLocaleOrError(locale: string): Locale {
