@@ -7,17 +7,6 @@ import useRouter from "./useRouter";
 import { getI18nPath, stringifyUrlObject } from "./utils";
 import { Locale } from "../../../config";
 
-function getI18nHref(href: UrlObject, locale: Locale, defaultPathname: string) {
-  return {
-    ...href,
-    pathname: getI18nPath(href.pathname, locale) ?? defaultPathname,
-  };
-}
-
-function getHrefThatAvoidsEscaping(href: UrlObject | null) {
-  return stringifyUrlObject(href);
-}
-
 type Props = React.PropsWithChildren<Omit<LinkProps, "locale">> & {
   escape?: boolean;
   locale?: Locale | false;
@@ -32,10 +21,13 @@ export default function Link({ href, escape, ...delegated }: Props) {
   }
 
   const locale = delegated.locale || router.locale;
-  const i18nHref = getI18nHref(href, locale, router.pathname) ?? href;
+  const i18nHref = {
+    ...href,
+    pathname: getI18nPath(href.pathname, locale) ?? router.pathname,
+  };
   const enhancedHref = escape
     ? i18nHref
-    : getHrefThatAvoidsEscaping(i18nHref) ?? i18nHref;
+    : stringifyUrlObject(i18nHref) ?? i18nHref;
 
   return <NextLink {...delegated} href={enhancedHref} />;
 }
