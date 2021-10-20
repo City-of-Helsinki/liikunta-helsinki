@@ -1,5 +1,3 @@
-import { UrlObject } from "url";
-
 import React from "react";
 import NextLink, { LinkProps } from "next/link";
 
