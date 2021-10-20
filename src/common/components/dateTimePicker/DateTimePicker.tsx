@@ -213,6 +213,7 @@ export default function DateTimePicker({
     if (
       process.browser &&
       isOpen &&
+      e.relatedTarget &&
       !e.currentTarget.contains(e.relatedTarget as Node)
     ) {
       setIsOpen(false);
