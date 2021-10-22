@@ -159,15 +159,12 @@ export default function MapSearch() {
           <SearchPageSearchForm showTitle={false} searchRoute="/search/map" />
         }
       />
-      {showVenueFocusedMap ? (
-        <MapView
-          key="focusedMap"
-          items={searchResultItems}
-          focusedItemId={venueId}
-        />
-      ) : (
-        <MapView items={searchResultItems} focusedItemId={venueId} />
-      )}
+      <MapView
+        // Use key to force rerender when mode is changes. Otherwise map position / zoom wouldn't reset
+        key={showVenueFocusedMap ? "focused-venue-map" : "search-map"}
+        items={searchResultItems}
+        focusedItemId={showVenueFocusedMap ? venueId : undefined}
+      />
     </Page>
   );
 }

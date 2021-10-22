@@ -99,6 +99,7 @@ function MapView({ items = [], center, zoom, focusedItemId }: Props) {
           iconCreateFunction={createCustomClusterIcon}
           maxClusterRadius={60}
           animate={false}
+          key={items.join() ?? "default"}
         >
           {items.map((item) => {
             if (!item.location) {
