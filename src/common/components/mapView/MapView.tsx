@@ -57,9 +57,8 @@ function MapView({ items = [], center, zoom, focusedItemId }: Props) {
   );
 
   const getFocusedItemPosition = (): LatLngExpression | null => {
-    if (focusedItem && focusedItem.location) {
-      const lat = focusedItem.location[1];
-      const lng = focusedItem.location[0];
+    if (focusedItem?.location) {
+      const [lng, lat] = focusedItem.location;
       return [lat, lng];
     }
     return null;
@@ -106,12 +105,12 @@ function MapView({ items = [], center, zoom, focusedItemId }: Props) {
               return null;
             }
 
-            // used to automatically open popup for focused map item
+            // Used to automatically open popup for focused map item
             // react-leaflet doesn't seems to provide better wway to do this
             const handleOpenPopup = (marker) => {
               const isFocusedItem = focusedItemId && item.id === focusedItemId;
               if (isFocusedItem) {
-                // doesn't work without setTimeout. There seems to be some asynchronity
+                // Doesn't work without setTimeout. There seems to be some asynchronity
                 // in leaflet libary when rendering markers.
                 setTimeout(() => marker?.openPopup());
               }
