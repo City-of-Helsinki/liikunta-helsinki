@@ -212,6 +212,8 @@ export default function DateTimePicker({
   const handleWrapperOnBlur = (e: FocusEvent) => {
     if (
       isOpen &&
+      // Progress only is a relatedTarget exists. Otherwise we can't check
+      // whether it exists within currentTarget.
       e.relatedTarget &&
       !e.currentTarget.contains(e.relatedTarget as Node)
     ) {
