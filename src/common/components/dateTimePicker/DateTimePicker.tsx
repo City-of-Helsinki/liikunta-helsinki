@@ -211,7 +211,6 @@ export default function DateTimePicker({
 
   const handleWrapperOnBlur = (e: FocusEvent) => {
     if (
-      process.browser &&
       isOpen &&
       e.relatedTarget &&
       !e.currentTarget.contains(e.relatedTarget as Node)
