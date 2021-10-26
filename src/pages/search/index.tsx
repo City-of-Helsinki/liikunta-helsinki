@@ -197,7 +197,7 @@ export default function Search() {
 
       if (listItemElement) {
         listItemElement.scrollIntoView({
-          behavior: "smooth",
+          block: "center",
         });
       }
     }
@@ -227,6 +227,7 @@ export default function Search() {
           hasNext={pageInfo?.hasNextPage}
           switchShowMode={switchShowMode}
           items={searchResults.map((searchResult) => {
+            const venueId = `tprek:${searchResult.venue.meta.id}`;
             const item = {
               id: `tprek_${searchResult.venue.meta.id}`,
               title: getTranslation(searchResult.venue.name, locale),
@@ -234,7 +235,7 @@ export default function Search() {
               href: {
                 pathname: "/venues/[id]",
                 query: {
-                  id: `tprek:${searchResult.venue.meta.id}`,
+                  id: venueId,
                 },
               },
               keywords: searchResult.venue.ontologyWords.map((ontology) => {
@@ -279,7 +280,7 @@ export default function Search() {
                 contents={[
                   <InfoBlock.Link
                     key="map-link"
-                    href={`/map?venue=${item.id}`}
+                    href={`/search/map?venue=${venueId}`}
                     label={t("show_results_on_map")}
                   />,
                 ]}
