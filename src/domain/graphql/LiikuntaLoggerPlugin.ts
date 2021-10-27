@@ -19,7 +19,7 @@ function getResolverName(
 }
 
 export default class LiikuntaLoggerPlugin implements ApolloServerPlugin {
-  requestDidStart({ request, context }) {
+  async requestDidStart({ request, context }) {
     if (request.operationName === "IntrospectionQuery") {
       return;
     }
@@ -34,7 +34,7 @@ export default class LiikuntaLoggerPlugin implements ApolloServerPlugin {
     logger.info(`Received request ${requestName}`);
 
     return {
-      didEncounterErrors({ errors }) {
+      async didEncounterErrors({ errors }) {
         const errorsAsString = errors.map((error) => error.toString());
 
         logger.error(
@@ -43,7 +43,7 @@ export default class LiikuntaLoggerPlugin implements ApolloServerPlugin {
           )}\n`
         );
       },
-      willSendResponse() {
+      async willSendResponse() {
         monitor.end();
         logger.info(`Completed request ${requestName}`);
       },

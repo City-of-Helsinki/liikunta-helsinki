@@ -39,8 +39,8 @@ export default function useA11yPagination<
   visibleCount,
 }: Options<TData, TVariables>): ReturnValue<TData, TVariables> {
   const fetchMore = useCallback(
-    async <K extends keyof TVariables>(
-      fetchMoreOptions: FetchMoreQueryOptions<TVariables, K, TData> &
+    async (
+      fetchMoreOptions: FetchMoreQueryOptions<TVariables, TData> &
         FetchMoreOptions<TData, TVariables>
     ) => {
       const result = await fetchMoreBase(fetchMoreOptions);

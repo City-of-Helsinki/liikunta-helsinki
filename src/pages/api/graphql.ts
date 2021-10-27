@@ -58,7 +58,9 @@ const apolloServer = new ApolloServer({
   dataSources,
   typeDefs,
   resolvers,
-  tracing: process.env.NODE_ENV !== "production",
+  // TODO: do we need this? Apollo server v3 removed this but can be used this way:
+  // plugins: [require('apollo-tracing').plugin()]
+  // tracing: process.env.NODE_ENV !== "production",
   context: ({ req }) => {
     const language = acceptsLanguages(req, Config.locales);
 
@@ -68,6 +70,14 @@ const apolloServer = new ApolloServer({
   },
   plugins: [new LiikuntaLoggerPlugin()],
 });
+const startServer = apolloServer.start();
+
+export default async function handler(req, res) {
+  await startServer;
+  await apolloServer.createHandler({
+    path: "/api/graphql",
+  })(req, res);
+}
 
 export const config = {
   api: {
@@ -75,4 +85,4 @@ export const config = {
   },
 };
 
-export default apolloServer.createHandler({ path: "/api/graphql" });
+// export default apolloServer.createHandler({ path: "/api/graphql" });
