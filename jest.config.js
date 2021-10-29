@@ -3,7 +3,8 @@ module.exports = {
   testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"],
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+    // if we would use .babelrc, next would not use swc compiler
+    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { "configFile": "./babel.config.test.json" }],
   },
   transformIgnorePatterns: [
     "/node_modules/",

@@ -1,5 +1,5 @@
 import React from "react";
-import { RouterContext } from "next/dist/next-server/lib/router-context";
+import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 
