@@ -294,6 +294,7 @@ export function VenuePageContent() {
               // multiple locations and it's not possible for us to compile
               // a thorough list.
               loader={({ src }) => src}
+              unoptimized
               src={image ? image : noImagePlaceholder}
               alt=""
               layout="fill"
