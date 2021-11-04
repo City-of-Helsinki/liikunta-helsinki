@@ -9,7 +9,7 @@ function getIsomorphicDOMPurifier() {
   if (!process.browser) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     const { JSDOM } = require("jsdom");
-    const window = new JSDOM("").window;
+    const { window } = new JSDOM("");
 
     return createDOMPurify(window);
   }

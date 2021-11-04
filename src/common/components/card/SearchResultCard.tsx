@@ -40,6 +40,7 @@ function SearchResultCard({
             // multiple locations and it's not possible for us to compile
             // a thorough list.
             loader={({ src }) => src}
+            unoptimized
             src={image ?? noImagePlaceholder}
             alt=""
             className={styles.placeholderCard}

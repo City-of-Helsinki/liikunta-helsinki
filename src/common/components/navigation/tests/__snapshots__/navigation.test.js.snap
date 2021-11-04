@@ -3,7 +3,7 @@
 exports[`<Navigation /> should render correctly 1`] = `
 <div>
   <header
-    class="Navigation-module_header__2HNOX Navigation-module_theme-light__36nmi undefined"
+    class="Navigation-module_header__2HNOX Navigation-module_theme-light__36nmi navigation default"
   >
     <a
       class="Navigation-module_skipToContent__2p54x"

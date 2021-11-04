@@ -48,8 +48,8 @@ function patchMissingDates(
   });
 }
 
-function toCamelCase<I>(obj: I): I {
-  return camelCaseKeys<I>(obj, { deep: true });
+function toCamelCase<T extends Record<string, unknown>[]>(obj) {
+  return camelCaseKeys<T>(obj, { deep: true });
 }
 
 export default class Hauki extends RESTDataSource {

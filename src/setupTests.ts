@@ -1,3 +1,5 @@
+import { TextEncoder, TextDecoder } from "util";
+
 import "@testing-library/jest-dom/extend-expect";
 import { loadEnvConfig } from "@next/env";
 
@@ -17,6 +19,12 @@ jest.mock("react-i18next", () => ({
     };
   },
 }));
+
+// To avoid error: ReferenceError: TextEncoder is not defined
+// discusssed here: https://github.com/jsdom/jsdom/issues/2524
+global.TextEncoder = TextEncoder;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+global.TextDecoder = TextDecoder as any;
 
 global.IntersectionObserver = class IntersectionObserver {
   readonly root: Element | Document | null;

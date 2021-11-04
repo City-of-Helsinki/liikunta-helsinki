@@ -58,7 +58,8 @@ const apolloServer = new ApolloServer({
   dataSources,
   typeDefs,
   resolvers,
-  tracing: process.env.NODE_ENV !== "production",
+  // Uncomment line below to enable apollo tracing
+  // plugins: [require('apollo-tracing').plugin()]
   context: ({ req }) => {
     const language = acceptsLanguages(req, Config.locales);
 
@@ -68,11 +69,17 @@ const apolloServer = new ApolloServer({
   },
   plugins: [new LiikuntaLoggerPlugin()],
 });
+const startServer = apolloServer.start();
+
+export default async function handler(req, res) {
+  await startServer;
+  await apolloServer.createHandler({
+    path: "/api/graphql",
+  })(req, res);
+}
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
-
-export default apolloServer.createHandler({ path: "/api/graphql" });
