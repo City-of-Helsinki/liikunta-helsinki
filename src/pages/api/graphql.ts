@@ -58,9 +58,8 @@ const apolloServer = new ApolloServer({
   dataSources,
   typeDefs,
   resolvers,
-  // TODO: do we need this? Apollo server v3 removed this but can be used this way:
+  // Uncomment line below to enable apollo tracing
   // plugins: [require('apollo-tracing').plugin()]
-  // tracing: process.env.NODE_ENV !== "production",
   context: ({ req }) => {
     const language = acceptsLanguages(req, Config.locales);
 
@@ -84,5 +83,3 @@ export const config = {
     bodyParser: false,
   },
 };
-
-// export default apolloServer.createHandler({ path: "/api/graphql" });
