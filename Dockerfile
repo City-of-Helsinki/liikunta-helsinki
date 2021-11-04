@@ -56,7 +56,7 @@ RUN yarn cache clean
 RUN yarn install --production
 
 # ==========================================
-FROM helsinkitest/node:12-slim AS production
+FROM helsinkitest/node:14-slim AS production
 # ==========================================
 
 ENV PATH $PATH:/app/node_modules/.bin
