@@ -1,6 +1,6 @@
 {
-  "no_results.title": "FI: Sorry no search results were found for the search criteria you selected",
-  "no_results.description": "FI: Try changing your search criteria and you\\'re sure to find something to do!",
+  "no_results.title": "Antamiasi hakuehtoja vastaavia tuloksia ei valitettavasti löytynyt",
+  "no_results.description": "Muuttamalla hakuehtoja löydät varmasti jotain mieluisaa tekemistä!",
   "show_on_map": "Näytä kartalla",
   "search_results_count_label": "hakutulosta",
   "is_loading_more": "Ladataan lisää",

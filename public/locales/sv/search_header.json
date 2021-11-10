@@ -1,6 +1,7 @@
 {
-  "close_search_controls": "SV: Sulje hakuehdot",
-  "show_as_a_list": "SV: Näytä listana",
-  "search_results_count_label": "SV: Hakutulosta",
-  "show_search_parameters": "SV: Näytä haku"
+  "close_search_controls": "Stäng sökkriterierna",
+  "show_as_a_list": "Visa i en lista",
+  "search_results_count_label": "Sökresultat",
+  "show_search_parameters": "Visa sökningen",
+  "show_search_parameters_a11y": "SV: Siirry hakulomakkeelle"
 }

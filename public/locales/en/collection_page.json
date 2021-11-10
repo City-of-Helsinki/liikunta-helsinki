@@ -1,7 +1,7 @@
 {
-  "share_sport": "EN: Jaa liikunta",
-  "show_more_events": "EN: Näytä lisää",
-  "no_more_events": "EN: Ei enempää tapahtumia",
-  "loading_more_events_label": "EN: Ladataan lisää",
-  "n_more_events_label": "EN: tapahtumaa lisää"
+  "share_sport": "Share exercise",
+  "show_more_events": "Show more",
+  "no_more_events": "No more events",
+  "loading_more_events_label": "Loading more",
+  "n_more_events_label": "additional events"
 }

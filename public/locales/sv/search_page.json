@@ -1,6 +1,6 @@
 {
-  "show_results_on_map": "SV: Näytä kartalla",
+  "show_results_on_map": "Visa på kartan",
   "read_more": "SV: Lue lisää",
-  "block.opening_hours.open_now_label": "SV: Nyt auki",
-  "block.opening_hours.label": "SV: Aukioloaika"
+  "block.opening_hours.open_now_label": "Öppet nu",
+  "block.opening_hours.label": "Öppettider"
 }

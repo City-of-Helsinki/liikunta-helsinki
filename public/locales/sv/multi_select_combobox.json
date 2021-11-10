@@ -1,5 +1,5 @@
 {
-  "toggle_button_aria_label": "SV: Avaa valikko",
-  "selected_item_remove_button_aria_label": "SV: Poista {value}",
-  "clear_button_aria_label": "SV: Poista kaikki valinnat"
+  "toggle_button_aria_label": "Öppna menyn",
+  "selected_item_remove_button_aria_label": "Ta bort {value}",
+  "clear_button_aria_label": "Ta bort alla val"
 }

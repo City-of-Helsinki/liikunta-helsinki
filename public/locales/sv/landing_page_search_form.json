@@ -1,7 +1,7 @@
 {
-  "title": "SV: Löydä liikuntaa",
-  "free_text_search.label": "SV: Mitä etsit?",
-  "free_text_search.placeholder": "SV: Aloita kirjoittamalla tähän, esim. uimahalli tai jooga",
-  "do_search": "SV: Hae",
-  "go_to_advanced_search": "SV: Tarkennettu haku"
+  "title": "Hitta motion",
+  "free_text_search.label": "Vad söker du efter?",
+  "free_text_search.placeholder": "Börja med att skriva t.ex. simhall eller yoga här",
+  "do_search": "Sök",
+  "go_to_advanced_search": "Detaljerad sökning"
 }

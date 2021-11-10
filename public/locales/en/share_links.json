@@ -1,7 +1,7 @@
 {
-  "facebook": "EN: Jaa Facebookissa",
-  "twitter": "EN: Jaa Twitterissä",
-  "linkedin": "EN: Jaa LinkedInissä",
-  "copy.label": "EN: Kopioi linkin osoite",
-  "copy.success": "EN: Linkki kopioitu leikepöydälle"
+  "facebook": "Share on Facebook",
+  "twitter": "Share on Twitter",
+  "linkedin": "Share on LinkedIn",
+  "copy.label": "Copy link address",
+  "copy.success": "Link copied to clipboard"
 }

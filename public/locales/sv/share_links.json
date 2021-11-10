@@ -1,7 +1,7 @@
 {
-  "facebook": "SV: Jaa Facebookissa",
-  "twitter": "SV: Jaa Twitterissä",
-  "linkedin": "SV: Jaa LinkedInissä",
-  "copy.label": "SV: Kopioi linkin osoite",
-  "copy.success": "SV: Linkki kopioitu leikepöydälle"
+  "facebook": "Dela på Facebook",
+  "twitter": "Dela på Twitter",
+  "linkedin": "Dela på LinkedIn",
+  "copy.label": "Kopiera länkens adress",
+  "copy.success": "Länken kopierad på klippbordet"
 }
