@@ -1,11 +1,11 @@
 {
-  "select": "EN: Valitse",
-  "close": "EN: Sulje",
-  "date_input.label": "EN: Päivä",
-  "date_input.helper_text": "EN: Käytä muotoa P.K.VVVV",
-  "time_input.label": "EN: Aika",
-  "time_input.hours_label": "EN: Tunnit",
-  "time_input.minutes_label": "EN: Minuutit",
-  "date_input.error.default_min_date": "EN: Valittu päivä on ennen aikaisinta sallittua päivää",
-  "date_input.error.default_max_date": "EN: Valittu päivä on myöhäisimmän sallitun päivän jälkeen"
+  "select": "Select",
+  "close": "Close",
+  "date_input.label": "Day",
+  "date_input.helper_text": "Use the format D.M.YYYY",
+  "time_input.label": "Time",
+  "time_input.hours_label": "Hours",
+  "time_input.minutes_label": "Minutes",
+  "date_input.error.default_min_date": "The selected date is earlier than the earliest allowed date",
+  "date_input.error.default_max_date": "The selected date is later than the latest allowed date"
 }

@@ -1,6 +1,7 @@
 {
-  "close_search_controls": "EN: Sulje hakuehdot",
-  "show_as_a_list": "EN: Näytä listana",
-  "search_results_count_label": "EN: Hakutulosta",
-  "show_search_parameters": "EN: Näytä haku"
+  "close_search_controls": "Close search criteria",
+  "show_as_a_list": "Show in a list",
+  "search_results_count_label": "Search results",
+  "show_search_parameters": "Show search",
+  "show_search_parameters_a11y": "EN: Siirry hakulomakkeelle"
 }

@@ -1,7 +1,7 @@
 {
-  "title": "EN: Löydä liikuntaa",
-  "free_text_search.label": "EN: Mitä etsit?",
-  "free_text_search.placeholder": "EN: Aloita kirjoittamalla tähän, esim. uimahalli tai jooga",
-  "do_search": "EN: Hae",
-  "go_to_advanced_search": "EN: Tarkennettu haku"
+  "title": "Find exercise",
+  "free_text_search.label": "What are you looking for?",
+  "free_text_search.placeholder": "To begin, type here, e.g. swimming hall or yoga",
+  "do_search": "Search",
+  "go_to_advanced_search": "Advanced search"
 }

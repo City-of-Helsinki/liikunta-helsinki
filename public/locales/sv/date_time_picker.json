@@ -1,11 +1,11 @@
 {
-  "select": "SV: Valitse",
-  "close": "SV: Sulje",
-  "date_input.label": "SV: Päivä",
-  "date_input.helper_text": "SV: Käytä muotoa P.K.VVVV",
-  "time_input.label": "SV: Aika",
-  "time_input.hours_label": "SV: Tunnit",
-  "time_input.minutes_label": "SV: Minuutit",
-  "date_input.error.default_min_date": "SV: Valittu päivä on ennen aikaisinta sallittua päivää",
-  "date_input.error.default_max_date": "SV: Valittu päivä on myöhäisimmän sallitun päivän jälkeen"
+  "select": "Välj",
+  "close": "Stäng",
+  "date_input.label": "Datum",
+  "date_input.helper_text": "Ange i formen D.M.ÅÅÅÅ",
+  "time_input.label": "Tid",
+  "time_input.hours_label": "Timmar",
+  "time_input.minutes_label": "Minuter",
+  "date_input.error.default_min_date": "Dagen som har valts in är före det tidigast tillåtna datumet",
+  "date_input.error.default_max_date": "Dagen som har valts in är efter det senast tillåtna datumet"
 }
