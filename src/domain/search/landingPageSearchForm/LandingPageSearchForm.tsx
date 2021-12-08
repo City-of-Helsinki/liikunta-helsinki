@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
 import useUnifiedSearch from "../../unifiedSearch/useUnifiedSearch";
+import { OrderBy } from "../../unifiedSearch/unifiedSearchConstants";
 import Link from "../../i18n/router/Link";
 import Text from "../../../common/components/text/Text";
 import SecondaryLink from "../../../common/components/link/SecondaryLink";
@@ -16,7 +17,7 @@ function LandingPageSearchForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFilters({ q: [searchText] }, "/search");
+    setFilters({ q: [searchText], orderBy: OrderBy.relevance }, "/search");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

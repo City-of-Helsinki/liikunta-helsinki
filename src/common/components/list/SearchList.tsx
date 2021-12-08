@@ -5,6 +5,11 @@ import { useTranslation } from "next-i18next";
 
 import { Coordinates, Option } from "../../../types";
 import useUnifiedSearch from "../../../domain/unifiedSearch/useUnifiedSearch";
+import {
+  OrderBy,
+  OrderByType,
+  OrderDirType,
+} from "../../../domain/unifiedSearch/unifiedSearchConstants";
 import Text from "../text/Text";
 import InfoTemplate from "../infoTemplate/InfoTemplate";
 import styles from "./searchList.module.scss";
@@ -38,7 +43,7 @@ const SearchList = forwardRef(
     ref: Ref<HTMLLIElement>
   ) => {
     const { t } = useTranslation("search_list");
-    const { modifyFilters, filters, filterList } = useUnifiedSearch();
+    const { modifyFilters, filters } = useUnifiedSearch();
     const geolocation = useGeolocation({ skip: true });
     const resultsLeft = count ? count - items.length : 0;
 
@@ -69,54 +74,48 @@ const SearchList = forwardRef(
       const transitionOptions = {
         shallow: true,
       };
+      const [by, dir] = option.value.split("-") as [OrderByType, OrderDirType];
 
-      switch (option.value) {
-        case "distance-asc":
-          let location: Coordinates | void = geolocation.coordinates;
+      // If the user wants to order by distance, try and resolve geolocation
+      if (by === OrderBy.distance) {
+        let location: Coordinates | void = geolocation.coordinates;
 
-          if (!geolocation.called || !geolocation.coordinates) {
-            // Wait until position is resolved. This defers querying search
-            // results until location is resolved, which will result in less UI
-            // states and a slightly better UX.
-            location = await geolocation.resolve();
-          }
+        if (!geolocation.called || !geolocation.coordinates) {
+          // Wait until position is resolved. This defers querying search
+          // results until location is resolved, which will result in less UI
+          // states and a slightly better UX.
+          location = await geolocation.resolve();
+        }
 
-          if (location) {
-            return modifyFilters(
-              {
-                orderBy: "distance",
-                orderDir: "asc",
-              },
-              transitionOptions
-            );
-          }
-
-        default:
-          return modifyFilters(
-            {
-              orderBy: null,
-              orderDir: null,
-            },
-            transitionOptions
-          );
+        // If location could not be found, return early and do not change
+        // ordering.
+        if (!location) {
+          return;
+        }
       }
+
+      return modifyFilters(
+        {
+          orderBy: by,
+          orderDir: dir,
+        },
+        transitionOptions
+      );
     };
 
+    const defaultOption = {
+      label: t("order_by.alphabetical"),
+      value: "name-asc",
+    };
     const orderByOptions = [
-      {
-        label:
-          filterList.length > 0
-            ? t("order_by.relevance")
-            : t("order_by.alphabetical"),
-        value: "",
-      },
+      defaultOption,
+      { label: t("order_by.relevance"), value: "relevance-asc" },
       { label: t("order_by.distance"), value: "distance-asc" },
     ];
     const selectedOrderByOption = orderByOptions.find((option) => {
-      const selectedOptionValue =
-        filters.orderBy && filters.orderDir
-          ? `${filters.orderBy}-${filters.orderDir}`
-          : "";
+      const selectedOptionValue = `${filters.orderBy ?? ""}-${
+        filters.orderDir ?? "asc"
+      }`;
 
       return option.value === selectedOptionValue;
     });
@@ -138,7 +137,7 @@ const SearchList = forwardRef(
               </Text>
               <Select
                 label={t("order_by.label")}
-                value={selectedOrderByOption}
+                value={selectedOrderByOption ?? defaultOption}
                 onChange={handleOrderChange}
                 options={orderByOptions}
                 icon={geolocation.loading ? <SmallSpinner /> : null}

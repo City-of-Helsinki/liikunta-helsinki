@@ -14,6 +14,14 @@ import useGeolocation from "../../common/geolocation/useGeolocation";
 import searchApolloClient from "../unifiedSearch/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
 import useUnifiedSearch from "./useUnifiedSearch";
+import {
+  OrderByType,
+  OrderDirType,
+  orderDirToUnifiedSearchDistanceOrder,
+  UnifiedSearchOrderBy,
+  OrderBy,
+  OrderDir,
+} from "./unifiedSearchConstants";
 
 function getOpenAt(openAt: Date, isOpenNow: boolean) {
   if (openAt) {
@@ -27,25 +35,38 @@ function getOpenAt(openAt: Date, isOpenNow: boolean) {
   return null;
 }
 
-const orderDirToUnifiedSearchDistanceOrder = {
-  asc: "ASCENDING",
-  desc: "DESCENDING",
-} as const;
+type OrderByOptions = {
+  position: Coordinates | undefined;
+};
 
-function getOrderByDistance(
-  position: Coordinates | undefined,
-  orderBy: "distance",
-  orderDir?: "asc" | "desc"
+function getOrderBy(
+  orderBy: OrderByType,
+  orderDir: OrderDirType,
+  options?: OrderByOptions
 ) {
-  if (orderBy !== "distance" || !position) {
-    return;
+  const usOrderDir = orderDirToUnifiedSearchDistanceOrder[orderDir];
+
+  if (orderBy === OrderBy.distance && options.position) {
+    return {
+      orderByDistance: {
+        latitude: options.position.latitude,
+        longitude: options.position.longitude,
+        order: usOrderDir,
+      },
+    };
   }
 
-  return {
-    latitude: position.latitude,
-    longitude: position.longitude,
-    order: orderDir ? orderDirToUnifiedSearchDistanceOrder[orderDir] : null,
-  };
+  if (orderBy === OrderBy.name) {
+    return {
+      orderByName: {
+        order: usOrderDir,
+      },
+    };
+  }
+
+  // With no ordering, Unified Search will return the default sort order of
+  // ElasticSearch, which is by relevance.
+  return {};
 }
 
 const appToUnifiedSearchLanguageMap = {
@@ -70,7 +91,10 @@ type UnifiedSearchVariables = {
   orderByDistance?: {
     latitude: number;
     longitude: number;
-    order?: "ASCENDING" | "DESCENDING";
+    order?: UnifiedSearchOrderBy;
+  };
+  orderByName?: {
+    order?: UnifiedSearchOrderBy;
   };
 };
 
@@ -92,8 +116,8 @@ export default function useUnifiedSearchQuery<TData = any>(
       administrativeDivisionIds = [HELSINKI_OCD_DIVISION_ID],
       isOpenNow,
       openAt,
-      orderBy,
-      orderDir,
+      orderBy = OrderBy.name,
+      orderDir = OrderDir.asc,
       ...searchParams
     },
   } = useUnifiedSearch();
@@ -113,11 +137,7 @@ export default function useUnifiedSearchQuery<TData = any>(
       ontologyTreeIds,
       administrativeDivisionIds,
       openAt: getOpenAt(openAt, isOpenNow),
-      orderByDistance: getOrderByDistance(
-        geolocation.coordinates,
-        orderBy,
-        orderDir
-      ),
+      ...getOrderBy(orderBy, orderDir, { position: geolocation.coordinates }),
       ...searchParams,
       ...variables,
     },

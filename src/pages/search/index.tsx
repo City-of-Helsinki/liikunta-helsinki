@@ -45,6 +45,7 @@ export const SEARCH_QUERY = gql`
     $ontologyWordIds: [ID!]
     $openAt: String
     $orderByDistance: OrderByDistance
+    $orderByName: OrderByName
   ) {
     unifiedSearch(
       q: $q
@@ -57,6 +58,7 @@ export const SEARCH_QUERY = gql`
       ontologyWordIds: $ontologyWordIds
       openAt: $openAt
       orderByDistance: $orderByDistance
+      orderByName: $orderByName
     ) {
       count
       pageInfo {

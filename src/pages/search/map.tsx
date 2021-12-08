@@ -38,6 +38,7 @@ export const MAP_SEARCH_QUERY = gql`
     $ontologyTreeIds: [ID!]
     $openAt: String
     $orderByDistance: OrderByDistance
+    $orderByName: OrderByName
   ) {
     unifiedSearch(
       q: $q
@@ -49,6 +50,7 @@ export const MAP_SEARCH_QUERY = gql`
       ontologyTreeIds: $ontologyTreeIds
       openAt: $openAt
       orderByDistance: $orderByDistance
+      orderByName: $orderByName
     ) {
       count
       edges {
