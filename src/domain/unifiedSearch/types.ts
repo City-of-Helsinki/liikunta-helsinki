@@ -1,3 +1,5 @@
+import { OrderByType, OrderDirType } from "./unifiedSearchConstants";
+
 export type UnifiedSearchParameters = {
   q?: string[];
   administrativeDivisionIds?: string[];
@@ -8,6 +10,6 @@ export type UnifiedSearchParameters = {
   ontology?: string;
   isOpenNow?: boolean;
   openAt?: Date;
-  orderBy?: "distance";
-  orderDir?: "asc" | "desc";
+  orderBy?: OrderByType;
+  orderDir?: OrderDirType;
 };

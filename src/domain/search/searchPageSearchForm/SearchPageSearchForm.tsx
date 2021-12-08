@@ -11,9 +11,10 @@ import useAdministrativeDivisions from "../../unifiedSearch/administrativeDivisi
 import OntologyTreeDropdown from "../../unifiedSearch/ontologyTreeDropdown/OntologyTreeDropdown";
 import useOntologyTree from "../../unifiedSearch/ontologyTreeDropdown/useOntologyTree";
 import useUnifiedSearch from "../../unifiedSearch/useUnifiedSearch";
+import searchApolloClient from "../../unifiedSearch/searchApolloClient";
+import { OrderBy } from "../../unifiedSearch/unifiedSearchConstants";
 import useRouter from "../../i18n/router/useRouter";
 import Link from "../../i18n/router/Link";
-import searchApolloClient from "../../../domain/unifiedSearch/searchApolloClient";
 import { getUnifiedSearchLanguage } from "../../../common/apollo/utils";
 import getTranslation from "../../../common/utils/getTranslation";
 import { formatIntoDateTime } from "../../../common/utils/time/format";
@@ -89,6 +90,9 @@ function SearchPageSearchForm({
       ontologyTreeIds,
       isOpenNow,
       openAt,
+      // When making query, if user hasn't explicitly selected an order, default
+      // to using relevance.
+      orderBy: filters.orderBy ?? OrderBy.relevance,
     });
     setSearchText("");
   };
