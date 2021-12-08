@@ -51,7 +51,9 @@
 
   .body & {
     font-size: $fontsize-body-l;
-    color: $color-copper-dark;
+    // Custom color value. Custom value was created so that enough contrast
+    // could be generated between the text and the background.
+    color: #008667;
   }
 
   .card & {
