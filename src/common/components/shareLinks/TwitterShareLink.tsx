@@ -18,7 +18,7 @@ const TwitterShareLink = ({ sharedLink }: ShareLinkProps) => {
       queryParameters={queryParameters}
       windowName={linkLabel}
       linkLabel={linkLabel}
-      icon={<IconTwitter />}
+      icon={<IconTwitter aria-hidden="true" />}
     />
   );
 };

@@ -291,7 +291,7 @@ function SearchPageSearchForm({
         <Button
           type="submit"
           className={styles.submitButton}
-          iconLeft={<IconSearch />}
+          iconLeft={<IconSearch aria-hidden="true" />}
         >
           {t("do_search")}
         </Button>

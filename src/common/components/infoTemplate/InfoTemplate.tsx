@@ -17,7 +17,7 @@ const InfoTemplate = ({ title, description, icon: Icon }: Props) => {
       <div className={styles.infoTemplate}>
         {Icon && (
           <span className={styles.infoTemplateIcon}>
-            <Icon size="xl" />
+            <Icon size="xl" aria-hidden="true" />
           </span>
         )}
         <Text variant="h2">{title}</Text>

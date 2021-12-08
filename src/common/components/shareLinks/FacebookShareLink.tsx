@@ -18,7 +18,7 @@ const FacebookShareLink = ({ sharedLink }: ShareLinkProps) => {
       queryParameters={queryParameters}
       windowName={linkLabel}
       linkLabel={linkLabel}
-      icon={<IconFacebook />}
+      icon={<IconFacebook aria-hidden="true" />}
     />
   );
 };

@@ -44,7 +44,7 @@ function LandingPageSearchForm() {
       </TextInput>
       <Button
         type="submit"
-        iconLeft={<IconSearch />}
+        iconLeft={<IconSearch aria-hidden="true" />}
         className={styles.hdsButtonOverrides}
       >
         {t("do_search")}

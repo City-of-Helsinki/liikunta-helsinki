@@ -22,7 +22,7 @@ const CategoryLink = ({ className, icon, href, label }: Props) => {
         <a>
           {icon}
           <span>{label}</span>
-          <IconAngleRight aria-hidden />
+          <IconAngleRight aria-hidden="true" />
         </a>
       </Link>
     </div>

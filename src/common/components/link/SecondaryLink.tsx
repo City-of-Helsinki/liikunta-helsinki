@@ -14,7 +14,7 @@ const SecondaryLink = React.forwardRef<HTMLAnchorElement, Props>(
         {...props}
         className={classNames(styles.secondaryLink, className)}
       >
-        {children} <IconAngleRight size="s" />
+        {children} <IconAngleRight size="s" aria-hidden="true" />
       </a>
     );
   }

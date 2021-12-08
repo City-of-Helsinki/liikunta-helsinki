@@ -39,7 +39,7 @@ const Keyword = ({
           [styles.withIcon]: Icon,
         })}
       >
-        {Icon && <Icon className={styles.icon} />}
+        {Icon && <Icon className={styles.icon} aria-hidden="true" />}
         {keyword}
       </a>
     </Link>

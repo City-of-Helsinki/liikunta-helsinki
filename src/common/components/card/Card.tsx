@@ -134,7 +134,7 @@ function CardCta({ className }: CardCtaProps) {
       aria-label={t("go_to_content")}
       id={`cta:${id}`}
     >
-      <IconArrowRight />
+      <IconArrowRight aria-hidden="true" />
     </span>
   );
 }
