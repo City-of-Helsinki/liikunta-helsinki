@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import L, { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -55,6 +55,10 @@ function MapView({ items = [], center, zoom, focusedItemId }: Props) {
     () => items.find((item) => item.id === focusedItemId),
     [items, focusedItemId]
   );
+  // Store marker reference in state so that the component re-renders when it
+  // the marker reference changes.
+  const [focusedMarker, setFocusedMarker] = useState(null);
+  const markerClusterGroupRef = useRef(null);
 
   const getFocusedItemPosition = (): LatLngExpression | null => {
     if (focusedItem?.location) {
@@ -71,6 +75,17 @@ function MapView({ items = [], center, zoom, focusedItemId }: Props) {
     }
     return DEFAULT_ZOOM;
   };
+
+  useEffect(() => {
+    const markerClusterGroup = markerClusterGroupRef.current;
+
+    if (focusedItemId && markerClusterGroup && focusedMarker) {
+      // Use zoomToShowLayer in order to unravel markers that may be clustered.
+      markerClusterGroup?.zoomToShowLayer(focusedMarker, () => {
+        focusedMarker?.openPopup();
+      });
+    }
+  }, [focusedItemId, focusedMarker]);
 
   return (
     <div
@@ -100,20 +115,18 @@ function MapView({ items = [], center, zoom, focusedItemId }: Props) {
           maxClusterRadius={60}
           animate={false}
           key={items.join() ?? "default"}
+          ref={markerClusterGroupRef}
         >
           {items.map((item) => {
             if (!item.location) {
               return null;
             }
 
-            // Used to automatically open popup for focused map item
-            // react-leaflet doesn't seems to provide better wway to do this
-            const handleOpenPopup = (marker) => {
+            const handleSetFocusedRef = (marker) => {
               const isFocusedItem = focusedItemId && item.id === focusedItemId;
+
               if (isFocusedItem) {
-                // Doesn't work without setTimeout. There seems to be some asynchronity
-                // in leaflet libary when rendering markers.
-                setTimeout(() => marker?.openPopup());
+                setFocusedMarker(marker);
               }
             };
 
@@ -122,7 +135,7 @@ function MapView({ items = [], center, zoom, focusedItemId }: Props) {
                 key={item.id}
                 position={[item.location[1], item.location[0]]}
                 icon={venueIcon}
-                ref={handleOpenPopup}
+                ref={handleSetFocusedRef}
               >
                 <Popup className={styles.popup}>
                   <Text variant="body">{item.title}</Text>
