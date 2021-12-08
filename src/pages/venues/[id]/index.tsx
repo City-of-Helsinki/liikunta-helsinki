@@ -337,6 +337,7 @@ export function VenuePageContent() {
           <aside className={styles.aside}>
             {openingHours && (
               <InfoBlock
+                headingLevel="h3"
                 icon={<IconClock />}
                 name={
                   isOpen
@@ -348,6 +349,7 @@ export function VenuePageContent() {
             )}
             {temperature && (
               <InfoBlock
+                headingLevel="h3"
                 icon={<IconQuestionCircle />}
                 name="Veden tiedot"
                 contents={[
@@ -356,6 +358,7 @@ export function VenuePageContent() {
               />
             )}
             <InfoBlock
+              headingLevel="h3"
               icon={<IconLocation />}
               name={t("block.location.label")}
               contents={[
@@ -371,6 +374,7 @@ export function VenuePageContent() {
               ]}
             />
             <InfoBlock
+              headingLevel="h3"
               icon={<IconInfoCircle />}
               name={t("block.other_information.label")}
               contents={[
@@ -399,6 +403,7 @@ export function VenuePageContent() {
               ]}
             />
             <InfoBlock
+              headingLevel="h3"
               icon={<IconMap />}
               name={t("block.route.label")}
               contents={[
@@ -411,6 +416,7 @@ export function VenuePageContent() {
             />
             {organizer && (
               <InfoBlock
+                headingLevel="h3"
                 icon={<IconLocation />}
                 name="Liikunnan tiedot"
                 contents={[

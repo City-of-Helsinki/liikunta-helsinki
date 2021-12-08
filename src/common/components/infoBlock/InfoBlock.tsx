@@ -144,9 +144,16 @@ type Props = {
   name: string;
   contents: InfoBlockContent[];
   target?: "body" | "card";
+  headingLevel?: "h2" | "h3" | "h4";
 };
 
-function InfoBlock({ icon, name, contents, target = "body" }: Props) {
+function InfoBlock({
+  icon,
+  name,
+  contents,
+  target = "body",
+  headingLevel = "h4",
+}: Props) {
   const contentWithoutEmpty = contents.filter((item) => {
     if (typeof item === "string") {
       return Boolean(item);
@@ -171,14 +178,11 @@ function InfoBlock({ icon, name, contents, target = "body" }: Props) {
     return null;
   }
 
-  // If this logic becomes any more complex, create different flavoured
-  // variants.
   const textVariant = target === "card" ? "body" : "h5";
-  const textAs = target === "card" ? "h3" : "h4";
 
   return (
     <div className={classNames(styles.infoBlock, styles[target])}>
-      <Text as={textAs} variant={textVariant} className={styles.name}>
+      <Text as={headingLevel} variant={textVariant} className={styles.name}>
         {icon} {name}
       </Text>
       <ul className={styles.content}>

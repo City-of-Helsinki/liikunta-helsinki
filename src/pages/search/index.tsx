@@ -268,6 +268,7 @@ export default function Search() {
               <InfoBlock
                 key="location"
                 target="card"
+                headingLevel="h3"
                 icon={<IconLocation />}
                 name={
                   streetAddress
@@ -289,6 +290,7 @@ export default function Search() {
                 <InfoBlock
                   key="openingHours"
                   target="card"
+                  headingLevel="h3"
                   icon={<IconClock />}
                   name={
                     isOpenNow
