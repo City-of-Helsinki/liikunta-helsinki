@@ -171,11 +171,14 @@ function InfoBlock({ icon, name, contents, target = "body" }: Props) {
     return null;
   }
 
+  // If this logic becomes any more complex, create different flavoured
+  // variants.
   const textVariant = target === "card" ? "body" : "h5";
+  const textAs = target === "card" ? "h3" : "h4";
 
   return (
     <div className={classNames(styles.infoBlock, styles[target])}>
-      <Text as="h4" variant={textVariant} className={styles.name}>
+      <Text as={textAs} variant={textVariant} className={styles.name}>
         {icon} {name}
       </Text>
       <ul className={styles.content}>
