@@ -304,7 +304,10 @@ export function VenuePageContent() {
           </div>
           <div className={styles.content}>
             {keywords && (
-              <ul className={styles.keywords}>
+              <ul
+                className={styles.keywords}
+                aria-label={t("a11y_keywords_group_name")}
+              >
                 {keywords.map((keyword) => (
                   <li key={keyword.id}>
                     <Keyword
