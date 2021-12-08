@@ -269,7 +269,7 @@ export default function Search() {
                 key="location"
                 target="card"
                 headingLevel="h3"
-                icon={<IconLocation />}
+                icon={<IconLocation aria-hidden="true" />}
                 name={
                   streetAddress
                     ? getTranslation(
@@ -291,7 +291,7 @@ export default function Search() {
                   key="openingHours"
                   target="card"
                   headingLevel="h3"
-                  icon={<IconClock />}
+                  icon={<IconClock aria-hidden="true" />}
                   name={
                     isOpenNow
                       ? t("block.opening_hours.open_now_label")

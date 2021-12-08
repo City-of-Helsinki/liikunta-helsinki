@@ -127,7 +127,7 @@ const SearchList = forwardRef(
           <div className={styles.row}>
             <Button
               onClick={switchShowMode}
-              iconLeft={<IconMap />}
+              iconLeft={<IconMap aria-hidden="true" />}
               className={styles.showOnMap}
             >
               {t("show_on_map")}

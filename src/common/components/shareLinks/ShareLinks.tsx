@@ -31,7 +31,7 @@ const ShareLinks = () => {
           aria-label={t("copy.label")}
           title={t("copy.label")}
         >
-          <IconLink />
+          <IconLink aria-hidden="true" />
         </CopyButton>
       </li>
       <li>

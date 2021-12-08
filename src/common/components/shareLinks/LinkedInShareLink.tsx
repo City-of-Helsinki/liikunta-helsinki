@@ -18,7 +18,7 @@ const LinkedInShareLink = ({ sharedLink }: ShareLinkProps) => {
       queryParameters={queryParameters}
       windowName={linkLabel}
       linkLabel={linkLabel}
-      icon={<IconLinkedin />}
+      icon={<IconLinkedin aria-hidden="true" />}
     />
   );
 };

@@ -12,43 +12,43 @@ import IconTree from "../../../common/components/icons/IconTree";
 
 const mockCategories = [
   {
-    icon: <IconMovies />,
+    icon: <IconMovies aria-hidden="true" />,
     label: "Lorem",
   },
   {
-    icon: <IconMusic />,
+    icon: <IconMusic aria-hidden="true" />,
     label: "Ipsum",
   },
   {
-    icon: <IconSports />,
+    icon: <IconSports aria-hidden="true" />,
     label: "Pyöräily",
   },
   {
-    icon: <IconMuseum />,
+    icon: <IconMuseum aria-hidden="true" />,
     label: "Lorem",
   },
   {
-    icon: <IconDance />,
+    icon: <IconDance aria-hidden="true" />,
     label: "Tanssi",
   },
   {
-    icon: <IconCultureAndArts />,
+    icon: <IconCultureAndArts aria-hidden="true" />,
     label: "Uinti",
   },
   {
-    icon: <IconTree />,
+    icon: <IconTree aria-hidden="true" />,
     label: "Lenkkeily",
   },
   {
-    icon: <IconTree />,
+    icon: <IconTree aria-hidden="true" />,
     label: "Lorem",
   },
   {
-    icon: <IconTheatre />,
+    icon: <IconTheatre aria-hidden="true" />,
     label: "Ipsum",
   },
   {
-    icon: <IconFood />,
+    icon: <IconFood aria-hidden="true" />,
     label: "Dolor",
   },
 ];

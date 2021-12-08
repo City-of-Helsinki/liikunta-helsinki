@@ -76,7 +76,7 @@ function InfoBlockLink({
     <Link href={href}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className={styles.link} onMouseUp={(e) => e.stopPropagation()}>
-        <span>{label}</span> <IconAngleRight />
+        <span>{label}</span> <IconAngleRight aria-hidden="true" />
       </a>
     </Link>
   );

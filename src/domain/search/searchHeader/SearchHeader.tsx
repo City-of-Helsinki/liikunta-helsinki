@@ -33,7 +33,7 @@ function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
                 className={styles.closeSearch}
                 variant="secondary"
                 theme="black"
-                iconLeft={<IconCross />}
+                iconLeft={<IconCross aria-hidden="true" />}
                 fullWidth
                 onClick={() => setCollapsed(true)}
               >
@@ -47,7 +47,7 @@ function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
                 <Button
                   variant="secondary"
                   theme="black"
-                  iconLeft={<IconMenuHamburger />}
+                  iconLeft={<IconMenuHamburger aria-hidden="true" />}
                   onClick={switchShowMode}
                 >
                   {t("show_as_a_list")}
@@ -60,7 +60,7 @@ function SearchHeader({ showMode, count, switchShowMode, searchForm }: Props) {
                 <Button
                   variant="secondary"
                   theme="black"
-                  iconLeft={<IconSearch />}
+                  iconLeft={<IconSearch aria-hidden="true" />}
                   onClick={() => {
                     setCollapsed(false);
 

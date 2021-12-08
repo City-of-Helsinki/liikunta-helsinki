@@ -51,7 +51,7 @@ export default function MultiSelectCombobox({
       onChange={handleOnChange}
       // The design asks for an icon, but HDS does not allow icons for the
       // multiSelect variant of an combobox.
-      // icon={<IconLocation />}
+      // icon={<IconLocation aria-hidden="true" />}
       // The options list will break without this option because the data has
       // duplicate labels.
       virtualized

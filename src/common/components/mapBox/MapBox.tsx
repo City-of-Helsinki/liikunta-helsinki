@@ -31,7 +31,7 @@ function MapBox({
     <div className={styles.wrapper}>
       <div className={styles.title}>
         <div className={styles.titleText}>
-          <IconLocation aria-hidden />
+          <IconLocation aria-hidden="true" />
           <Text variant="h3">{title}</Text>
         </div>
         <a

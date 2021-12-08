@@ -248,7 +248,7 @@ export function VenuePageContent() {
       className={styles.accessibilitySentences}
       titleClassName={styles.accessibilityTitle}
       title={t("map_box.accessibility_sentences")}
-      icon={<IconAngleDown aria-hidden className={styles.icon} />}
+      icon={<IconAngleDown aria-hidden="true" className={styles.icon} />}
       items={accessibilitySentences.map((group) => (
         <React.Fragment key={`accessibility-${group.groupName}`}>
           <Text variant="body-l" className={styles.groupName}>
@@ -262,7 +262,7 @@ export function VenuePageContent() {
   const infoLines = [
     {
       id: "address",
-      icon: <IconLocation />,
+      icon: <IconLocation aria-hidden="true" />,
       info: simplifiedAddress,
     },
   ];
@@ -338,7 +338,7 @@ export function VenuePageContent() {
             {openingHours && (
               <InfoBlock
                 headingLevel="h3"
-                icon={<IconClock />}
+                icon={<IconClock aria-hidden="true" />}
                 name={
                   isOpen
                     ? t("block.opening_hours.open_now_label")
@@ -350,7 +350,7 @@ export function VenuePageContent() {
             {temperature && (
               <InfoBlock
                 headingLevel="h3"
-                icon={<IconQuestionCircle />}
+                icon={<IconQuestionCircle aria-hidden="true" />}
                 name="Veden tiedot"
                 contents={[
                   "+22 astetta, ei sinilevää\nPäivitetty 21.7.2021 klo 12:12",
@@ -359,7 +359,7 @@ export function VenuePageContent() {
             )}
             <InfoBlock
               headingLevel="h3"
-              icon={<IconLocation />}
+              icon={<IconLocation aria-hidden="true" />}
               name={t("block.location.label")}
               contents={[
                 <InfoBlock.List
@@ -375,7 +375,7 @@ export function VenuePageContent() {
             />
             <InfoBlock
               headingLevel="h3"
-              icon={<IconInfoCircle />}
+              icon={<IconInfoCircle aria-hidden="true" />}
               name={t("block.other_information.label")}
               contents={[
                 <InfoBlock.List
@@ -404,7 +404,7 @@ export function VenuePageContent() {
             />
             <InfoBlock
               headingLevel="h3"
-              icon={<IconMap />}
+              icon={<IconMap aria-hidden="true" />}
               name={t("block.route.label")}
               contents={[
                 <InfoBlock.List key="directions-hsl" items={[hslInfoLink]} />,
@@ -417,7 +417,7 @@ export function VenuePageContent() {
             {organizer && (
               <InfoBlock
                 headingLevel="h3"
-                icon={<IconLocation />}
+                icon={<IconLocation aria-hidden="true" />}
                 name="Liikunnan tiedot"
                 contents={[
                   <InfoBlock.List

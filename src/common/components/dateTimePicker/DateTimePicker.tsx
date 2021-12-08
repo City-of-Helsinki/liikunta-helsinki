@@ -306,7 +306,7 @@ export default function DateTimePicker({
           />
           <div className={styles.buttonRow}>
             <Button
-              iconLeft={<IconCheck />}
+              iconLeft={<IconCheck aria-hidden="true" />}
               variant="secondary"
               onClick={handleSelectDateClick}
               size="small"
@@ -315,7 +315,7 @@ export default function DateTimePicker({
               {t("select")}
             </Button>
             <Button
-              iconLeft={<IconCross />}
+              iconLeft={<IconCross aria-hidden="true" />}
               variant="supplementary"
               onClick={handleCloseMenuButtonClick}
               size="small"
