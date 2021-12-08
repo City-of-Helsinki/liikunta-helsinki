@@ -18,5 +18,6 @@
   "map_box.title": "Sijainti",
   "map_box.accessibility_sentences": "Esteettömyystiedot",
   "other_sports_section.title": "Muuta samankaltaista liikuntaa",
-  "back_to_venue_page_aria_label": "Takaisin liikuntapaikkasivulle"
+  "back_to_venue_page_aria_label": "Takaisin liikuntapaikkasivulle",
+  "a11y_keywords_group_name": "Asiasanat"
 }
