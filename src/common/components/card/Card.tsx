@@ -161,9 +161,19 @@ function CardCtaButton({ className, children }: CardCtaButtonProps) {
 type CardKeywordsProps = {
   keywords: KeywordType[];
   className?: string;
+  a11yKeywordsGroupName?: string;
 };
 
-function CardKeywords({ keywords, className }: CardKeywordsProps) {
+function CardKeywords({
+  keywords,
+  className,
+  a11yKeywordsGroupName: _a11yKeywordsGroupName,
+}: CardKeywordsProps) {
+  const { t } = useTranslation("card");
+
+  const a11yKeywordsGroupName =
+    _a11yKeywordsGroupName ?? t("a11y_default_keywords_group_name");
+
   // stop propagation so link click is not simulated in Card component
   const handleKeywordMouseUp = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>
@@ -172,7 +182,10 @@ function CardKeywords({ keywords, className }: CardKeywordsProps) {
   };
 
   return (
-    <ul className={classNames(styles.keywords, className)}>
+    <ul
+      className={classNames(styles.keywords, className)}
+      aria-label={a11yKeywordsGroupName}
+    >
       {keywords
         .filter(({ label }) => label !== null)
         .map(({ label, href, isHighlighted }) => {
