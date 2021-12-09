@@ -3,7 +3,7 @@ import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 export const TILE_URL =
   "http://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png";
 
-export const DEFAULT_POSITION: LatLngExpression = [60.16687, 24.943781];
+export const DEFAULT_POSITION: LatLngExpression = [60.2087778, 24.9980714];
 
 export const DEFAULT_ZOOM = 12;
 
