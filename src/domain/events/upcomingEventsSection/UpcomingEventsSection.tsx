@@ -74,6 +74,7 @@ export default function UpcomingEventsSection({ linkedId, keywords }: Props) {
     <Section title={t("title")} koros="storm" contentWidth="s">
       <List
         variant="grid-3"
+        gap="m"
         items={eventItems.map((item) => (
           <CondensedCard key={item.id} {...item} />
         ))}

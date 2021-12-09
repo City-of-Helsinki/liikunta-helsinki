@@ -7,6 +7,7 @@ type Shortcut = {
   id: string;
   label: string;
   icon: React.ReactNode;
+  ontologyTreeIds: string[];
 };
 
 type Props = {
@@ -16,13 +17,17 @@ type Props = {
 function SearchShortcuts({ shortcuts }: Props) {
   return (
     <List
-      variant="tight"
+      variant="fixed-grid-4"
+      gap="s"
       items={shortcuts.map((shortcut) => (
         <CategoryLink
           key={shortcut.id}
           label={shortcut.label}
           icon={shortcut.icon}
-          href={`/search?category=${shortcut.label.toLowerCase()}`}
+          href={`/search${shortcut.ontologyTreeIds.reduce(
+            (acc, id, i) => `${acc}${i === 0 ? "?" : "&"}ontologyTreeIds=${id}`,
+            ""
+          )}`}
         />
       ))}
     />

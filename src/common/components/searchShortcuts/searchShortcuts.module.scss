@@ -1,0 +1,17 @@
+@use "breakpoints";
+
+.fixedGrid {
+  display: grid;
+
+  @include breakpoints.respond-above(xs) {
+    grid-template-columns: 1fr 1fr;
+
+    & > * {
+      max-width: 13rem;
+    }
+  }
+
+  @include breakpoints.respond-above(l) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}

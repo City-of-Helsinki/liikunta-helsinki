@@ -45,29 +45,6 @@
   }
 }
 
-.tight {
-  --base-list-item-width: 10rem;
-
-  row-gap: $spacing-s;
-  column-gap: $spacing-3-xl;
-
-  @include breakpoints.respond-above(s) {
-    --base-list-item-width: 14rem;
-  }
-
-  @include breakpoints.respond-above(m) {
-    --base-list-item-width: 8rem;
-  }
-
-  @include breakpoints.respond-above(xl) {
-    --base-list-item-width: 11rem;
-  }
-
-  @include breakpoints.respond-above(xxl) {
-    --base-list-item-width: 14rem;
-  }
-}
-
 .searchResult {
   grid-template-columns: 1fr;
 }
@@ -78,6 +55,34 @@
 
 .grid-3 {
   --base-list-item-width: calc(24.5rem - (#{$spacing-m} * 0.5));
+}
 
+// Grid is fixed to columns. At largest screen sizes, 4 columns are used.
+.fixed-grid-4 {
+  display: grid;
+
+  @include breakpoints.respond-above(xs) {
+    grid-template-columns: 1fr 1fr;
+
+    & > * {
+      max-width: 13rem;
+    }
+  }
+
+  @include breakpoints.respond-above(l) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+.gap-xs {
+  grid-gap: $spacing-xs;
+}
+.gap-s {
+  grid-gap: $spacing-s;
+}
+.gap-m {
   grid-gap: $spacing-m;
+}
+.gap-l {
+  grid-gap: $spacing-l;
 }
