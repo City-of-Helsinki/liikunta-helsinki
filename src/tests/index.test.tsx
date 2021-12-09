@@ -45,14 +45,25 @@ const getMocks = () => [
   },
 ];
 
-describe("App", () => {
-  it("renders without crashing", async () => {
-    await act(async () => {
-      render(<App />, getMocks());
-    });
-
-    await waitFor(() =>
-      expect(screen.getByText("Kesän parhaat uimarannat")).toBeInTheDocument()
-    );
-  }, 50000);
+beforeAll(() => {
+  jest.useFakeTimers();
 });
+
+test("renders correctly", async () => {
+  // Fix system time so that the shortcuts that get rendered are stable
+  jest.setSystemTime(new Date("2012-06-01"));
+
+  await act(async () => {
+    render(<App />, getMocks());
+  });
+
+  await waitFor(() =>
+    expect(screen.getByText("Kesän parhaat uimarannat")).toBeInTheDocument()
+  );
+
+  ["outdoor_gyms", "swimming_summer", "skating"].forEach((shortcutLabel) => {
+    expect(
+      screen.getByRole("link", { name: shortcutLabel })
+    ).toBeInTheDocument();
+  });
+}, 50000);

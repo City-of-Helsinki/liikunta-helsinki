@@ -6,11 +6,12 @@ import { useTranslation } from "next-i18next";
 import collectionFragment from "../domain/collections/collectionFragment";
 import initializeCmsApollo from "../domain/clients/cmsApolloClient";
 import { getQlLanguage } from "../common/apollo/utils";
-import mockCategories from "../domain/clients/tmp/mockCategories";
+import shortcuts from "../domain/shortcuts/shortcutsData";
 import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
 import { getLocaleOrError } from "../domain/i18n/router/utils";
 import seoFragment from "../domain/seo/cmsSeoFragment";
 import CollectionGrid from "../domain/collections/collectionsGrid/CollectionGrid";
+import getCurrentSeason from "../domain/season/getCurrentSeason";
 import Page from "../common/components/page/Page";
 import Section from "../common/components/section/Section";
 import Hero from "../common/components/hero/Hero";
@@ -58,6 +59,7 @@ export const LANDING_PAGE_QUERY = gql`
 
 export default function HomePage() {
   const { t } = useTranslation("home_page");
+  const { t: tShortcuts } = useTranslation("hardcoded_shortcuts");
   const router = useRouter();
   const language = getQlLanguage(router.locale ?? router.defaultLocale);
   const { data } = useQuery(LANDING_PAGE_QUERY, {
@@ -71,9 +73,9 @@ export default function HomePage() {
     data?.page?.modules
       .filter((module) => "collection" in module)
       .map((module) => module.collection) ?? [];
-  const categories = mockCategories;
   const heroImage =
     data?.landingPage?.desktopImage?.edges[0]?.node?.mediaItemUrl;
+  const currentSeason = getCurrentSeason();
 
   return (
     <Page {...getPageMetaPropsFromSEO(data?.page?.translation?.seo)}>
@@ -95,11 +97,14 @@ export default function HomePage() {
       <Section color="transparent">
         <LandingPageSearchForm />
         <SearchShortcuts
-          shortcuts={categories.map((category, i) => ({
-            id: i.toString(),
-            label: category.label,
-            icon: category.icon,
-          }))}
+          shortcuts={shortcuts
+            .filter((shortcut) => shortcut.seasons.includes(currentSeason))
+            .map((shortcut) => ({
+              id: shortcut.id,
+              label: tShortcuts(shortcut.id),
+              icon: shortcut.icon,
+              ontologyTreeIds: shortcut.ontologyTreeIds,
+            }))}
         />
       </Section>
       <Section title={t("recommended_collections_title")}>
@@ -126,7 +131,12 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       initialApolloState: cmsClient.cache.extract(),
       ...(await serverSideTranslationsWithCommon(
         getLocaleOrError(context.locale),
-        ["home_page", "landing_page_search_form", "collection_count_label"]
+        [
+          "home_page",
+          "landing_page_search_form",
+          "collection_count_label",
+          "hardcoded_shortcuts",
+        ]
       )),
     },
     revalidate: 10,
