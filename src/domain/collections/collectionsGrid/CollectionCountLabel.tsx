@@ -47,14 +47,14 @@ async function resolveCounts(
   apiClient,
   locale: Locale
 ) {
-  const { event_selected: eventSelected = [], event_search: eventSearch = [] } =
-    groupBy(modules, "module");
-  const eventSelectedCount = eventSelected.reduce(
+  const { event_selected = [], event_search = [] } = groupBy(modules, "module");
+
+  const eventSelectedCount = event_selected.reduce(
     (acc, module) => acc + module.events.length,
     0
   );
   const eventSearchResults = await Promise.all(
-    eventSearch.map((module) =>
+    event_search.map((module) =>
       resolveEventCountForEventSearch(module, apiClient, locale)
     )
   );
