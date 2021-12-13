@@ -22,6 +22,11 @@ const collectionFragment = gql`
           title
           url
         }
+        ... on LocationsSelected {
+          module
+          title
+          locations
+        }
       }
       seo {
         ...seoFragment

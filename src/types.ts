@@ -89,6 +89,12 @@ export type EventSearch = {
   title: string;
 };
 
+export type LocationsSelected = {
+  module: "locations_selected";
+  url: string;
+  title: string;
+};
+
 export type Collection = {
   id: string;
   translation?: {
@@ -96,7 +102,7 @@ export type Collection = {
     description?: string;
     image?: string;
     slug: string;
-    modules: Array<EventSelected | EventSearch>;
+    modules: Array<EventSelected | EventSearch | LocationsSelected>;
   };
 };
 

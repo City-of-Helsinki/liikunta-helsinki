@@ -47,7 +47,11 @@ async function resolveCounts(
   apiClient,
   locale: Locale
 ) {
-  const { event_selected = [], event_search = [] } = groupBy(modules, "module");
+  const {
+    event_selected = [],
+    event_search = [],
+    locations_selected = [],
+  } = groupBy(modules, "module");
 
   const eventSelectedCount = event_selected.reduce(
     (acc, module) => acc + module.events.length,
@@ -63,8 +67,12 @@ async function resolveCounts(
       acc + eventSearchResultCount,
     0
   );
+  const locationSelectedCount = locations_selected.reduce(
+    (acc, module) => acc + module.locations.length,
+    0
+  );
 
-  return eventSelectedCount + eventSearchCount;
+  return eventSelectedCount + eventSearchCount + locationSelectedCount;
 }
 
 type Props = {
