@@ -32,9 +32,13 @@ export default function VenueMapPage(props) {
   const { t } = useTranslation("venue_page");
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
+
+  // use venueId from query because tprek api returns venues with sources
+  // that we don't support
+  const venueId = router.query.id;
   const { data, error } = useQuery(VENUE_QUERY, {
     variables: {
-      id: router.query.id,
+      id: venueId,
     },
     context: {
       headers: {
@@ -49,14 +53,13 @@ export default function VenueMapPage(props) {
   }
 
   const title = data.venue?.name;
-  const venueId = data.venue?.id;
   const location = data.venue?.position?.coordinates;
   const lat = location[0];
   const lng = location[1];
   const venueMapItem = {
-    id: venueId,
+    id: venueId as string,
     title,
-    href: `/venues/tprek:${data.venue?.id}`,
+    href: `/venues/${venueId}`,
     location,
   };
   const backHref = {
