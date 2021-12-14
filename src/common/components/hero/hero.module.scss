@@ -6,13 +6,11 @@
   align-self: center;
   background-color: rgba($color-black, 70%);
   width: 20rem;
-  height: 15rem;
   margin-bottom: 10rem;
   padding: $spacing-m;
 
   @include breakpoints.respond-above(m) {
     width: 30rem;
-    height: 18rem;
   }
 }
 
@@ -22,25 +20,24 @@
 }
 
 .boxTitle {
-  font-size: $fontsize-heading-l;
   margin-top: 0;
   padding-top: 0;
   color: $color-white;
   line-height: $lineheight-s;
-  margin-bottom: $spacing-2-xl;
-
-  @include breakpoints.respond-above(m) {
-    font-size: $fontsize-heading-xl;
-  }
+  margin-bottom: $spacing-m;
 }
 
 .linkButton {
-  background-color: $color-coat-of-arms;
-  border-color: $color-coat-of-arms !important;
+  display: block;
+  margin-top: $spacing-s;
   padding: $spacing-xs;
+  width: fit-content;
+
   text-decoration: none;
   color: $color-white;
-  margin-top: $spacing-s;
+
+  background-color: $color-coat-of-arms;
+  border-color: $color-coat-of-arms !important;
 
   &:hover {
     background-color: $color-bus;

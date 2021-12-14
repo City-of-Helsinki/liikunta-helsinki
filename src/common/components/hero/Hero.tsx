@@ -18,7 +18,7 @@ function Hero({ title, description, cta }: Props) {
       <span className={styles.boxHelper}>
         <HtmlToReact>{description}</HtmlToReact>
       </span>
-      <Text variant="h1" className={styles.boxTitle}>
+      <Text variant="h2" as="h1" className={styles.boxTitle}>
         {title}
       </Text>
       <Link href={cta.href}>
