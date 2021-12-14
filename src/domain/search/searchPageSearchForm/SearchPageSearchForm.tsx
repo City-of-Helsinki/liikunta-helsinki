@@ -204,7 +204,11 @@ function SearchPageSearchForm({
 
   return (
     <div>
-      {showTitle && <Text variant="h1">{t("title")}</Text>}
+      {showTitle && (
+        <Text variant="h2" as="h1">
+          {t("title")}
+        </Text>
+      )}
       <form role="search" className={styles.form} onSubmit={handleSubmit}>
         <SuggestionInput
           name="q"
