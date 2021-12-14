@@ -23,7 +23,7 @@
   }
 
   @include breakpoints.respond-above(m) {
-    --height: 48rem;
+    --height: 76vh;
   }
 
   .image {

@@ -4,7 +4,7 @@
 .searchForm {
   display: flex;
   flex-direction: column;
-  padding: $spacing-m $spacing-m $spacing-s;
+  padding: $spacing-s $spacing-s $spacing-xs;
 
   background-color: #464646;
 
@@ -13,7 +13,7 @@
   }
 
   @include breakpoints.respond-above(m) {
-    padding: $spacing-layout-m $spacing-layout-m $spacing-layout-s;
+    padding: $spacing-layout-s $spacing-layout-s $spacing-layout-xs;
   }
 
   @include breakpoints.respond-above(l) {
