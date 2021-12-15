@@ -83,16 +83,25 @@ function SearchPageSearchForm({
     const isOpenNowValue = e.target.isOpenNow.checked;
     // Use undefined when false to hide from UI layer
     const isOpenNow = isOpenNowValue ? isOpenNowValue : undefined;
-
-    modifyFilters({
-      q: [q],
+    const nextFilters = {
+      q,
       administrativeDivisionIds,
       ontologyTreeIds,
       isOpenNow,
       openAt,
-      // When making query, if user hasn't explicitly selected an order, default
-      // to using relevance.
-      orderBy: filters.orderBy ?? OrderBy.relevance,
+    };
+    const nextFilterCount = Object.values(nextFilters).filter(
+      (value) => value
+    ).length;
+    // If user has selected search conditions, order by relevance by default.
+    // Otherwise defer by providing undefined which enables default logic.
+    const defaultOrderBy = nextFilterCount > 0 ? OrderBy.relevance : undefined;
+
+    modifyFilters({
+      ...nextFilters,
+      // Wrap q into array to comply with API
+      q: [nextFilters.q],
+      orderBy: filters.orderBy ?? defaultOrderBy,
     });
     setSearchText("");
   };
