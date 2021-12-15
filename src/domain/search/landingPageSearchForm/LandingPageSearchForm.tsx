@@ -17,7 +17,14 @@ function LandingPageSearchForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFilters({ q: [searchText], orderBy: OrderBy.relevance }, "/search");
+    setFilters(
+      {
+        q: [searchText],
+        // Order by relevance if a search filter is applied
+        orderBy: searchText ? OrderBy.relevance : undefined,
+      },
+      "/search"
+    );
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
