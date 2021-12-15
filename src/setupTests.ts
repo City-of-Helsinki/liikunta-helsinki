@@ -3,6 +3,8 @@ import { TextEncoder, TextDecoder } from "util";
 import "@testing-library/jest-dom/extend-expect";
 import { loadEnvConfig } from "@next/env";
 
+import { server } from "./domain/mocks/server";
+
 loadEnvConfig(process.cwd());
 
 global.fetch = jest.fn();
@@ -14,7 +16,10 @@ jest.mock("react-i18next", () => ({
     return {
       t: (str) => str,
       i18n: {
-        changeLanguage: () => new Promise(() => {}),
+        changeLanguage: () =>
+          new Promise(() => {
+            // pass
+          }),
       },
     };
   },
@@ -31,7 +36,9 @@ global.IntersectionObserver = class IntersectionObserver {
   readonly rootMargin: string;
   readonly thresholds: ReadonlyArray<number>;
 
-  constructor() {}
+  constructor() {
+    // pass
+  }
 
   disconnect() {
     return null;
@@ -49,3 +56,17 @@ global.IntersectionObserver = class IntersectionObserver {
     return null;
   }
 };
+
+// Mock depended services with msw
+beforeAll(() => {
+  // Enable the mocking in tests.
+  server.listen();
+});
+afterEach(() => {
+  // Reset any runtime handlers tests may use.
+  server.resetHandlers();
+});
+afterAll(() => {
+  // Clean up once the tests are done.
+  server.close();
+});

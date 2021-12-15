@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`venue(id) should return a complete venue 1`] = `
+Object {
+  "data": Object {
+    "venue": Object {
+      "accessibilitySentences": Array [
+        Object {
+          "groupName": "Reitti pääsisäänkäynnille",
+          "sentences": Array [
+            "Kulkureitti sisäänkäynnille on opastettu, epätasainen ja kapea sekä valaistu.",
+            "Kulkureitillä on 1 porrasaskelma.",
+          ],
+        },
+        Object {
+          "groupName": "Pääsisäänkäynti",
+          "sentences": Array [
+            "Sisäänkäynti on vaikeasti hahmotettava mutta valaistu.",
+            "Sisäänkäynnin yhteydessä on 1 porrasaskelma.",
+            "Sisäänkäynnin ovet erottuvat selkeästi. Oven ulkopuolella on riittävästi vapaata tilaa liikkumiselle esim. pyörätuolin kanssa. Ovi vaatii summerin painamista, jonka jälkeen ovi aukeaa mutta on raskas.",
+            "Sisäänkäynnin yhteydessä on yli 2 cm korkeita kynnyksiä.",
+            "Tuulikaappi on ahdas.",
+          ],
+        },
+        Object {
+          "groupName": "Sisätilat",
+          "sentences": Array [
+            "Toimipisteessä on 2 kerrosta.",
+            "Tilan keskeisillä kulkureiteillä on vähintään 4 kääntyvää porrasaskelmaa, jossa on käsijohteet molemmilla puolilla.",
+            "Sisätilojen ovet erottuvat selkeästi.",
+            "Toimipisteessä on esteettömäksi merkitty wc kerroksessa 1. Wc:ssä ei ole tarpeeksi tilaa pyörätuolille.",
+            "Toinen esteettömäksi merkitty wc on kerroksessa 0.",
+          ],
+        },
+      ],
+      "addressLocality": "Helsinki",
+      "dataSource": "tprek",
+      "description": null,
+      "email": "pk.lappi@hel.fi",
+      "id": "tprek:123",
+      "image": null,
+      "infoUrl": "https://www.hel.fi/varhaiskasvatus/fi/paivakodit/lappi",
+      "isOpen": true,
+      "name": "Päiväkoti Lappi",
+      "ontologyTree": Array [
+        Object {
+          "id": 870,
+          "label": "Suomenkielinen päivähoito",
+        },
+        Object {
+          "id": 871,
+          "label": "päivähoito",
+        },
+        Object {
+          "id": 874,
+          "label": "ympärivuorokautinen hoito",
+        },
+        Object {
+          "id": 879,
+          "label": "esiopetus",
+        },
+        Object {
+          "id": 1090,
+          "label": "Päivähoidon järjestämä esiopetus",
+        },
+        Object {
+          "id": 2125,
+          "label": "Päivähoidon järjestämä esiopetus",
+        },
+      ],
+      "ontologyWords": Array [
+        Object {
+          "id": 160,
+          "label": "esiopetus (päivähoidon järjestämä)",
+        },
+        Object {
+          "id": 663,
+          "label": "suomenkielinen päivähoito",
+        },
+        Object {
+          "id": 831,
+          "label": "ympärivuorokautinen hoito (lasten päivähoito)",
+        },
+        Object {
+          "id": 861,
+          "label": "suomenkielinen esiopetus",
+        },
+      ],
+      "openingHours": Array [
+        Object {
+          "date": "2021-12-13",
+          "times": Array [],
+        },
+        Object {
+          "date": "2021-12-14",
+          "times": Array [],
+        },
+        Object {
+          "date": "2021-12-15",
+          "times": Array [],
+        },
+        Object {
+          "date": "2021-12-16",
+          "times": Array [],
+        },
+        Object {
+          "date": "2021-12-17",
+          "times": Array [],
+        },
+        Object {
+          "date": "2021-12-18",
+          "times": Array [],
+        },
+        Object {
+          "date": "2021-12-19",
+          "times": Array [],
+        },
+      ],
+      "position": Object {
+        "coordinates": Array [
+          24.926613,
+          60.16692,
+        ],
+        "type": "Point",
+      },
+      "postalCode": "00180",
+      "streetAddress": "Lapinlahdenkatu 6 G",
+      "telephone": "+358 9 310 64132",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`venue(id) with incorrect id should error 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: Invalid ID parameter],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
