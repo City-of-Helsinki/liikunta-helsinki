@@ -269,7 +269,11 @@ function SearchPageSearchForm({
         {filterList.length > 0 && (
           <div className={styles.searchAsFilters}>
             {filterList.map(({ key, value }) => {
-              const queryWithout = getQueryWithout(key, value);
+              const queryWithout = {
+                ...getQueryWithout(key, value),
+                orderBy: filters.orderBy,
+                orderDir: filters.orderDir,
+              };
 
               return (
                 <Keyword
