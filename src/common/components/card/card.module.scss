@@ -55,6 +55,7 @@
 
   // Visual order
   @include breakpoints.respond-above(m) {
+    .nonOptimizedImage,
     .image {
       order: 0;
     }
@@ -64,6 +65,7 @@
   }
 
   // Grid positions
+  .nonOptimizedImage,
   .image {
     grid-area: bg;
   }
@@ -82,6 +84,7 @@
   }
 
   @include breakpoints.respond-above(m) {
+    .nonOptimizedImage,
     .image,
     .keywords {
       grid-area: bg;
@@ -89,7 +92,7 @@
   }
 
   // Component styles
-  .image {
+  .nonOptimizedImage {
     display: flex;
     box-sizing: border-box;
     overflow: hidden;
@@ -103,6 +106,21 @@
     }
   }
 
+  .image {
+    position: relative;
+    width: 100%;
+
+    // Set a minimum height for the placeholder image with a pseudo element in
+    // order to avoid altering the min-content height of the image container.
+    @include breakpoints.respond-above(m) {
+      &::after {
+        content: " ";
+        display: block;
+        min-height: 18rem;
+      }
+    }
+  }
+
   .keywords {
     margin: 0;
     margin-bottom: inherit;
@@ -111,6 +129,7 @@
     display: flex;
     align-items: flex-end;
     position: relative;
+    z-index: 100;
 
     @include breakpoints.respond-above(m) {
       padding-bottom: var(--content-padding);

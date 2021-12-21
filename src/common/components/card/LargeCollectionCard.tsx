@@ -20,7 +20,7 @@ function LargeCollectionCard({
       </Card.Content>
       <Card.Cta className={styles.cta} />
       <Card.Keywords keywords={keywords} className={styles.keywords} />
-      <Card.Image image={image} />
+      <Card.NonOptimizedImage image={image} />
     </Card>
   );
 }
