@@ -1,6 +1,6 @@
 import haukiHandlers from "./hauki/handlers";
-import tprekv4Handlers from "./tprekv4/handlers";
+import tprekHandlers from "./tprek/handlers";
 
-const handlers = [...haukiHandlers, ...tprekv4Handlers];
+const handlers = [...haukiHandlers, ...tprekHandlers];
 
 export default handlers;

@@ -9,15 +9,17 @@ import { gql } from "@apollo/client";
 import Config from "../../config";
 import venueSchema from "./venue/venueSchema";
 import venueQueryResolver from "./venue/venueQueryResolver";
+import venuesByIdsResolver from "./venue/venuesByIdsResolver";
 import Venue from "./venue/venueResolver";
 import eventSchema from "./event/eventSchema";
 import Event from "./event/eventResolver";
 import Hauki from "./services/HaukiDataSource";
-import Tprekv from "./services/TprekDataSource";
+import Tprek from "./services/TprekDataSource";
 import Linked from "./services/linked/LinkedDataSource";
 import LinkedPaginatedConnectionResolver from "./services/linked/LinkedPaginatedConnectionResolver";
 import LiikuntaLoggerPlugin from "./LiikuntaLoggerPlugin";
 import eventsQueryResolver from "./event/eventsQueryResolver";
+import paginationSchema from "./paginationSchema";
 
 // Note: In the current version of GraphQL, you can’t have an empty type even if
 // you intend to extend it later. So we need to make sure the Query type has at
@@ -31,16 +33,22 @@ const initQueryTypeDefs = gql`
   }
 `;
 
-const typeDefs = [initQueryTypeDefs, venueSchema, eventSchema];
+const typeDefs = [
+  initQueryTypeDefs,
+  paginationSchema,
+  venueSchema,
+  eventSchema,
+];
 const dataSourcesFactory = () => ({
   hauki: new Hauki(),
-  tprek: new Tprekv(),
+  tprek: new Tprek(),
   linked: new Linked(),
 });
 
 const resolvers = {
   Query: {
     venue: venueQueryResolver,
+    venuesByIds: venuesByIdsResolver,
     events: eventsQueryResolver,
   },
   Venue,

@@ -69,9 +69,14 @@ function CardPre({ children, className }: CardPreProps) {
 
 type CardInfoLinesProps = Partial<React.ComponentProps<typeof Text>> & {
   infoLines: string[];
+  className?: string;
 };
 
-function CardInfoLines({ infoLines, ...textProps }: CardInfoLinesProps) {
+function CardInfoLines({
+  infoLines,
+  className,
+  ...textProps
+}: CardInfoLinesProps) {
   const P = useMemo(() => {
     const component = ({ children }: { children: React.ReactNode }) => (
       <Text className={styles.infoLine} {...textProps}>
@@ -85,7 +90,7 @@ function CardInfoLines({ infoLines, ...textProps }: CardInfoLinesProps) {
   }, [textProps]);
 
   return (
-    <div className={styles.infoLines}>
+    <div className={classNames(styles.infoLines, className)}>
       {infoLines.map((infoLine) => (
         <HtmlToReact
           key={infoLine}
@@ -142,14 +147,19 @@ function CardCta({ className }: CardCtaProps) {
 type CardCtaButtonProps = {
   className?: string;
   children?: React.ReactNode;
+  variant?: "m" | "s";
 };
 
-function CardCtaButton({ className, children }: CardCtaButtonProps) {
+function CardCtaButton({
+  className,
+  children,
+  variant = "m",
+}: CardCtaButtonProps) {
   const { id } = useContext(CardContext);
 
   return (
     <span
-      className={classNames(styles.ctaButton, className)}
+      className={classNames(styles.ctaButton, styles[variant], className)}
       aria-hidden="true"
       id={`cta-button:${id}`}
     >

@@ -284,7 +284,7 @@ export type ItemQueryResult<TVariables = OperationVariables> = Omit<
   "data"
 > & {
   items: Item[];
-  pageInfo: PageInfo;
+  pageInfo?: PageInfo;
   totalCount: number;
 };
 

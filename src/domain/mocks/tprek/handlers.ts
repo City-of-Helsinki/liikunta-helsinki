@@ -7,8 +7,8 @@ import mockOntologyword from "./ontologyword.mock";
 const baseUrl = "http://www.hel.fi/palvelukarttaws/rest/v4";
 
 const handlers = [
-  rest.get(`${baseUrl}/unit/:id`, (_, res, ctx) => {
-    return res(ctx.json(mockUnit));
+  rest.get(`${baseUrl}/unit/:id`, (req, res, ctx) => {
+    return res(ctx.json({ ...mockUnit, id: req.params.id }));
   }),
   rest.get(`${baseUrl}/ontologyword`, (_, res, ctx) => {
     return res(ctx.json(mockOntologyword));

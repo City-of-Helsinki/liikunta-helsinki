@@ -17,14 +17,6 @@ const typeDefs = gql`
     events(where: EventQuery, first: Int, after: String): EventsConnection!
   }
 
-  type PageInfo {
-    hasPreviousPage: Boolean!
-    hasNextPage: Boolean!
-    startCursor: String
-    endCursor: String
-    count: Int!
-  }
-
   type EventsConnection {
     edges: [EventEdge!]!
     pageInfo: PageInfo
