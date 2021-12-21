@@ -13,7 +13,7 @@ function CollectionCard({ id, title, infoLines, keywords, href, image }: Item) {
       </Card.Content>
       <Card.Cta />
       <Card.Keywords keywords={keywords} className={styles.keywords} />
-      <Card.Image image={image} />
+      <Card.NonOptimizedImage image={image} />
     </Card>
   );
 }

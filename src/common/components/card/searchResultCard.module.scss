@@ -38,21 +38,6 @@
     }
   }
 
-  .placeholderCard {
-    position: relative;
-    width: 100%;
-
-    // Set a minimum height for the placeholder image with a pseudo element in
-    // order to avoid altering the min-content height of the image container.
-    @include breakpoints.respond-above(m) {
-      &::after {
-        content: " ";
-        display: block;
-        min-height: 18rem;
-      }
-    }
-  }
-
   .infoBlocks {
     list-style-type: none;
     display: grid;

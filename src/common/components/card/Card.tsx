@@ -9,9 +9,10 @@ import React, {
 } from "react";
 import { IconArrowRight } from "hds-react";
 import classNames from "classnames";
-import { ImageProps } from "next/image";
+import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
+import noImagePlaceholder from "../../../../public/no_image.svg";
 import Link from "../../../domain/i18n/router/Link";
 import { Keyword as KeywordType } from "../../../types";
 import Text from "../text/Text";
@@ -219,16 +220,42 @@ function CardKeywords({
   );
 }
 
+type CardNonOptimizedImageProps = {
+  image: string;
+  className?: string;
+};
+
+function CardNonOptimizedImage({
+  image,
+  className,
+}: CardNonOptimizedImageProps) {
+  return (
+    <div className={classNames(styles.nonOptimizedImage, className)}>
+      {typeof image === "string" && <img src={image} alt="" />}
+      {typeof image !== "string" && image}
+    </div>
+  );
+}
+
 type CardImageProps = {
-  image: string | React.ReactElement<ImageProps>;
+  image: string;
   className?: string;
 };
 
 function CardImage({ image, className }: CardImageProps) {
   return (
     <div className={classNames(styles.image, className)}>
-      {typeof image === "string" && <img src={image} alt="" />}
-      {typeof image !== "string" && image}
+      <Image
+        // Circumvents next's hostname check. The images are hosted in
+        // multiple locations and it's not possible for us to compile
+        // a thorough list.
+        loader={({ src }) => src}
+        unoptimized
+        src={image ?? noImagePlaceholder}
+        alt=""
+        layout="fill"
+        objectFit="cover"
+      />
     </div>
   );
 }
@@ -297,5 +324,6 @@ Card.Cta = CardCta;
 Card.CtaButton = CardCtaButton;
 Card.Keywords = CardKeywords;
 Card.Image = CardImage;
+Card.NonOptimizedImage = CardNonOptimizedImage;
 
 export default Card;
