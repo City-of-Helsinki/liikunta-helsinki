@@ -3,7 +3,10 @@ import RESTDataSource from "../utils/RESTDataSource";
 
 type AnyObject = Record<string, unknown>;
 
-export default class Tprek extends RESTDataSource {
+/**
+ * Docs: https://www.hel.fi/palvelukarttaws/restpages/ver4.html
+ */
+export default class TprekDataSource extends RESTDataSource {
   constructor() {
     super(logger);
     this.baseURL = "http://www.hel.fi/palvelukarttaws/rest/v4";

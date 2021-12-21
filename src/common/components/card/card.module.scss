@@ -204,6 +204,7 @@
   .ctaButton {
     padding: $spacing-m $spacing-l;
     align-self: end;
+    margin: var(--content-padding);
 
     color: $color-white;
     font-weight: 500;
@@ -211,10 +212,12 @@
     border: none;
     background: $color-bus;
 
-    margin: var(--content-padding);
-
     &:focus {
       outline: 2px solid $color-black;
+    }
+
+    &.s {
+      padding: $spacing-s $spacing-m;
     }
   }
 }

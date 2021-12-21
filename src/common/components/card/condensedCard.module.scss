@@ -27,4 +27,36 @@
   @include breakpoints.respond-above(m) {
     padding: $spacing-m !important;
   }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    @include breakpoints.respond-above(m) {
+      flex-direction: row;
+    }
+
+    & > *:not(:last-child) {
+      margin-bottom: $spacing-s;
+
+      @include breakpoints.respond-above(m) {
+        margin-bottom: 0;
+        margin-right: $spacing-s;
+      }
+    }
+
+    .infoLines {
+      flex-shrink: 1;
+    }
+
+    .cta {
+      margin: 0;
+      grid-area: unset;
+      width: max-content;
+      flex-shrink: 0;
+      align-self: flex-start;
+    }
+  }
 }

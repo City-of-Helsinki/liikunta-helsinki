@@ -14,6 +14,7 @@ import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTransl
 import { getLocaleOrError } from "../../domain/i18n/router/utils";
 import SelectedEvents from "../../domain/events/selectedEvents/SelectedEvents";
 import SearchEvents from "../../domain/events/searchEvents/SearchEvents";
+import SelectedVenues from "../../domain/venues/SelectedVenues";
 import PaginationContainer from "../../domain/pagination/PaginationContainer";
 import Page from "../../common/components/page/Page";
 import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
@@ -22,12 +23,14 @@ import Section from "../../common/components/section/Section";
 import ShareLinks from "../../common/components/shareLinks/ShareLinks";
 import HtmlToReact from "../../common/components/htmlToReact/HtmlToReact";
 import CondensedCard from "../../common/components/card/CondensedCard";
+import List from "../../common/components/list/List";
 import styles from "./collection.module.scss";
 
 type CollectionItemListProps = {
   queryResult: ItemQueryResult;
   title: string;
-  pageSize: number;
+  pageSize?: number;
+  noPagination?: boolean;
 };
 
 function CollectionItemList({
@@ -42,6 +45,7 @@ function CollectionItemList({
     previousData,
   },
   pageSize,
+  noPagination,
 }: CollectionItemListProps) {
   const { t } = useTranslation("collection_page");
 
@@ -58,27 +62,32 @@ function CollectionItemList({
     );
   }
 
-  // In case there are no events
+  // In case there are no items
   if (items.length === 0) {
     return null;
   }
 
+  const elements = items.map((item) => (
+    <CondensedCard key={item.id} {...item} />
+  ));
+
   return (
     <Section title={title}>
-      <PaginationContainer
-        loading={loading}
-        fetchMore={fetchMore}
-        elements={items.map((item) => (
-          <CondensedCard key={item.id} {...item} />
-        ))}
-        pageInfo={pageInfo}
-        totalCount={totalCount}
-        pageSize={pageSize}
-        showMoreLabel={t("show_more_events")}
-        noMoreResultsLabel={t("no_more_events")}
-        loadingMoreLabel={t("loading_more_events_label")}
-        nMoreResultsLabel={t("n_more_events_label")}
-      />
+      {!noPagination && (
+        <PaginationContainer
+          loading={loading}
+          fetchMore={fetchMore}
+          elements={elements}
+          pageInfo={pageInfo}
+          totalCount={totalCount}
+          pageSize={pageSize}
+          showMoreLabel={t("show_more_events")}
+          noMoreResultsLabel={t("no_more_events")}
+          loadingMoreLabel={t("loading_more_events_label")}
+          nMoreResultsLabel={t("n_more_events_label")}
+        />
+      )}
+      {noPagination && <List variant="grid-2" items={elements} />}
     </Section>
   );
 }
@@ -179,6 +188,22 @@ export default function CollectionsPage() {
                   title={module.title}
                   queryResult={renderProps}
                   pageSize={PAGE_SIZE}
+                />
+              )}
+            />
+          );
+        }
+
+        if (module.module === "locations_selected") {
+          return (
+            <SelectedVenues
+              key={module.title}
+              venues={module.locations}
+              render={(renderProps) => (
+                <CollectionItemList
+                  title={module.title}
+                  queryResult={renderProps}
+                  noPagination
                 />
               )}
             />

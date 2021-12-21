@@ -3,6 +3,7 @@ import { gql } from "apollo-server-micro";
 const typeDefs = gql`
   extend type Query {
     venue(id: ID!): Venue!
+    venuesByIds(ids: [ID!]): [Venue!]!
   }
 
   type Point {
