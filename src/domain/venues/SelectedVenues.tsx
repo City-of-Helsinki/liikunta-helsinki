@@ -40,9 +40,6 @@ export default function SelectedVenues({ venues: venueIds, render }: Props) {
         "Accept-Language": locale,
       },
     },
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-first",
-    notifyOnNetworkStatusChange: true,
   });
 
   return render({
