@@ -5,8 +5,8 @@ import { graphqlLogger as logger } from "../logger";
 import ResolverMonitor from "./ResolverMonitor";
 
 function getResolverName(
-  operationName: string,
-  variables: unknown,
+  operationName = "unnamed",
+  variables: unknown = {},
   context: Context
 ) {
   const variablesAsString = Object.entries(variables)
@@ -20,10 +20,6 @@ function getResolverName(
 
 export default class LiikuntaLoggerPlugin implements ApolloServerPlugin {
   async requestDidStart({ request, context }) {
-    if (request.operationName === "IntrospectionQuery") {
-      return;
-    }
-
     const requestName = getResolverName(
       request.operationName,
       request.variables,
@@ -35,7 +31,7 @@ export default class LiikuntaLoggerPlugin implements ApolloServerPlugin {
 
     return {
       async didEncounterErrors({ errors }) {
-        const errorsAsString = errors.map((error) => error.toString());
+        const errorsAsString = errors.map((error) => error?.toString());
 
         logger.error(
           `Error while resolving ${requestName}:\n\n${errorsAsString.join(

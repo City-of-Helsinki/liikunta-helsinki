@@ -1,0 +1,13 @@
+overwrite: true
+generates:
+  ./src/domain/unifiedSearch/graphql/__generated__.ts:
+    documents: ./src/domain/unifiedSearch/graphql/*.{mutation,query,fragment}.ts
+    schema: ${NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT}
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
+      withComponent: false
+      flattenSelectionSet: true

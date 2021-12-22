@@ -5,7 +5,7 @@ import { GetStaticPropsContext } from "next";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
-import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
+import useUnifiedSearchMapQuery from "../../domain/unifiedSearch/useUnifiedSearchMapQuery";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import { getLocaleOrError } from "../../domain/i18n/router/utils";
@@ -116,7 +116,7 @@ export default function MapSearch() {
       languageCode: getQlLanguage(router.locale),
     },
   });
-  const { data } = useUnifiedSearchQuery(MAP_SEARCH_QUERY, {
+  const { data } = useUnifiedSearchMapQuery({
     first: 10000,
   });
 
