@@ -1,3 +1,5 @@
+import { SortOrder } from "./graphql/__generated__";
+
 export const OrderDir = {
   asc: "asc",
   desc: "desc",
@@ -14,8 +16,8 @@ export const OrderBy = {
 export type OrderByType = typeof OrderBy[keyof typeof OrderBy];
 
 export const orderDirToUnifiedSearchDistanceOrder = {
-  asc: "ASCENDING",
-  desc: "DESCENDING",
+  asc: SortOrder.Ascending,
+  desc: SortOrder.Descending,
 } as const;
 
 export type UnifiedSearchOrderBy =

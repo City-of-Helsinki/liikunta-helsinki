@@ -1,29 +1,24 @@
 import {
-  DocumentNode,
-  QueryHookOptions,
-  TypedDocumentNode,
-  useQuery,
-} from "@apollo/client";
-
-import {
   HELSINKI_OCD_DIVISION_ID,
   SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
 } from "../../constants";
 import { Coordinates } from "../../types";
 import useGeolocation from "../../common/geolocation/useGeolocation";
-import searchApolloClient from "../unifiedSearch/searchApolloClient";
 import useRouter from "../i18n/router/useRouter";
+import {
+  SearchListQueryVariables,
+  UnifiedSearchLanguage,
+} from "./graphql/__generated__";
 import useUnifiedSearch from "./useUnifiedSearch";
 import {
   OrderByType,
   OrderDirType,
   orderDirToUnifiedSearchDistanceOrder,
-  UnifiedSearchOrderBy,
   OrderBy,
   OrderDir,
 } from "./unifiedSearchConstants";
 
-function getOpenAt(openAt: Date, isOpenNow: boolean) {
+function getOpenAt(openAt: Date, isOpenNow: boolean): string | null {
   if (openAt) {
     return openAt.toJSON();
   }
@@ -80,33 +75,13 @@ const defaultPagination = {
   first: 10,
 };
 
-type UnifiedSearchVariables = {
-  q?: string;
-  language?: typeof appToUnifiedSearchLanguageMap[keyof typeof appToUnifiedSearchLanguageMap];
-  ontologyTreeIds?: number[];
-  administrativeDivisionIds?: string[];
-  openAt?: string;
-  first?: number;
-  after?: string;
-  orderByDistance?: {
-    latitude: number;
-    longitude: number;
-    order?: UnifiedSearchOrderBy;
-  };
-  orderByName?: {
-    order?: UnifiedSearchOrderBy;
-  };
+export type OverridableVariables = {
+  first: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function useUnifiedSearchQuery<TData = any>(
-  query: DocumentNode | TypedDocumentNode<TData, UnifiedSearchVariables>,
-  variables?: UnifiedSearchVariables,
-  otherOptions?: Omit<
-    QueryHookOptions<TData, UnifiedSearchVariables>,
-    "variables"
-  >
-) {
+export default function useUnifiedSearchVariables(
+  variables?: OverridableVariables
+): SearchListQueryVariables {
   const {
     filters: {
       q,
@@ -118,39 +93,29 @@ export default function useUnifiedSearchQuery<TData = any>(
       openAt,
       orderBy = OrderBy.name,
       orderDir = OrderDir.asc,
-      ...searchParams
+      ontologyWordIds,
+      after,
+      first,
     },
   } = useUnifiedSearch();
   const geolocation = useGeolocation({
     skip: orderBy !== "distance",
   });
   const router = useRouter();
-  const locale = router.locale ?? router.defaultLocale;
-  const { fetchMore, ...delegated } = useQuery(query, {
-    client: searchApolloClient,
-    ssr: false,
-    variables: {
-      language: appToUnifiedSearchLanguageMap[locale],
-      ...defaultPagination,
-      // Default query; everything
-      q: q?.join(" ") ?? "*",
-      ontologyTreeIds,
-      administrativeDivisionIds,
-      openAt: getOpenAt(openAt, isOpenNow),
-      ...getOrderBy(orderBy, orderDir, { position: geolocation.coordinates }),
-      ...searchParams,
-      ...variables,
-    },
-    ...otherOptions,
-  });
 
-  const handleFetchMore = (variables: Partial<UnifiedSearchVariables>) =>
-    fetchMore({
-      variables: { ...variables },
-    });
+  const locale = router.locale ?? router.defaultLocale;
 
   return {
-    fetchMore: fetchMore ? handleFetchMore : fetchMore,
-    ...delegated,
+    language: appToUnifiedSearchLanguageMap[locale] as UnifiedSearchLanguage,
+    ...defaultPagination,
+    // Default query; everything
+    q: (q ?? ["*"]).join(" "),
+    ontologyTreeIds: ontologyTreeIds?.map((treeId) => treeId.toString()),
+    ontologyWordIds: ontologyWordIds?.map((wordId) => wordId.toString()),
+    administrativeDivisionIds,
+    openAt: getOpenAt(openAt, isOpenNow),
+    ...getOrderBy(orderBy, orderDir, { position: geolocation.coordinates }),
+    after,
+    first: variables?.first ?? first,
   };
 }

@@ -15,8 +15,11 @@ import getTranslation from "../../common/utils/getTranslation";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import useUnifiedSearch from "../../domain/unifiedSearch/useUnifiedSearch";
-import useUnifiedSearchQuery from "../../domain/unifiedSearch/useUnifiedSearchQuery";
-import unifiedSearchVenueFragment from "../../domain/unifiedSearch/unifiedSearchResultVenueFragment";
+import useUnifiedSearchListQuery from "../../domain/unifiedSearch/useUnifiedSearchListQuery";
+import {
+  UnifiedSearchOpeningHours,
+  UnifiedSearchOpeningHoursTimes,
+} from "../../domain/unifiedSearch/types";
 import useRouter from "../../domain/i18n/router/useRouter";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
 import { getLocaleOrError } from "../../domain/i18n/router/utils";
@@ -39,50 +42,6 @@ import styles from "./search.module.scss";
 
 const BLOCK_SIZE = 10;
 
-export const SEARCH_QUERY = gql`
-  query SearchQuery(
-    $q: String
-    $first: Int
-    $after: String
-    $language: UnifiedSearchLanguage!
-    $administrativeDivisionIds: [ID!]
-    $ontologyTreeIds: [ID!]
-    $ontologyWordIds: [ID!]
-    $openAt: String
-    $orderByDistance: OrderByDistance
-    $orderByName: OrderByName
-  ) {
-    unifiedSearch(
-      q: $q
-      index: "location"
-      first: $first
-      after: $after
-      languages: [$language]
-      administrativeDivisionIds: $administrativeDivisionIds
-      ontologyTreeIds: $ontologyTreeIds
-      ontologyWordIds: $ontologyWordIds
-      openAt: $openAt
-      orderByDistance: $orderByDistance
-      orderByName: $orderByName
-    ) {
-      count
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-      edges {
-        node {
-          venue {
-            ...unifiedSearchVenueFragment
-          }
-        }
-      }
-    }
-  }
-
-  ${unifiedSearchVenueFragment}
-`;
-
 export const SEARCH_PAGE_QUERY = gql`
   query SearchPageQuery($languageCode: LanguageCodeEnum!) {
     page(id: "/search", idType: URI) {
@@ -101,7 +60,7 @@ const emptyConnection = {
   edges: [],
 };
 
-function getIsOpenNow(times: Time[]): boolean {
+function getIsOpenNow(times: UnifiedSearchOpeningHoursTimes[]): boolean {
   const now = new Date();
   let isOpenNow = false;
 
@@ -145,14 +104,13 @@ function getIsOpenNow(times: Time[]): boolean {
 }
 
 type OpeningHoursInfoBlockProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  searchResult: any;
+  openingHours: UnifiedSearchOpeningHours;
   openAt: Date | undefined;
   locale: Locale;
 };
 
 function OpeningHoursInfoBlock({
-  searchResult,
+  openingHours,
   openAt,
   locale,
 }: OpeningHoursInfoBlockProps): React.ReactElement<
@@ -162,16 +120,16 @@ function OpeningHoursInfoBlock({
 
   const openingHourTimes =
     (openAt
-      ? searchResult.venue?.openingHours?.data?.find(
+      ? openingHours?.data?.find(
           (timeData) => timeData.date === format(openAt, "yyyy-MM-dd")
         )?.times
-      : searchResult.venue?.openingHours?.today) ?? [];
+      : openingHours?.today) ?? [];
   const isOpenNow = getIsOpenNow(openingHourTimes);
   const openAtFilterIsToday = isToday(openAt);
   const humanizedOpeningHours = humanizeOpeningHour(
     {
       date: new Date().toJSON(),
-      times: openingHourTimes,
+      times: openingHourTimes as Time[],
     },
     locale,
     "short"
@@ -204,7 +162,7 @@ export default function Search() {
   const locale = router.locale ?? router.defaultLocale;
   const scrollTo = router.query?.scrollTo;
   const { filters, setFilters } = useUnifiedSearch();
-  const { data, loading, fetchMore } = useUnifiedSearchQuery(SEARCH_QUERY);
+  const { data, loading, fetchMore } = useUnifiedSearchListQuery();
   const searchPageQueryResult = useQuery(SEARCH_PAGE_QUERY, {
     variables: {
       languageCode: getQlLanguage(router.locale),
@@ -338,7 +296,7 @@ export default function Search() {
               />,
               <OpeningHoursInfoBlock
                 key="openingHours"
-                searchResult={searchResult}
+                openingHours={searchResult?.venue?.openingHours}
                 openAt={filters.openAt}
                 locale={locale}
               />,

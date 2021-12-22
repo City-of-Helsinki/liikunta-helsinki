@@ -1,3 +1,8 @@
+import {
+  SearchListQueryVariables,
+  OpeningHours,
+  OpeningHoursTimes,
+} from "./graphql/__generated__";
 import { OrderByType, OrderDirType } from "./unifiedSearchConstants";
 
 export type UnifiedSearchParameters = {
@@ -13,3 +18,6 @@ export type UnifiedSearchParameters = {
   orderBy?: OrderByType;
   orderDir?: OrderDirType;
 };
+export type UnifiedSearchVariables = SearchListQueryVariables;
+export type UnifiedSearchOpeningHours = OpeningHours;
+export type UnifiedSearchOpeningHoursTimes = OpeningHoursTimes;

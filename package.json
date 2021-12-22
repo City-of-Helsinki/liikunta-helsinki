@@ -8,7 +8,8 @@
     "start": "next start",
     "test": "jest",
     "lint": "next lint",
-    "get-translations": "node ./scripts/get-translations.js"
+    "get-translations": "node ./scripts/get-translations.js",
+    "generate:graphql-types": "DOTENV_CONFIG_PATH=./.env.local graphql-codegen -r dotenv/config --config codegen.yml"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,6 +52,10 @@
   },
   "devDependencies": {
     "@babel/helper-environment-visitor": "^7.16.5",
+    "@graphql-codegen/cli": "^2.3.0",
+    "@graphql-codegen/typescript": "^2.4.1",
+    "@graphql-codegen/typescript-operations": "^2.2.1",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.2",
     "@testing-library/dom": "^8.10.1",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^12.1.2",
