@@ -231,8 +231,7 @@ function CardNonOptimizedImage({
 }: CardNonOptimizedImageProps) {
   return (
     <div className={classNames(styles.nonOptimizedImage, className)}>
-      {typeof image === "string" && <img src={image} alt="" />}
-      {typeof image !== "string" && image}
+      <img src={image} alt="" />
     </div>
   );
 }
