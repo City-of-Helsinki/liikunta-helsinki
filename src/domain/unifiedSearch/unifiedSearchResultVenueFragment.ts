@@ -24,6 +24,16 @@ const unifiedSearchVenueFragment = gql`
         fullDay
         resourceState
       }
+      data {
+        date
+        times {
+          startTime
+          endTime
+          endTimeOnNextDay
+          fullDay
+          resourceState
+        }
+      }
     }
     location {
       address {
