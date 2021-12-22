@@ -30,6 +30,7 @@ import useOntologyTree from "../../unifiedSearch/ontologyTreeDropdown/useOntolog
 import useUnifiedSearch from "../../unifiedSearch/useUnifiedSearch";
 import searchApolloClient from "../../unifiedSearch/searchApolloClient";
 import { OrderBy } from "../../unifiedSearch/unifiedSearchConstants";
+import { UnifiedSearchParameters } from "../../unifiedSearch/types";
 import useRouter from "../../i18n/router/useRouter";
 import Link from "../../i18n/router/Link";
 import styles from "./searchPageSearchForm.module.scss";
@@ -68,6 +69,18 @@ function SearchPageSearchForm({
   });
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
+  const doModifyFilters = (filters: UnifiedSearchParameters) => {
+    const filterCount = Object.values(filters).filter((value) => value).length;
+    // If user has selected search conditions, order by relevance by default.
+    // Otherwise defer by providing undefined which enables default logic.
+    const defaultOrderBy = filterCount > 0 ? OrderBy.relevance : undefined;
+
+    modifyFilters({
+      ...filters,
+      orderBy: filters.orderBy ?? defaultOrderBy,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -82,18 +95,11 @@ function SearchPageSearchForm({
       isOpenNow,
       openAt,
     };
-    const nextFilterCount = Object.values(nextFilters).filter(
-      (value) => value
-    ).length;
-    // If user has selected search conditions, order by relevance by default.
-    // Otherwise defer by providing undefined which enables default logic.
-    const defaultOrderBy = nextFilterCount > 0 ? OrderBy.relevance : undefined;
 
-    modifyFilters({
+    doModifyFilters({
       ...nextFilters,
       // Wrap q into array to comply with API
       q: [nextFilters.q],
-      orderBy: filters.orderBy ?? defaultOrderBy,
     });
     setSearchText("");
   };
@@ -111,7 +117,7 @@ function SearchPageSearchForm({
   };
 
   const handleSelectSuggestion = (suggestion: Suggestion) => {
-    modifyFilters({ q: [suggestion.label] });
+    doModifyFilters({ q: [suggestion.label] });
   };
 
   const handleAdminDivisionChange = (administrativeDivisionIds: string[]) => {
