@@ -98,6 +98,10 @@ function CardInfoLines({
   return (
     <div className={classNames(styles.infoLines, className)}>
       {infoLines.map((infoLine) => {
+        if (!infoLine) {
+          return null;
+        }
+
         if (typeof infoLine === "string") {
           return (
             <HtmlToReact
