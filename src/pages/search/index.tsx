@@ -3,7 +3,10 @@ import { GetStaticPropsContext } from "next";
 import { gql, useQuery } from "@apollo/client";
 import { Koros, IconLocation, IconClock } from "hds-react";
 import { useTranslation } from "next-i18next";
-import { parse, isWithinInterval } from "date-fns";
+import parse from "date-fns/parse";
+import isWithinInterval from "date-fns/isWithinInterval";
+import format from "date-fns/format";
+import isToday from "date-fns/isToday";
 import { useEffect } from "react";
 
 import { SearchResult, Time } from "../../types";
@@ -20,17 +23,19 @@ import { getLocaleOrError } from "../../domain/i18n/router/utils";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
 import { logger } from "../../domain/logger";
 import SearchPageSearchForm from "../../domain/search/searchPageSearchForm/SearchPageSearchForm";
+import SearchHeader, {
+  ShowMode,
+} from "../../domain/search/searchHeader/SearchHeader";
 import Page from "../../common/components/page/Page";
 import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
 import Section from "../../common/components/section/Section";
 import SearchResultCard from "../../common/components/card/SearchResultCard";
 import SearchList from "../../common/components/list/SearchList";
 import InfoBlock from "../../common/components/infoBlock/InfoBlock";
-import SearchHeader, {
-  ShowMode,
-} from "../../domain/search/searchHeader/SearchHeader";
-import styles from "./search.module.scss";
+import { formatIntoDate } from "../../common/utils/time/format";
 import { humanizeOpeningHour } from "../../common/utils/time/humanizeOpeningHoursForWeek";
+import { Locale } from "../../config";
+import styles from "./search.module.scss";
 
 const BLOCK_SIZE = 10;
 
@@ -137,6 +142,60 @@ function getIsOpenNow(times: Time[]): boolean {
   });
 
   return isOpenNow;
+}
+
+type OpeningHoursInfoBlockProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  searchResult: any;
+  openAt: Date | undefined;
+  locale: Locale;
+};
+
+function OpeningHoursInfoBlock({
+  searchResult,
+  openAt,
+  locale,
+}: OpeningHoursInfoBlockProps): React.ReactElement<
+  React.ComponentProps<typeof InfoBlock>
+> | null {
+  const { t } = useTranslation("search_page");
+
+  const openingHourTimes =
+    (openAt
+      ? searchResult.venue?.openingHours?.data?.find(
+          (timeData) => timeData.date === format(openAt, "yyyy-MM-dd")
+        )?.times
+      : searchResult.venue?.openingHours?.today) ?? [];
+  const isOpenNow = getIsOpenNow(openingHourTimes);
+  const openAtFilterIsToday = isToday(openAt);
+  const humanizedOpeningHours = humanizeOpeningHour(
+    {
+      date: new Date().toJSON(),
+      times: openingHourTimes,
+    },
+    locale,
+    "short"
+  );
+
+  if (!humanizedOpeningHours) {
+    return null;
+  }
+
+  return (
+    <InfoBlock
+      target="card"
+      headingLevel="h3"
+      icon={<IconClock aria-hidden="true" />}
+      name={
+        !(openAt && openAtFilterIsToday) && isOpenNow
+          ? t("block.opening_hours.open_now_label")
+          : `${t("block.opening_hours.label")}${
+              openAt ? ` ${formatIntoDate(openAt)}` : ``
+            }`
+      }
+      contents={[humanizedOpeningHours]}
+    />
+  );
 }
 
 export default function Search() {
@@ -255,17 +314,6 @@ export default function Search() {
             };
             const streetAddress =
               searchResult.venue.location.address.streetAddress;
-            const openingHourTimesToday =
-              searchResult.venue?.openingHours?.today ?? [];
-            const isOpenNow = getIsOpenNow(openingHourTimesToday);
-            const humanizedOpeningHoursForToday = humanizeOpeningHour(
-              {
-                date: new Date().toJSON(),
-                times: openingHourTimesToday,
-              },
-              locale,
-              "short"
-            );
             const infoBlocks = [
               <InfoBlock
                 key="location"
@@ -288,20 +336,12 @@ export default function Search() {
                   />,
                 ]}
               />,
-              humanizedOpeningHoursForToday ? (
-                <InfoBlock
-                  key="openingHours"
-                  target="card"
-                  headingLevel="h3"
-                  icon={<IconClock aria-hidden="true" />}
-                  name={
-                    isOpenNow
-                      ? t("block.opening_hours.open_now_label")
-                      : t("block.opening_hours.label")
-                  }
-                  contents={[humanizedOpeningHoursForToday]}
-                />
-              ) : null,
+              <OpeningHoursInfoBlock
+                key="openingHours"
+                searchResult={searchResult}
+                openAt={filters.openAt}
+                locale={locale}
+              />,
             ].filter((item) => item);
 
             return (
