@@ -1,6 +1,6 @@
 import getTranslation from "../../../common/utils/getTranslation";
-import useRouter from "../../i18n/router/useRouter";
 import MultiSelectCombobox from "../../../common/components/multiSelectCombobox/MultiSelectCombobox";
+import useRouter from "../../i18n/router/useRouter";
 import useAdministrativeDivisions from "./useAdministrativeDivisions";
 
 type Props = {

@@ -14,7 +14,7 @@ export default function Select({
   ...delegated
 }: Props<Option>) {
   return (
-    <HDSSelect
+    <HDSSelect<Option>
       {...delegated}
       className={classNames(
         styles.select,

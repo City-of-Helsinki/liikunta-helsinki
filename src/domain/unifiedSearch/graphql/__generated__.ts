@@ -809,6 +809,33 @@ export type VenueReservationPolicy = {
   todo?: Maybe<Scalars['String']>;
 };
 
+export type AdministrativeDivisionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdministrativeDivisionsQuery = { __typename?: 'Query', administrativeDivisions?: Array<{ __typename?: 'AdministrativeDivision', id?: string | null | undefined, type?: string | null | undefined, name?: { __typename?: 'LanguageString', fi?: string | null | undefined, sv?: string | null | undefined, en?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+
+export type OntologyTreeQueryVariables = Exact<{
+  rootId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type OntologyTreeQuery = { __typename?: 'Query', ontologyTree?: Array<{ __typename?: 'OntologyTree', id?: string | null | undefined, name?: { __typename?: 'LanguageString', fi?: string | null | undefined, sv?: string | null | undefined, en?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+
+export type OntologyWordsQueryVariables = Exact<{
+  ids?: InputMaybe<Array<Scalars['ID']> | Scalars['ID']>;
+}>;
+
+
+export type OntologyWordsQuery = { __typename?: 'Query', ontologyWords?: Array<{ __typename?: 'OntologyWord', id?: string | null | undefined, label?: { __typename?: 'LanguageString', fi?: string | null | undefined, sv?: string | null | undefined, en?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+
+export type UnifiedSearchCompletionSuggestionsQueryVariables = Exact<{
+  prefix?: InputMaybe<Scalars['String']>;
+  language: UnifiedSearchLanguage;
+}>;
+
+
+export type UnifiedSearchCompletionSuggestionsQuery = { __typename?: 'Query', unifiedSearchCompletionSuggestions?: { __typename?: 'SearchSuggestionConnection', suggestions: Array<{ __typename?: 'Suggestion', label: string } | null | undefined> } | null | undefined };
+
 export type SearchListQueryVariables = Exact<{
   q?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
@@ -841,6 +868,168 @@ export type SearchMapQueryVariables = Exact<{
 export type SearchMapQuery = { __typename?: 'Query', unifiedSearch?: { __typename?: 'SearchResultConnection', count?: number | null | undefined, edges: Array<{ __typename?: 'SearchResultEdge', node: { __typename?: 'SearchResultNode', venue?: { __typename?: 'Venue', meta?: { __typename?: 'NodeMeta', id: string } | null | undefined, name?: { __typename?: 'LanguageString', fi?: string | null | undefined, sv?: string | null | undefined, en?: string | null | undefined } | null | undefined, location?: { __typename?: 'LocationDescription', geoLocation?: { __typename?: 'GeoJSONFeature', geometry?: { __typename?: 'GeoJSONLineString', coordinates?: any | null | undefined } | { __typename?: 'GeoJSONMultiLineString', coordinates?: any | null | undefined } | { __typename?: 'GeoJSONMultiPoint', coordinates?: any | null | undefined } | { __typename?: 'GeoJSONMultiPolygon', coordinates?: any | null | undefined } | { __typename?: 'GeoJSONPoint', coordinates?: any | null | undefined } | { __typename?: 'GeoJSONPolygon', coordinates?: any | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } }> } | null | undefined };
 
 
+export const AdministrativeDivisionsDocument = gql`
+    query AdministrativeDivisions {
+  administrativeDivisions(helsinkiCommonOnly: true) {
+    id
+    type
+    name {
+      fi
+      sv
+      en
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdministrativeDivisionsQuery__
+ *
+ * To run a query within a React component, call `useAdministrativeDivisionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdministrativeDivisionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdministrativeDivisionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdministrativeDivisionsQuery(baseOptions?: Apollo.QueryHookOptions<AdministrativeDivisionsQuery, AdministrativeDivisionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdministrativeDivisionsQuery, AdministrativeDivisionsQueryVariables>(AdministrativeDivisionsDocument, options);
+      }
+export function useAdministrativeDivisionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdministrativeDivisionsQuery, AdministrativeDivisionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdministrativeDivisionsQuery, AdministrativeDivisionsQueryVariables>(AdministrativeDivisionsDocument, options);
+        }
+export type AdministrativeDivisionsQueryHookResult = ReturnType<typeof useAdministrativeDivisionsQuery>;
+export type AdministrativeDivisionsLazyQueryHookResult = ReturnType<typeof useAdministrativeDivisionsLazyQuery>;
+export type AdministrativeDivisionsQueryResult = Apollo.QueryResult<AdministrativeDivisionsQuery, AdministrativeDivisionsQueryVariables>;
+export const OntologyTreeDocument = gql`
+    query OntologyTree($rootId: ID) {
+  ontologyTree(rootId: $rootId, leavesOnly: true) {
+    id
+    name {
+      fi
+      sv
+      en
+    }
+  }
+}
+    `;
+
+/**
+ * __useOntologyTreeQuery__
+ *
+ * To run a query within a React component, call `useOntologyTreeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOntologyTreeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOntologyTreeQuery({
+ *   variables: {
+ *      rootId: // value for 'rootId'
+ *   },
+ * });
+ */
+export function useOntologyTreeQuery(baseOptions?: Apollo.QueryHookOptions<OntologyTreeQuery, OntologyTreeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OntologyTreeQuery, OntologyTreeQueryVariables>(OntologyTreeDocument, options);
+      }
+export function useOntologyTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OntologyTreeQuery, OntologyTreeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OntologyTreeQuery, OntologyTreeQueryVariables>(OntologyTreeDocument, options);
+        }
+export type OntologyTreeQueryHookResult = ReturnType<typeof useOntologyTreeQuery>;
+export type OntologyTreeLazyQueryHookResult = ReturnType<typeof useOntologyTreeLazyQuery>;
+export type OntologyTreeQueryResult = Apollo.QueryResult<OntologyTreeQuery, OntologyTreeQueryVariables>;
+export const OntologyWordsDocument = gql`
+    query OntologyWords($ids: [ID!]) {
+  ontologyWords(ids: $ids) {
+    id
+    label {
+      fi
+      sv
+      en
+    }
+  }
+}
+    `;
+
+/**
+ * __useOntologyWordsQuery__
+ *
+ * To run a query within a React component, call `useOntologyWordsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOntologyWordsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOntologyWordsQuery({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useOntologyWordsQuery(baseOptions?: Apollo.QueryHookOptions<OntologyWordsQuery, OntologyWordsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OntologyWordsQuery, OntologyWordsQueryVariables>(OntologyWordsDocument, options);
+      }
+export function useOntologyWordsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OntologyWordsQuery, OntologyWordsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OntologyWordsQuery, OntologyWordsQueryVariables>(OntologyWordsDocument, options);
+        }
+export type OntologyWordsQueryHookResult = ReturnType<typeof useOntologyWordsQuery>;
+export type OntologyWordsLazyQueryHookResult = ReturnType<typeof useOntologyWordsLazyQuery>;
+export type OntologyWordsQueryResult = Apollo.QueryResult<OntologyWordsQuery, OntologyWordsQueryVariables>;
+export const UnifiedSearchCompletionSuggestionsDocument = gql`
+    query UnifiedSearchCompletionSuggestions($prefix: String, $language: UnifiedSearchLanguage!) {
+  unifiedSearchCompletionSuggestions(
+    prefix: $prefix
+    index: "location"
+    languages: [$language]
+  ) {
+    suggestions {
+      label
+    }
+  }
+}
+    `;
+
+/**
+ * __useUnifiedSearchCompletionSuggestionsQuery__
+ *
+ * To run a query within a React component, call `useUnifiedSearchCompletionSuggestionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUnifiedSearchCompletionSuggestionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUnifiedSearchCompletionSuggestionsQuery({
+ *   variables: {
+ *      prefix: // value for 'prefix'
+ *      language: // value for 'language'
+ *   },
+ * });
+ */
+export function useUnifiedSearchCompletionSuggestionsQuery(baseOptions: Apollo.QueryHookOptions<UnifiedSearchCompletionSuggestionsQuery, UnifiedSearchCompletionSuggestionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UnifiedSearchCompletionSuggestionsQuery, UnifiedSearchCompletionSuggestionsQueryVariables>(UnifiedSearchCompletionSuggestionsDocument, options);
+      }
+export function useUnifiedSearchCompletionSuggestionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UnifiedSearchCompletionSuggestionsQuery, UnifiedSearchCompletionSuggestionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UnifiedSearchCompletionSuggestionsQuery, UnifiedSearchCompletionSuggestionsQueryVariables>(UnifiedSearchCompletionSuggestionsDocument, options);
+        }
+export type UnifiedSearchCompletionSuggestionsQueryHookResult = ReturnType<typeof useUnifiedSearchCompletionSuggestionsQuery>;
+export type UnifiedSearchCompletionSuggestionsLazyQueryHookResult = ReturnType<typeof useUnifiedSearchCompletionSuggestionsLazyQuery>;
+export type UnifiedSearchCompletionSuggestionsQueryResult = Apollo.QueryResult<UnifiedSearchCompletionSuggestionsQuery, UnifiedSearchCompletionSuggestionsQueryVariables>;
 export const SearchListDocument = gql`
     query SearchList($q: String, $first: Int, $after: String, $language: UnifiedSearchLanguage!, $administrativeDivisionIds: [ID!], $ontologyTreeIds: [ID!], $ontologyWordIds: [ID!], $openAt: String, $orderByDistance: OrderByDistance, $orderByName: OrderByName) {
   unifiedSearch(
