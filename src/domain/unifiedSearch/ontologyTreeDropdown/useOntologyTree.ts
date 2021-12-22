@@ -1,33 +1,15 @@
-import { gql, useQuery } from "@apollo/client";
-
-import { LocalizedString } from "../../../types";
 import { Locale } from "../../../config";
 import { SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../../constants";
 import searchApolloClient from "../../../domain/unifiedSearch/searchApolloClient";
 import useRouter from "../../i18n/router/useRouter";
 import getTranslation from "../../../common/utils/getTranslation";
-
-type OntologyTree = {
-  id: string;
-  level: string;
-  name: LocalizedString;
-};
-
-const ONTOLOGY_TREE_QUERY = gql`
-  query OntologyTreeQuery {
-    ontologyTree(rootId: ${SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID}, leavesOnly: true) {
-      id
-      name {
-        fi
-        sv
-        en
-      }
-    }
-  }
-`;
+import {
+  useOntologyTreeQuery,
+  OntologyTreeQuery,
+} from "../graphql/__generated__";
 
 function sortOntologyTreesAlphabetically(
-  ontologyTrees: OntologyTree[],
+  ontologyTrees: OntologyTreeQuery["ontologyTree"],
   locale: Locale
 ) {
   if (!ontologyTrees) {
@@ -48,8 +30,11 @@ function sortOntologyTreesAlphabetically(
 
 export default function useOntologyTree() {
   const { locale } = useRouter();
-  const { data, ...delegated } = useQuery(ONTOLOGY_TREE_QUERY, {
+  const { data, ...delegated } = useOntologyTreeQuery({
     client: searchApolloClient,
+    variables: {
+      rootId: SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID.toString(),
+    },
   });
 
   return {

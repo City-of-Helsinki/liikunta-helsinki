@@ -1,20 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Button, IconSearch, IconCross } from "hds-react";
-import { gql, useLazyQuery } from "@apollo/client";
 import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
 import { add, startOfToday } from "date-fns";
 
-// eslint-disable-next-line max-len
-import AdministrativeDivisionDropdown from "../../unifiedSearch/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
-import useAdministrativeDivisions from "../../unifiedSearch/administrativeDivisionDropdown/useAdministrativeDivisions";
-import OntologyTreeDropdown from "../../unifiedSearch/ontologyTreeDropdown/OntologyTreeDropdown";
-import useOntologyTree from "../../unifiedSearch/ontologyTreeDropdown/useOntologyTree";
-import useUnifiedSearch from "../../unifiedSearch/useUnifiedSearch";
-import searchApolloClient from "../../unifiedSearch/searchApolloClient";
-import { OrderBy } from "../../unifiedSearch/unifiedSearchConstants";
-import useRouter from "../../i18n/router/useRouter";
-import Link from "../../i18n/router/Link";
 import { getUnifiedSearchLanguage } from "../../../common/apollo/utils";
 import getTranslation from "../../../common/utils/getTranslation";
 import { formatIntoDateTime } from "../../../common/utils/time/format";
@@ -28,22 +17,22 @@ import Keyword from "../../../common/components/keyword/Keyword";
 import SmallSpinner from "../../../common/components/spinners/SmallSpinner";
 import Checkbox from "../../../common/components/checkbox/Checkbox";
 import DateTimePicker from "../../../common/components/dateTimePicker/DateTimePicker";
-import styles from "./searchPageSearchForm.module.scss";
 import useOntologyWords from "../../unifiedSearch/useOntologyWords";
-
-const SUGGESTION_QUERY = gql`
-  query SuggestionQuery($prefix: String, $language: UnifiedSearchLanguage!) {
-    unifiedSearchCompletionSuggestions(
-      prefix: $prefix
-      index: "location"
-      languages: [$language]
-    ) {
-      suggestions {
-        label
-      }
-    }
-  }
-`;
+import {
+  useUnifiedSearchCompletionSuggestionsLazyQuery,
+  UnifiedSearchLanguage,
+} from "../../unifiedSearch/graphql/__generated__";
+// eslint-disable-next-line max-len
+import AdministrativeDivisionDropdown from "../../unifiedSearch/administrativeDivisionDropdown/AdministrativeDivisionDropdown";
+import useAdministrativeDivisions from "../../unifiedSearch/administrativeDivisionDropdown/useAdministrativeDivisions";
+import OntologyTreeDropdown from "../../unifiedSearch/ontologyTreeDropdown/OntologyTreeDropdown";
+import useOntologyTree from "../../unifiedSearch/ontologyTreeDropdown/useOntologyTree";
+import useUnifiedSearch from "../../unifiedSearch/useUnifiedSearch";
+import searchApolloClient from "../../unifiedSearch/searchApolloClient";
+import { OrderBy } from "../../unifiedSearch/unifiedSearchConstants";
+import useRouter from "../../i18n/router/useRouter";
+import Link from "../../i18n/router/Link";
+import styles from "./searchPageSearchForm.module.scss";
 
 type Props = {
   showTitle?: boolean;
@@ -68,12 +57,15 @@ function SearchPageSearchForm({
     filters.isOpenNow ?? false
   );
   const [openAt, setOpenAt] = useIntermediaryState<Date | null>(filters.openAt);
-  const [findSuggestions, { data }] = useLazyQuery(SUGGESTION_QUERY, {
-    client: searchApolloClient,
-  });
+  const [findSuggestions, { data }] =
+    useUnifiedSearchCompletionSuggestionsLazyQuery({
+      client: searchApolloClient,
+    });
   const administrativeDivisionsQuery = useAdministrativeDivisions();
   const ontologyTreeQuery = useOntologyTree();
-  const ontologyWordsQuery = useOntologyWords({ ids: filters.ontologyWordIds });
+  const ontologyWordsQuery = useOntologyWords({
+    ids: filters.ontologyWordIds?.map((wordId) => wordId.toString()),
+  });
   const debouncedFindSuggestions = useRef(debounce(findSuggestions, 100));
 
   const handleSubmit = (e) => {
@@ -113,7 +105,7 @@ function SearchPageSearchForm({
         prefix: value,
         language: getUnifiedSearchLanguage(
           router.locale || router.defaultLocale
-        ),
+        ) as UnifiedSearchLanguage,
       },
     });
   };

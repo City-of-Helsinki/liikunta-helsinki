@@ -9,7 +9,7 @@ export default function Combobox({
   ...delegated
 }: ComboboxProps<Option>) {
   return (
-    <HDSCombobox
+    <HDSCombobox<Option>
       {...delegated}
       className={classNames(styles.select, className)}
     />

@@ -107,9 +107,9 @@ export type Collection = {
 };
 
 export type LocalizedString = {
-  fi: string;
-  sv: string;
-  en: string;
+  fi?: string;
+  sv?: string;
+  en?: string;
 };
 
 type Image = {

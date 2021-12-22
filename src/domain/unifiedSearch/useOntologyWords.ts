@@ -1,34 +1,13 @@
-import { useQuery } from "@apollo/client";
-import gql from "graphql-tag";
-
-import { LocalizedString } from "../../types";
+import {
+  useOntologyWordsQuery,
+  OntologyWordsQueryVariables,
+} from "./graphql/__generated__";
 import searchApolloClient from "./searchApolloClient";
 
-type OntologyWord = {
-  id: string;
-  label: LocalizedString;
-};
-
-type OntologyQueryVariables = { ids: number[] };
-
-const ONTOLOGY_WORDS_QUERY = gql`
-  query OntologyWordsQuery($ids: [ID!]) {
-    ontologyWords(ids: $ids) {
-      id
-      label {
-        fi
-        sv
-        en
-      }
-    }
-  }
-`;
-
-const useOntologyWords = (variables?: OntologyQueryVariables) => {
-  const { data, ...delegated } = useQuery<
-    { ontologyWords?: OntologyWord[] },
-    OntologyQueryVariables
-  >(ONTOLOGY_WORDS_QUERY, {
+export default function useOntologyWords(
+  variables?: OntologyWordsQueryVariables
+) {
+  const { data, ...delegated } = useOntologyWordsQuery({
     client: searchApolloClient,
     variables,
   });
@@ -37,6 +16,4 @@ const useOntologyWords = (variables?: OntologyQueryVariables) => {
     ontologyWords: data?.ontologyWords,
     ...delegated,
   };
-};
-
-export default useOntologyWords;
+}
