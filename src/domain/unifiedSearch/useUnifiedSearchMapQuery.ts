@@ -7,7 +7,7 @@ import useUnifiedSearchVariables, {
 } from "./useUnifiedSearchVariables";
 import searchApolloClient from "./searchApolloClient";
 
-export default function useUnifiedSearchListQuery(
+export default function useUnifiedSearchMapQuery(
   variables: OverridableVariables
 ) {
   const { fetchMore, ...delegated } = useSearchMapQuery({
