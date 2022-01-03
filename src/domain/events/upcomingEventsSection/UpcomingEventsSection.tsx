@@ -55,7 +55,7 @@ export default function UpcomingEventsSection({
       },
       first: 6,
     },
-    skip: !process.browser || defer,
+    skip: defer,
     ssr: false,
     context: {
       headers: {

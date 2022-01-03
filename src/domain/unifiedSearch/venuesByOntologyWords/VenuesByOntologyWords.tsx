@@ -80,7 +80,6 @@ export default function VenuesWithOntologies({ ontologyWordIds = [] }: Props) {
   const { data, loading } = useQuery(VENUES_WITH_ONTOLOGIES_QUERY, {
     client: searchApolloClient,
     ssr: false,
-    skip: !process.browser,
     variables: {
       ontologyWordIds,
     },
