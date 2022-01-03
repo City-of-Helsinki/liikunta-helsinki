@@ -1,4 +1,5 @@
 import { Item } from "../../../types";
+import getVenueIdParts from "./getVenueIdParts";
 
 function limitWordCount(description: string) {
   const limit = 30;
@@ -28,19 +29,23 @@ export default function getVenuesAsItems(venues: Venue[] | undefined): Item[] {
     return [];
   }
 
-  return venues.map(({ id, name, description, pictureUrl, ontologyWords }) => ({
-    id,
-    title: name,
-    infoLines: [limitWordCount(description)],
-    href: `/venues/tprek:${id}`,
-    image: pictureUrl,
-    keywords: ontologyWords.map((ontology) => ({
-      label: ontology.label,
-      href: {
-        query: {
-          ontologyWordIds: [ontology.id],
+  return venues.map(({ id, name, description, pictureUrl, ontologyWords }) => {
+    const { id: idNumber } = getVenueIdParts(id);
+
+    return {
+      id,
+      title: name,
+      infoLines: [limitWordCount(description)],
+      href: `/venues/tprek:${idNumber ?? id}`,
+      image: pictureUrl,
+      keywords: ontologyWords.map((ontology) => ({
+        label: ontology.label,
+        href: {
+          query: {
+            ontologyWordIds: [ontology.id],
+          },
         },
-      },
-    })),
-  }));
+      })),
+    };
+  });
 }
