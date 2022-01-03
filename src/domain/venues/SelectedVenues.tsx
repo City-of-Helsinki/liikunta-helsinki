@@ -34,7 +34,7 @@ export default function SelectedVenues({ venues: venueIds, render }: Props) {
     variables: {
       ids: venueIds.map((id) => `tprek:${id}`),
     },
-    skip: !process.browser,
+    ssr: false,
     context: {
       headers: {
         "Accept-Language": locale,

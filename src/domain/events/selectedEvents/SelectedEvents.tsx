@@ -44,7 +44,7 @@ export default function SelectedEventsSection({
   const { data, ...queryResult } = useQuery(SELECTED_EVENTS_QUERY, {
     client: nextApiApolloClient,
     variables: { ids: eventIds, first: pageSize, after: "" },
-    skip: !process.browser,
+    ssr: false,
     context: {
       headers: {
         "Accept-Language": locale,
