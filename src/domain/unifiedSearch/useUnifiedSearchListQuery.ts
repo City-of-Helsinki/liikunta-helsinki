@@ -18,7 +18,7 @@ export default function useUnifiedSearchListQuery() {
     });
 
   return {
-    fetchMore: fetchMore ? handleFetchMore : fetchMore,
+    fetchMore: handleFetchMore,
     ...delegated,
   };
 }
