@@ -134,12 +134,12 @@ function OpeningHoursInfoBlock({
 > | null {
   const { t } = useTranslation("search_page");
 
-  const openingHourTimes =
-    (openAt
-      ? openingHours?.data?.find(
-          (timeData) => timeData.date === format(openAt, "yyyy-MM-dd")
-        )?.times
-      : openingHours?.today) ?? [];
+  const openingHourTimesMaybe = openAt
+    ? openingHours?.data?.find(
+        (timeData) => timeData.date === format(openAt, "yyyy-MM-dd")
+      )?.times
+    : openingHours?.today;
+  const openingHourTimes = openingHourTimesMaybe ?? [];
   const isOpenNow = getIsOpenNow(openingHourTimes);
   const humanizedOpeningHours = humanizeOpeningHour(
     {
