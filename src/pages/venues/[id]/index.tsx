@@ -41,6 +41,7 @@ import renderAddressToString from "../../../common/utils/renderAddressToString";
 import hash from "../../../common/utils/hash";
 import capitalize from "../../../common/utils/capitalize";
 import styles from "./venue.module.scss";
+import getVenueIdParts from "../../../domain/venues/utils/getVenueIdParts";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -82,12 +83,6 @@ export const VENUE_QUERY = gql`
     }
   }
 `;
-
-function pruneId(idWithSource: string): string {
-  const [, id] = idWithSource.split(":");
-
-  return id;
-}
 
 type DirectionPoint = {
   name: string;
@@ -466,9 +461,9 @@ export function VenuePageContent() {
             <Hr />
             <MapBox
               title={t("map_box.title")}
-              serviceMapUrl={`https://palvelukartta.hel.fi/fi/embed/unit/${pruneId(
-                id
-              )}`}
+              serviceMapUrl={`https://palvelukartta.hel.fi/fi/embed/unit/${
+                getVenueIdParts(id).id
+              }`}
               placeName={name}
               placeAddress={simplifiedAddress}
               links={[hslInfoLink, googleInfoLink]}
