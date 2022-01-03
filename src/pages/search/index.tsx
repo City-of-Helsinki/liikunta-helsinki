@@ -103,6 +103,22 @@ function getIsOpenNow(times: UnifiedSearchOpeningHoursTimes[]): boolean {
   return isOpenNow;
 }
 
+function getShowOpenNowLabel(isOpenNow: boolean, openAt?: Date) {
+  const openAtFilterIsToday = isToday(openAt);
+
+  // If the openAt filter has a value, and it targets today, return based on
+  // isOpenNow.
+  if (openAt && openAtFilterIsToday) {
+    return isOpenNow;
+    // If openAt does not have a value, return based on isOpenNow
+  } else if (!openAt) {
+    return isOpenNow;
+    // Otherwise default to false
+  } else {
+    return false;
+  }
+}
+
 type OpeningHoursInfoBlockProps = {
   openingHours: UnifiedSearchOpeningHours;
   openAt: Date | undefined;
@@ -125,7 +141,6 @@ function OpeningHoursInfoBlock({
         )?.times
       : openingHours?.today) ?? [];
   const isOpenNow = getIsOpenNow(openingHourTimes);
-  const openAtFilterIsToday = isToday(openAt);
   const humanizedOpeningHours = humanizeOpeningHour(
     {
       date: new Date().toJSON(),
@@ -145,9 +160,10 @@ function OpeningHoursInfoBlock({
       headingLevel="h3"
       icon={<IconClock aria-hidden="true" />}
       name={
-        !(openAt && openAtFilterIsToday) && isOpenNow
+        getShowOpenNowLabel(isOpenNow, openAt)
           ? t("block.opening_hours.open_now_label")
           : `${t("block.opening_hours.label")}${
+              // If openAt filter has a value, list it in the label
               openAt ? ` ${formatIntoDate(openAt)}` : ``
             }`
       }
