@@ -18,7 +18,7 @@ export default function useUnifiedSearchListQuery(
 
   const handleFetchMore = (variables: Partial<SearchMapQueryVariables>) =>
     fetchMore({
-      variables: { ...variables },
+      variables,
     });
 
   return {
