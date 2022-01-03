@@ -107,7 +107,6 @@ export default function useUnifiedSearchVariables(
 
   return {
     language: appToUnifiedSearchLanguageMap[locale] as UnifiedSearchLanguage,
-    ...defaultPagination,
     // Default query; everything
     q: (q ?? ["*"]).join(" "),
     ontologyTreeIds: ontologyTreeIds?.map((treeId) => treeId.toString()),
@@ -115,7 +114,7 @@ export default function useUnifiedSearchVariables(
     administrativeDivisionIds,
     openAt: getOpenAt(openAt, isOpenNow),
     ...getOrderBy(orderBy, orderDir, { position: geolocation.coordinates }),
-    after,
-    first: variables?.first ?? first,
+    after: after ?? defaultPagination.after,
+    first: variables?.first ?? first ?? defaultPagination.first,
   };
 }
