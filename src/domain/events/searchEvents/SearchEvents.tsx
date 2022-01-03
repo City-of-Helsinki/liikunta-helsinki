@@ -45,7 +45,6 @@ export default function SearchEventsSection({ url, render, pageSize }: Props) {
       first: pageSize,
       after: "",
     },
-    skip: !process.browser,
     ssr: false,
     context: {
       headers: {
