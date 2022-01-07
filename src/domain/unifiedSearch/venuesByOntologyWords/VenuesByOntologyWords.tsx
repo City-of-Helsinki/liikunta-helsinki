@@ -1,38 +1,17 @@
-import { useQuery, gql } from "@apollo/client";
 import { LoadingSpinner, IconLocation } from "hds-react";
 
-import { Item, Venue } from "../../../types";
+import { Item } from "../../../types";
+import { Locale } from "../../../config";
 import List from "../../../common/components/list/List";
 import Card from "../../../common/components/card/DefaultCard";
-import { Locale } from "../../../config";
+import capitalize from "../../../common/utils/capitalize";
 import getTranslation from "../../../common/utils/getTranslation";
 import useRouter from "../../i18n/router/useRouter";
-import unifiedSearchVenueFragment from "../unifiedSearchResultVenueFragment";
-import searchApolloClient from "../searchApolloClient";
-import capitalize from "../../../common/utils/capitalize";
+import useUnifiedSearchListQuery, {
+  ListVenue,
+} from "../useUnifiedSearchListQuery";
 
-const VENUES_WITH_ONTOLOGIES_QUERY = gql`
-  query LocationsWithOntologiesQuery($ontologyWordIds: [ID!]) {
-    unifiedSearch(
-      q: "*"
-      ontologyWordIds: $ontologyWordIds
-      index: "location"
-      first: 4
-    ) {
-      edges {
-        node {
-          venue {
-            ...unifiedSearchVenueFragment
-          }
-        }
-      }
-    }
-  }
-
-  ${unifiedSearchVenueFragment}
-`;
-
-function getVenuesAsItem(venues: Venue[], locale: Locale): Item[] {
+function getVenuesAsItem(venues: ListVenue[], locale: Locale): Item[] {
   return venues.map((venue) => {
     const infoLines = [
       {
@@ -77,13 +56,12 @@ type Props = {
 
 export default function VenuesWithOntologies({ ontologyWordIds = [] }: Props) {
   const { locale } = useRouter();
-  const { data, loading } = useQuery(VENUES_WITH_ONTOLOGIES_QUERY, {
-    client: searchApolloClient,
-    ssr: false,
+  const { data, loading } = useUnifiedSearchListQuery({
     variables: {
       ontologyWordIds,
+      first: 4,
+      orderByName: undefined,
     },
-    fetchPolicy: "cache-and-network",
   });
 
   if (loading) {
