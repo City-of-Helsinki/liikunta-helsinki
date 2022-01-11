@@ -1,0 +1,19 @@
+@import "variables";
+
+.container {
+  white-space: pre-wrap;
+
+  .button {
+    display: block;
+    margin-top: $spacing-2-xs;
+    padding: 0;
+
+    font-family: inherit;
+    font-weight: 500;
+    color: $color-bus;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}

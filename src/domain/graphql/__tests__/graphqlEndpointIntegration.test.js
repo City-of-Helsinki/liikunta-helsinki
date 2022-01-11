@@ -61,6 +61,10 @@ const GET_VENUE = gql`
         id
         label
       }
+      connections {
+        sectionType
+        name
+      }
     }
   }
 `;
@@ -123,6 +127,10 @@ const GET_VENUES_BY_IDS = gql`
       ontologyTree {
         id
         label
+      }
+      connections {
+        sectionType
+        name
       }
     }
   }

@@ -2,7 +2,6 @@ import get from "lodash/get";
 
 import { Locale } from "../../../../config";
 import {
-  AnyObject,
   Context,
   Point,
   TranslationsObject,
@@ -73,7 +72,7 @@ function pickLocale(obj: TranslationsObject, locale: Locale) {
 }
 
 export function translateVenue(
-  data: AnyObject,
+  data: Partial<VenueDetails>,
   { language }: Context
 ): VenueDetails | VenueDetails<string> {
   if (!language) {
@@ -88,6 +87,14 @@ export function translateVenue(
     streetAddress: pickLocale(data.streetAddress, language),
     infoUrl: pickLocale(data.infoUrl, language),
     telephone: pickLocale(data.telephone, language),
-    accessibilitySentences: pickLocale(data.accessibilitySentences, language),
+    accessibilitySentences:
+      // If grouped by translations, find the correct one by language
+      "fi" in data.accessibilitySentences
+        ? get(data.accessibilitySentences, language, null)
+        : data.accessibilitySentences,
+    connections: data.connections.map((connection) => ({
+      ...connection,
+      name: pickLocale(connection.name, language),
+    })),
   } as VenueDetails<string>;
 }

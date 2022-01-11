@@ -62,6 +62,9 @@ const Venue = {
 
     return accessibilitySentences;
   },
+  connections({ connections }) {
+    return connections;
+  },
 };
 
 export default Venue;

@@ -19,5 +19,7 @@
   "map_box.accessibility_sentences": "Information om tillgängligheten",
   "other_sports_section.title": "SV: Muuta samankaltaista liikuntaa",
   "back_to_venue_page_aria_label": "SV: Takaisin liikuntapaikkasivulle",
-  "a11y_keywords_group_name": "SV: Asiasanat"
+  "a11y_keywords_group_name": "SV: Asiasanat",
+  "show_long_price": "SV: Näytä kaikki",
+  "hide_long_price": "SV: Piilota"
 }
