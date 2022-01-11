@@ -55,7 +55,12 @@ export type TprekUnit = {
   accessibility_viewpoints?: string;
   created_time: string;
   modified_time: string;
-  connections: Array<unknown>;
+  connections: Array<{
+    section_type: string;
+    name_fi: string;
+    name_en: string;
+    name_sv: string;
+  }>;
   ontologyword_details: TprekUnitOntologywordDetails[];
   service_descriptions: TprekUnitServiceDescriptions[];
   accessibility_sentences: Array<unknown>;
@@ -98,6 +103,10 @@ export default class VenueTprekIntegration extends VenueResolverIntegration<Tpre
         sv: data?.phone ?? null,
         en: data?.phone ?? null,
       },
+      connections: data?.connections?.map((connection) => ({
+        sectionType: connection.section_type,
+        name: formTranslationObject(connection, "name"),
+      })),
     };
   }
 }

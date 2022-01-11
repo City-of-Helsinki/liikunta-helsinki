@@ -51,6 +51,11 @@ const typeDefs = gql`
     sentences: [String]
   }
 
+  type Connection {
+    sectionType: String
+    name: String
+  }
+
   type Venue {
     addressLocality: String
     dataSource: String
@@ -69,6 +74,7 @@ const typeDefs = gql`
     ontologyTree: [Ontology]!
     ontologyWords: [Ontology]!
     accessibilitySentences: [AccessibilitySentences]!
+    connections: [Connection]!
   }
 `;
 

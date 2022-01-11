@@ -18,7 +18,7 @@
     display: block;
     grid-column: full-width;
     grid-row: 1;
-    height: 31rem;
+    min-height: 31rem;
 
     @include breakpoints.respond-above(m) {
       background-color: #ccf7ed;
@@ -97,11 +97,12 @@
     overflow: hidden;
 
     @include breakpoints.respond-above(m) {
-      max-height: 31rem;
+      height: 100%;
     }
 
-    & > img {
-      object-fit: cover;
+    background-color: $color-white;
+
+    & > * {
       max-height: 31rem;
     }
   }
@@ -127,10 +128,6 @@
         margin-bottom: $spacing-2-xl;
       }
     }
-
-    @include breakpoints.respond-above(l) {
-      --spacing-v: #{$spacing-layout-xl};
-    }
   }
 
   .keywords {
@@ -154,9 +151,11 @@
 
     .headerInfoLine {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
 
       & > svg {
+        width: 24px;
+        flex-shrink: 0;
         margin-right: $spacing-xs;
       }
     }

@@ -34,6 +34,24 @@ Object {
         },
       ],
       "addressLocality": "Helsinki",
+      "connections": Array [
+        Object {
+          "name": "Päiväkodinjohtaja",
+          "sectionType": "PHONE_OR_EMAIL",
+        },
+        Object {
+          "name": "Hakemus kerhotoimintaan, esiopetukseen ja esiopetusta täydentävään varhaiskasvatukseen",
+          "sectionType": "ESERVICE_LINK",
+        },
+        Object {
+          "name": "Kerhohakemus sähköisessä asioinnissa",
+          "sectionType": "ESERVICE_LINK",
+        },
+        Object {
+          "name": "Varhaiskasvatushakemus Asti-asiointipalvelussa",
+          "sectionType": "ESERVICE_LINK",
+        },
+      ],
       "dataSource": "tprek",
       "description": null,
       "email": "pk.lappi@hel.fi",
@@ -188,6 +206,24 @@ Object {
           },
         ],
         "addressLocality": "Helsinki",
+        "connections": Array [
+          Object {
+            "name": "Päiväkodinjohtaja",
+            "sectionType": "PHONE_OR_EMAIL",
+          },
+          Object {
+            "name": "Hakemus kerhotoimintaan, esiopetukseen ja esiopetusta täydentävään varhaiskasvatukseen",
+            "sectionType": "ESERVICE_LINK",
+          },
+          Object {
+            "name": "Kerhohakemus sähköisessä asioinnissa",
+            "sectionType": "ESERVICE_LINK",
+          },
+          Object {
+            "name": "Varhaiskasvatushakemus Asti-asiointipalvelussa",
+            "sectionType": "ESERVICE_LINK",
+          },
+        ],
         "dataSource": "tprek",
         "description": null,
         "email": "pk.lappi@hel.fi",
@@ -312,6 +348,24 @@ Object {
           },
         ],
         "addressLocality": "Helsinki",
+        "connections": Array [
+          Object {
+            "name": "Päiväkodinjohtaja",
+            "sectionType": "PHONE_OR_EMAIL",
+          },
+          Object {
+            "name": "Hakemus kerhotoimintaan, esiopetukseen ja esiopetusta täydentävään varhaiskasvatukseen",
+            "sectionType": "ESERVICE_LINK",
+          },
+          Object {
+            "name": "Kerhohakemus sähköisessä asioinnissa",
+            "sectionType": "ESERVICE_LINK",
+          },
+          Object {
+            "name": "Varhaiskasvatushakemus Asti-asiointipalvelussa",
+            "sectionType": "ESERVICE_LINK",
+          },
+        ],
         "dataSource": "tprek",
         "description": null,
         "email": "pk.lappi@hel.fi",

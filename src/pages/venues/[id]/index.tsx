@@ -7,6 +7,7 @@ import {
   IconInfoCircle,
   IconMap,
   IconAngleDown,
+  IconTicket,
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
@@ -29,6 +30,7 @@ import serverSideTranslationsWithCommon from "../../../domain/i18n/serverSideTra
 import { getLocaleOrError } from "../../../domain/i18n/router/utils";
 import UpcomingEventsSection from "../../../domain/events/upcomingEventsSection/UpcomingEventsSection";
 import VenuesByOntologyWords from "../../../domain/unifiedSearch/venuesByOntologyWords/VenuesByOntologyWords";
+import getVenueIdParts from "../../../domain/venues/utils/getVenueIdParts";
 import Keyword from "../../../common/components/keyword/Keyword";
 import Page from "../../../common/components/page/Page";
 import Text from "../../../common/components/text/Text";
@@ -37,11 +39,11 @@ import ShareLinks from "../../../common/components/shareLinks/ShareLinks";
 import MapBox from "../../../common/components/mapBox/MapBox";
 import Hr from "../../../common/components/hr/Hr";
 import Section from "../../../common/components/section/Section";
+import EllipsedTextWithToggle from "../../../common/components/ellipsedTextWithToggle/EllipsedTextWithToggle";
 import renderAddressToString from "../../../common/utils/renderAddressToString";
 import hash from "../../../common/utils/hash";
 import capitalize from "../../../common/utils/capitalize";
 import styles from "./venue.module.scss";
-import getVenueIdParts from "../../../domain/venues/utils/getVenueIdParts";
 
 export const VENUE_QUERY = gql`
   query VenueQuery($id: ID!) {
@@ -79,6 +81,10 @@ export const VENUE_QUERY = gql`
       ontologyWords {
         id
         label
+      }
+      connections {
+        sectionType
+        name
       }
     }
   }
@@ -264,13 +270,26 @@ export function VenuePageContent() {
       ))}
     />
   );
+  const connectionPriceSectionsContents = data?.venue?.connections
+    ?.filter((item) => item.sectionType === "PRICE")
+    ?.map((item) => item.name);
+  const connectionPriceSectionsLines = connectionPriceSectionsContents
+    .join("\n\n")
+    .split("\n");
   const infoLines = [
     {
       id: "address",
       icon: <IconLocation aria-hidden="true" />,
       info: simplifiedAddress,
     },
-  ];
+    connectionPriceSectionsContents.length > 0
+      ? {
+          id: "price",
+          icon: <IconTicket aria-hidden="true" />,
+          info: <EllipsedTextWithToggle lines={connectionPriceSectionsLines} />,
+        }
+      : null,
+  ].filter((item) => Boolean(item));
   const ontologyWords = data?.venue?.ontologyWords?.map((ontology) => ({
     label: capitalize(ontology.label),
     id: ontology.id,

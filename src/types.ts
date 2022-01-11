@@ -203,6 +203,10 @@ export type VenueDetails<T = TranslationsObject> = {
   accessibilitySentences:
     | AccessibilityTranslationsObject
     | AccessibilitySentences;
+  connections: Array<{
+    sectionType: string;
+    name: T;
+  }>;
 };
 
 export type Source = typeof Sources[keyof typeof Sources];
