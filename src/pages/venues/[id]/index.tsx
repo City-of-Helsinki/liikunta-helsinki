@@ -31,6 +31,7 @@ import { getLocaleOrError } from "../../../domain/i18n/router/utils";
 import UpcomingEventsSection from "../../../domain/events/upcomingEventsSection/UpcomingEventsSection";
 import VenuesByOntologyWords from "../../../domain/unifiedSearch/venuesByOntologyWords/VenuesByOntologyWords";
 import getVenueIdParts from "../../../domain/venues/utils/getVenueIdParts";
+import getVenueOpeningTimeDescriptor from "../../../domain/venues/utils/getVenueOpeningTimeDescriptor";
 import Keyword from "../../../common/components/keyword/Keyword";
 import Page from "../../../common/components/page/Page";
 import Text from "../../../common/components/text/Text";
@@ -198,6 +199,10 @@ export function VenuePageContent() {
     data?.venue?.openingHours,
     locale
   );
+  const openingHoursNow = getVenueOpeningTimeDescriptor(
+    data?.venue?.openingHours,
+    locale
+  );
   const isOpen = data?.venue?.isOpen;
   const accessibilitySentences = data?.venue?.accessibilitySentences;
 
@@ -287,6 +292,13 @@ export function VenuePageContent() {
           id: "price",
           icon: <IconTicket aria-hidden="true" />,
           info: <EllipsedTextWithToggle lines={connectionPriceSectionsLines} />,
+        }
+      : null,
+    openingHoursNow
+      ? {
+          id: "openingHoursNow",
+          icon: <IconClock aria-hidden="true" />,
+          info: openingHoursNow,
         }
       : null,
   ].filter((item) => Boolean(item));
