@@ -99,7 +99,7 @@ function formatTime(time?: string) {
   return [hours, minutes].join(":");
 }
 
-function humanizeTimeResourceState(
+function _humanizeTimeResourceState(
   resourceState: TimeResourceState,
   copy = microCopy.fi
 ): string {
@@ -129,6 +129,13 @@ function humanizeTimeResourceState(
   }
 }
 
+export function humanizeTimeResourceState(
+  resourceState: TimeResourceState,
+  locale: Locale
+): string {
+  return _humanizeTimeResourceState(resourceState, microCopy[locale]);
+}
+
 function humanizeTimeEndTime(time: Time, copy = microCopy.fi): string {
   const endTimeFormatted = formatTime(time.endTime);
 
@@ -144,7 +151,7 @@ function humanizeTime(time: Time, copy = microCopy.fi): string {
     time,
     copy
   )}`;
-  const humanizedResourceState = humanizeTimeResourceState(
+  const humanizedResourceState = _humanizeTimeResourceState(
     time.resourceState,
     copy
   );
