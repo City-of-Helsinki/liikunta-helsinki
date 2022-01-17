@@ -6,7 +6,12 @@ const renderComponent = () => render(<ShareLinks />);
 
 test("should have discoverable link address copy button as well as Facebook, Twitter and LinkedIn share links", () => {
   renderComponent();
-  const shareLinkLabelsFI = ["copy.label", "facebook", "twitter", "linkedin"];
+  const shareLinkLabelsFI = [
+    "Kopioi linkin osoite",
+    "Jaa Facebookissa",
+    "Jaa Twitterissä",
+    "Jaa LinkedInissä",
+  ];
 
   shareLinkLabelsFI.forEach((label) => {
     expect(screen.queryByLabelText(label)).not.toEqual(null);

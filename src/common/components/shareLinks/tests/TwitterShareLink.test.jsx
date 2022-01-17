@@ -8,7 +8,7 @@ test("should apply aria label", () => {
   const sharedLink = "https://helsinki.fi/some/";
   renderComponent({ sharedLink });
 
-  expect(screen.getByLabelText("twitter"));
+  expect(screen.getByLabelText("Jaa Twitterissä"));
 });
 
 test("<TwitterShareLink /> matches snapshot", () => {

@@ -61,7 +61,7 @@ test("renders correctly", async () => {
     expect(screen.getByText("Kesän parhaat uimarannat")).toBeInTheDocument()
   );
 
-  ["outdoor_gyms", "swimming_summer", "skating"].forEach((shortcutLabel) => {
+  ["Ulkokuntosalit", "Uinti", "Skeittaus"].forEach((shortcutLabel) => {
     expect(
       screen.getByRole("link", { name: shortcutLabel })
     ).toBeInTheDocument();
