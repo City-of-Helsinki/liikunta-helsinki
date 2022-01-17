@@ -17,7 +17,7 @@ type Venue = {
   name: string;
   pictureUrl: string;
   pictureCaption: string;
-  description: string;
+  description?: string;
   ontologyWords: Array<{
     id: string;
     label: string;
@@ -35,7 +35,7 @@ export default function getVenuesAsItems(venues: Venue[] | undefined): Item[] {
     return {
       id,
       title: name,
-      infoLines: [limitWordCount(description)],
+      infoLines: description ? [limitWordCount(description)] : [],
       href: `/venues/tprek:${idNumber ?? id}`,
       image: pictureUrl,
       keywords: ontologyWords.map((ontology) => ({
