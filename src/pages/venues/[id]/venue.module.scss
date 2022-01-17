@@ -153,6 +153,8 @@
       display: flex;
       align-items: flex-start;
 
+      line-height: $lineheight-l;
+
       & > svg {
         width: 24px;
         flex-shrink: 0;

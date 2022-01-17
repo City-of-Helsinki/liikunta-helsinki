@@ -26,6 +26,33 @@ const getMocks = () => [
   },
 ];
 
+function getLinesFromConnections(connections) {
+  return connections
+    .map((item) => item.name)
+    .join("\n\n")
+    .split("\n");
+}
+
+function stringifyLines(lines) {
+  return (
+    lines
+      .join(" ")
+      // Ignore wrapping whitespace
+      .trim()
+      // Collapse double space
+      .replace(/\s\s+/g, " ")
+  );
+}
+
+beforeEach(() => {
+  jest.useFakeTimers();
+  jest.setSystemTime(new Date(2021, 5, 22, 12, 0, 0, 0));
+});
+
+afterAll(() => {
+  jest.useRealTimers();
+});
+
 test("venues/[id] renders correctly", async () => {
   render(<VenuePageContent />, getMocks(), {
     query: {
@@ -36,26 +63,44 @@ test("venues/[id] renders correctly", async () => {
   await waitFor(() => screen.getByText("Eiran uimaranta", { selector: "h2" }));
 
   // -- Check that the user can access price information correctly
-  const allPriceConnectionsContentLines = defaultConnections
-    .filter((item) => item.sectionType === "PRICE")
-    .map((item) => item.name)
-    .join("\n\n")
-    .split("\n");
-  const startOfFirstPriceConnection = allPriceConnectionsContentLines
-    .slice(0, 3)
-    // Testing library does some formatting to text content which removes line
-    // changes. Matching with them fails, matching without works.
-    .join("");
+  const allPriceConnectionsContentLines = getLinesFromConnections(
+    defaultConnections.filter((item) => item.sectionType === "PRICE")
+  );
+  const startOfFirstPriceConnection = stringifyLines(
+    allPriceConnectionsContentLines.slice(0, 3)
+  );
   // User sees the beginning of the price
   expect(screen.getByText(startOfFirstPriceConnection)).toBeInTheDocument();
 
-  const restOfPriceConnectionsContent = allPriceConnectionsContentLines
-    .slice(3)
-    // Join with a space, but replace all double spaces with a single space
-    .join(" ")
-    .replace(/\s\s+/g, " ");
+  const restOfPriceConnectionsContent = stringifyLines(
+    allPriceConnectionsContentLines.slice(3)
+  );
+
+  userEvent.click(screen.getAllByRole("button", { name: "Näytä kaikki" })[0]);
+  // After clicking user can view all price information
+  expect(screen.queryByText(restOfPriceConnectionsContent)).toBeInTheDocument();
+
+  // -- Check that current opening status is communicated from hauki if
+  // available
+  expect(
+    screen.getByText("Auki tällä hetkellä, sulkeutuu 16:00")
+  ).toBeInTheDocument();
+
+  // -- Check that the user can access opening hours
+  const allOpeningHoursConnectionsContentLines = getLinesFromConnections(
+    defaultConnections.filter((item) => item.sectionType === "OPENING_HOURS")
+  );
+  const startOfOpeningHoursConnection = stringifyLines(
+    allOpeningHoursConnectionsContentLines.slice(0, 10)
+  );
+  expect(screen.getByText(startOfOpeningHoursConnection)).toBeInTheDocument();
 
   userEvent.click(screen.getByRole("button", { name: "Näytä kaikki" }));
   // After clicking user can view all price information
-  expect(screen.queryByText(restOfPriceConnectionsContent)).toBeInTheDocument();
+  const restOfOpeningHoursConnectionsContent = stringifyLines(
+    allOpeningHoursConnectionsContentLines.slice(10)
+  );
+  expect(
+    screen.queryByText(restOfOpeningHoursConnectionsContent)
+  ).toBeInTheDocument();
 });

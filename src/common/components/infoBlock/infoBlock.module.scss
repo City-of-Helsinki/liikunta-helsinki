@@ -36,7 +36,8 @@
   }
 }
 
-.link {
+.link,
+.button {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -60,6 +61,14 @@
     font-weight: 500;
     font-size: $fontsize-body-m;
     color: $color-bus;
+  }
+}
+
+.button {
+  min-width: unset;
+
+  &[data-open="true"] svg {
+    transform: rotate(180deg);
   }
 }
 
