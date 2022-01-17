@@ -49,12 +49,13 @@ test("venues/[id] renders correctly", async () => {
   // User sees the beginning of the price
   expect(screen.getByText(startOfFirstPriceConnection)).toBeInTheDocument();
 
-  const allPriceConnectionsContent = allPriceConnectionsContentLines
+  const restOfPriceConnectionsContent = allPriceConnectionsContentLines
+    .slice(3)
     // Join with a space, but replace all double spaces with a single space
     .join(" ")
     .replace(/\s\s+/g, " ");
 
   userEvent.click(screen.getByRole("button", { name: "Näytä kaikki" }));
   // After clicking user can view all price information
-  expect(screen.queryByText(allPriceConnectionsContent)).toBeInTheDocument();
+  expect(screen.queryByText(restOfPriceConnectionsContent)).toBeInTheDocument();
 });
