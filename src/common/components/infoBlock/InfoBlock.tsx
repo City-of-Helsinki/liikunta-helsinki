@@ -1,12 +1,18 @@
 import { UrlObject } from "url";
 
 import React from "react";
-import { IconLinkExternal, IconAngleRight, useAccordion } from "hds-react";
+import {
+  IconLinkExternal,
+  IconAngleRight,
+  useAccordion,
+  IconAngleDown,
+} from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
 import Link from "../../../domain/i18n/router/Link";
 import Text from "../text/Text";
+import EllipsedTextWithToggle from "../ellipsedTextWithToggle/EllipsedTextWithToggle";
 import styles from "./infoBlock.module.scss";
 
 type InfoBlockContentLinkProps = {
@@ -28,10 +34,17 @@ type InfoBlockCollapseProps = {
   titleClassName?: string;
 };
 
+type InfoBlockExpandProps = {
+  lines: string[];
+  className?: string;
+  initialVisibleLinesCount?: number;
+};
+
 type InfoBlockContent =
   | React.ReactElement<InfoBlockContentLinkProps>
   | React.ReactElement<InfoBlockContentListProps>
   | React.ReactElement<InfoBlockCollapseProps>
+  | React.ReactElement<InfoBlockExpandProps>
   | string;
 
 function getKey(item: InfoBlockContent): string {
@@ -139,6 +152,38 @@ function InfoBlockCollapse({
   );
 }
 
+function InfoBlockExpandButton({
+  children,
+  className,
+  // type,
+  ...delegated
+}: React.HTMLProps<HTMLButtonElement>) {
+  return (
+    <button
+      {...delegated}
+      type="button"
+      className={classNames(styles.button, className)}
+    >
+      <span>{children}</span> <IconAngleDown aria-hidden="true" />
+    </button>
+  );
+}
+
+function InfoBlockExpand({
+  lines,
+  className,
+  initialVisibleLinesCount,
+}: InfoBlockExpandProps) {
+  return (
+    <EllipsedTextWithToggle
+      className={className}
+      lines={lines}
+      button={InfoBlockExpandButton}
+      initialVisibleLinesCount={initialVisibleLinesCount}
+    />
+  );
+}
+
 type Props = {
   icon: React.ReactElement;
   name: string;
@@ -197,5 +242,6 @@ function InfoBlock({
 InfoBlock.Link = InfoBlockLink;
 InfoBlock.List = InfoBlockList;
 InfoBlock.Collapse = InfoBlockCollapse;
+InfoBlock.Expand = InfoBlockExpand;
 
 export default InfoBlock;

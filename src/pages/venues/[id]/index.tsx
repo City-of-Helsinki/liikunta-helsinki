@@ -25,7 +25,6 @@ import initializeNextApiApolloClient, {
 } from "../../../domain/clients/nextApiApolloClient";
 import useRouter from "../../../domain/i18n/router/useRouter";
 import queryPersister from "../../../common/utils/queryPersister";
-import humanizeOpeningHoursForWeek from "../../../common/utils/time/humanizeOpeningHoursForWeek";
 import serverSideTranslationsWithCommon from "../../../domain/i18n/serverSideTranslationsWithCommon";
 import { getLocaleOrError } from "../../../domain/i18n/router/utils";
 import UpcomingEventsSection from "../../../domain/events/upcomingEventsSection/UpcomingEventsSection";
@@ -195,15 +194,10 @@ export function VenuePageContent() {
   const instagram = data?.venue?.instagram;
   const twitter = data?.venue?.twitter;
   const description = data?.venue?.description;
-  const openingHours = humanizeOpeningHoursForWeek(
-    data?.venue?.openingHours,
-    locale
-  );
   const openingHoursNow = getVenueOpeningTimeDescriptor(
     data?.venue?.openingHours,
     locale
   );
-  const isOpen = data?.venue?.isOpen;
   const accessibilitySentences = data?.venue?.accessibilitySentences;
 
   const simplifiedAddress = [streetAddress, addressLocality].join(", ");
@@ -307,6 +301,11 @@ export function VenuePageContent() {
     id: ontology.id,
   }));
   const ontologyWordIds = ontologyWords.map((ontologyWord) => ontologyWord.id);
+  const connectionOpeningHoursSectionsContents = data?.venue?.connections
+    ?.filter((item) => item.sectionType === "OPENING_HOURS")
+    ?.map((item) => item.name);
+  const connectionOpeningHoursSectionsLines =
+    connectionOpeningHoursSectionsContents.join("\n\n").split("\n");
 
   // Data that can't be found from the API at this point
   const temperature = null;
@@ -372,16 +371,18 @@ export function VenuePageContent() {
         </header>
         <div className={classNames(styles.layout, styles.contentSection)}>
           <aside className={styles.aside}>
-            {openingHours && (
+            {connectionOpeningHoursSectionsContents.length > 0 && (
               <InfoBlock
                 headingLevel="h3"
                 icon={<IconClock aria-hidden="true" />}
-                name={
-                  isOpen
-                    ? t("block.opening_hours.open_now_label")
-                    : t("block.opening_hours.label")
-                }
-                contents={[openingHours]}
+                name={t("block.opening_hours.label")}
+                contents={[
+                  <InfoBlock.Expand
+                    key="connectionOpeningHours"
+                    lines={connectionOpeningHoursSectionsLines}
+                    initialVisibleLinesCount={10}
+                  />,
+                ]}
               />
             )}
             {temperature && (
