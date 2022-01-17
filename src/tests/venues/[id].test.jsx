@@ -54,7 +54,7 @@ test("venues/[id] renders correctly", async () => {
     .join(" ")
     .replace(/\s\s+/g, " ");
 
-  userEvent.click(screen.getByRole("button", { name: "show_long_price" }));
+  userEvent.click(screen.getByRole("button", { name: "Näytä kaikki" }));
   // After clicking user can view all price information
   expect(screen.queryByText(allPriceConnectionsContent)).toBeInTheDocument();
 });

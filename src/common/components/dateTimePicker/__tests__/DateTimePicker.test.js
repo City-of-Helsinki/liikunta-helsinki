@@ -20,10 +20,10 @@ describe("DateTimePicker", () => {
     render(<TestDateInputPicker locale="en" label={label} />);
 
     userEvent.click(screen.getByRole("button", { name: label }));
-    userEvent.type(screen.getByLabelText("date_input.label"), "12.12.2012");
-    userEvent.type(screen.getByLabelText("time_input.hours_label"), "14");
-    userEvent.type(screen.getByLabelText("time_input.minutes_label"), "16");
-    userEvent.click(screen.getByRole("button", { name: "select" }));
+    userEvent.type(screen.getByLabelText("Päivä"), "12.12.2012");
+    userEvent.type(screen.getByLabelText("Tunnit"), "14");
+    userEvent.type(screen.getByLabelText("Minuutit"), "16");
+    userEvent.click(screen.getByRole("button", { name: "Valitse" }));
 
     expect(
       screen.getByLabelText(label, { exact: false }).textContent

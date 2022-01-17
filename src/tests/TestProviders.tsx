@@ -2,6 +2,9 @@ import React from "react";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
+import { I18nextProvider } from "react-i18next";
+
+import i18n from "./initI18n";
 
 const mockRouter: NextRouter = {
   basePath: "",
@@ -36,11 +39,13 @@ type Props = {
 
 function TestProviders({ mocks, children, router }: Props) {
   return (
-    <RouterContext.Provider value={{ ...mockRouter, ...router }}>
-      <MockedProvider mocks={mocks} addTypename={false}>
-        {children}
-      </MockedProvider>
-    </RouterContext.Provider>
+    <I18nextProvider i18n={i18n}>
+      <RouterContext.Provider value={{ ...mockRouter, ...router }}>
+        <MockedProvider mocks={mocks} addTypename={false}>
+          {children}
+        </MockedProvider>
+      </RouterContext.Provider>
+    </I18nextProvider>
   );
 }
 
