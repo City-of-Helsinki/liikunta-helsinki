@@ -1,5 +1,4 @@
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 
 import { VENUE_QUERY, VenuePageContent } from "../../pages/venues/[id]";
 import { render, screen, waitFor } from "../utils";
@@ -28,19 +27,13 @@ const getMocks = () => [
 ];
 
 test("venues/[id] renders correctly", async () => {
-  await act(async () => {
-    render(<VenuePageContent />, getMocks(), {
-      query: {
-        id,
-      },
-    });
+  render(<VenuePageContent />, getMocks(), {
+    query: {
+      id,
+    },
   });
 
-  await waitFor(() =>
-    expect(
-      screen.getByText("Eiran uimaranta", { selector: "h2" })
-    ).toBeInTheDocument()
-  );
+  await waitFor(() => screen.getByText("Eiran uimaranta", { selector: "h2" }));
 
   // -- Check that the user can access price information correctly
   const allPriceConnectionsContentLines = defaultConnections
@@ -63,5 +56,5 @@ test("venues/[id] renders correctly", async () => {
 
   userEvent.click(screen.getByRole("button", { name: "show_long_price" }));
   // After clicking user can view all price information
-  expect(screen.getByText(allPriceConnectionsContent)).toBeInTheDocument();
+  expect(screen.queryByText(allPriceConnectionsContent)).toBeInTheDocument();
 });
