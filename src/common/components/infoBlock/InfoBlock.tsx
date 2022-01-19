@@ -155,7 +155,6 @@ function InfoBlockCollapse({
 function InfoBlockExpandButton({
   children,
   className,
-  // type,
   ...delegated
 }: React.HTMLProps<HTMLButtonElement>) {
   return (
