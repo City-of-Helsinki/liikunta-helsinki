@@ -285,7 +285,12 @@ export function VenuePageContent() {
       ? {
           id: "price",
           icon: <IconTicket aria-hidden="true" />,
-          info: <EllipsedTextWithToggle lines={connectionPriceSectionsLines} />,
+          info: (
+            <EllipsedTextWithToggle
+              lines={connectionPriceSectionsLines}
+              initialVisibleLinesCount={4}
+            />
+          ),
         }
       : null,
     openingHoursNow
