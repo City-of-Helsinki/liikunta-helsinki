@@ -5,6 +5,7 @@ import { render, screen, waitFor } from "../utils";
 import { getVenue, defaultConnections } from "./mocks/[id]";
 
 const id = "tprek:25";
+const initialPriceLines = 4;
 const getMocks = () => [
   {
     request: {
@@ -67,13 +68,13 @@ test("venues/[id] renders correctly", async () => {
     defaultConnections.filter((item) => item.sectionType === "PRICE")
   );
   const startOfFirstPriceConnection = stringifyLines(
-    allPriceConnectionsContentLines.slice(0, 3)
+    allPriceConnectionsContentLines.slice(0, initialPriceLines)
   );
   // User sees the beginning of the price
   expect(screen.getByText(startOfFirstPriceConnection)).toBeInTheDocument();
 
   const restOfPriceConnectionsContent = stringifyLines(
-    allPriceConnectionsContentLines.slice(3)
+    allPriceConnectionsContentLines.slice(initialPriceLines)
   );
 
   userEvent.click(screen.getAllByRole("button", { name: "Näytä kaikki" })[0]);
