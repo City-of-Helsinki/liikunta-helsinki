@@ -147,18 +147,20 @@ function getVenueOpeningTimeDescriptor(
   };
 }
 
+type HumanizeOpeningHoursDescriptorCopy = {
+  openNowAndCloses: string;
+  closedNowAndOpens: string;
+};
+
 function humanizeOpeningHoursDescriptor(
   { isOpenNow, closingTime, nextOpeningTime }: OpeningHoursDescriptor,
-  locale: Locale
+  locale: Locale,
+  { openNowAndCloses, closedNowAndOpens }: HumanizeOpeningHoursDescriptorCopy
 ) {
   if (isOpenNow) {
-    return `Auki tällä hetkellä, sulkeutuu ${
-      formatTime(closingTime, locale).end
-    }`;
+    return `${openNowAndCloses} ${formatTime(closingTime, locale).end}`;
   } else if (nextOpeningTime) {
-    return `Kiinni tällä hetkellä, aukeaa ${
-      formatTime(nextOpeningTime, locale).start
-    }`;
+    return `${closedNowAndOpens} ${formatTime(nextOpeningTime, locale).start}`;
   }
 
   return null;
@@ -166,10 +168,15 @@ function humanizeOpeningHoursDescriptor(
 
 export default function getVenueOpeningTimeDescription(
   openingHours: OpeningHour[],
-  locale: Locale
+  locale: Locale,
+  t: (translationKey: string) => string
 ) {
   return humanizeOpeningHoursDescriptor(
     getVenueOpeningTimeDescriptor(openingHours),
-    locale
+    locale,
+    {
+      openNowAndCloses: t("utils:open_now_and_closes"),
+      closedNowAndOpens: t("utils:closed_now_and_opens"),
+    }
   );
 }

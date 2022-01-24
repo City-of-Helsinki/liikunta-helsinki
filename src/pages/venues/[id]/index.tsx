@@ -144,6 +144,7 @@ const SPORT_EVENT_KEYWORDS = ["yso:p916"];
 
 export function VenuePageContent() {
   const { t } = useTranslation("venue_page");
+  const { t: globalT } = useTranslation();
   const router = useRouter();
   const id = router.query.id as string;
   const locale = router.locale ?? router.defaultLocale;
@@ -196,7 +197,8 @@ export function VenuePageContent() {
   const description = data?.venue?.description;
   const openingHoursNow = getVenueOpeningTimeDescription(
     data?.venue?.openingHours,
-    locale
+    locale,
+    globalT
   );
   const accessibilitySentences = data?.venue?.accessibilitySentences;
 

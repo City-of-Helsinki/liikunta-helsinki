@@ -11,6 +11,7 @@ const COMMON_TRANSLATIONS = [
   "date_time_picker",
   "geolocation_provider",
   "toast",
+  "utils",
 ];
 
 export default async function serverSideTranslationsWithCommon(
