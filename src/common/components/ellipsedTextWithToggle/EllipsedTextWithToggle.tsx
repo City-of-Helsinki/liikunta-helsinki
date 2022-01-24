@@ -41,7 +41,7 @@ export default function EllipsedTextWithToggle({
           <Button
             type="button"
             className={styles.button}
-            data-open={isOpen ? "true" : "false"}
+            data-open={isOpen.toString()}
             {...buttonProps}
           >
             {!isOpen ? t("show_long_price") : t("hide_long_price")}
