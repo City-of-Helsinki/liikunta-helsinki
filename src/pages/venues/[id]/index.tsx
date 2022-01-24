@@ -30,7 +30,7 @@ import { getLocaleOrError } from "../../../domain/i18n/router/utils";
 import UpcomingEventsSection from "../../../domain/events/upcomingEventsSection/UpcomingEventsSection";
 import VenuesByOntologyWords from "../../../domain/unifiedSearch/venuesByOntologyWords/VenuesByOntologyWords";
 import getVenueIdParts from "../../../domain/venues/utils/getVenueIdParts";
-import getVenueOpeningTimeDescriptor from "../../../domain/venues/utils/getVenueOpeningTimeDescriptor";
+import getVenueOpeningTimeDescription from "../../../domain/venues/utils/getVenueOpeningTimeDescription";
 import Keyword from "../../../common/components/keyword/Keyword";
 import Page from "../../../common/components/page/Page";
 import Text from "../../../common/components/text/Text";
@@ -194,7 +194,7 @@ export function VenuePageContent() {
   const instagram = data?.venue?.instagram;
   const twitter = data?.venue?.twitter;
   const description = data?.venue?.description;
-  const openingHoursNow = getVenueOpeningTimeDescriptor(
+  const openingHoursNow = getVenueOpeningTimeDescription(
     data?.venue?.openingHours,
     locale
   );

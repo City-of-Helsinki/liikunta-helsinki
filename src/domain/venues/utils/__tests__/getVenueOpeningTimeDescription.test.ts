@@ -1,7 +1,7 @@
 import startOfDay from "date-fns/startOfDay";
 
 import { Time, OpeningHour } from "../../../../types";
-import getVenueOpeningTimeDescriptor from "../getVenueOpeningTimeDescriptor";
+import getVenueOpeningTimeDescription from "../getVenueOpeningTimeDescription";
 
 function buildDateDocument(date: string, times: Partial<Time>[]): OpeningHour {
   return {
@@ -30,13 +30,13 @@ afterAll(() => {
 });
 
 test("returns null when times can not be found", () => {
-  expect(getVenueOpeningTimeDescriptor([], "fi")).toEqual(null);
+  expect(getVenueOpeningTimeDescription([], "fi")).toEqual(null);
 });
 
 test("renders correct result when venue is closed", () => {
   // will be open today
   expect(
-    getVenueOpeningTimeDescriptor(
+    getVenueOpeningTimeDescription(
       [
         buildDateDocument("2012-05-01", [
           {
@@ -50,7 +50,7 @@ test("renders correct result when venue is closed", () => {
   ).toMatchInlineSnapshot(`"Kiinni tällä hetkellä, aukeaa 08:00"`);
   // will be open day after tomorrow
   expect(
-    getVenueOpeningTimeDescriptor(
+    getVenueOpeningTimeDescription(
       [
         buildDateDocument("2012-05-03", [
           {
@@ -74,7 +74,7 @@ test("renders correct result when venue is open", () => {
   jest.setSystemTime(new Date(2012, 4, 1, 12, 0, 0, 0));
 
   expect(
-    getVenueOpeningTimeDescriptor(
+    getVenueOpeningTimeDescription(
       [
         buildDateDocument("2012-05-01", [
           {
@@ -90,7 +90,7 @@ test("renders correct result when venue is open", () => {
 
 test("renders resource state", () => {
   expect(
-    getVenueOpeningTimeDescriptor(
+    getVenueOpeningTimeDescription(
       [
         buildDateDocument("2012-05-01", [
           {
@@ -109,7 +109,7 @@ test("renders resource state", () => {
 
 test("ignores closed times", () => {
   expect(
-    getVenueOpeningTimeDescriptor(
+    getVenueOpeningTimeDescription(
       [
         buildDateDocument("2012-05-01", [
           {
