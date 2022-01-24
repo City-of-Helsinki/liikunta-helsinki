@@ -3,7 +3,7 @@ import { IconArrowLeft } from "hds-react";
 import { GetStaticPropsContext } from "next";
 import dynamic from "next/dynamic";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 import { VENUE_QUERY } from "..";
 import Page from "../../../../common/components/page/Page";
