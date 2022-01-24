@@ -129,10 +129,13 @@ function _humanizeTimeResourceState(
   }
 }
 
+// This declaration provides a public API that allows the microCopy object to
+// not be leaked outside of this module.
 export function humanizeTimeResourceState(
   resourceState: TimeResourceState,
   locale: Locale
 ): string {
+  // Use private declaration with values from default copy
   return _humanizeTimeResourceState(resourceState, microCopy[locale]);
 }
 
