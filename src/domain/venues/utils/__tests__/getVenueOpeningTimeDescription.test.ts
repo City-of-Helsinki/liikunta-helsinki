@@ -20,6 +20,18 @@ function buildDateDocument(date: string, times: Partial<Time>[]): OpeningHour {
   };
 }
 
+function t(key: string) {
+  if (key === "utils:open_now_and_closes") {
+    return "Auki tällä hetkellä, sulkeutuu";
+  }
+
+  if (key === "utils:closed_now_and_opens") {
+    return "Kiinni tällä hetkellä, aukeaa";
+  }
+
+  return key;
+}
+
 beforeEach(() => {
   jest.useFakeTimers();
   jest.setSystemTime(startOfDay(new Date("2012-05-01")));
@@ -30,7 +42,7 @@ afterAll(() => {
 });
 
 test("returns null when times can not be found", () => {
-  expect(getVenueOpeningTimeDescription([], "fi")).toEqual(null);
+  expect(getVenueOpeningTimeDescription([], "fi", t)).toEqual(null);
 });
 
 test("renders correct result when venue is closed", () => {
@@ -45,7 +57,8 @@ test("renders correct result when venue is closed", () => {
           },
         ]),
       ],
-      "fi"
+      "fi",
+      t
     )
   ).toMatchInlineSnapshot(`"Kiinni tällä hetkellä, aukeaa 08:00"`);
   // will be open day after tomorrow
@@ -65,7 +78,8 @@ test("renders correct result when venue is closed", () => {
           },
         ]),
       ],
-      "fi"
+      "fi",
+      t
     )
   ).toMatchInlineSnapshot(`"Kiinni tällä hetkellä, aukeaa 07:00"`);
 });
@@ -83,7 +97,8 @@ test("renders correct result when venue is open", () => {
           },
         ]),
       ],
-      "fi"
+      "fi",
+      t
     )
   ).toMatchInlineSnapshot(`"Auki tällä hetkellä, sulkeutuu 23:00"`);
 });
@@ -100,7 +115,8 @@ test("renders resource state", () => {
           },
         ]),
       ],
-      "fi"
+      "fi",
+      t
     )
   ).toMatchInlineSnapshot(
     `"Kiinni tällä hetkellä, aukeaa 08:00 (Sään salliessa)"`
@@ -119,7 +135,8 @@ test("ignores closed times", () => {
           },
         ]),
       ],
-      "fi"
+      "fi",
+      t
     )
   ).toEqual(null);
 });

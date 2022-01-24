@@ -23,6 +23,7 @@ import search_page from "../../public/locales/fi/search_page.json";
 import share_links from "../../public/locales/fi/share_links.json";
 import toast from "../../public/locales/fi/toast.json";
 import upcoming_events_section from "../../public/locales/fi/upcoming_events_section.json";
+import utils from "../../public/locales/fi/utils.json";
 import venue_page from "../../public/locales/fi/venue_page.json";
 
 const translation = {
@@ -48,6 +49,7 @@ const translation = {
   share_links,
   toast,
   upcoming_events_section,
+  utils,
   venue_page,
 };
 
