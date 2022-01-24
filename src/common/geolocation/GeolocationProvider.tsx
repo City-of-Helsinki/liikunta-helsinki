@@ -5,7 +5,7 @@ import {
   useCallback,
   ReactNode,
 } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 import { Coordinates } from "../../types";
 import sendNotification from "../utils/sendToast";

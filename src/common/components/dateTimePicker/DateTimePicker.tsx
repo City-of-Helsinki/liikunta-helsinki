@@ -16,7 +16,7 @@ import {
   IconCross,
 } from "hds-react";
 import classNames from "classnames";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { format, isAfter, isBefore, parse } from "date-fns";
 
 import useIntermediaryState from "../../hooks/useIntermediaryState";
