@@ -35,10 +35,18 @@ const Venue = {
   telephone({ telephone }) {
     return telephone;
   },
-  openingHours({ openingHours }) {
+  openingHours({ openingHours }, _, { haukiEnabled }) {
+    if (!haukiEnabled) {
+      return null;
+    }
+
     return openingHours;
   },
-  isOpen({ isOpen }) {
+  isOpen({ isOpen }, _, { haukiEnabled }) {
+    if (!haukiEnabled) {
+      return null;
+    }
+
     return isOpen;
   },
   ontologyTree({ ontologyTree }) {

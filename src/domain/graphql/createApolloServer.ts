@@ -5,13 +5,15 @@ import {
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageDisabled,
+  Context,
+  ContextFunction,
 } from "apollo-server-core";
 import accepts from "accepts";
 import { NextApiRequest } from "next";
-import { gql } from "@apollo/client";
+import { DocumentNode, gql } from "@apollo/client";
 
 import Config from "../../config";
-import venueSchema from "./venue/venueSchema";
+import createVenueSchema from "./venue/venueSchema";
 import venueQueryResolver from "./venue/venueQueryResolver";
 import venuesByIdsResolver from "./venue/venuesByIdsResolver";
 import Venue from "./venue/venueResolver";
@@ -37,10 +39,10 @@ const initQueryTypeDefs = gql`
   }
 `;
 
-const typeDefs = [
+const typeDefs = (liikuntaServerConfig?: LiikuntaServerConfig) => [
   initQueryTypeDefs,
   paginationSchema,
-  venueSchema,
+  createVenueSchema(liikuntaServerConfig),
   eventSchema,
 ];
 const dataSourcesFactory = () => ({
@@ -84,16 +86,52 @@ const plugins = [
     : ApolloServerPluginLandingPageGraphQLPlayground(),
 ];
 
-export default function createApolloServer(
-  apolloServerConfig?: ApolloServerConfig
-) {
+export type LiikuntaServerConfig = {
+  haukiEnabled?: boolean;
+};
+
+type ServerConfig = Omit<ApolloServerConfig, "typDefs"> &
+  LiikuntaServerConfig & {
+    typeDefs?: (
+      liikuntaServerConfig?: LiikuntaServerConfig
+    ) => DocumentNode | Array<DocumentNode> | string | Array<string>;
+  };
+
+export default function createApolloServer(apolloServerConfig?: ServerConfig) {
+  const injectIntoContext = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    context: Context | ContextFunction<any>,
+    injectedObject: LiikuntaServerConfig
+  ) => {
+    if (typeof context === "function") {
+      return (params) => ({
+        ...context(params),
+        ...injectedObject,
+      });
+    }
+
+    return {
+      ...context,
+      ...injectedObject,
+    };
+  };
+  const liikuntaServerConfig = {
+    haukiEnabled: apolloServerConfig?.haukiEnabled,
+  };
+
   return new ApolloServer({
     dataSources: apolloServerConfig?.dataSources ?? dataSourcesFactory,
-    typeDefs: apolloServerConfig?.typeDefs ?? typeDefs,
+    typeDefs: (apolloServerConfig?.typeDefs ?? typeDefs)(liikuntaServerConfig),
     resolvers: apolloServerConfig?.resolvers ?? resolvers,
     // Uncomment line below to enable apollo tracing
     // plugins: [require('apollo-tracing').plugin()]
-    context: apolloServerConfig?.context ?? handleContext,
+    context: injectIntoContext(
+      apolloServerConfig?.context ?? handleContext,
+      liikuntaServerConfig
+    ),
     plugins: apolloServerConfig?.plugins ?? plugins,
+    // Turn off introspection in production because this endpoint is meant
+    // for the liikunta site application only
+    introspection: process.env.NODE_ENV !== "production",
   });
 }

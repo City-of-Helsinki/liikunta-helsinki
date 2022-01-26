@@ -9,6 +9,7 @@ const server = createApolloServer({
     };
   },
   plugins: [],
+  haukiEnabled: true,
 });
 
 beforeAll(() => {
