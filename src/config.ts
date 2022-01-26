@@ -1,14 +1,8 @@
+import { Integrations } from "@sentry/tracing";
+
 import nextConfig from "../next.config";
 
 class Config {
-  private static getEnvOrError(variable?: string, name?: string) {
-    if (!variable) {
-      throw Error(`Environment variable with name ${name} was not found`);
-    }
-
-    return variable;
-  }
-
   static get cmsGraphqlEndpoint() {
     return Config.getEnvOrError(
       process.env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT,
@@ -44,6 +38,34 @@ class Config {
 
   static get debug() {
     return Boolean(process.env.NEXT_PUBLIC_DEBUG);
+  }
+
+  static get sentryConfiguration() {
+    const sentryTraceSammpleConfig = process.env
+      .NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE
+      ? {
+          integrations: [new Integrations.BrowserTracing()],
+          tracesSampleRate: Number(
+            process.env.NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE
+          ),
+        }
+      : {};
+
+    return {
+      // TODO: add release version to Sentry config
+      // release: "my-project-name@2.3.12",
+      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+      environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
+      ...sentryTraceSammpleConfig,
+    };
+  }
+
+  private static getEnvOrError(variable?: string, name?: string) {
+    if (!variable) {
+      throw Error(`Environment variable with name ${name} was not found`);
+    }
+
+    return variable;
   }
 }
 
