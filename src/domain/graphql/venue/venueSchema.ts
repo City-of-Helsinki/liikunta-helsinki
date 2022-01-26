@@ -1,6 +1,21 @@
 import { gql } from "apollo-server-micro";
 
-const typeDefs = gql`
+import { LiikuntaServerConfig } from "../createApolloServer";
+
+function addHaukiDependentField(content: string, haukiEnabled: boolean) {
+  return `${
+    !haukiEnabled
+      ? `""" This field is currently disabled because the Hauki integration is not enabled """`
+      : ""
+  }
+  ${content} ${
+    !haukiEnabled
+      ? `@deprecated(reason: "Hauki integration is currently disabled so this field can not be accessed")`
+      : ""
+  }`;
+}
+
+const createVenueSchema = ({ haukiEnabled }: LiikuntaServerConfig = {}) => gql`
   extend type Query {
     venue(id: ID!): Venue!
     venuesByIds(ids: [ID!]): [Venue!]!
@@ -69,8 +84,8 @@ const typeDefs = gql`
     postalCode: String
     streetAddress: String
     telephone: String
-    openingHours: [OpeningHour!]
-    isOpen: Boolean
+    ${addHaukiDependentField("openingHours: [OpeningHour!]", haukiEnabled)}
+    ${addHaukiDependentField("isOpen: Boolean", haukiEnabled)}
     ontologyTree: [Ontology]!
     ontologyWords: [Ontology]!
     accessibilitySentences: [AccessibilitySentences]!
@@ -78,4 +93,4 @@ const typeDefs = gql`
   }
 `;
 
-export default typeDefs;
+export default createVenueSchema;
