@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 import queryString from "query-string";
 import fastDeepEqual from "fast-deep-equal/react";
 
+import Config from "../../config";
 import defaultQueryPersister, {
   QueryPersister,
 } from "../../common/utils/queryPersister";
@@ -145,10 +146,6 @@ type TransitionOptions = {
 };
 
 export class UnifiedSearch {
-  router: NextRouter;
-  filterConfig: FilterConfig[];
-  queryPersister: QueryPersister;
-
   constructor(
     router: NextRouter,
     queryPersister: QueryPersister = defaultQueryPersister
@@ -163,16 +160,18 @@ export class UnifiedSearch {
       },
       { type: "string", storeBehaviour: "list", key: "ontologyTreeIds" },
       { type: "string", storeBehaviour: "list", key: "ontologyWordIds" },
-      { type: "boolean", key: "isOpenNow" },
-      { type: "date", key: "openAt" },
       { type: "string", key: "orderBy", filterListBehaviour: "hidden" },
       { type: "string", key: "orderDir", filterListBehaviour: "hidden" },
     ];
-    this.queryPersister = queryPersister;
-  }
 
-  get query() {
-    return queryString.parse(this.router.asPath.split(/\?/)[1]);
+    if (Config.enableHauki) {
+      this.filterConfig.push(
+        { type: "boolean", key: "isOpenNow" },
+        { type: "date", key: "openAt" }
+      );
+    }
+
+    this.queryPersister = queryPersister;
   }
 
   get filters(): UnifiedSearchParameters {
@@ -190,6 +189,10 @@ export class UnifiedSearch {
       after: stringifyQueryValue(after),
       first: parseNumber(first),
     });
+  }
+
+  get query() {
+    return queryString.parse(this.router.asPath.split(/\?/)[1]);
   }
 
   get filterList(): SpreadFilter[] {
@@ -356,6 +359,10 @@ export class UnifiedSearch {
       this.getSearchParamsFromFilters(nextFilters)
     );
   }
+
+  router: NextRouter;
+  filterConfig: FilterConfig[];
+  queryPersister: QueryPersister;
 }
 
 export default function useUnifiedSearch() {

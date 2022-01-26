@@ -1,5 +1,6 @@
 import userEvent from "@testing-library/user-event";
 
+import Config from "../../config";
 import { VENUE_QUERY, VenuePageContent } from "../../pages/venues/[id]";
 import { render, screen, waitFor } from "../utils";
 import { getVenue, defaultConnections } from "./mocks/[id]";
@@ -12,6 +13,7 @@ const getMocks = () => [
       query: VENUE_QUERY,
       variables: {
         id,
+        includeHaukiFields: true,
       },
       context: {
         headers: {
@@ -48,6 +50,7 @@ function stringifyLines(lines) {
 beforeEach(() => {
   jest.useFakeTimers();
   jest.setSystemTime(new Date(2021, 5, 22, 12, 0, 0, 0));
+  jest.spyOn(Config, "enableHauki", "get").mockImplementation(() => true);
 });
 
 afterAll(() => {

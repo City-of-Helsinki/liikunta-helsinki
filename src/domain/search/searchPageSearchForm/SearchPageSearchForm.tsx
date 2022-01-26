@@ -4,6 +4,7 @@ import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
 import { add, startOfToday } from "date-fns";
 
+import Config from "../../../config";
 import { getUnifiedSearchLanguage } from "../../../common/apollo/utils";
 import getTranslation from "../../../common/utils/getTranslation";
 import { formatIntoDateTime } from "../../../common/utils/time/format";
@@ -85,16 +86,20 @@ function SearchPageSearchForm({
     e.preventDefault();
 
     const q = e.target.q.value;
-    const isOpenNowValue = e.target.isOpenNow.checked;
-    // Use undefined when false to hide from UI layer
-    const isOpenNow = isOpenNowValue ? isOpenNowValue : undefined;
     const nextFilters = {
       q,
       administrativeDivisionIds,
       ontologyTreeIds,
-      isOpenNow,
-      openAt,
     };
+
+    if (Config.enableHauki) {
+      const isOpenNowValue = e.target.isOpenNow.checked;
+      // Use undefined when false to hide from UI layer
+      const isOpenNow = isOpenNowValue ? isOpenNowValue : undefined;
+
+      nextFilters["isOpenNow"] = isOpenNow;
+      nextFilters["openAt"] = openAt;
+    }
 
     doModifyFilters({
       ...nextFilters,
@@ -247,27 +252,29 @@ function SearchPageSearchForm({
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionIds}
         />
-        <div className={styles.inputStack}>
-          <DateTimePicker
-            id="openAt"
-            name="openAt"
-            label={t("open_at.label")}
-            value={openAt}
-            onChange={handleOpenAtChange}
-            locale={router.locale}
-            minDate={startOfToday()}
-            maxDate={add(startOfToday(), { days: 6 })}
-            minDateErrorMessage={t("open_at.error.min_date")}
-            maxDateErrorMessage={t("open_at.error.max_date")}
-          />
-          <Checkbox
-            id="isOpenNow"
-            name="isOpenNow"
-            label={t("is_open_now.label")}
-            checked={isOpenNow}
-            onChange={handleIsOpenNowChange}
-          />
-        </div>
+        {Config.enableHauki && (
+          <div className={styles.inputStack}>
+            <DateTimePicker
+              id="openAt"
+              name="openAt"
+              label={t("open_at.label")}
+              value={openAt}
+              onChange={handleOpenAtChange}
+              locale={router.locale}
+              minDate={startOfToday()}
+              maxDate={add(startOfToday(), { days: 6 })}
+              minDateErrorMessage={t("open_at.error.min_date")}
+              maxDateErrorMessage={t("open_at.error.max_date")}
+            />
+            <Checkbox
+              id="isOpenNow"
+              name="isOpenNow"
+              label={t("is_open_now.label")}
+              checked={isOpenNow}
+              onChange={handleIsOpenNowChange}
+            />
+          </div>
+        )}
         {filterList.length > 0 && (
           <div className={styles.searchAsFilters}>
             {filterList.map(({ key, value }) => {

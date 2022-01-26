@@ -12,6 +12,7 @@ export const SEARCH_LIST_QUERY = gql`
     $openAt: String
     $orderByDistance: OrderByDistance
     $orderByName: OrderByName
+    $includeHaukiFields: Boolean = true
   ) {
     unifiedSearch(
       q: $q
@@ -48,7 +49,7 @@ export const SEARCH_LIST_QUERY = gql`
             images {
               url
             }
-            openingHours {
+            openingHours @include(if: $includeHaukiFields) {
               today {
                 startTime
                 endTime

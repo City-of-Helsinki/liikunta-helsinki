@@ -16,6 +16,7 @@ import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 
+import Config from "../../../config";
 import noImagePlaceholder from "../../../../public/no_image.svg";
 import { Address, Point } from "../../../types";
 import { staticGenerationLogger } from "../../../domain/logger";
@@ -47,14 +48,14 @@ import capitalize from "../../../common/utils/capitalize";
 import styles from "./venue.module.scss";
 
 export const VENUE_QUERY = gql`
-  query VenueQuery($id: ID!) {
+  query VenueQuery($id: ID!, $includeHaukiFields: Boolean = true) {
     venue(id: $id) {
       addressLocality
       dataSource
       description
       email
       id
-      isOpen
+      isOpen @include(if: $includeHaukiFields)
       image
       infoUrl
       name
@@ -62,7 +63,7 @@ export const VENUE_QUERY = gql`
         groupName
         sentences
       }
-      openingHours {
+      openingHours @include(if: $includeHaukiFields) {
         date
         times {
           startTime
@@ -158,6 +159,7 @@ export function VenuePageContent() {
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
+      includeHaukiFields: Config.enableHauki,
     },
     context: {
       headers: {
@@ -196,11 +198,10 @@ export function VenuePageContent() {
   const instagram = data?.venue?.instagram;
   const twitter = data?.venue?.twitter;
   const description = data?.venue?.description;
-  const openingHoursNow = getVenueOpeningTimeDescription(
-    data?.venue?.openingHours,
-    locale,
-    globalT
-  );
+  const openingHours = data?.venue?.openingHours;
+  const openingHoursNow = openingHours
+    ? getVenueOpeningTimeDescription(openingHours, locale, globalT)
+    : null;
   const accessibilitySentences = data?.venue?.accessibilitySentences;
 
   const simplifiedAddress = [streetAddress, addressLocality].join(", ");

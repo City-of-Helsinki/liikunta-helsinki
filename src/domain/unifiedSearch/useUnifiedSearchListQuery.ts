@@ -5,16 +5,23 @@ import {
 } from "./graphql/__generated__";
 import useUnifiedSearchVariables from "./useUnifiedSearchVariables";
 import searchApolloClient from "./searchApolloClient";
+import Config from "../../config";
 
-type Config = {
-  variables?: Partial<SearchListQueryVariables>;
+type HookConfig = {
+  variables?: Partial<Omit<SearchListQueryVariables, "enableHauki">>;
 };
 
-export default function useUnifiedSearchListQuery({ variables }: Config = {}) {
+export default function useUnifiedSearchListQuery({
+  variables,
+}: HookConfig = {}) {
   const { fetchMore, ...delegated } = useSearchListQuery({
     client: searchApolloClient,
     ssr: false,
-    variables: { ...useUnifiedSearchVariables(), ...variables },
+    variables: {
+      ...useUnifiedSearchVariables(),
+      ...variables,
+      includeHaukiFields: Config.enableHauki,
+    },
   });
 
   const handleFetchMore = (variables: Partial<SearchListQueryVariables>) =>
