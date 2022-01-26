@@ -2,6 +2,10 @@ import {
   ApolloServer,
   Config as ApolloServerConfig,
 } from "apollo-server-micro";
+import {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+  ApolloServerPluginLandingPageDisabled,
+} from "apollo-server-core";
 import accepts from "accepts";
 import { NextApiRequest } from "next";
 import { gql } from "@apollo/client";
@@ -73,7 +77,12 @@ function handleContext({ req }) {
   };
 }
 
-const plugins = [new LiikuntaLoggerPlugin()];
+const plugins = [
+  new LiikuntaLoggerPlugin(),
+  process.env.NODE_ENV === "production"
+    ? ApolloServerPluginLandingPageDisabled
+    : ApolloServerPluginLandingPageGraphQLPlayground(),
+];
 
 export default function createApolloServer(
   apolloServerConfig?: ApolloServerConfig
