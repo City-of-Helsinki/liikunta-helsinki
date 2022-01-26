@@ -60,6 +60,11 @@ class Config {
     };
   }
 
+  // Hauki is not production ready; disable all features that require it
+  static get enableHauki() {
+    return false;
+  }
+
   private static getEnvOrError(variable?: string, name?: string) {
     if (!variable) {
       throw Error(`Environment variable with name ${name} was not found`);

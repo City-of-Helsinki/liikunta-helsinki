@@ -847,6 +847,7 @@ export type SearchListQueryVariables = Exact<{
   openAt?: InputMaybe<Scalars['String']>;
   orderByDistance?: InputMaybe<OrderByDistance>;
   orderByName?: InputMaybe<OrderByName>;
+  includeHaukiFields?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -1031,7 +1032,7 @@ export type UnifiedSearchCompletionSuggestionsQueryHookResult = ReturnType<typeo
 export type UnifiedSearchCompletionSuggestionsLazyQueryHookResult = ReturnType<typeof useUnifiedSearchCompletionSuggestionsLazyQuery>;
 export type UnifiedSearchCompletionSuggestionsQueryResult = Apollo.QueryResult<UnifiedSearchCompletionSuggestionsQuery, UnifiedSearchCompletionSuggestionsQueryVariables>;
 export const SearchListDocument = gql`
-    query SearchList($q: String, $first: Int, $after: String, $language: UnifiedSearchLanguage!, $administrativeDivisionIds: [ID!], $ontologyTreeIds: [ID!], $ontologyWordIds: [ID!], $openAt: String, $orderByDistance: OrderByDistance, $orderByName: OrderByName) {
+    query SearchList($q: String, $first: Int, $after: String, $language: UnifiedSearchLanguage!, $administrativeDivisionIds: [ID!], $ontologyTreeIds: [ID!], $ontologyWordIds: [ID!], $openAt: String, $orderByDistance: OrderByDistance, $orderByName: OrderByName, $includeHaukiFields: Boolean = true) {
   unifiedSearch(
     q: $q
     index: "location"
@@ -1067,7 +1068,7 @@ export const SearchListDocument = gql`
           images {
             url
           }
-          openingHours {
+          openingHours @include(if: $includeHaukiFields) {
             today {
               startTime
               endTime
@@ -1143,6 +1144,7 @@ export const SearchListDocument = gql`
  *      openAt: // value for 'openAt'
  *      orderByDistance: // value for 'orderByDistance'
  *      orderByName: // value for 'orderByName'
+ *      includeHaukiFields: // value for 'includeHaukiFields'
  *   },
  * });
  */

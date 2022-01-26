@@ -9,6 +9,7 @@ import format from "date-fns/format";
 import isToday from "date-fns/isToday";
 import { useEffect } from "react";
 
+import { Locale } from "../../config";
 import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
 import getTranslation from "../../common/utils/getTranslation";
@@ -37,7 +38,6 @@ import SearchList from "../../common/components/list/SearchList";
 import InfoBlock from "../../common/components/infoBlock/InfoBlock";
 import { formatIntoDate } from "../../common/utils/time/format";
 import { humanizeOpeningHour } from "../../common/utils/time/humanizeOpeningHoursForWeek";
-import { Locale } from "../../config";
 import styles from "./search.module.scss";
 
 const BLOCK_SIZE = 10;
@@ -288,6 +288,7 @@ export default function Search() {
             };
             const streetAddress =
               searchResult.venue.location.address.streetAddress;
+            const openingHours = searchResult?.venue?.openingHours;
             const infoBlocks = [
               <InfoBlock
                 key="location"
@@ -310,12 +311,14 @@ export default function Search() {
                   />,
                 ]}
               />,
-              <OpeningHoursInfoBlock
-                key="openingHours"
-                openingHours={searchResult?.venue?.openingHours}
-                openAt={filters.openAt}
-                locale={locale}
-              />,
+              openingHours ? (
+                <OpeningHoursInfoBlock
+                  key="openingHours"
+                  openingHours={openingHours}
+                  openAt={filters.openAt}
+                  locale={locale}
+                />
+              ) : null,
             ].filter((item) => item);
 
             return (
