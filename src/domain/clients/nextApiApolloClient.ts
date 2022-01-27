@@ -43,28 +43,30 @@ function getHttpLink(uri: string) {
   return new HttpLink(options);
 }
 
-const cache: InMemoryCache = new InMemoryCache({
-  typePolicies: {
-    Query: {
-      fields: {
-        events: relayStylePagination(["type", "where"]),
+function createInMemoryCache(): InMemoryCache {
+  return new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          events: relayStylePagination(["type", "where"]),
+        },
       },
-    },
-    Ontology: {
-      fields: {
-        label: {
-          read(label) {
-            return capitalize(label);
+      Ontology: {
+        fields: {
+          label: {
+            read(label) {
+              return capitalize(label);
+            },
           },
         },
       },
     },
-  },
-});
+  });
+}
 
-function createNextApiApolloClient() {
+export function createNextApiApolloClient() {
   return new ApolloClient({
-    cache,
+    cache: createInMemoryCache(),
     link: getHttpLink(Config.nextApiGraphqlEndpoint),
     ssrMode: !process.browser,
   });
