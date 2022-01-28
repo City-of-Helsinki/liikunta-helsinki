@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/browser";
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
@@ -13,6 +14,11 @@ import useRouter from "../domain/i18n/router/useRouter";
 import AppMeta from "../domain/seo/meta/AppMeta";
 import GeolocationProvider from "../common/geolocation/GeolocationProvider";
 import "../styles/globals.scss";
+import Config from "../config";
+
+if (process.env.NODE_ENV === "production") {
+  Sentry.init(Config.sentryConfiguration);
+}
 
 const TopProgressBar = dynamic(
   () => {
