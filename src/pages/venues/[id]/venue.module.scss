@@ -42,8 +42,9 @@
   @include breakpoints.respond-above(m) {
     grid-template-columns:
       [control] 2.5rem
-      [content] 1fr
-      [aside] 1fr;
+      [content] 3fr
+      [aside] 2fr
+      [control] 2.5rem;
     grid-template-rows: [control content aside] 1fr;
 
     column-gap: $spacing-layout-s;
