@@ -7,8 +7,9 @@ import { useTranslation } from "next-i18next";
 
 import { VENUE_QUERY } from "..";
 import Page from "../../../../common/components/page/Page";
-import initializeCmsApollo from "../../../../domain/clients/cmsApolloClient";
-import initializeNextApiApolloClient, {
+import { createCmsApolloClient } from "../../../../domain/clients/cmsApolloClient";
+import {
+  createNextApiApolloClient,
   useNextApiApolloClient,
 } from "../../../../domain/clients/nextApiApolloClient";
 import Link from "../../../../domain/i18n/router/Link";
@@ -94,8 +95,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const nextApiClient = initializeNextApiApolloClient();
-  const cmsClient = initializeCmsApollo();
+  const cmsClient = createCmsApolloClient();
+  const nextApiClient = createNextApiApolloClient();
 
   try {
     await cmsClient.pageQuery({

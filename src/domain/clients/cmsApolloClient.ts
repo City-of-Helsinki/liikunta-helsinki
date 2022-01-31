@@ -11,7 +11,7 @@ import { sortMenuItems } from "../../common/apollo/utils";
 
 const cmsApolloClient = new MutableReference<LiikuntaApolloClient>();
 
-function createCmsApolloClient() {
+export function createCmsApolloClient() {
   return new LiikuntaApolloClient({
     ssrMode: !process.browser,
     uri: Config.cmsGraphqlEndpoint,

@@ -19,8 +19,9 @@ import { useInView } from "react-intersection-observer";
 import noImagePlaceholder from "../../../../public/no_image.svg";
 import { Address, Point } from "../../../types";
 import { staticGenerationLogger } from "../../../domain/logger";
-import initializeCmsApollo from "../../../domain/clients/cmsApolloClient";
-import initializeNextApiApolloClient, {
+import { createCmsApolloClient } from "../../../domain/clients/cmsApolloClient";
+import {
+  createNextApiApolloClient,
   useNextApiApolloClient,
 } from "../../../domain/clients/nextApiApolloClient";
 import useRouter from "../../../domain/i18n/router/useRouter";
@@ -556,8 +557,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = initializeCmsApollo();
-  const nextApiClient = initializeNextApiApolloClient();
+  const cmsClient = createCmsApolloClient();
+  const nextApiClient = createNextApiApolloClient();
 
   try {
     await cmsClient.pageQuery({
