@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "next lint",
     "get-translations": "node ./scripts/get-translations.js",
-    "generate:graphql-types": "DOTENV_CONFIG_PATH=./.env.local graphql-codegen -r dotenv/config --config codegen.yml"
+    "generate:graphql": "DOTENV_CONFIG_PATH=./.env.local graphql-codegen -r dotenv/config --config codegen.yml"
   },
   "eslintConfig": {
     "extends": "react-app"
