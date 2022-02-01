@@ -6,27 +6,20 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-const getMatomoUrlPath = (path: string) =>
-  `${process.env.NEXT_PUBLIC_MATOMO_URL_BASE}${path}`;
+import Config from "../../config";
 
-const matomoInstance = createMatomoInstance({
-  disabled: process.env.NEXT_PUBLIC_MATOMO_ENABLED !== "true",
-  urlBase: process.env.NEXT_PUBLIC_MATOMO_URL_BASE as string,
-  srcUrl: getMatomoUrlPath("piwik.min.js"),
-  trackerUrl: getMatomoUrlPath("tracker.php"),
-  siteId: Number(process.env.NEXT_PUBLIC_MATOMO_SITE_ID),
-});
+const matomoInstance = createMatomoInstance(Config.matomoConfiguration);
 
-const Matomo: React.FC = ({ children }) => {
+function Matomo({ children }: { children: React.ReactNode }) {
   return (
     <MatomoProvider value={matomoInstance}>
       <TrackPageViews />
       {children}
     </MatomoProvider>
   );
-};
+}
 
-const TrackPageViews: React.FC = () => {
+function TrackPageViews(): null {
   const { trackPageView } = useMatomo();
   const { asPath } = useRouter();
 
@@ -38,6 +31,6 @@ const TrackPageViews: React.FC = () => {
   }, [asPath, trackPageView]);
 
   return null;
-};
+}
 
 export default Matomo;

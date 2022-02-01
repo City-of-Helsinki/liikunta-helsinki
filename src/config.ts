@@ -65,6 +65,27 @@ class Config {
     return Config.getFlag(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false);
   }
 
+  static get matomoConfiguration() {
+    const matomoUrlBase = this.getEnvOrError(
+      process.env.NEXT_PUBLIC_MATOMO_URL_BASE
+    );
+    const matomoEnabled = this.getEnvOrError(
+      process.env.NEXT_PUBLIC_MATOMO_ENABLED
+    );
+    const matomoSitedId = this.getEnvOrError(
+      process.env.NEXT_PUBLIC_MATOMO_SITE_ID
+    );
+    const getMatomoUrlPath = (path: string) => `${matomoUrlBase}${path}`;
+
+    return {
+      disabled: !Boolean(Number(matomoEnabled)),
+      urlBase: matomoUrlBase as string,
+      srcUrl: getMatomoUrlPath("piwik.min.js"),
+      trackerUrl: getMatomoUrlPath("tracker.php"),
+      siteId: Number(matomoSitedId),
+    };
+  }
+
   private static getEnvOrError(variable?: string, name?: string) {
     if (!variable) {
       throw Error(`Environment variable with name ${name} was not found`);
