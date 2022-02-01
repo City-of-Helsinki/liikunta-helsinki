@@ -3,7 +3,7 @@
 
 import chalk from "chalk";
 
-import Config from "../config";
+import AppConfig from "./app/AppConfig";
 
 type LoggerFunction = (message?: any, ...optionalParameters: any[]) => void;
 
@@ -60,7 +60,7 @@ function createLogger(namespace: string): Logger {
   return {
     debug: (message?: any, ...optionalParameters: any[]) =>
       isNotProductionClient() &&
-      Config.debug &&
+      AppConfig.debug &&
       console.debug(
         formatMessage(namespace, "debug", message, ...optionalParameters)
       ),

@@ -14,11 +14,11 @@ import useRouter from "../domain/i18n/router/useRouter";
 import AppMeta from "../domain/seo/meta/AppMeta";
 import GeolocationProvider from "../common/geolocation/GeolocationProvider";
 import "../styles/globals.scss";
-import Config from "../config";
 import Matomo from "../domain/matomo/Matomo";
+import AppConfig from "../domain/app/AppConfig";
 
 if (process.env.NODE_ENV === "production") {
-  Sentry.init(Config.sentryConfiguration);
+  Sentry.init(AppConfig.sentryConfiguration);
 }
 
 const TopProgressBar = dynamic(

@@ -2,8 +2,9 @@ import { UrlObject } from "url";
 
 import { OperationVariables, QueryResult } from "@apollo/client";
 
-import { Sources } from "./constants";
-import { Locale } from "./config";
+import { Sources } from "./domain/app/appConstants";
+
+export type Locale = "fi" | "sv" | "en";
 
 export type MenuItem = {
   id: string;

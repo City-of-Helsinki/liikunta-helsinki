@@ -10,7 +10,7 @@ import {
 import { useMemo } from "react";
 import { relayStylePagination } from "@apollo/client/utilities";
 
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 import { logger } from "../logger";
 import {
   initializeApolloClient,
@@ -30,7 +30,10 @@ function getHttpLink(uri: string) {
   // Our review environment can't provide a valid certificate. Hence we allow
   // the application to be configured so that unauthorized requests are not
   // rejected. This allows us to test API changes in the review environment.
-  if (Config.allowUnauthorizedRequests && new URL(uri).protocol === "https:") {
+  if (
+    AppConfig.allowUnauthorizedRequests &&
+    new URL(uri).protocol === "https:"
+  ) {
     logger.info("Allowing unauthorized requests");
     options = {
       ...options,
@@ -67,7 +70,7 @@ function createInMemoryCache(): InMemoryCache {
 export function createNextApiApolloClient() {
   return new ApolloClient({
     cache: createInMemoryCache(),
-    link: getHttpLink(Config.nextApiGraphqlEndpoint),
+    link: getHttpLink(AppConfig.nextApiGraphqlEndpoint),
     ssrMode: !process.browser,
   });
 }

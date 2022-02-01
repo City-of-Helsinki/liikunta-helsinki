@@ -1,5 +1,5 @@
 import RESTDataSource from "../../utils/RESTDataSource";
-import { Locale } from "../../../../config";
+import { Locale } from "../../../../types";
 import { dataSourceLinkedLogger as logger } from "../../../logger";
 
 type LinkedObjectRef = {

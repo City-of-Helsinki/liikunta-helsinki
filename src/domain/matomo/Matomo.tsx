@@ -6,11 +6,11 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 
 function Matomo({ children }: { children: React.ReactNode }): JSX.Element {
   const [matomoInstance] = useState(() => {
-    const matomoConfig = Config.matomoConfiguration;
+    const matomoConfig = AppConfig.matomoConfiguration;
     return matomoConfig ? createMatomoInstance(matomoConfig) : null;
   });
 

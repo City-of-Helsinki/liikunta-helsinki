@@ -3,7 +3,7 @@ import * as matomo from "@datapunt/matomo-tracker-react";
 import * as nextRouter from "next/router";
 import * as React from "react";
 
-import Config from "../../../config";
+import AppConfig from "../../../domain/app/AppConfig";
 import { render } from "../../../tests/utils";
 import Matomo from "../Matomo";
 
@@ -25,7 +25,7 @@ jest.mock("@datapunt/matomo-tracker-react", () => ({
 }));
 
 beforeEach(() => {
-  jest.spyOn(Config, "matomoConfiguration", "get").mockReturnValue({});
+  jest.spyOn(AppConfig, "matomoConfiguration", "get").mockReturnValue({});
 });
 
 const setHref = (href) => {

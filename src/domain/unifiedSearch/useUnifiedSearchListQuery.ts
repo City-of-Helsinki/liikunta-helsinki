@@ -5,7 +5,7 @@ import {
 } from "./graphql/__generated__";
 import useUnifiedSearchVariables from "./useUnifiedSearchVariables";
 import searchApolloClient from "./searchApolloClient";
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 
 type HookConfig = {
   variables?: Partial<Omit<SearchListQueryVariables, "enableHauki">>;
@@ -20,7 +20,7 @@ export default function useUnifiedSearchListQuery({
     variables: {
       ...useUnifiedSearchVariables(),
       ...variables,
-      includeHaukiFields: Config.isHaukiEnabled,
+      includeHaukiFields: AppConfig.isHaukiEnabled,
     },
   });
 

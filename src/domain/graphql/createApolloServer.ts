@@ -12,7 +12,7 @@ import accepts from "accepts";
 import { NextApiRequest } from "next";
 import { DocumentNode, gql } from "@apollo/client";
 
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 import createVenueSchema from "./venue/venueSchema";
 import venueQueryResolver from "./venue/venueQueryResolver";
 import venuesByIdsResolver from "./venue/venuesByIdsResolver";
@@ -72,7 +72,7 @@ function acceptsLanguages(
 }
 
 function handleContext({ req }) {
-  const language = acceptsLanguages(req, Config.locales);
+  const language = acceptsLanguages(req, AppConfig.locales);
 
   return {
     language,

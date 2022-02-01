@@ -4,7 +4,7 @@ import fi from "date-fns/locale/fi";
 import sv from "date-fns/locale/sv";
 import enGB from "date-fns/locale/en-GB";
 
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import { OpeningHour, Time, TimeResourceState } from "../../../types";
 
 type Copy = {

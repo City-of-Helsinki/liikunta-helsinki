@@ -1,6 +1,6 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { Locale } from "../../config";
+import { Locale } from "../../types";
 
 const COMMON_TRANSLATIONS = [
   "common",

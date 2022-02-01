@@ -1,4 +1,4 @@
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import searchApolloClient from "../../../domain/unifiedSearch/searchApolloClient";
 import useRouter from "../../i18n/router/useRouter";
 import getTranslation from "../../../common/utils/getTranslation";
