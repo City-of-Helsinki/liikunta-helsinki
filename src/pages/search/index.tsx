@@ -10,6 +10,7 @@ import isToday from "date-fns/isToday";
 import { useEffect } from "react";
 
 import { Locale } from "../../config";
+import Config from "../../config";
 import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
 import getTranslation from "../../common/utils/getTranslation";
@@ -365,6 +366,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         ]
       )),
     },
-    revalidate: 10,
+    revalidate: Config.defaultRevalidate,
   };
 }

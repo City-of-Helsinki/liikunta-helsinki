@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { useTranslation } from "next-i18next";
 
+import Config from "../../../../config";
 import { VENUE_QUERY } from "..";
 import Page from "../../../../common/components/page/Page";
 import { createCmsApolloClient } from "../../../../domain/clients/cmsApolloClient";
@@ -123,7 +124,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
           ["venue_page", "map_box", "map_view"]
         )),
       },
-      revalidate: 10,
+      revalidate: Config.defaultRevalidate,
     };
   } catch (e) {
     staticGenerationLogger.error("Error while generating a venue page:", e);

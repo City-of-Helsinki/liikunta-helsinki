@@ -586,7 +586,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
           ["venue_page", "map_box", "share_links", "upcoming_events_section"]
         )),
       },
-      revalidate: 10,
+      revalidate: Config.defaultRevalidate,
     };
   } catch (e) {
     staticGenerationLogger.error("Error while generating a venue page:", e);

@@ -2,23 +2,25 @@ import { Integrations } from "@sentry/tracing";
 
 import nextConfig from "../next.config";
 
+export type Locale = "fi" | "sv" | "en";
+
 class Config {
   static get cmsGraphqlEndpoint() {
-    return Config.getEnvOrError(
+    return getEnvOrError(
       process.env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT,
       "NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT"
     );
   }
 
   static get unifiedSearchGraphqlEndpoint() {
-    return Config.getEnvOrError(
+    return getEnvOrError(
       process.env.NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT,
       "NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT"
     );
   }
 
   static get nextApiGraphqlEndpoint() {
-    return Config.getEnvOrError(
+    return getEnvOrError(
       process.env.NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT,
       "NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT"
     );
@@ -62,7 +64,7 @@ class Config {
 
   static get isHaukiEnabled() {
     // Hauki is not production ready; disable it by default
-    return Config.getFlag(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false);
+    return parseEnvValue(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false);
   }
 
   static get matomoConfiguration() {
@@ -83,30 +85,46 @@ class Config {
     return null;
   }
 
-  private static getEnvOrError(variable?: string, name?: string) {
-    if (!variable) {
-      throw Error(`Environment variable with name ${name} was not found`);
+  static get defaultRevalidate() {
+    const envValue = process.env.NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS;
+    const value = envValue ? parseEnvValue(envValue) : 10;
+
+    if (typeof value !== "number") {
+      throw Error(
+        "NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS must be parsed into a number"
+      );
     }
 
-    return variable;
-  }
-
-  private static getFlag(
-    value?: string,
-    defaultValue: boolean | string | number = null
-  ) {
-    if (!value) {
-      return defaultValue;
-    }
-
-    try {
-      return JSON.parse(value);
-    } catch (e) {
-      return null;
-    }
+    return value;
   }
 }
 
-export type Locale = "fi" | "sv" | "en";
+function parseEnvValue(
+  value?: string,
+  defaultValue: boolean | string | number = null
+) {
+  if (!value) {
+    return defaultValue;
+  }
+
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return null;
+  }
+}
+
+// Accept both variable and name so that variable can be correctly replaced
+// by build.
+// process.env.VAR => value
+// process.env["VAR"] => no value
+// Name is used to make debugging easier.
+function getEnvOrError(variable?: string, name?: string) {
+  if (!variable) {
+    throw Error(`Environment variable with name ${name} was not found`);
+  }
+
+  return variable;
+}
 
 export default Config;

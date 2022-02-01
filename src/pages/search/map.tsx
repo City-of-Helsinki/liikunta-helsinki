@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 
+import Config from "../../config";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
@@ -195,6 +196,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         ]
       )),
     },
-    revalidate: 10,
+    revalidate: Config.defaultRevalidate,
   };
 }
