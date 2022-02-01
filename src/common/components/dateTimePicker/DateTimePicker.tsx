@@ -20,7 +20,7 @@ import { useTranslation } from "next-i18next";
 import { format, isAfter, isBefore, parse } from "date-fns";
 
 import useIntermediaryState from "../../hooks/useIntermediaryState";
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import getIsDateValid from "../../utils/getIsValidDate";
 import { formatIntoDateTime, formatIntoDate } from "../../utils/time/format";
 import styles from "./dateTimePicker.module.scss";

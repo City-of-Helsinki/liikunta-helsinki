@@ -1,6 +1,6 @@
 import { useRouter as useNextRouter } from "next/router";
 
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import { getI18nPath, stringifyUrlObject } from "./utils";
 
 export default function useRouter() {

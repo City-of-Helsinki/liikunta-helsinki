@@ -9,7 +9,7 @@ import format from "date-fns/format";
 import isToday from "date-fns/isToday";
 import { useEffect } from "react";
 
-import { Locale } from "../../config";
+import { Locale } from "../../types";
 import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
 import getTranslation from "../../common/utils/getTranslation";

@@ -1,7 +1,7 @@
 import { LoadingSpinner, IconLocation } from "hds-react";
 
 import { Item } from "../../../types";
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import List from "../../../common/components/list/List";
 import Card from "../../../common/components/card/DefaultCard";
 import capitalize from "../../../common/utils/capitalize";

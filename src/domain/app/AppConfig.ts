@@ -1,10 +1,8 @@
 import { Integrations } from "@sentry/tracing";
 
-import nextConfig from "../next.config";
+import nextConfig from "../../../next.config";
 
-export type Locale = "fi" | "sv" | "en";
-
-class Config {
+class AppConfig {
   static get cmsGraphqlEndpoint() {
     return getEnvOrError(
       process.env.NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT,
@@ -35,11 +33,13 @@ class Config {
   }
 
   static get allowUnauthorizedRequests() {
-    return Boolean(process.env.NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS);
+    return Boolean(
+      parseEnvValue(process.env.NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS)
+    );
   }
 
   static get debug() {
-    return Boolean(process.env.NEXT_PUBLIC_DEBUG);
+    return Boolean(parseEnvValue(process.env.NEXT_PUBLIC_DEBUG));
   }
 
   static get sentryConfiguration() {
@@ -64,7 +64,7 @@ class Config {
 
   static get isHaukiEnabled() {
     // Hauki is not production ready; disable it by default
-    return parseEnvValue(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false);
+    return Boolean(parseEnvValue(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false));
   }
 
   static get matomoConfiguration() {
@@ -75,7 +75,7 @@ class Config {
 
     if (matomoEnabled && matomoSiteId) {
       return {
-        disabled: !Boolean(Number(matomoEnabled)),
+        disabled: !Boolean(parseEnvValue(matomoEnabled)),
         urlBase: matomoUrlBase as string,
         srcUrl: getMatomoUrlPath("piwik.min.js"),
         trackerUrl: getMatomoUrlPath("tracker.php"),
@@ -91,7 +91,7 @@ class Config {
 
     if (typeof value !== "number") {
       throw Error(
-        "NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS must be parsed into a number"
+        "NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS must be a value that can be parsed into a number"
       );
     }
 
@@ -127,4 +127,4 @@ function getEnvOrError(variable?: string, name?: string) {
   return variable;
 }
 
-export default Config;
+export default AppConfig;

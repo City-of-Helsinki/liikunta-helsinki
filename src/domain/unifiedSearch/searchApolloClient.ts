@@ -7,7 +7,7 @@ import {
 } from "@apollo/client";
 import { relayStylePagination } from "@apollo/client/utilities";
 
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 import apolloErrorLink from "../../common/apollo/apolloErrorLink";
 import { excludeArgs } from "../../common/apollo/utils";
 import capitalize from "../../common/utils/capitalize";
@@ -38,7 +38,7 @@ const cache: InMemoryCache = new InMemoryCache({
 });
 
 const httpLink = new HttpLink({
-  uri: Config.unifiedSearchGraphqlEndpoint,
+  uri: AppConfig.unifiedSearchGraphqlEndpoint,
 });
 
 const searchApolloClient: ApolloClient<NormalizedCacheObject> =

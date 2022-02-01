@@ -16,7 +16,7 @@ import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 
-import Config from "../../../config";
+import AppConfig from "../../../domain/app/AppConfig";
 import noImagePlaceholder from "../../../../public/no_image.svg";
 import { Address, Point } from "../../../types";
 import getLiikuntaStaticProps from "../../../domain/app/getLiikuntaStaticProps";
@@ -158,7 +158,7 @@ export function VenuePageContent() {
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
-      includeHaukiFields: Config.isHaukiEnabled,
+      includeHaukiFields: AppConfig.isHaukiEnabled,
     },
     context: {
       headers: {

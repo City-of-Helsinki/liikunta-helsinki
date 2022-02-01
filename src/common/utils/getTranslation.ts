@@ -1,4 +1,4 @@
-import { Locale } from "../../config";
+import { Locale } from "../../types";
 import { LocalizedString } from "../../types";
 
 export default function getTranslation(

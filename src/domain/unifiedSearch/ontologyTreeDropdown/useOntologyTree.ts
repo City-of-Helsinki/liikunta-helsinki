@@ -1,5 +1,5 @@
-import { Locale } from "../../../config";
-import { SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../../constants";
+import { Locale } from "../../../types";
+import { SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID } from "../../app/appConstants";
 import searchApolloClient from "../../../domain/unifiedSearch/searchApolloClient";
 import useRouter from "../../i18n/router/useRouter";
 import getTranslation from "../../../common/utils/getTranslation";

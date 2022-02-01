@@ -6,7 +6,7 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 import { Language } from "../../types";
 import { PAGE_FRAGMENT } from "../../common/components/page/Page";
 import { getMenuLocationFromLanguage } from "../../common/apollo/utils";
@@ -47,7 +47,7 @@ export default async function getLiikuntaStaticProps<P = Record<string, any>>(
 
     return {
       // Apply revalidate, allow it to be overwritten
-      revalidate: Config.defaultRevalidate,
+      revalidate: AppConfig.defaultRevalidate,
       ...result,
       props,
     };

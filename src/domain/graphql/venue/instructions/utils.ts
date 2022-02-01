@@ -1,6 +1,6 @@
 import get from "lodash/get";
 
-import { Locale } from "../../../../config";
+import { Locale } from "../../../../types";
 import {
   Context,
   Point,

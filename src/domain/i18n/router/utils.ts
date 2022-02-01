@@ -3,7 +3,8 @@ import { UrlObject } from "url";
 import qs from "query-string";
 
 import i18nRoutes from "../../../../i18nRoutes.config";
-import Config, { Locale } from "../../../config";
+import { Locale } from "../../../types";
+import AppConfig from "../../../domain/app/AppConfig";
 
 // dynamic path: /venues/:id
 // segmented: /venues/[id]
@@ -96,7 +97,7 @@ export function stringifyUrlObject(url: UrlObject): string {
 }
 
 export function getLocaleOrError(locale: string): Locale {
-  if (!Config.locales.includes(locale)) {
+  if (!AppConfig.locales.includes(locale)) {
     throw Error(`Locale ${locale} is not supported`);
   }
 
