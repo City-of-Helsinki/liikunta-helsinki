@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 
+import Config from "../../config";
 import HtmlToReact from "../../common/components/htmlToReact/HtmlToReact";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
@@ -73,6 +74,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         getLocaleOrError(context.locale)
       )),
     },
-    revalidate: 10,
+    revalidate: Config.defaultRevalidate,
   };
 }

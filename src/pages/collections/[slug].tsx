@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "hds-react";
 
+import Config from "../../config";
 import { ItemQueryResult } from "../../types";
 import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import { getQlLanguage } from "../../common/apollo/utils";
@@ -244,6 +245,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         ["collection_page", "share_links"]
       )),
     },
-    revalidate: 10,
+    revalidate: Config.defaultRevalidate,
   };
 }

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 
+import Config from "../config";
 import collectionFragment from "../domain/collections/collectionFragment";
 import initializeCmsApollo from "../domain/clients/cmsApolloClient";
 import { getQlLanguage } from "../common/apollo/utils";
@@ -139,6 +140,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         ]
       )),
     },
-    revalidate: 10,
+    revalidate: Config.defaultRevalidate,
   };
 }
