@@ -1,7 +1,7 @@
 {
-  "error.title": "SV: Sijaintia ei voitu käyttää",
-  "error.description.permission_denied": "SV: Et ole myöntänyt lupaa sijaintisi käyttämiseen",
-  "error.description.generic": "SV: Sijaintia ei ole saatavilla",
-  "a11ymessage.title": "SV:  Etsitään paikkaa",
-  "a11ymessage.description": "SV: Yritämme käyttää selaimesi tarjoamaa paikkatietoa"
+  "error.title": "Platsinformation kunde inte användas",
+  "error.description.permission_denied": "Du har inte gett tillstånd för användning av din platsinformation",
+  "error.description.generic": "Platsinformation finns inte tillgänglig",
+  "a11ymessage.title": "Platser söks",
+  "a11ymessage.description": "Vi försöker använda positionsdata från din webbläsare"
 }

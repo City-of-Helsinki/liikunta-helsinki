@@ -7,8 +7,8 @@
   "n_more_locations": "flera lägen",
   "do_show_more_locations": "Visa flera lägen",
   "no_more_results": "Inga fler resultat",
-  "order_by.alphabetical": "SV: Aakkosjärjestyksessä",
-  "order_by.relevance": "SV: Osuvuuden mukaan",
-  "order_by.distance": "SV: Lähimmät ensin",
-  "order_by.label": "SV: Järjestys"
+  "order_by.alphabetical": "I alfabetisk ordning",
+  "order_by.relevance": "Efter relevans",
+  "order_by.distance": "Närmaste först",
+  "order_by.label": "Ordning"
 }

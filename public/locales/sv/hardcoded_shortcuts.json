@@ -1,12 +1,12 @@
 {
-  "outdoor_gyms": "SV: Ulkokuntosalit",
-  "swimming_summer": "SV: Uinti",
-  "swimming_winter": "SV: Uinti",
-  "sports_halls": "SV: Liikuntahallit",
-  "gyms": "SV: Kuntosalit",
-  "outdoor_activities": "SV: Ulkoilu",
-  "skating": "SV: Skeittaus",
-  "playgrounds": "SV: Leikkipuistot",
-  "ice_skating": "SV: Luistelu",
-  "skiing": "SV: Hiihto"
+  "outdoor_gyms": "Utomhusgym",
+  "swimming_summer": "Simning",
+  "swimming_winter": "Simning",
+  "sports_halls": "Idrottshallar",
+  "gyms": "Gym",
+  "outdoor_activities": "Friluftsliv",
+  "skating": "Skejting",
+  "playgrounds": "Lekparker",
+  "ice_skating": "Skridskoåkning",
+  "skiing": "Skidåkning"
 }

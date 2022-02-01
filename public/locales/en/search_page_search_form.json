@@ -6,7 +6,7 @@
   "toggle_button_aria_label": "Open menu",
   "remove_filter_aria_label": "Clear filter",
   "clear_filters": "Clear the search criteria",
-  "ontology_tree_ids.label": "EN: Paikka",
+  "ontology_tree_ids.label": "Location",
   "ontology_tree_ids.placeholder": "Select place",
   "administrative_division_dropdown.label": "Area",
   "administrative_division_dropdown.placeholder": "Select area",

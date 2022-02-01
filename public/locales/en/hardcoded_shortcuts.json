@@ -1,12 +1,12 @@
 {
-  "outdoor_gyms": "EN: Ulkokuntosalit",
-  "swimming_summer": "EN: Uinti",
-  "swimming_winter": "EN: Uinti",
-  "sports_halls": "EN: Liikuntahallit",
-  "gyms": "EN: Kuntosalit",
-  "outdoor_activities": "EN: Ulkoilu",
-  "skating": "EN: Skeittaus",
-  "playgrounds": "EN: Leikkipuistot",
-  "ice_skating": "EN: Luistelu",
-  "skiing": "EN: Hiihto"
+  "outdoor_gyms": "Outdoor gyms",
+  "swimming_summer": "Swimming",
+  "swimming_winter": "Swimming",
+  "sports_halls": "Sports halls",
+  "gyms": "Gyms",
+  "outdoor_activities": "Outdoor recreation",
+  "skating": "Skateboarding",
+  "playgrounds": "Playgrounds",
+  "ice_skating": "Ice skating",
+  "skiing": "Cross-country skiing"
 }
