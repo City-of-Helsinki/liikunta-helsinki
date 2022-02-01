@@ -158,7 +158,7 @@ export function VenuePageContent() {
   const { data, loading, error } = useQuery(VENUE_QUERY, {
     variables: {
       id: router.query.id,
-      includeHaukiFields: Config.enableHauki,
+      includeHaukiFields: Config.isHaukiEnabled,
     },
     context: {
       headers: {

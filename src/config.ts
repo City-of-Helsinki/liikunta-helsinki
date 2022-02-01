@@ -60,7 +60,7 @@ class Config {
     };
   }
 
-  static get enableHauki() {
+  static get isHaukiEnabled() {
     // Hauki is not production ready; disable it by default
     return Config.getFlag(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false);
   }
