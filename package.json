@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
+    "@datapunt/matomo-tracker-react": "^0.5.1",
     "@react-leaflet/core": "1.1.0",
     "@sentry/browser": "^6.17.2",
     "@sentry/tracing": "^6.17.2",

@@ -65,6 +65,24 @@ class Config {
     return Config.getFlag(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false);
   }
 
+  static get matomoConfiguration() {
+    const matomoUrlBase = "//webanalytics.digiaiiris.com/js/";
+    const matomoEnabled = process.env.NEXT_PUBLIC_MATOMO_ENABLED;
+    const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
+    const getMatomoUrlPath = (path: string) => `${matomoUrlBase}${path}`;
+
+    if (matomoEnabled && matomoSiteId) {
+      return {
+        disabled: !Boolean(Number(matomoEnabled)),
+        urlBase: matomoUrlBase as string,
+        srcUrl: getMatomoUrlPath("piwik.min.js"),
+        trackerUrl: getMatomoUrlPath("tracker.php"),
+        siteId: Number(matomoSiteId),
+      };
+    }
+    return null;
+  }
+
   private static getEnvOrError(variable?: string, name?: string) {
     if (!variable) {
       throw Error(`Environment variable with name ${name} was not found`);
