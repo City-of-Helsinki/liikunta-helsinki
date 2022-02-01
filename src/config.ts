@@ -60,9 +60,9 @@ class Config {
     };
   }
 
-  // Hauki is not production ready; disable all features that require it
   static get enableHauki() {
-    return false;
+    // Hauki is not production ready; disable it by default
+    return Config.getFlag(process.env.NEXT_PUBLIC_HAUKI_ENABLED, false);
   }
 
   private static getEnvOrError(variable?: string, name?: string) {
@@ -71,6 +71,21 @@ class Config {
     }
 
     return variable;
+  }
+
+  private static getFlag(
+    value?: string,
+    defaultValue: boolean | string | number = null
+  ) {
+    if (!value) {
+      return defaultValue;
+    }
+
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      return null;
+    }
   }
 }
 

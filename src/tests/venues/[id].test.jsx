@@ -1,6 +1,5 @@
 import userEvent from "@testing-library/user-event";
 
-import Config from "../../config";
 import { VENUE_QUERY, VenuePageContent } from "../../pages/venues/[id]";
 import { render, screen, waitFor } from "../utils";
 import { getVenue, defaultConnections } from "./mocks/[id]";
@@ -47,14 +46,19 @@ function stringifyLines(lines) {
   );
 }
 
+let env;
 beforeEach(() => {
   jest.useFakeTimers();
   jest.setSystemTime(new Date(2021, 5, 22, 12, 0, 0, 0));
-  jest.spyOn(Config, "enableHauki", "get").mockImplementation(() => true);
+
+  env = process.env;
+  process.env.NEXT_PUBLIC_HAUKI_ENABLED = "true";
 });
 
 afterAll(() => {
   jest.useRealTimers();
+
+  process.env = env;
 });
 
 test("venues/[id] renders correctly", async () => {
