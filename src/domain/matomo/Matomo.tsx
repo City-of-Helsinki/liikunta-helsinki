@@ -4,19 +4,25 @@ import {
   useMatomo,
 } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Config from "../../config";
 
-const matomoInstance = createMatomoInstance(Config.matomoConfiguration);
+function Matomo({ children }: { children: React.ReactNode }): JSX.Element {
+  const [matomoInstance] = useState(() => {
+    const matomoConfig = Config.matomoConfiguration;
+    return matomoConfig ? createMatomoInstance(matomoConfig) : null;
+  });
 
-function Matomo({ children }: { children: React.ReactNode }) {
-  return (
-    <MatomoProvider value={matomoInstance}>
-      <TrackPageViews />
-      {children}
-    </MatomoProvider>
-  );
+  if (matomoInstance) {
+    return (
+      <MatomoProvider value={matomoInstance}>
+        <TrackPageViews />
+        {children}
+      </MatomoProvider>
+    );
+  }
+  return <>{children}</>;
 }
 
 function TrackPageViews(): null {

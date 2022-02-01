@@ -3,6 +3,7 @@ import * as matomo from "@datapunt/matomo-tracker-react";
 import * as nextRouter from "next/router";
 import * as React from "react";
 
+import Config from "../../../config";
 import { render } from "../../../tests/utils";
 import Matomo from "../Matomo";
 
@@ -13,7 +14,7 @@ afterEach(() => {
 jest.mock("@datapunt/matomo-tracker-react", () => ({
   useMatomo: jest.fn().mockReturnValue({ trackPageView: jest.fn() }),
   createInstance: jest.fn().mockReturnValue({
-    disabled: true,
+    disabled: false,
     urlBase: "matomo",
     srcUrl: "piwik.min.js",
     trackerUrl: "tracker.php",
@@ -22,6 +23,10 @@ jest.mock("@datapunt/matomo-tracker-react", () => ({
   // eslint-disable-next-line react/display-name
   MatomoProvider: ({ children }) => <>{children}</>,
 }));
+
+beforeEach(() => {
+  jest.spyOn(Config, "matomoConfiguration", "get").mockReturnValue({});
+});
 
 const setHref = (href) => {
   Object.defineProperty(window, "location", {

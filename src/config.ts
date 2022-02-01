@@ -66,24 +66,21 @@ class Config {
   }
 
   static get matomoConfiguration() {
-    const matomoUrlBase = this.getEnvOrError(
-      process.env.NEXT_PUBLIC_MATOMO_URL_BASE
-    );
-    const matomoEnabled = this.getEnvOrError(
-      process.env.NEXT_PUBLIC_MATOMO_ENABLED
-    );
-    const matomoSitedId = this.getEnvOrError(
-      process.env.NEXT_PUBLIC_MATOMO_SITE_ID
-    );
+    const matomoUrlBase = "//webanalytics.digiaiiris.com/js/";
+    const matomoEnabled = process.env.NEXT_PUBLIC_MATOMO_ENABLED;
+    const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
     const getMatomoUrlPath = (path: string) => `${matomoUrlBase}${path}`;
 
-    return {
-      disabled: !Boolean(Number(matomoEnabled)),
-      urlBase: matomoUrlBase as string,
-      srcUrl: getMatomoUrlPath("piwik.min.js"),
-      trackerUrl: getMatomoUrlPath("tracker.php"),
-      siteId: Number(matomoSitedId),
-    };
+    if (matomoEnabled && matomoSiteId) {
+      return {
+        disabled: !Boolean(Number(matomoEnabled)),
+        urlBase: matomoUrlBase as string,
+        srcUrl: getMatomoUrlPath("piwik.min.js"),
+        trackerUrl: getMatomoUrlPath("tracker.php"),
+        siteId: Number(matomoSiteId),
+      };
+    }
+    return null;
   }
 
   private static getEnvOrError(variable?: string, name?: string) {
