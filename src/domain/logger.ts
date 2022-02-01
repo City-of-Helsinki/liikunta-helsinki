@@ -44,15 +44,11 @@ function formatMessage(
     message: [`${renderedTag} - `, message, ...optionalParameters].join(" "),
   };
 
-  if (process.env.NODE_ENV !== "production") {
-    return [
-      new Date(messageData.timestamp).toLocaleTimeString(),
-      `${color(renderedTag)} -`,
-      message,
-    ].join(" ");
-  }
-
-  return messageData;
+  return [
+    new Date(messageData.timestamp).toLocaleTimeString(),
+    `${color(renderedTag)} -`,
+    message,
+  ].join(" ");
 }
 
 // Never log on the client side in production in order to avoid hurting the
