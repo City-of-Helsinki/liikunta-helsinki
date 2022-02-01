@@ -1,6 +1,5 @@
 import queryString from "query-string";
 
-import Config from "../../../config";
 import { UnifiedSearch } from "../useUnifiedSearch";
 
 class MockQueryPersister {
@@ -21,8 +20,15 @@ function getAsPath(values) {
   return `/search?${queryString.stringify(values)}`;
 }
 
+let env;
 beforeEach(() => {
-  jest.spyOn(Config, "enableHauki", "get").mockImplementation(() => true);
+  env = process.env;
+
+  process.env.NEXT_PUBLIC_HAUKI_ENABLED = "true";
+});
+
+afterAll(() => {
+  process.env = env;
 });
 
 describe("UnifiedSearch", () => {
