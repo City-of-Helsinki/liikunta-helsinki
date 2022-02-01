@@ -2,9 +2,8 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 
-import Config from "../../config";
+import getLiikuntaStaticProps from "../../domain/app/getLiikuntaStaticProps";
 import HtmlToReact from "../../common/components/htmlToReact/HtmlToReact";
-import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
 import getPageMetaPropsFromSEO from "../../common/components/page/getPageMetaPropsFromSEO";
 import { getQlLanguage } from "../../common/apollo/utils";
 import seoFragment from "../../domain/seo/cmsSeoFragment";
@@ -56,24 +55,20 @@ export default function AccessibilityPage() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = initializeCmsApollo();
-  const language = getQlLanguage(context.locale ?? context.defaultLocale);
+  return getLiikuntaStaticProps(context, async ({ cmsClient }) => {
+    await cmsClient.query({
+      query: ACCESSIBILITY_PAGE_QUERY,
+      variables: {
+        languageCode: getQlLanguage(context.locale ?? context.defaultLocale),
+      },
+    });
 
-  await cmsClient.pageQuery({
-    nextContext: context,
-    query: ACCESSIBILITY_PAGE_QUERY,
-    variables: {
-      languageCode: language,
-    },
+    return {
+      props: {
+        ...(await serverSideTranslationsWithCommon(
+          getLocaleOrError(context.locale)
+        )),
+      },
+    };
   });
-
-  return {
-    props: {
-      initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(
-        getLocaleOrError(context.locale)
-      )),
-    },
-    revalidate: Config.defaultRevalidate,
-  };
 }

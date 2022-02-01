@@ -2,8 +2,7 @@ import dynamic from "next/dynamic";
 import { gql, useQuery } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 
-import Config from "../../config";
-import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
+import getLiikuntaStaticProps from "../../domain/app/getLiikuntaStaticProps";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
 import useUnifiedSearchMapQuery from "../../domain/unifiedSearch/useUnifiedSearchMapQuery";
@@ -173,29 +172,26 @@ export default function MapSearch() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = initializeCmsApollo();
+  return getLiikuntaStaticProps(context, async ({ cmsClient }) => {
+    await cmsClient.query({
+      query: MAP_SEARCH_PAGE_QUERY,
+      variables: {
+        languageCode: getQlLanguage(context.locale),
+      },
+    });
 
-  await cmsClient.pageQuery({
-    nextContext: context,
-    query: MAP_SEARCH_PAGE_QUERY,
-    variables: {
-      languageCode: getQlLanguage(context.locale),
-    },
+    return {
+      props: {
+        ...(await serverSideTranslationsWithCommon(
+          getLocaleOrError(context.locale),
+          [
+            "search_header",
+            "search_page_search_form",
+            "map_view",
+            "multi_select_combobox",
+          ]
+        )),
+      },
+    };
   });
-
-  return {
-    props: {
-      initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(
-        getLocaleOrError(context.locale),
-        [
-          "search_header",
-          "search_page_search_form",
-          "map_view",
-          "multi_select_combobox",
-        ]
-      )),
-    },
-    revalidate: Config.defaultRevalidate,
-  };
 }

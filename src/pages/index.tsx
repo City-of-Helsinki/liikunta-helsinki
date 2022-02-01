@@ -3,16 +3,15 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 
-import Config from "../config";
+import getLiikuntaStaticProps from "../domain/app/getLiikuntaStaticProps";
 import collectionFragment from "../domain/collections/collectionFragment";
-import initializeCmsApollo from "../domain/clients/cmsApolloClient";
-import { getQlLanguage } from "../common/apollo/utils";
 import shortcuts from "../domain/shortcuts/shortcutsData";
 import serverSideTranslationsWithCommon from "../domain/i18n/serverSideTranslationsWithCommon";
 import { getLocaleOrError } from "../domain/i18n/router/utils";
 import seoFragment from "../domain/seo/cmsSeoFragment";
 import CollectionGrid from "../domain/collections/collectionsGrid/CollectionGrid";
 import getCurrentSeason from "../domain/season/getCurrentSeason";
+import { getQlLanguage } from "../common/apollo/utils";
 import Page from "../common/components/page/Page";
 import Section from "../common/components/section/Section";
 import Hero from "../common/components/hero/Hero";
@@ -116,30 +115,26 @@ export default function HomePage() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = initializeCmsApollo();
-  const language = getQlLanguage(context.locale ?? context.defaultLocale);
+  return getLiikuntaStaticProps(context, async ({ cmsClient }) => {
+    await cmsClient.query({
+      query: LANDING_PAGE_QUERY,
+      variables: {
+        languageCode: getQlLanguage(context.locale ?? context.defaultLocale),
+      },
+    });
 
-  await cmsClient.pageQuery({
-    nextContext: context,
-    query: LANDING_PAGE_QUERY,
-    variables: {
-      languageCode: language,
-    },
+    return {
+      props: {
+        ...(await serverSideTranslationsWithCommon(
+          getLocaleOrError(context.locale),
+          [
+            "home_page",
+            "landing_page_search_form",
+            "collection_count_label",
+            "hardcoded_shortcuts",
+          ]
+        )),
+      },
+    };
   });
-
-  return {
-    props: {
-      initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(
-        getLocaleOrError(context.locale),
-        [
-          "home_page",
-          "landing_page_search_form",
-          "collection_count_label",
-          "hardcoded_shortcuts",
-        ]
-      )),
-    },
-    revalidate: Config.defaultRevalidate,
-  };
 }

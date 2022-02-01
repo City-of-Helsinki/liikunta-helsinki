@@ -11,7 +11,7 @@ import {
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
-import { ApolloProvider, gql, isApolloError, useQuery } from "@apollo/client";
+import { ApolloProvider, gql, useQuery } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
@@ -19,8 +19,7 @@ import { useInView } from "react-intersection-observer";
 import Config from "../../../config";
 import noImagePlaceholder from "../../../../public/no_image.svg";
 import { Address, Point } from "../../../types";
-import { staticGenerationLogger } from "../../../domain/logger";
-import { createCmsApolloClient } from "../../../domain/clients/cmsApolloClient";
+import getLiikuntaStaticProps from "../../../domain/app/getLiikuntaStaticProps";
 import {
   createNextApiApolloClient,
   useNextApiApolloClient,
@@ -558,13 +557,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = createCmsApolloClient();
   const nextApiClient = createNextApiApolloClient();
 
-  try {
-    await cmsClient.pageQuery({
-      nextContext: context,
-    });
+  return getLiikuntaStaticProps(context, async () => {
     await nextApiClient.query({
       query: VENUE_QUERY,
       variables: {
@@ -572,35 +567,19 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       },
       context: {
         headers: {
-          "Accept-Language": context.locale ?? context.defaultLocale,
+          "Accept-Language": context.locale,
         },
       },
     });
 
     return {
       props: {
-        initialApolloState: cmsClient.cache.extract(),
         initialNextApiApolloState: nextApiClient.cache.extract(),
         ...(await serverSideTranslationsWithCommon(
           getLocaleOrError(context.locale),
           ["venue_page", "map_box", "share_links", "upcoming_events_section"]
         )),
       },
-      revalidate: Config.defaultRevalidate,
     };
-  } catch (e) {
-    staticGenerationLogger.error("Error while generating a venue page:", e);
-    if (isApolloError(e)) {
-      return {
-        props: {
-          error: {
-            statusCode: 400,
-          },
-        },
-        revalidate: 10,
-      };
-    }
-
-    throw e;
-  }
+  });
 }
