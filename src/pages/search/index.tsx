@@ -10,12 +10,11 @@ import isToday from "date-fns/isToday";
 import { useEffect } from "react";
 
 import { Locale } from "../../config";
-import Config from "../../config";
 import { SearchResult, Time } from "../../types";
 import getURLSearchParamsFromAsPath from "../../common/utils/getURLSearchParamsFromAsPath";
 import getTranslation from "../../common/utils/getTranslation";
 import { getNodes, getQlLanguage } from "../../common/apollo/utils";
-import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
+import getLiikuntaStaticProps from "../../domain/app/getLiikuntaStaticProps";
 import useUnifiedSearch from "../../domain/unifiedSearch/useUnifiedSearch";
 import useUnifiedSearchListQuery from "../../domain/unifiedSearch/useUnifiedSearchListQuery";
 import {
@@ -338,34 +337,27 @@ export default function Search() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = initializeCmsApollo();
+  return getLiikuntaStaticProps(context, async ({ cmsClient }) => {
+    await cmsClient.query({
+      query: SEARCH_PAGE_QUERY,
+      variables: {
+        languageCode: getQlLanguage(context.locale),
+      },
+    });
 
-  // We still need to initialize the application with data from the CMS. The
-  // data includes things like menus and languages. If we don't initialize, this
-  // data will be missing when the application is accessed through the search
-  // view.
-  await cmsClient.pageQuery({
-    nextContext: context,
-    query: SEARCH_PAGE_QUERY,
-    variables: {
-      languageCode: getQlLanguage(context.locale),
-    },
+    return {
+      props: {
+        ...(await serverSideTranslationsWithCommon(
+          getLocaleOrError(context.locale),
+          [
+            "search_page",
+            "search_header",
+            "search_page_search_form",
+            "search_list",
+            "multi_select_combobox",
+          ]
+        )),
+      },
+    };
   });
-
-  return {
-    props: {
-      initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(
-        getLocaleOrError(context.locale),
-        [
-          "search_page",
-          "search_header",
-          "search_page_search_form",
-          "search_list",
-          "multi_select_combobox",
-        ]
-      )),
-    },
-    revalidate: Config.defaultRevalidate,
-  };
 }
