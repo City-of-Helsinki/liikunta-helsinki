@@ -6,9 +6,8 @@ import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "hds-react";
 
-import Config from "../../config";
 import { ItemQueryResult } from "../../types";
-import initializeCmsApollo from "../../domain/clients/cmsApolloClient";
+import getLiikuntaStaticProps from "../../domain/app/getLiikuntaStaticProps";
 import { getQlLanguage } from "../../common/apollo/utils";
 import collectionFragment from "../../domain/collections/collectionFragment";
 import serverSideTranslationsWithCommon from "../../domain/i18n/serverSideTranslationsWithCommon";
@@ -225,26 +224,22 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const cmsClient = initializeCmsApollo();
-  const language = getQlLanguage(context.locale ?? context.defaultLocale);
+  return getLiikuntaStaticProps(context, async ({ cmsClient }) => {
+    await cmsClient.query({
+      query: COLLECTION_PAGE_QUERY,
+      variables: {
+        languageCode: getQlLanguage(context.locale ?? context.defaultLocale),
+        slug: context.params.slug,
+      },
+    });
 
-  await cmsClient.pageQuery({
-    nextContext: context,
-    query: COLLECTION_PAGE_QUERY,
-    variables: {
-      languageCode: language,
-      slug: context.params.slug,
-    },
+    return {
+      props: {
+        ...(await serverSideTranslationsWithCommon(
+          getLocaleOrError(context.locale),
+          ["collection_page", "share_links"]
+        )),
+      },
+    };
   });
-
-  return {
-    props: {
-      initialApolloState: cmsClient.cache.extract(),
-      ...(await serverSideTranslationsWithCommon(
-        getLocaleOrError(context.locale),
-        ["collection_page", "share_links"]
-      )),
-    },
-    revalidate: Config.defaultRevalidate,
-  };
 }
