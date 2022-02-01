@@ -1,10 +1,10 @@
 import { act } from "react-dom/test-utils";
 
-import { render, screen, waitFor } from "./utils";
+import { render, screen, waitFor } from "../tests/utils";
 import App, { LANDING_PAGE_QUERY } from "../pages/index";
 import { PAGE_QUERY } from "../common/components/page/Page";
-import mockLandingPage from "./mockData/landingPage";
-import mockMenus from "./mockData/mockMenus";
+import mockLandingPage from "./__mocks__/landingPage";
+import mockMenus from "./__mocks__/mockMenus";
 
 const getMocks = () => [
   {
