@@ -1,6 +1,11 @@
 import { eachDayOfInterval, lightFormat } from "date-fns";
 
-import { Time } from "../../types";
+import { Time } from "../types";
+
+type OpeningHour = {
+  date: string;
+  times: Partial<Time>[];
+};
 
 const daysForWeek25Of2021 = eachDayOfInterval({
   start: new Date(2021, 5, 21),
@@ -12,7 +17,7 @@ export const getDate = (date: Date, times: Partial<Time>[]) => ({
   times,
 });
 
-const defaultRenderer = (date: Date, index: number, array: Date[]) =>
+const defaultRenderer = (date: Date) =>
   getDate(date, [
     {
       name: "",
@@ -26,6 +31,12 @@ const defaultRenderer = (date: Date, index: number, array: Date[]) =>
     },
   ]);
 
-export function getOpeningHoursForWeek(renderer = defaultRenderer) {
+export function getOpeningHoursForWeek(
+  renderer: (
+    date: Date,
+    index: number,
+    array: Date[]
+  ) => OpeningHour = defaultRenderer
+) {
   return daysForWeek25Of2021.map((...args) => renderer(...args));
 }

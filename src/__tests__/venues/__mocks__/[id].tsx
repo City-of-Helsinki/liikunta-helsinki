@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { getOpeningHoursForWeek } from "../../mockData/getOpeningHours";
+import { getOpeningHoursForWeek } from "../../../tests/getOpeningHours";
 
 export const defaultConnections = [
   {

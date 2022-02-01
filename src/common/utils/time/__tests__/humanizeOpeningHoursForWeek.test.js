@@ -1,7 +1,7 @@
 import {
   getOpeningHoursForWeek,
   getDate,
-} from "../../../../tests/mockData/getOpeningHours";
+} from "../../../../tests/getOpeningHours";
 import humanizeOpeningHoursForWeek from "../humanizeOpeningHoursForWeek";
 
 describe("humanizeOpeningHoursForWeek", () => {
