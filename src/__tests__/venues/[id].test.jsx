@@ -1,8 +1,8 @@
 import userEvent from "@testing-library/user-event";
 
 import { VENUE_QUERY, VenuePageContent } from "../../pages/venues/[id]";
-import { render, screen, waitFor } from "../utils";
-import { getVenue, defaultConnections } from "./mocks/[id]";
+import { render, screen, waitFor } from "../../tests/utils";
+import { getVenue, defaultConnections } from "./__mocks__/[id]";
 
 const id = "tprek:25";
 const initialPriceLines = 4;
