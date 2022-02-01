@@ -77,6 +77,7 @@ Note that Next has some special behaviour when it comes to passing environment v
 | `NEXT_PUBLIC_HAUKI_ENABLED`                   | When this configuration is toggled on, Hauki related features are enabled. _**Default:** `false`_                                                                                                                                                          |
 | `NEXT_PUBLIC_MATOMO_ENABLED`                  | Control whether Matomo is enabled.                                                                                                                                                                                                                         |
 | `NEXT_PUBLIC_MATOMO_SITE_ID`                  | If Matomo is in use, provide site id to direct analytics into the correct destination.                                                                                                                                                                     |
+| `NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS`  | Default length of time in seconds between [NextJS's ISR's](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) regenerations. _**Default:** `10`_                                                                        |
 
 ## Internationalization
 
