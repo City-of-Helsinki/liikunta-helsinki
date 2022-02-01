@@ -3,7 +3,7 @@ import NextLink, { LinkProps } from "next/link";
 
 import useRouter from "./useRouter";
 import { getI18nPath, stringifyUrlObject } from "./utils";
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 
 type Props = React.PropsWithChildren<Omit<LinkProps, "locale">> & {
   escape?: boolean;

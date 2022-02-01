@@ -5,7 +5,7 @@ import isFuture from "date-fns/isFuture";
 import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
 
 import { OpeningHour, Time } from "../../../types";
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import { humanizeTimeResourceState } from "../../../common/utils/time/humanizeOpeningHoursForWeek";
 
 function createDate(baseDate: Date, time: string) {

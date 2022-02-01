@@ -1,7 +1,7 @@
 import {
   HELSINKI_OCD_DIVISION_ID,
   SPORTS_DEPARTMENT_ONTOLOGY_TREE_ID,
-} from "../../constants";
+} from "../app/appConstants";
 import { Coordinates } from "../../types";
 import useGeolocation from "../../common/geolocation/useGeolocation";
 import useRouter from "../i18n/router/useRouter";

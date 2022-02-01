@@ -5,7 +5,7 @@ import {
 } from "@apollo/client";
 import { useMemo } from "react";
 
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 import {
   initializeApolloClient,
   MutableReference,
@@ -19,7 +19,7 @@ const cmsApolloClient = new MutableReference<
 export function createCmsApolloClient() {
   return new ApolloClient({
     ssrMode: !process.browser,
-    uri: Config.cmsGraphqlEndpoint,
+    uri: AppConfig.cmsGraphqlEndpoint,
     cache: new InMemoryCache({
       typePolicies: {
         RootQuery: {

@@ -5,7 +5,7 @@ import { Navigation as HDSNavigation } from "hds-react";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import I18nLink from "../../../domain/i18n/router/Link";
 import useRouter from "../../../domain/i18n/router/useRouter";
 import { Language, NavigationItem } from "../../../types";

@@ -4,7 +4,7 @@ import debounce from "lodash/debounce";
 import { useTranslation } from "next-i18next";
 import { add, startOfToday } from "date-fns";
 
-import Config from "../../../config";
+import AppConfig from "../../../domain/app/AppConfig";
 import { getUnifiedSearchLanguage } from "../../../common/apollo/utils";
 import getTranslation from "../../../common/utils/getTranslation";
 import { formatIntoDateTime } from "../../../common/utils/time/format";
@@ -92,7 +92,7 @@ function SearchPageSearchForm({
       ontologyTreeIds,
     };
 
-    if (Config.isHaukiEnabled) {
+    if (AppConfig.isHaukiEnabled) {
       const isOpenNowValue = e.target.isOpenNow.checked;
       // Use undefined when false to hide from UI layer
       const isOpenNow = isOpenNowValue ? isOpenNowValue : undefined;
@@ -252,7 +252,7 @@ function SearchPageSearchForm({
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionIds}
         />
-        {Config.isHaukiEnabled && (
+        {AppConfig.isHaukiEnabled && (
           <div className={styles.inputStack}>
             <DateTimePicker
               id="openAt"

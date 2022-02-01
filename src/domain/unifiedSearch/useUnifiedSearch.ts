@@ -5,7 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 import queryString from "query-string";
 import fastDeepEqual from "fast-deep-equal/react";
 
-import Config from "../../config";
+import AppConfig from "../../domain/app/AppConfig";
 import defaultQueryPersister, {
   QueryPersister,
 } from "../../common/utils/queryPersister";
@@ -164,7 +164,7 @@ export class UnifiedSearch {
       { type: "string", key: "orderDir", filterListBehaviour: "hidden" },
     ];
 
-    if (Config.isHaukiEnabled) {
+    if (AppConfig.isHaukiEnabled) {
       this.filterConfig.push(
         { type: "boolean", key: "isOpenNow" },
         { type: "date", key: "openAt" }

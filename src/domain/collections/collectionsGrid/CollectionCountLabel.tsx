@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import groupBy from "lodash.groupby";
 
-import { Locale } from "../../../config";
+import { Locale } from "../../../types";
 import { Collection, EventSearch } from "../../../types";
 import getEventQueryFromCMSEventSearch from "../../events/utils/getEventQueryFromCMSEventSearch";
 import { useNextApiApolloClient } from "../../clients/nextApiApolloClient";

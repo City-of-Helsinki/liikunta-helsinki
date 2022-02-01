@@ -1,7 +1,7 @@
 import { ApolloError } from "apollo-server-micro";
 
 import { Source } from "../../../types";
-import { Sources } from "../../../constants";
+import { Sources } from "../../app/appConstants";
 import parseVenueId, { IdParseError } from "./parseVenueId";
 import VenueHaukiIntegration from "./instructions/VenueHaukiIntegration";
 import VenueOntologyEnricher from "./instructions/VenueOntologyEnricher";
