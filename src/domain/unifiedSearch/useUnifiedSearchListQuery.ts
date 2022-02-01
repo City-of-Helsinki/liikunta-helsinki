@@ -20,7 +20,7 @@ export default function useUnifiedSearchListQuery({
     variables: {
       ...useUnifiedSearchVariables(),
       ...variables,
-      includeHaukiFields: Config.enableHauki,
+      includeHaukiFields: Config.isHaukiEnabled,
     },
   });
 

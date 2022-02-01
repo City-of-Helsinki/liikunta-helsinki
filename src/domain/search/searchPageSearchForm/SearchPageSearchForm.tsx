@@ -92,7 +92,7 @@ function SearchPageSearchForm({
       ontologyTreeIds,
     };
 
-    if (Config.enableHauki) {
+    if (Config.isHaukiEnabled) {
       const isOpenNowValue = e.target.isOpenNow.checked;
       // Use undefined when false to hide from UI layer
       const isOpenNow = isOpenNowValue ? isOpenNowValue : undefined;
@@ -252,7 +252,7 @@ function SearchPageSearchForm({
           onChange={handleAdminDivisionChange}
           value={administrativeDivisionIds}
         />
-        {Config.enableHauki && (
+        {Config.isHaukiEnabled && (
           <div className={styles.inputStack}>
             <DateTimePicker
               id="openAt"

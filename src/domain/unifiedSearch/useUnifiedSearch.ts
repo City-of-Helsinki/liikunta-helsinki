@@ -164,7 +164,7 @@ export class UnifiedSearch {
       { type: "string", key: "orderDir", filterListBehaviour: "hidden" },
     ];
 
-    if (Config.enableHauki) {
+    if (Config.isHaukiEnabled) {
       this.filterConfig.push(
         { type: "boolean", key: "isOpenNow" },
         { type: "date", key: "openAt" }

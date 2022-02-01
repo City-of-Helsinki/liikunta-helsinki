@@ -2,7 +2,7 @@ import Config from "../../config";
 import createApolloServer from "../../domain/graphql/createApolloServer";
 
 const apolloServer = createApolloServer({
-  haukiEnabled: Config.enableHauki,
+  haukiEnabled: Config.isHaukiEnabled,
 });
 const startServer = apolloServer.start();
 
