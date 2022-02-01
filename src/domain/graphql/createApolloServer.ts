@@ -90,7 +90,7 @@ export type LiikuntaServerConfig = {
   haukiEnabled?: boolean;
 };
 
-type ServerConfig = Omit<ApolloServerConfig, "typDefs"> &
+type ServerConfig = Omit<ApolloServerConfig, "typeDefs"> &
   LiikuntaServerConfig & {
     typeDefs?: (
       liikuntaServerConfig?: LiikuntaServerConfig
