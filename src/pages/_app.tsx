@@ -7,14 +7,15 @@ import { LoadingSpinner } from "hds-react";
 import Error from "next/error";
 import { appWithTranslation } from "next-i18next";
 import { ToastContainer } from "react-toastify";
-import "nprogress/nprogress.css";
 
+import "nprogress/nprogress.css";
 import { useCmsApollo } from "../domain/clients/cmsApolloClient";
 import useRouter from "../domain/i18n/router/useRouter";
 import AppMeta from "../domain/seo/meta/AppMeta";
 import GeolocationProvider from "../common/geolocation/GeolocationProvider";
 import "../styles/globals.scss";
 import Config from "../config";
+import Matomo from "../domain/matomo/Matomo";
 
 if (process.env.NODE_ENV === "production") {
   Sentry.init(Config.sentryConfiguration);
@@ -68,19 +69,21 @@ function MyApp({ Component, pageProps }: AppProps) {
       <TopProgressBar />
       <ApolloProvider client={cmsApolloClient}>
         <GeolocationProvider>
-          <AppMeta />
-          {router.isFallback ? (
-            <Center>
-              <LoadingSpinner />
-            </Center>
-          ) : pageProps.error ? (
-            <Error
-              statusCode={pageProps.error.networkError?.statusCode ?? 400}
-              title={pageProps.error.title}
-            />
-          ) : (
-            <Component {...pageProps} />
-          )}
+          <Matomo>
+            <AppMeta />
+            {router.isFallback ? (
+              <Center>
+                <LoadingSpinner />
+              </Center>
+            ) : pageProps.error ? (
+              <Error
+                statusCode={pageProps.error.networkError?.statusCode ?? 400}
+                title={pageProps.error.title}
+              />
+            ) : (
+              <Component {...pageProps} />
+            )}
+          </Matomo>
         </GeolocationProvider>
       </ApolloProvider>
       <ToastContainer />
