@@ -7,8 +7,8 @@
   "n_more_locations": "additional locations",
   "do_show_more_locations": "Show more locations",
   "no_more_results": "No further search results",
-  "order_by.alphabetical": "EN: Aakkosjärjestyksessä",
-  "order_by.relevance": "EN: Osuvuuden mukaan",
-  "order_by.distance": "EN: Lähimmät ensin",
-  "order_by.label": "EN: Järjestys"
+  "order_by.alphabetical": "Alphabetical order",
+  "order_by.relevance": "Relevance",
+  "order_by.distance": "Proximity",
+  "order_by.label": "Order"
 }

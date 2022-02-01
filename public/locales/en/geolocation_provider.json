@@ -1,7 +1,7 @@
 {
-  "error.title": "EN: Sijaintia ei voitu käyttää",
-  "error.description.permission_denied": "EN: Et ole myöntänyt lupaa sijaintisi käyttämiseen",
-  "error.description.generic": "EN: Sijaintia ei ole saatavilla",
-  "a11ymessage.title": "EN: Etsitään paikkaa",
-  "a11ymessage.description": "EN: Yritämme käyttää selaimesi tarjoamaa paikkatietoa"
+  "error.title": "Location could not be displayed",
+  "error.description.permission_denied": "You have not given permission to use your location",
+  "error.description.generic": "Location not available",
+  "a11ymessage.title": "Searching for location",
+  "a11ymessage.description": "We are trying to use your browser’s location data"
 }
