@@ -110,7 +110,7 @@ test("provides configuration for Sentry", () => {
   `);
 });
 
-test("provides configuration fro Matomo", () => {
+test("provides configuration for Matomo", () => {
   process.env.NEXT_PUBLIC_MATOMO_ENABLED = "true";
   process.env.NEXT_PUBLIC_MATOMO_SITE_ID = "abc-123";
 
