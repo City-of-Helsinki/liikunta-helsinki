@@ -1,5 +1,4 @@
 import "nprogress/nprogress.css";
-import * as Sentry from "@sentry/browser";
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
@@ -15,11 +14,6 @@ import AppMeta from "../domain/seo/meta/AppMeta";
 import GeolocationProvider from "../common/geolocation/GeolocationProvider";
 import "../styles/globals.scss";
 import Matomo from "../domain/matomo/Matomo";
-import AppConfig from "../domain/app/AppConfig";
-
-if (process.env.NODE_ENV === "production") {
-  Sentry.init(AppConfig.sentryConfiguration);
-}
 
 const TopProgressBar = dynamic(
   () => {

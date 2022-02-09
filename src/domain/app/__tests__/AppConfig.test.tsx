@@ -98,18 +98,6 @@ test.each([
   );
 });
 
-test("provides configuration for Sentry", () => {
-  process.env.NEXT_PUBLIC_SENTRY_DSN = "example-dsn-value";
-  process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT = "unit-test";
-
-  expect(AppConfig.sentryConfiguration).toMatchInlineSnapshot(`
-    Object {
-      "dsn": "example-dsn-value",
-      "environment": "unit-test",
-    }
-  `);
-});
-
 test("provides configuration for Matomo", () => {
   process.env.NEXT_PUBLIC_MATOMO_ENABLED = "true";
   process.env.NEXT_PUBLIC_MATOMO_SITE_ID = "abc-123";
