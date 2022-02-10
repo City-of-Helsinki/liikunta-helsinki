@@ -1,6 +1,4 @@
-import { Integrations } from "@sentry/tracing";
-
-import nextConfig from "../../../next.config";
+import { i18n } from "../../../next-i18next.config";
 
 class AppConfig {
   static get cmsGraphqlEndpoint() {
@@ -25,11 +23,11 @@ class AppConfig {
   }
 
   static get locales() {
-    return nextConfig.i18n.locales;
+    return i18n.locales;
   }
 
   static get defaultLocale() {
-    return nextConfig.i18n.defaultLocale;
+    return i18n.defaultLocale;
   }
 
   static get allowUnauthorizedRequests() {
@@ -40,26 +38,6 @@ class AppConfig {
 
   static get debug() {
     return Boolean(parseEnvValue(process.env.NEXT_PUBLIC_DEBUG));
-  }
-
-  static get sentryConfiguration() {
-    const sentryTraceSammpleConfig = process.env
-      .NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE
-      ? {
-          integrations: [new Integrations.BrowserTracing()],
-          tracesSampleRate: Number(
-            process.env.NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE
-          ),
-        }
-      : {};
-
-    return {
-      // TODO: add release version to Sentry config
-      // release: "my-project-name@2.3.12",
-      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-      environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
-      ...sentryTraceSammpleConfig,
-    };
   }
 
   static get isHaukiEnabled() {

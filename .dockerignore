@@ -9,3 +9,6 @@
 !.babelrc
 !i18nRoutes.config.js
 !next-i18next.config.js
+!sentry.client.config.js
+!sentry.server.config.js
+!sentry.properties

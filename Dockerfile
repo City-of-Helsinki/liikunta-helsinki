@@ -37,14 +37,18 @@ ARG NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT
 ARG NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT
 ARG NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT
 ARG NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS
-ARG NEXT_PUBLIC_SENTRY_ENVIRONMENT
-ARG NEXT_PUBLIC_SENTRY_DSN
-ARG NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE
+
 ARG NEXT_PUBLIC_HAUKI_ENABLED
 ARG NEXT_PUBLIC_MATOMO_SITE_ID
 ARG NEXT_PUBLIC_MATOMO_ENABLED
 ARG NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS
 ARG DOCKER_BUILD_ARG_NEXT_PUBLIC_DEBUG
+
+# Sentry
+ARG NEXT_PUBLIC_SENTRY_ENVIRONMENT
+ARG NEXT_PUBLIC_SENTRY_DSN
+ARG NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE
+ARG SENTRY_AUTH_TOKEN
 
 # Use non-root user
 USER appuser
@@ -76,8 +80,14 @@ COPY --from=staticbuilder --chown=appuser:appuser /app/.next /app/.next
 COPY --from=staticbuilder --chown=appuser:appuser /app/node_modules /app/node_modules
 COPY --from=staticbuilder --chown=appuser:appuser /app/next.config.js /app/next.config.js
 COPY --from=staticbuilder --chown=appuser:appuser /app/public /app/public
+
+# i18n configuration
 COPY --from=staticbuilder --chown=appuser:appuser /app/i18nRoutes.config.js /app/i18nRoutes.config.js
 COPY --from=staticbuilder --chown=appuser:appuser /app/next-i18next.config.js /app/next-i18next.config.js
+
+# Sentry configuration
+# COPY --from=staticbuilder --chown=appuser:appuser /app/sentry.client.config.js /app/sentry.client.config.js
+COPY --from=staticbuilder --chown=appuser:appuser /app/sentry.server.config.js /app/sentry.server.config.js
 
 # Expose port
 EXPOSE 80
