@@ -1,4 +1,4 @@
-import { Footer as HDSFooter, LogoLanguage } from "hds-react";
+import { Footer as HDSFooter, IconLinkExternal, LogoLanguage } from "hds-react";
 import React from "react";
 import { useTranslation } from "next-i18next";
 
@@ -10,13 +10,24 @@ import styles from "./footer.module.scss";
 type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
+  external?: boolean;
   children?: React.ReactNode;
 };
 
-const Link = ({ href, children, locale, ...rest }: LinkProps) => {
+const Link = ({
+  href,
+  children,
+  locale,
+  external = false,
+  ...rest
+}: LinkProps) => {
+  const { t } = useTranslation();
   return (
     <NextLink href={href} locale={locale}>
-      <a {...rest}>{children}</a>
+      <a {...rest}>
+        {children}
+        {external && <IconLinkExternal aria-label={t("opens_in_new_tab")} />}
+      </a>
     </NextLink>
   );
 };
@@ -38,6 +49,12 @@ function Footer({ navigationItems }: Props) {
       logoLanguage={logoLanguage}
     >
       <HDSFooter.Navigation variant="minimal">
+        <HDSFooter.Item
+          href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute"
+          label="Anna palautetta"
+          external
+          as={Link}
+        />
         {navigationItems.map((navigationItem) => (
           <HDSFooter.Item
             key={navigationItem.id}

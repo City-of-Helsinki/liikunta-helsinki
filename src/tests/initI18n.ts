@@ -10,7 +10,6 @@ import footer from "../../public/locales/fi/footer.json";
 import geolocation_provider from "../../public/locales/fi/geolocation_provider.json";
 import hardcoded_shortcuts from "../../public/locales/fi/hardcoded_shortcuts.json";
 import home_page from "../../public/locales/fi/home_page.json";
-import info_block from "../../public/locales/fi/info_block.json";
 import landing_page_search_form from "../../public/locales/fi/landing_page_search_form.json";
 import map_box from "../../public/locales/fi/map_box.json";
 import map_view from "../../public/locales/fi/map_view.json";
@@ -36,7 +35,6 @@ const translation = {
   geolocation_provider,
   hardcoded_shortcuts,
   home_page,
-  info_block,
   landing_page_search_form,
   map_box,
   map_view,

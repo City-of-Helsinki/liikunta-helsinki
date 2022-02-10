@@ -12,6 +12,11 @@
     width: 100%;
   }
 
+  // align links to be on the same level with external icon
+  a {
+    align-self: center;
+  }
+
   // fix "back to top" button positioning being slightly off
   @include breakpoints.respond-above(s) {
     > div > div > div > button {
