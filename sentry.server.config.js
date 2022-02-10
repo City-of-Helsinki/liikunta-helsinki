@@ -7,7 +7,7 @@ const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 const TRACES_SAMPLE_RATE = process.env.NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE;
 const SENTRY_ENVIRONMENRT = process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT;
 
-if (process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT === "1") {
+if (process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT) {
   if (!SENTRY_DSN) {
     throw new Error("SENTRY_DSN env variable missing");
   }
