@@ -26,7 +26,6 @@ env:
   NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
   NEXT_PUBLIC_MATOMO_SITE_ID: 587
   NEXT_PUBLIC_MATOMO_ENABLED: 0
-  SENTRY_AUTH_TOKEN: ${{ secrets.GH_SSENTRY_AUTH_TOKEN }}
   CUSTOM_ENVIRONMENT_URL: https://liikunta-helsinki-${{ github.event.pull_request.number }}.${{ secrets.BASE_DOMAIN_STAGING }}
 
 jobs:

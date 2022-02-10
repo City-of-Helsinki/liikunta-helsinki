@@ -26,6 +26,7 @@ env:
   NEXT_PUBLIC_SENTRY_ENVIRONMENT: "production"
   NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.GH_SENTRY_DSN }}
   NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE: 0.1
+  SENTRY_AUTH_TOKEN: ${{ secrets.GH_SENTRY_AUTH_TOKEN }}
   NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
   NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.prod.kuva.hel.ninja/search
   NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT: https://${{ secrets.ENVIRONMENT_URL_STABLE }}/api/graphql
