@@ -78,6 +78,17 @@ Note that Next has some special behaviour when it comes to passing environment v
 | `NEXT_PUBLIC_MATOMO_ENABLED`                  | Control whether Matomo is enabled.                                                                                                                                                                                                                         |
 | `NEXT_PUBLIC_MATOMO_SITE_ID`                  | If Matomo is in use, provide site id to direct analytics into the correct destination.                                                                                                                                                                     |
 | `NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS`  | Default length of time in seconds between [NextJS's ISR's](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) regenerations. _**Default:** `10`_                                                                        |
+| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`              | Environment used for sentry logging                                                                                                                                                                                                                        |
+| `NEXT_PUBLIC_SENTRY_DSN`                      | Sentry Data Source Name (DSN) [DSN Docs](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)                                                                                                                                                      |
+| `NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE`        | Sentry sampling rate [Sampling Docs](https://docs.sentry.io/platforms/javascript/configuration/sampling/)                                                                                                                                                  |
+| `SENTRY_AUTH_TOKEN`                           | Sentry authentication token when using Sentry CLI (Sentry uses this when building project for production)                                                                                                                                                  |
+
+## Error tracking (Sentry)
+
+Sentry is used for error tracking:
+
+Sentry Next.js docs [here](https://docs.sentry.io/platforms/javascript/guides/nextjs/).
+Sentry dashboard for this project [here](https://sentry.io/organizations/city-of-helsinki/issues/?environment=production&project=6078854).
 
 ## Internationalization
 
