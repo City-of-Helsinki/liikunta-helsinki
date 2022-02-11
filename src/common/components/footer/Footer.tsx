@@ -51,7 +51,7 @@ function Footer({ navigationItems }: Props) {
       <HDSFooter.Navigation variant="minimal">
         <HDSFooter.Item
           href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute"
-          label="Anna palautetta"
+          label={t("feedback")}
           external
           as={Link}
         />
