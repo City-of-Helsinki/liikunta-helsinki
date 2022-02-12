@@ -70,7 +70,7 @@ function InfoBlockLink({
   label,
   href,
 }: InfoBlockContentLinkProps) {
-  const { t } = useTranslation("info_block");
+  const { t } = useTranslation("common");
 
   if (external) {
     return (
@@ -80,7 +80,7 @@ function InfoBlockLink({
         rel="noreferrer noopener"
         target="_blank"
       >
-        {label} <IconLinkExternal aria-label={t("link.opens_in_new_tab")} />
+        {label} <IconLinkExternal aria-label={t("opens_in_new_tab")} />
       </a>
     );
   }

@@ -7,7 +7,6 @@ const COMMON_TRANSLATIONS = [
   "navigation",
   "footer",
   "card",
-  "info_block",
   "date_time_picker",
   "geolocation_provider",
   "toast",
