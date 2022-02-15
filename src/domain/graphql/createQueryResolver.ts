@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/nextjs";
 import { ApolloError } from "apollo-server-micro";
 import { GraphQLResolveInfo } from "graphql";
 
@@ -25,10 +26,12 @@ const createQueryResolver =
 
       return resolverResult;
     } catch (e) {
+      // Sentry logging
+      captureException(e);
+
       if (onError) {
         onError(e);
       }
-
       if (e instanceof ApolloError) {
         throw e;
       }

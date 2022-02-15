@@ -5,7 +5,20 @@ services:
     build:
       context: .
       target: ${DOCKER_TARGET:-production}
+      args:
+       - NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT=${NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT}
+       - NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT=${NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT}
+       - NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT=${NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT}
+       - NEXT_PUBLIC_MATOMO_SITE_ID=${NEXT_PUBLIC_MATOMO_SITE_ID}
+       - NEXT_PUBLIC_MATOMO_ENABLED=${NEXT_PUBLIC_MATOMO_ENABLED}
+       - NEXT_PUBLIC_DEBUG=${NEXT_PUBLIC_DEBUG}
+       - NEXT_PUBLIC_SENTRY_ENVIRONMENT=${NEXT_PUBLIC_SENTRY_ENVIRONMENT}
+       - NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
+       - NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE=${NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE}
+       - SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
     ports:
       - "3000:3000"
-    env_file:
-      - .env.local
+    # At the time of writing this, .env.local is not working. Env variables have to be in .env file
+    # if you are building production version locally in Docker  
+    env_file: 
+     - .env.local

@@ -71,13 +71,21 @@ Note that Next has some special behaviour when it comes to passing environment v
 | `NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT`       | GraphQL endpoint for the BFF of this application.                                                                                                                                                                                                          |
 | `NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS`     | By toggling this variable, you may allow Apollo to handle requests without correct authorization. Our review environments do not have valid certificates (and won't), so we've allowed unauthorized request in them. Use with care! _**Default:** `false`_ |
 | `NEXT_PUBLIC_DEBUG`                           | When toggled on, the application will produce more detailed logs. _**Default:** `false`_                                                                                                                                                                   |
-| `NEXT_PUBLIC_SENTRY_DSN`                      | Configure a project for Sentry.                                                                                                                                                                                                                            |
-| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`              | Provide an unique name for each environment.                                                                                                                                                                                                               |
-| `NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE`        | When this environment variable is provided, and Sentry is configured properly, [Browser Tracing](https://docs.sentry.io/platforms/javascript/performance/instrumentation/automatic-instrumentation/) is configured for use.                                |
 | `NEXT_PUBLIC_HAUKI_ENABLED`                   | When this configuration is toggled on, Hauki related features are enabled. _**Default:** `false`_                                                                                                                                                          |
 | `NEXT_PUBLIC_MATOMO_ENABLED`                  | Control whether Matomo is enabled.                                                                                                                                                                                                                         |
 | `NEXT_PUBLIC_MATOMO_SITE_ID`                  | If Matomo is in use, provide site id to direct analytics into the correct destination.                                                                                                                                                                     |
 | `NEXT_PUBLIC_DEFAULT_ISR_REVALIDATE_SECONDS`  | Default length of time in seconds between [NextJS's ISR's](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) regenerations. _**Default:** `10`_                                                                        |
+| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`              | Environment used for sentry logging                                                                                                                                                                                                                        |
+| `NEXT_PUBLIC_SENTRY_DSN`                      | Sentry Data Source Name (DSN) [DSN Docs](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)                                                                                                                                                      |
+| `NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE`        | Sentry sampling rate [Sampling Docs](https://docs.sentry.io/platforms/javascript/configuration/sampling/)                                                                                                                                                  |
+| `SENTRY_AUTH_TOKEN`                           | Sentry authentication token when using Sentry CLI (Sentry uses this when building project for production)                                                                                                                                                  |
+
+## Error tracking (Sentry)
+
+Sentry is used for error tracking:
+
+Sentry Next.js docs [here](https://docs.sentry.io/platforms/javascript/guides/nextjs/).
+Sentry dashboard for this project [here](https://sentry.io/organizations/city-of-helsinki/issues/?environment=production&project=6078854).
 
 ## Internationalization
 
