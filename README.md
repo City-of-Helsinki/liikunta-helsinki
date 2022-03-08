@@ -8,7 +8,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 Test: https://liikunta-helsinki.test.kuva.hel.ninja/
 
-Production: https://liikunta-helsinki.prod.kuva.hel.ninja/
+Production: https://liikunta.hel.fi
 
 ## Links
 
