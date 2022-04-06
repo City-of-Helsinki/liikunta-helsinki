@@ -1,0 +1,13 @@
+query SelectedEvents($ids: [ID!]!, $first: Int, $after: String) {
+  events(where: { ids: $ids }, first: $first, after: $after) {
+    edges {
+      node {
+        ...event
+      }
+    }
+    pageInfo {
+      ...pageInfo
+    }
+    totalCount
+  }
+}

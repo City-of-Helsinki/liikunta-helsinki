@@ -187,7 +187,29 @@ export type Venue = {
   telephone?: Maybe<Scalars['String']>;
 };
 
+export type EventFragment = { __typename?: 'Event', id: string, name: string, shortDescription?: string | null | undefined, startTime: string, endTime?: string | null | undefined, infoUrl?: string | null | undefined, offers: Array<{ __typename?: 'Offer', isFree: boolean, description?: string | null | undefined, price?: string | null | undefined, infoUrl?: string | null | undefined }>, images: Array<{ __typename?: 'Image', id: string, alt?: string | null | undefined, url: string }> };
+
 export type ListVenueFragment = { __typename?: 'Venue', description?: string | null | undefined, id: string, image?: string | null | undefined, name?: string | null | undefined, ontologyWords: Array<{ __typename?: 'Ontology', id?: number | null | undefined, label?: string | null | undefined } | null | undefined> };
+
+export type PageInfoFragment = { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, endCursor?: string | null | undefined, count: number };
+
+export type SearchEventsQueryVariables = Exact<{
+  where: EventQuery;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SearchEventsQuery = { __typename?: 'Query', events: { __typename?: 'EventsConnection', totalCount?: number | null | undefined, edges: Array<{ __typename?: 'EventEdge', node: { __typename?: 'Event', id: string, name: string, shortDescription?: string | null | undefined, startTime: string, endTime?: string | null | undefined, infoUrl?: string | null | undefined, offers: Array<{ __typename?: 'Offer', isFree: boolean, description?: string | null | undefined, price?: string | null | undefined, infoUrl?: string | null | undefined }>, images: Array<{ __typename?: 'Image', id: string, alt?: string | null | undefined, url: string }> } }>, pageInfo?: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, endCursor?: string | null | undefined, count: number } | null | undefined } };
+
+export type SelectedEventsQueryVariables = Exact<{
+  ids: Array<Scalars['ID']> | Scalars['ID'];
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SelectedEventsQuery = { __typename?: 'Query', events: { __typename?: 'EventsConnection', totalCount?: number | null | undefined, edges: Array<{ __typename?: 'EventEdge', node: { __typename?: 'Event', id: string, name: string, shortDescription?: string | null | undefined, startTime: string, endTime?: string | null | undefined, infoUrl?: string | null | undefined, offers: Array<{ __typename?: 'Offer', isFree: boolean, description?: string | null | undefined, price?: string | null | undefined, infoUrl?: string | null | undefined }>, images: Array<{ __typename?: 'Image', id: string, alt?: string | null | undefined, url: string }> } }>, pageInfo?: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, endCursor?: string | null | undefined, count: number } | null | undefined } };
 
 export type SelectedVenuesQueryVariables = Exact<{
   ids: Array<Scalars['ID']> | Scalars['ID'];
@@ -196,6 +218,35 @@ export type SelectedVenuesQueryVariables = Exact<{
 
 export type SelectedVenuesQuery = { __typename?: 'Query', venuesByIds: Array<{ __typename?: 'Venue', description?: string | null | undefined, id: string, image?: string | null | undefined, name?: string | null | undefined, ontologyWords: Array<{ __typename?: 'Ontology', id?: number | null | undefined, label?: string | null | undefined } | null | undefined> }> };
 
+export type UpcomingEventsQueryVariables = Exact<{
+  where: EventQuery;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpcomingEventsQuery = { __typename?: 'Query', events: { __typename?: 'EventsConnection', edges: Array<{ __typename?: 'EventEdge', node: { __typename?: 'Event', id: string, name: string, shortDescription?: string | null | undefined, startTime: string, endTime?: string | null | undefined, infoUrl?: string | null | undefined, offers: Array<{ __typename?: 'Offer', isFree: boolean, description?: string | null | undefined, price?: string | null | undefined, infoUrl?: string | null | undefined }>, images: Array<{ __typename?: 'Image', id: string, alt?: string | null | undefined, url: string }> } }> } };
+
+export const EventFragmentDoc = gql`
+    fragment event on Event {
+  id
+  name
+  shortDescription
+  startTime
+  endTime
+  infoUrl
+  offers {
+    isFree
+    description
+    price
+    infoUrl
+  }
+  images {
+    id
+    alt
+    url
+  }
+}
+    `;
 export const ListVenueFragmentDoc = gql`
     fragment listVenue on Venue {
   description
@@ -208,6 +259,106 @@ export const ListVenueFragmentDoc = gql`
   }
 }
     `;
+export const PageInfoFragmentDoc = gql`
+    fragment pageInfo on PageInfo {
+  hasPreviousPage
+  hasNextPage
+  endCursor
+  count
+}
+    `;
+export const SearchEventsDocument = gql`
+    query SearchEvents($where: EventQuery!, $first: Int, $after: String) {
+  events(where: $where, first: $first, after: $after) {
+    edges {
+      node {
+        ...event
+      }
+    }
+    pageInfo {
+      ...pageInfo
+    }
+    totalCount
+  }
+}
+    ${EventFragmentDoc}
+${PageInfoFragmentDoc}`;
+
+/**
+ * __useSearchEventsQuery__
+ *
+ * To run a query within a React component, call `useSearchEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchEventsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useSearchEventsQuery(baseOptions: Apollo.QueryHookOptions<SearchEventsQuery, SearchEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchEventsQuery, SearchEventsQueryVariables>(SearchEventsDocument, options);
+      }
+export function useSearchEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchEventsQuery, SearchEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchEventsQuery, SearchEventsQueryVariables>(SearchEventsDocument, options);
+        }
+export type SearchEventsQueryHookResult = ReturnType<typeof useSearchEventsQuery>;
+export type SearchEventsLazyQueryHookResult = ReturnType<typeof useSearchEventsLazyQuery>;
+export type SearchEventsQueryResult = Apollo.QueryResult<SearchEventsQuery, SearchEventsQueryVariables>;
+export const SelectedEventsDocument = gql`
+    query SelectedEvents($ids: [ID!]!, $first: Int, $after: String) {
+  events(where: {ids: $ids}, first: $first, after: $after) {
+    edges {
+      node {
+        ...event
+      }
+    }
+    pageInfo {
+      ...pageInfo
+    }
+    totalCount
+  }
+}
+    ${EventFragmentDoc}
+${PageInfoFragmentDoc}`;
+
+/**
+ * __useSelectedEventsQuery__
+ *
+ * To run a query within a React component, call `useSelectedEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelectedEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelectedEventsQuery({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useSelectedEventsQuery(baseOptions: Apollo.QueryHookOptions<SelectedEventsQuery, SelectedEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SelectedEventsQuery, SelectedEventsQueryVariables>(SelectedEventsDocument, options);
+      }
+export function useSelectedEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SelectedEventsQuery, SelectedEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SelectedEventsQuery, SelectedEventsQueryVariables>(SelectedEventsDocument, options);
+        }
+export type SelectedEventsQueryHookResult = ReturnType<typeof useSelectedEventsQuery>;
+export type SelectedEventsLazyQueryHookResult = ReturnType<typeof useSelectedEventsLazyQuery>;
+export type SelectedEventsQueryResult = Apollo.QueryResult<SelectedEventsQuery, SelectedEventsQueryVariables>;
 export const SelectedVenuesDocument = gql`
     query SelectedVenues($ids: [ID!]!) {
   venuesByIds(ids: $ids) {
@@ -243,3 +394,43 @@ export function useSelectedVenuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SelectedVenuesQueryHookResult = ReturnType<typeof useSelectedVenuesQuery>;
 export type SelectedVenuesLazyQueryHookResult = ReturnType<typeof useSelectedVenuesLazyQuery>;
 export type SelectedVenuesQueryResult = Apollo.QueryResult<SelectedVenuesQuery, SelectedVenuesQueryVariables>;
+export const UpcomingEventsDocument = gql`
+    query UpcomingEvents($where: EventQuery!, $first: Int) {
+  events(where: $where, first: $first) {
+    edges {
+      node {
+        ...event
+      }
+    }
+  }
+}
+    ${EventFragmentDoc}`;
+
+/**
+ * __useUpcomingEventsQuery__
+ *
+ * To run a query within a React component, call `useUpcomingEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUpcomingEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUpcomingEventsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useUpcomingEventsQuery(baseOptions: Apollo.QueryHookOptions<UpcomingEventsQuery, UpcomingEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UpcomingEventsQuery, UpcomingEventsQueryVariables>(UpcomingEventsDocument, options);
+      }
+export function useUpcomingEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UpcomingEventsQuery, UpcomingEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UpcomingEventsQuery, UpcomingEventsQueryVariables>(UpcomingEventsDocument, options);
+        }
+export type UpcomingEventsQueryHookResult = ReturnType<typeof useUpcomingEventsQuery>;
+export type UpcomingEventsLazyQueryHookResult = ReturnType<typeof useUpcomingEventsLazyQuery>;
+export type UpcomingEventsQueryResult = Apollo.QueryResult<UpcomingEventsQuery, UpcomingEventsQueryVariables>;

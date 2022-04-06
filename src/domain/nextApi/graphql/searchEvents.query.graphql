@@ -1,0 +1,13 @@
+query SearchEvents($where: EventQuery!, $first: Int, $after: String) {
+  events(where: $where, first: $first, after: $after) {
+    edges {
+      node {
+        ...event
+      }
+    }
+    pageInfo {
+      ...pageInfo
+    }
+    totalCount
+  }
+}

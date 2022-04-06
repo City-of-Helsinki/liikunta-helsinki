@@ -1,35 +1,21 @@
-import { useQuery, gql } from "@apollo/client";
-
-import { useNextApiApolloClient } from "../../clients/nextApiApolloClient";
-import eventFragment from "../eventFragment";
-import useRouter from "../../i18n/router/useRouter";
 import { ItemQueryResult } from "../../../types";
+import { useNextApiApolloClient } from "../../nextApi/nextApiApolloClient";
+import {
+  useSelectedEventsQuery,
+  SelectedEventsQuery,
+  SelectedEventsQueryVariables,
+} from "../../nextApi/selectedEventsQuery";
+import useRouter from "../../i18n/router/useRouter";
 import getEventsAsItems from "../utils/getEventsAsItems";
-
-const SELECTED_EVENTS_QUERY = gql`
-  query SelectedEventsQuery($ids: [ID!]!, $first: Int, $after: String) {
-    events(where: { ids: $ids }, first: $first, after: $after) {
-      edges {
-        node {
-          ...eventFragment
-        }
-      }
-      pageInfo {
-        hasPreviousPage
-        hasNextPage
-        endCursor
-        count
-      }
-      totalCount
-    }
-  }
-
-  ${eventFragment}
-`;
 
 type Props = {
   events: string[];
-  render: <TVariables>(renderProps: ItemQueryResult<TVariables>) => JSX.Element;
+  render: (
+    renderProps: ItemQueryResult<
+      SelectedEventsQuery,
+      SelectedEventsQueryVariables
+    >
+  ) => JSX.Element;
   pageSize?: number;
 };
 
@@ -41,7 +27,7 @@ export default function SelectedEventsSection({
   const nextApiApolloClient = useNextApiApolloClient();
   const router = useRouter();
   const locale = router.locale ?? router.defaultLocale;
-  const { data, ...queryResult } = useQuery(SELECTED_EVENTS_QUERY, {
+  const { data, ...queryResult } = useSelectedEventsQuery({
     client: nextApiApolloClient,
     variables: { ids: eventIds, first: pageSize, after: "" },
     ssr: false,
