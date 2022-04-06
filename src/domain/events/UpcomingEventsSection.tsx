@@ -2,12 +2,12 @@ import { LoadingSpinner } from "hds-react";
 import { useTranslation } from "next-i18next";
 import { RefObject } from "react";
 
-import Section from "../../../common/components/section/Section";
-import List from "../../../common/components/list/List";
-import CondensedCard from "../../../common/components/card/CondensedCard";
-import { useUpcomingEventsQuery } from "../../nextApi/upcomingEventsQuery";
-import useRouter from "../../i18n/router/useRouter";
-import getEventsAsItems from "../utils/getEventsAsItems";
+import Section from "../../common/components/section/Section";
+import List from "../../common/components/list/List";
+import CondensedCard from "../../common/components/card/CondensedCard";
+import { useUpcomingEventsQuery } from "../nextApi/upcomingEventsQuery";
+import useRouter from "../i18n/router/useRouter";
+import getEventsAsItems from "./utils/getEventsAsItems";
 
 type Props = {
   linkedId: string;

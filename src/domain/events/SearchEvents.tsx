@@ -1,13 +1,13 @@
-import { ItemQueryResult } from "../../../types";
-import { useNextApiApolloClient } from "../../nextApi/nextApiApolloClient";
+import { ItemQueryResult } from "../../types";
+import { useNextApiApolloClient } from "../nextApi/nextApiApolloClient";
 import {
   useSearchEventsQuery,
   SearchEventsQuery,
   SearchEventsQueryVariables,
-} from "../../nextApi/searchEventsQuery";
-import useRouter from "../../i18n/router/useRouter";
-import getEventsAsItems from "../utils/getEventsAsItems";
-import getEventQueryFromCMSEventSearch from "../utils/getEventQueryFromCMSEventSearch";
+} from "../nextApi/searchEventsQuery";
+import useRouter from "../i18n/router/useRouter";
+import getEventsAsItems from "./utils/getEventsAsItems";
+import getEventQueryFromCMSEventSearch from "./utils/getEventQueryFromCMSEventSearch";
 
 type Props = {
   url: string;
