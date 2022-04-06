@@ -15,8 +15,7 @@ function limitWordCount(description: string) {
 type Venue = {
   id: string;
   name: string;
-  pictureUrl: string;
-  pictureCaption: string;
+  image: string;
   description?: string;
   ontologyWords: Array<{
     id: string;
@@ -29,7 +28,7 @@ export default function getVenuesAsItems(venues: Venue[] | undefined): Item[] {
     return [];
   }
 
-  return venues.map(({ id, name, description, pictureUrl, ontologyWords }) => {
+  return venues.map(({ id, name, description, image, ontologyWords }) => {
     const { id: idNumber } = getVenueIdParts(id);
 
     return {
@@ -37,7 +36,7 @@ export default function getVenuesAsItems(venues: Venue[] | undefined): Item[] {
       title: name,
       infoLines: description ? [limitWordCount(description)] : [],
       href: `/venues/tprek:${idNumber ?? id}`,
-      image: pictureUrl,
+      image,
       keywords: ontologyWords.map((ontology) => ({
         label: ontology.label,
         href: {
