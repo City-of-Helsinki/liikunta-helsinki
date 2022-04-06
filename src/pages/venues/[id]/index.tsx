@@ -28,7 +28,7 @@ import useRouter from "../../../domain/i18n/router/useRouter";
 import queryPersister from "../../../common/utils/queryPersister";
 import serverSideTranslationsWithCommon from "../../../domain/i18n/serverSideTranslationsWithCommon";
 import { getLocaleOrError } from "../../../domain/i18n/router/utils";
-import UpcomingEventsSection from "../../../domain/events/upcomingEventsSection/UpcomingEventsSection";
+import UpcomingEventsSection from "../../../domain/events/UpcomingEventsSection";
 import VenuesByOntologyWords from "../../../domain/unifiedSearch/venuesByOntologyWords/VenuesByOntologyWords";
 import getVenueIdParts from "../../../domain/venues/utils/getVenueIdParts";
 import getVenueOpeningTimeDescription from "../../../domain/venues/utils/getVenueOpeningTimeDescription";

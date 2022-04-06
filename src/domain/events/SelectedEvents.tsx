@@ -1,12 +1,12 @@
-import { ItemQueryResult } from "../../../types";
-import { useNextApiApolloClient } from "../../nextApi/nextApiApolloClient";
+import { ItemQueryResult } from "../../types";
+import { useNextApiApolloClient } from "../nextApi/nextApiApolloClient";
 import {
   useSelectedEventsQuery,
   SelectedEventsQuery,
   SelectedEventsQueryVariables,
-} from "../../nextApi/selectedEventsQuery";
-import useRouter from "../../i18n/router/useRouter";
-import getEventsAsItems from "../utils/getEventsAsItems";
+} from "../nextApi/selectedEventsQuery";
+import useRouter from "../i18n/router/useRouter";
+import getEventsAsItems from "./utils/getEventsAsItems";
 
 type Props = {
   events: string[];
