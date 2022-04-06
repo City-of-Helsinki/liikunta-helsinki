@@ -2,10 +2,10 @@ import React, { useRef } from "react";
 import { LoadingSpinner, Button } from "hds-react";
 import { OperationVariables } from "@apollo/client";
 
-import { PageInfo } from "../../types";
-import useA11yPagination from "./usePagination";
 import Text from "../../common/components/text/Text";
 import List from "../../common/components/list/List";
+import { PageInfoFragment as PageInfo } from "../nextApi/pageInfoFragment";
+import useA11yPagination from "./usePagination";
 import styles from "./paginationContainer.module.scss";
 import { FetchMoreFunction } from "./types";
 

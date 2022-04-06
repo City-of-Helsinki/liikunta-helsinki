@@ -3,6 +3,7 @@ import { UrlObject } from "url";
 import { OperationVariables, QueryResult } from "@apollo/client";
 
 import { Sources } from "./domain/app/appConstants";
+import { PageInfoFragment } from "./domain/nextApi/pageInfoFragment";
 
 export type Locale = "fi" | "sv" | "en";
 
@@ -249,28 +250,6 @@ export type Context = {
   dataSources?: any;
 };
 
-export type EventOffer = {
-  isFree: boolean;
-  description: string | null;
-  price: string | null;
-  infoUrl: string | null;
-};
-
-export type Event = {
-  id: string;
-  name: string | null;
-  shortDescription: string | null;
-  startTime: string;
-  endTime: string | null;
-  infoUrl: string | null;
-  offers: EventOffer[];
-  images: {
-    id: string | null;
-    alt: string | null;
-    url: string | null;
-  }[];
-};
-
 export type Address = {
   streetName: string;
   zip: string;
@@ -282,19 +261,12 @@ export type Option = {
   value: string;
 };
 
-export type PageInfo = {
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  endCursor: string;
-  count: number;
-};
-
 export type ItemQueryResult<
   TData = null,
   TVariables = OperationVariables
 > = Omit<QueryResult<TData, TVariables>, "data"> & {
   items: Item[];
-  pageInfo?: PageInfo;
+  pageInfo?: PageInfoFragment;
   totalCount: number;
 };
 

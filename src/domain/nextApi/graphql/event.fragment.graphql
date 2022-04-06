@@ -1,0 +1,19 @@
+fragment event on Event {
+  id
+  name
+  shortDescription
+  startTime
+  endTime
+  infoUrl
+  offers {
+    isFree
+    description
+    price
+    infoUrl
+  }
+  images {
+    id
+    alt
+    url
+  }
+}

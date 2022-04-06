@@ -1,27 +1,13 @@
-import { useQuery, gql } from "@apollo/client";
 import { LoadingSpinner } from "hds-react";
 import { useTranslation } from "next-i18next";
 import { RefObject } from "react";
 
-import getEventsAsItems from "../utils/getEventsAsItems";
-import eventFragment from "../eventFragment";
-import useRouter from "../../i18n/router/useRouter";
 import Section from "../../../common/components/section/Section";
 import List from "../../../common/components/list/List";
 import CondensedCard from "../../../common/components/card/CondensedCard";
-
-const UPCOMING_EVENTS_QUERY = gql`
-  query UpcomingEventsQuery($where: EventQuery!, $first: Int) {
-    events(where: $where, first: $first) {
-      edges {
-        node {
-          ...eventFragment
-        }
-      }
-    }
-  }
-  ${eventFragment}
-`;
+import { useUpcomingEventsQuery } from "../../nextApi/upcomingEventsQuery";
+import useRouter from "../../i18n/router/useRouter";
+import getEventsAsItems from "../utils/getEventsAsItems";
 
 type Props = {
   linkedId: string;
@@ -44,7 +30,7 @@ export default function UpcomingEventsSection({
     loading,
     error,
     data = null,
-  } = useQuery(UPCOMING_EVENTS_QUERY, {
+  } = useUpcomingEventsQuery({
     variables: {
       where: {
         location: linkedId,

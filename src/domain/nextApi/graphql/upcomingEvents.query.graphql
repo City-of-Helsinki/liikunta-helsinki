@@ -1,0 +1,9 @@
+query UpcomingEvents($where: EventQuery!, $first: Int) {
+  events(where: $where, first: $first) {
+    edges {
+      node {
+        ...event
+      }
+    }
+  }
+}

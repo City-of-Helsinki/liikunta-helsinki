@@ -9,9 +9,12 @@ import {
 } from "date-fns";
 import fi from "date-fns/locale/fi";
 
-import { Item, Event, Keyword, EventOffer } from "../../../types";
+import { Item, Keyword } from "../../../types";
+import { EventFragment } from "../../nextApi/eventFragment";
 
-function getIsCloseInTimeKeyword({ startTime }: Event): Keyword | null {
+type EventOffer = EventFragment["offers"][number];
+
+function getIsCloseInTimeKeyword({ startTime }: EventFragment): Keyword | null {
   const now = new Date();
   const startTimeAsDate = new Date(startTime);
   const isToday = isWithinInterval(startTimeAsDate, {
@@ -35,7 +38,7 @@ function getIsCloseInTimeKeyword({ startTime }: Event): Keyword | null {
   };
 }
 
-function getIsFree(event: Event): Keyword | null {
+function getIsFree(event: EventFragment): Keyword | null {
   const isFree = event.offers.find(({ isFree }) => isFree);
 
   if (!isFree) {
@@ -68,7 +71,7 @@ function formatOffer(offer?: EventOffer): string | null {
 const formatDateTime = (dateTime: Date): string =>
   format(dateTime, "d.M.yyyy, kk.mm");
 
-function formatEventTime({ startTime, endTime }: Event): string {
+function formatEventTime({ startTime, endTime }: EventFragment): string {
   const startTimeDate = new Date(startTime);
 
   // If there's no end time, return just the start time
@@ -97,7 +100,7 @@ function formatEventTime({ startTime, endTime }: Event): string {
   );
 }
 
-export default function getEventsAsItems(events?: Event[]): Item[] {
+export default function getEventsAsItems(events?: EventFragment[]): Item[] {
   if (!events) {
     return [];
   }
