@@ -26,8 +26,8 @@ import CondensedCard from "../../common/components/card/CondensedCard";
 import List from "../../common/components/list/List";
 import styles from "./collection.module.scss";
 
-type CollectionItemListProps = {
-  queryResult: ItemQueryResult;
+type CollectionItemListProps<TData, TVariables> = {
+  queryResult: ItemQueryResult<TData, TVariables>;
   title: string;
   pageSize?: number;
   noPagination?: boolean;
@@ -43,7 +43,7 @@ const TextBodyL = ({
     </Text>
   ) : null;
 
-function CollectionItemList({
+function CollectionItemList<TData = null, TVariables = undefined>({
   title,
   queryResult: {
     loading,
@@ -56,7 +56,7 @@ function CollectionItemList({
   },
   pageSize,
   noPagination,
-}: CollectionItemListProps) {
+}: CollectionItemListProps<TData, TVariables>) {
   const { t } = useTranslation("collection_page");
 
   // In case of an error, silently fail.

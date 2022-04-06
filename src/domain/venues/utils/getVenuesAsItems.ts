@@ -1,4 +1,5 @@
 import { Item } from "../../../types";
+import { ListVenueFragment } from "../../nextApi/listVenueFragment";
 import getVenueIdParts from "./getVenueIdParts";
 
 function limitWordCount(description: string) {
@@ -12,18 +13,9 @@ function limitWordCount(description: string) {
   return `${wordCount.slice(0, limit).join(" ")}...`;
 }
 
-type Venue = {
-  id: string;
-  name: string;
-  image: string;
-  description?: string;
-  ontologyWords: Array<{
-    id: string;
-    label: string;
-  }>;
-};
-
-export default function getVenuesAsItems(venues: Venue[] | undefined): Item[] {
+export default function getVenuesAsItems(
+  venues: ListVenueFragment[] | undefined
+): Item[] {
   if (!venues) {
     return [];
   }

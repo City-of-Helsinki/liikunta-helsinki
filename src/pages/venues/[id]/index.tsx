@@ -23,7 +23,7 @@ import getLiikuntaStaticProps from "../../../domain/app/getLiikuntaStaticProps";
 import {
   createNextApiApolloClient,
   useNextApiApolloClient,
-} from "../../../domain/clients/nextApiApolloClient";
+} from "../../../domain/nextApi/nextApiApolloClient";
 import useRouter from "../../../domain/i18n/router/useRouter";
 import queryPersister from "../../../common/utils/queryPersister";
 import serverSideTranslationsWithCommon from "../../../domain/i18n/serverSideTranslationsWithCommon";

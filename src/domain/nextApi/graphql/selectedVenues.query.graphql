@@ -1,0 +1,5 @@
+query SelectedVenues($ids: [ID!]!) {
+  venuesByIds(ids: $ids) {
+    ...listVenue
+  }
+}
