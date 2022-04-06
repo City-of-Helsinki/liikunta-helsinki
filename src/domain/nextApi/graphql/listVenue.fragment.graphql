@@ -1,0 +1,10 @@
+fragment listVenue on Venue {
+  description
+  id
+  image
+  name
+  ontologyWords {
+    id
+    label
+  }
+}

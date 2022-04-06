@@ -289,10 +289,10 @@ export type PageInfo = {
   count: number;
 };
 
-export type ItemQueryResult<TVariables = OperationVariables> = Omit<
-  QueryResult<null, TVariables>,
-  "data"
-> & {
+export type ItemQueryResult<
+  TData = null,
+  TVariables = OperationVariables
+> = Omit<QueryResult<TData, TVariables>, "data"> & {
   items: Item[];
   pageInfo?: PageInfo;
   totalCount: number;

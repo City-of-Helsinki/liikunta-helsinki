@@ -10,7 +10,7 @@ import {
 import { useMemo } from "react";
 import { relayStylePagination } from "@apollo/client/utilities";
 
-import AppConfig from "../../domain/app/AppConfig";
+import AppConfig from "../app/AppConfig";
 import { logger } from "../logger";
 import {
   initializeApolloClient,

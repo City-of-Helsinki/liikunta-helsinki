@@ -11,7 +11,7 @@ import getLiikuntaStaticProps from "../../../../domain/app/getLiikuntaStaticProp
 import {
   createNextApiApolloClient,
   useNextApiApolloClient,
-} from "../../../../domain/clients/nextApiApolloClient";
+} from "../../../../domain/nextApi/nextApiApolloClient";
 import Link from "../../../../domain/i18n/router/Link";
 import useRouter from "../../../../domain/i18n/router/useRouter";
 import { getLocaleOrError } from "../../../../domain/i18n/router/utils";
