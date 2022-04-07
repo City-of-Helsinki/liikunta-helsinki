@@ -102,6 +102,8 @@ export const COLLECTION_PAGE_QUERY = gql`
   ${collectionFragment}
 `;
 
+const TextBodyL = (props) => <Text {...props} variant="body-l" />;
+
 const PAGE_SIZE = 10;
 
 export default function CollectionsPage() {
@@ -137,7 +139,13 @@ export default function CollectionsPage() {
             <Text as="h1" variant="h2">
               {title}
             </Text>
-            <HtmlToReact>{description}</HtmlToReact>
+            <HtmlToReact
+              components={{
+                p: TextBodyL,
+              }}
+            >
+              {description}
+            </HtmlToReact>
             <div className={styles.collectionBlockContentSome}>
               <Text as="h2" variant="h4">
                 {t("share_sport")}

@@ -35,6 +35,7 @@ const DefaultH2 = ({ children }: { children: React.ReactNode }) => (
 
 export default function HtmlToReact({
   children: dirty,
+  components,
   components: { p: P = DefaultP, h2: H2 = DefaultH2 } = {},
 }: Props) {
   const clean = useMemo(
@@ -50,11 +51,11 @@ export default function HtmlToReact({
     <>
       {parse(clean, {
         replace: (domNode) => {
-          if (domNode instanceof Element && domNode.name === "p") {
+          if ("attribs" in domNode && domNode.name === "p") {
             return <P>{domToReact(domNode.children)}</P>;
           }
 
-          if (domNode instanceof Element && domNode.name === "h2") {
+          if ("attribs" in domNode && domNode.name === "h2") {
             return <H2>{domToReact(domNode.children)}</H2>;
           }
 
