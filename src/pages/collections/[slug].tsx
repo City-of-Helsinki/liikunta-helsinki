@@ -33,7 +33,15 @@ type CollectionItemListProps = {
   noPagination?: boolean;
 };
 
-const TextBodyL = (props) => <Text {...props} variant="body-l" />;
+const TextBodyL = ({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) =>
+  children ? (
+    <Text {...props} variant="body-l">
+      {children}
+    </Text>
+  ) : null;
 
 function CollectionItemList({
   title,

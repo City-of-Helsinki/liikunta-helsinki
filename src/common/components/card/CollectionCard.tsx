@@ -9,7 +9,7 @@ function CollectionCard({ id, title, infoLines, keywords, href, image }: Item) {
     <Card id={id}>
       <Card.Content>
         <Card.Title variant="h3" title={title} href={href} />
-        <Card.InfoLines as="p" variant="body-l" infoLines={infoLines} />
+        <Card.InfoLines variant="body-l" infoLines={infoLines} />
       </Card.Content>
       <Card.Cta />
       <Card.Keywords keywords={keywords} className={styles.keywords} />
