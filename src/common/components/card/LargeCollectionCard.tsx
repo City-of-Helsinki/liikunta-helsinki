@@ -16,7 +16,7 @@ function LargeCollectionCard({
     <Card id={id} className={styles.largeCollectionCard}>
       <Card.Content className={styles.text}>
         <Card.Title as="h3" variant="h2" title={title} href={href} />
-        <Card.InfoLines as="p" variant="body-l" infoLines={infoLines} />
+        <Card.InfoLines variant="body-l" infoLines={infoLines} />
       </Card.Content>
       <Card.Cta className={styles.cta} />
       <Card.Keywords keywords={keywords} className={styles.keywords} />
