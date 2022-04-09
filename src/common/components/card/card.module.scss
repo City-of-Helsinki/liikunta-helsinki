@@ -53,6 +53,15 @@
     outline: 2px solid $color-black;
   }
 
+  & .clamp {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box !important;
+    line-height: $lineheight-l;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    -webkit-box-orient: vertical;
+  }
+
   // Visual order
   @include breakpoints.respond-above(m) {
     .nonOptimizedImage,
