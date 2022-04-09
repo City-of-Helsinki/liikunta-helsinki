@@ -76,10 +76,12 @@ type InfoLineObject = {
 type CardInfoLinesProps = Partial<React.ComponentProps<typeof Text>> & {
   infoLines: (InfoLineObject | string)[];
   className?: string;
+  clamp?: boolean;
 };
 
 function CardInfoLines({
   infoLines,
+  clamp,
   className,
   ...textProps
 }: CardInfoLinesProps) {
@@ -96,7 +98,9 @@ function CardInfoLines({
   }, [textProps]);
 
   return (
-    <div className={classNames(styles.infoLines, className)}>
+    <div
+      className={classNames(styles.infoLines, clamp && styles.clamp, className)}
+    >
       {infoLines.map((infoLine) => {
         if (!infoLine) {
           return null;
