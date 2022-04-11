@@ -19,7 +19,13 @@ function LargeCollectionCard({
         <Card.Title as="h3" variant="h2" title={title} href={href} />
         <Card.ClampedCardInfoLines
           variant="body-l"
-          infoLines={formatToSingleTag(infoLines)}
+          infoLines={[
+            formatToSingleTag(
+              infoLines
+                .map((line) => (typeof line === "string" ? line : line.text))
+                .join()
+            ),
+          ]}
         />
       </Card.Content>
       <Card.Cta className={styles.cta} />
