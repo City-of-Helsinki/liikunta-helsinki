@@ -2,6 +2,7 @@ import React from "react";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
+// eslint-disable-next-line no-restricted-imports
 import { I18nextProvider } from "react-i18next";
 
 import i18n from "./initI18n";
