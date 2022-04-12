@@ -3,7 +3,7 @@ import getIsValidUrl from "./getIsValidUrl";
 
 export default function getIsHrefExternal(href: string): boolean {
   if (getIsValidUrl(href)) {
-    const appOrigin = new URL(AppConfig.nextApiGraphqlEndpoint).origin;
+    const appOrigin = new URL(AppConfig.origin).origin;
     const hrefOrigin = new URL(href).origin;
 
     return appOrigin !== hrefOrigin;

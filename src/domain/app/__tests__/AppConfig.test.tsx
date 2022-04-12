@@ -21,21 +21,30 @@ test.each([
     envName: "NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT",
   },
   {
-    field: "nextApiGraphqlEndpoint",
-    mockEnvValue: "https://localhost/bff/graphql",
-    envName: "NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT",
+    field: "origin",
+    mockEnvValue: "https://localhost",
+    envName: "NEXT_PUBLIC_APP_ORIGIN",
   },
-])("provides required config $field", ({ field, mockEnvValue, envName }) => {
-  // When exists, provides it
-  process.env[envName] = mockEnvValue;
-  expect(AppConfig[field]).toEqual(process.env[envName]);
+  {
+    field: "nextApiGraphqlEndpoint",
+    mockEnvValue: "https://localhost",
+    envName: "NEXT_PUBLIC_APP_ORIGIN",
+    expectToEqual: "https://localhost/api/graphql",
+  },
+])(
+  "provides required config $field",
+  ({ field, mockEnvValue, envName, expectToEqual }) => {
+    // When exists, provides it
+    process.env[envName] = mockEnvValue;
+    expect(AppConfig[field]).toEqual(expectToEqual ?? process.env[envName]);
 
-  // When it doesn't exists, errors
-  delete process.env[envName];
-  expect(() => AppConfig[field]).toThrowError(
-    `Environment variable with name ${envName} was not found`
-  );
-});
+    // When it doesn't exists, errors
+    delete process.env[envName];
+    expect(() => AppConfig[field]).toThrowError(
+      `Environment variable with name ${envName} was not found`
+    );
+  }
+);
 
 test.each([
   {
