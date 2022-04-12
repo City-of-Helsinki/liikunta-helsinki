@@ -12,9 +12,17 @@
     width: 100%;
   }
 
-  // align links to be on the same level with external icon
   a {
+    // fix link color
+    --link-color: #{$color-black-90};
+
+    // align links to be on the same level with external icon
     align-self: center;
+
+    &:visited {
+      // Don't distinct between visited an unvisited links
+      color: var(--link-color);
+    }
   }
 
   // fix "back to top" button positioning being slightly off

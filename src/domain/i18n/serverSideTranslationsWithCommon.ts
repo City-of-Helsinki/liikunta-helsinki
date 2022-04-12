@@ -11,6 +11,7 @@ const COMMON_TRANSLATIONS = [
   "geolocation_provider",
   "toast",
   "utils",
+  "link",
 ];
 
 export default async function serverSideTranslationsWithCommon(
