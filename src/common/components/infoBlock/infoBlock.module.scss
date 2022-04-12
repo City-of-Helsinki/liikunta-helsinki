@@ -50,11 +50,19 @@
     text-decoration: underline;
   }
 
-  .body & {
-    font-size: $fontsize-body-l;
+  .body &,
+  .list & {
     // Custom color value. Custom value was created so that enough contrast
     // could be generated between the text and the background.
-    color: #008667;
+    --info-block-link-color: #008667;
+
+    font-size: $fontsize-body-l;
+    color: var(--info-block-link-color);
+
+    &:visited,
+    & svg {
+      color: var(--info-block-link-color) !important;
+    }
   }
 
   .card & {

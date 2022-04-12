@@ -67,7 +67,12 @@ function InfoBlockLink({ label, href }: InfoBlockContentLinkProps) {
 
   if (isExternal) {
     return (
-      <BaseLink href={hrefAsString} className={styles.link} target="_blank">
+      <BaseLink
+        href={hrefAsString}
+        className={styles.link}
+        target="_blank"
+        disableVisitedStyles
+      >
         {label}
       </BaseLink>
     );
