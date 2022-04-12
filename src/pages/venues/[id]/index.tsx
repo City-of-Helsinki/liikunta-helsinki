@@ -242,7 +242,6 @@ export function VenuePageContent() {
   ];
   const hslInfoLink = (
     <InfoBlock.Link
-      external
       key="hsl"
       href={getHSLDirections(null, directionPoint)}
       label={t("link.hsl_directions.label")}
@@ -250,7 +249,6 @@ export function VenuePageContent() {
   );
   const googleInfoLink = (
     <InfoBlock.Link
-      external
       key="google"
       href={getGoogleDirectionsUrl(null, directionPoint)}
       label={t("link.google_directions.label")}
@@ -438,7 +436,6 @@ export function VenuePageContent() {
                     return [
                       ...acc,
                       <InfoBlock.Link
-                        external
                         key={link.id}
                         href={link.url}
                         label={link.name}
