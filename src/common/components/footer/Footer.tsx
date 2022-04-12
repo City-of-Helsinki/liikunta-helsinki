@@ -1,33 +1,26 @@
-import { Footer as HDSFooter, IconLinkExternal, LogoLanguage } from "hds-react";
 import React from "react";
+import { Footer as HDSFooter, LogoLanguage } from "hds-react";
 import { useTranslation } from "next-i18next";
 
-import useRouter from "../../../domain/i18n/router/useRouter";
 import { NavigationItem } from "../../../types";
+import useRouter from "../../../domain/i18n/router/useRouter";
 import NextLink from "../../../domain/i18n/router/Link";
+import BaseLink from "../link/Link";
 import styles from "./footer.module.scss";
 
-type LinkProps = React.HTMLProps<HTMLAnchorElement> & {
+type LinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, "ref"> & {
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
   external?: boolean;
-  children?: React.ReactNode;
+  children?: string;
 };
 
-const Link = ({
-  href,
-  children,
-  locale,
-  external = false,
-  ...rest
-}: LinkProps) => {
-  const { t } = useTranslation();
+const Link = ({ href, children, locale, ...rest }: LinkProps) => {
   return (
-    <NextLink href={href} locale={locale}>
-      <a {...rest}>
+    <NextLink href={href} locale={locale} passHref>
+      <BaseLink {...rest} disableVisitedStyles>
         {children}
-        {external && <IconLinkExternal aria-label={t("opens_in_new_tab")} />}
-      </a>
+      </BaseLink>
     </NextLink>
   );
 };
@@ -52,7 +45,6 @@ function Footer({ navigationItems }: Props) {
         <HDSFooter.Item
           href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute"
           label={t("feedback")}
-          external
           as={Link}
         />
         {navigationItems.map((navigationItem) => (
