@@ -405,22 +405,6 @@ export function VenuePageContent() {
             )}
             <InfoBlock
               headingLevel="h3"
-              icon={<IconLocation aria-hidden="true" />}
-              name={t("block.location.label")}
-              contents={[
-                <InfoBlock.List
-                  key="address"
-                  items={[name, streetAddress, addressLocality]}
-                />,
-                <InfoBlock.Link
-                  key="map-link"
-                  href={{ pathname: `/venues/[id]/map`, query: { id } }}
-                  label={t("link.map.label")}
-                />,
-              ]}
-            />
-            <InfoBlock
-              headingLevel="h3"
               icon={<IconInfoCircle aria-hidden="true" />}
               name={t("block.other_information.label")}
               contents={[
