@@ -44,7 +44,7 @@
   min-width: 8rem;
 
   font-weight: 700;
-  text-decoration: none;
+  text-decoration: none !important;
 
   &:hover {
     text-decoration: underline;

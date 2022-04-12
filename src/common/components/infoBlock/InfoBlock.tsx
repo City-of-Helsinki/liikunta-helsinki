@@ -1,22 +1,17 @@
 import { UrlObject } from "url";
 
 import React from "react";
-import {
-  IconLinkExternal,
-  IconAngleRight,
-  useAccordion,
-  IconAngleDown,
-} from "hds-react";
+import { useAccordion, IconAngleDown, IconAngleRight } from "hds-react";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
 
 import Link from "../../../domain/i18n/router/Link";
+import getIsHrefExternal from "../../utils/getIsHrefExternal";
+import BaseLink from "../link/Link";
 import Text from "../text/Text";
 import EllipsedTextWithToggle from "../ellipsedTextWithToggle/EllipsedTextWithToggle";
 import styles from "./infoBlock.module.scss";
 
 type InfoBlockContentLinkProps = {
-  external?: boolean;
   label: string;
   href: string | UrlObject;
 };
@@ -65,29 +60,21 @@ function getHrefAsString(href: string | UrlObject): string {
   }`;
 }
 
-function InfoBlockLink({
-  external = false,
-  label,
-  href,
-}: InfoBlockContentLinkProps) {
-  const { t } = useTranslation("common");
+function InfoBlockLink({ label, href }: InfoBlockContentLinkProps) {
+  const hrefAsString = getHrefAsString(href);
+  const isExternal = getIsHrefExternal(hrefAsString);
 
-  if (external) {
+  if (isExternal) {
     return (
-      <a
-        href={getHrefAsString(href)}
-        className={styles.link}
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        {label} <IconLinkExternal aria-label={t("opens_in_new_tab")} />
-      </a>
+      <BaseLink href={hrefAsString} className={styles.link} target="_blank">
+        {label}
+      </BaseLink>
     );
   }
 
   return (
     <Link href={href}>
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      {/* Use anchor tag directly because HDS link can't render a rightIcon */}
       <a className={styles.link} onMouseUp={(e) => e.stopPropagation()}>
         <span>{label}</span> <IconAngleRight aria-hidden="true" />
       </a>
