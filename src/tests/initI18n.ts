@@ -1,4 +1,5 @@
 import i18n from "i18next";
+// eslint-disable-next-line no-restricted-imports
 import { initReactI18next } from "react-i18next";
 
 import card from "../../public/locales/fi/card.json";

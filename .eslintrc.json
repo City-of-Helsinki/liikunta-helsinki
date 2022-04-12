@@ -34,7 +34,13 @@
     "no-plusplus": "error",
     "no-undef": "warn",
     "object-curly-spacing": ["warn", "always"],
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "no-restricted-imports": [
+      "warn",
+      {
+        "paths": ["react-i18next"]
+      }
+    ]
   },
   "ignorePatterns": ["node_modules/", ".next/"],
   "overrides": [{ "files": ["*.ts", "*.tsx"], "rules": { "no-undef": "off" } }]
