@@ -32,7 +32,7 @@ export type Keyword = {
   href: string | UrlObject;
 };
 
-type ItemInfoLineObject = {
+export type ItemInfoLineObject = {
   text: string;
   icon: React.ReactNode;
 };

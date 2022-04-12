@@ -132,6 +132,10 @@ function CardInfoLines({
   );
 }
 
+function ClampedCardInfoLines(props: CardInfoLinesProps) {
+  return <CardInfoLines {...props} className={styles.clamp} />;
+}
+
 type CardContentChildrenProps =
   | CardTitleProps
   | CardInfoLinesProps
@@ -344,6 +348,7 @@ function Card({ children, id, className }: CardProps) {
 Card.Title = CardTitle;
 Card.Pre = CardPre;
 Card.InfoLines = CardInfoLines;
+Card.ClampedCardInfoLines = ClampedCardInfoLines;
 Card.Content = CardContent;
 Card.Cta = CardCta;
 Card.CtaButton = CardCtaButton;
