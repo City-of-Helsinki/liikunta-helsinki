@@ -27,21 +27,24 @@
   }
 }
 
-.mapLink {
-  display: inline-flex;
-  align-items: center;
-  color: $color-black;
-  font-size: $fontsize-body-s;
-  text-decoration: none;
-  margin-bottom: $spacing-s;
+// Increase specificity to consistently override HDS styles
+.wrapper {
+  .mapLink {
+    display: inline-flex;
+    align-items: center;
+    color: $color-black;
+    font-size: $fontsize-body-s;
+    text-decoration: none;
+    margin-bottom: $spacing-s;
 
-  &:hover {
-    text-decoration: underline;
-  }
+    &:hover {
+      text-decoration: underline;
+    }
 
-  svg {
-    margin-left: $spacing-2-xs;
-    fill: $color-black;
+    svg {
+      margin-left: $spacing-2-xs;
+      fill: $color-black;
+    }
   }
 }
 
