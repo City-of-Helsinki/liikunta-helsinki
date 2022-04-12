@@ -10,10 +10,14 @@ describe("queryPersister", () => {
   });
 
   afterAll(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     process.browser = processBrowser;
   });
 
   it("It should allow for a query to be persisted and read", () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     process.browser = true;
 
     const query = {
@@ -26,6 +30,8 @@ describe("queryPersister", () => {
   });
 
   it("should not persist the query if it is called with process.browser as false", () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     process.browser = false;
 
     const query = {
@@ -41,6 +47,8 @@ describe("queryPersister", () => {
   });
 
   it("should error with a message if saving a value into the storage fails", () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     process.browser = true;
     jest.spyOn(Storage.prototype, "setItem").mockImplementationOnce(() => {
       throw Error("Storage full");
