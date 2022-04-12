@@ -1,9 +1,10 @@
-import { IconLinkExternal, IconLocation } from "hds-react";
+import { IconLocation } from "hds-react";
 import React from "react";
 import { useTranslation } from "next-i18next";
 
 import Text from "../text/Text";
 import InfoBlock from "../infoBlock/InfoBlock";
+import Link from "../link/Link";
 import styles from "./mapBox.module.scss";
 
 type Props = {
@@ -34,15 +35,9 @@ function MapBox({
           <IconLocation aria-hidden="true" />
           <Text variant="h3">{title}</Text>
         </div>
-        <a
-          className={styles.mapLink}
-          href={serviceMapUrl}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <Link className={styles.mapLink} href={serviceMapUrl} target="_blank">
           {t("open_map")}
-          <IconLinkExternal size="xs" aria-label={t("opens_in_new_tab")} />
-        </a>
+        </Link>
       </div>
       <iframe
         title={title}
