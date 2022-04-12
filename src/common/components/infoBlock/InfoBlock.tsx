@@ -19,6 +19,7 @@ type InfoBlockContentLinkProps = {
 type InfoBlockContentListProps = {
   items: Array<string | React.ReactElement<InfoBlockContentLinkProps>>;
   inline?: boolean;
+  className?: string;
 };
 
 type InfoBlockCollapseProps = {
@@ -82,7 +83,11 @@ function InfoBlockLink({ label, href }: InfoBlockContentLinkProps) {
   );
 }
 
-function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
+function InfoBlockList({
+  items,
+  inline,
+  className,
+}: InfoBlockContentListProps) {
   const nonEmptyItems = items.filter((item) => item);
 
   if (nonEmptyItems.length === 0) {
@@ -91,9 +96,13 @@ function InfoBlockList({ items, inline }: InfoBlockContentListProps) {
 
   return (
     <ul
-      className={classNames(styles.list, {
-        [styles.inline]: inline,
-      })}
+      className={classNames(
+        styles.list,
+        {
+          [styles.inline]: inline,
+        },
+        className
+      )}
     >
       {nonEmptyItems.map((item) => (
         <li key={getKey(item)}>{item}</li>

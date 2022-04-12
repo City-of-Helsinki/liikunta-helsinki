@@ -50,7 +50,7 @@ function MapBox({
         </Text>
         <Text variant="body-l">{placeAddress}</Text>
         {links && (
-          <InfoBlock.List key="route-directions" inline items={links} />
+          <InfoBlock.List className={styles.links} inline items={links} />
         )}
         {accessibilitySentences}
       </div>
