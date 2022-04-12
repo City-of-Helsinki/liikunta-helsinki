@@ -15,11 +15,15 @@ class AppConfig {
     );
   }
 
-  static get nextApiGraphqlEndpoint() {
+  static get origin() {
     return getEnvOrError(
-      process.env.NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT,
-      "NEXT_PUBLIC_NEXT_API_GRAPHQL_ENDPOINT"
+      process.env.NEXT_PUBLIC_APP_ORIGIN,
+      "NEXT_PUBLIC_APP_ORIGIN"
     );
+  }
+
+  static get nextApiGraphqlEndpoint() {
+    return `${this.origin}/api/graphql`;
   }
 
   static get locales() {

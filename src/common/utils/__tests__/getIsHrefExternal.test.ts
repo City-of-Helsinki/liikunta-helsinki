@@ -4,9 +4,7 @@ import getIsHrefExternal from "../getIsHrefExternal";
 const mockOrigin = "http://localhost:3000";
 
 beforeEach(() => {
-  jest
-    .spyOn(AppConfig, "nextApiGraphqlEndpoint", "get")
-    .mockReturnValue(mockOrigin);
+  jest.spyOn(AppConfig, "origin", "get").mockReturnValue(mockOrigin);
 });
 
 test.each([
