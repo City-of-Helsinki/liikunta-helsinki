@@ -19,5 +19,6 @@
   "back_to_venue_page_aria_label": "Takaisin liikuntapaikkasivulle",
   "a11y_keywords_group_name": "Asiasanat",
   "show_long_price": "Näytä kaikki",
-  "hide_long_price": "Piilota"
+  "hide_long_price": "Piilota",
+  "block.contact_details.label": "Yhteystiedot"
 }

@@ -65,6 +65,7 @@ const GET_VENUE = gql`
       connections {
         sectionType
         name
+        phone
       }
     }
   }
@@ -132,6 +133,7 @@ const GET_VENUES_BY_IDS = gql`
       connections {
         sectionType
         name
+        phone
       }
     }
   }

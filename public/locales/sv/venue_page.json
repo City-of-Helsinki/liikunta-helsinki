@@ -19,5 +19,6 @@
   "back_to_venue_page_aria_label": "Tillbaka till motionsplatssidan",
   "a11y_keywords_group_name": "Ämnesord",
   "show_long_price": "Visa alla",
-  "hide_long_price": "Dölj"
+  "hide_long_price": "Dölj",
+  "block.contact_details.label": "Kontaktuppgifter"
 }

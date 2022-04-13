@@ -19,5 +19,6 @@
   "back_to_venue_page_aria_label": "Back to the sports location page",
   "a11y_keywords_group_name": "Key words",
   "show_long_price": "Show all",
-  "hide_long_price": "Hide"
+  "hide_long_price": "Hide",
+  "block.contact_details.label": "Contact information"
 }
