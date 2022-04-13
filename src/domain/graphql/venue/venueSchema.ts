@@ -69,6 +69,7 @@ const createVenueSchema = ({ haukiEnabled }: LiikuntaServerConfig = {}) => gql`
   type Connection {
     sectionType: String
     name: String
+    phone: String
   }
 
   type Venue {

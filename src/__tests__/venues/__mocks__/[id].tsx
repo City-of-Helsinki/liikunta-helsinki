@@ -37,16 +37,19 @@ export const defaultConnections = [
     __typename: "Connection",
     sectionType: "PHONE_OR_EMAIL",
     name: "Kassa",
+    phone: "+3581234567",
   },
   {
     __typename: "Connection",
     sectionType: "PHONE_OR_EMAIL",
     name: "Liikunnanohjaus",
+    phone: "+3581234568",
   },
   {
     __typename: "Connection",
     sectionType: "PHONE_OR_EMAIL",
     name: "Tiimiesihenkilö",
+    phone: "+35812345679",
   },
   {
     __typename: "Connection",

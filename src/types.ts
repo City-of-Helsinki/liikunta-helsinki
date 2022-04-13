@@ -208,6 +208,7 @@ export type VenueDetails<T = TranslationsObject> = {
   connections: Array<{
     sectionType: string;
     name: T;
+    phone: string;
   }>;
 };
 

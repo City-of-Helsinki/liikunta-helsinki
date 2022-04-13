@@ -37,18 +37,22 @@ Object {
       "connections": Array [
         Object {
           "name": "Päiväkodinjohtaja",
+          "phone": "+358 9 310 64132",
           "sectionType": "PHONE_OR_EMAIL",
         },
         Object {
           "name": "Hakemus kerhotoimintaan, esiopetukseen ja esiopetusta täydentävään varhaiskasvatukseen",
+          "phone": null,
           "sectionType": "ESERVICE_LINK",
         },
         Object {
           "name": "Kerhohakemus sähköisessä asioinnissa",
+          "phone": null,
           "sectionType": "ESERVICE_LINK",
         },
         Object {
           "name": "Varhaiskasvatushakemus Asti-asiointipalvelussa",
+          "phone": null,
           "sectionType": "ESERVICE_LINK",
         },
       ],
@@ -209,18 +213,22 @@ Object {
         "connections": Array [
           Object {
             "name": "Päiväkodinjohtaja",
+            "phone": "+358 9 310 64132",
             "sectionType": "PHONE_OR_EMAIL",
           },
           Object {
             "name": "Hakemus kerhotoimintaan, esiopetukseen ja esiopetusta täydentävään varhaiskasvatukseen",
+            "phone": null,
             "sectionType": "ESERVICE_LINK",
           },
           Object {
             "name": "Kerhohakemus sähköisessä asioinnissa",
+            "phone": null,
             "sectionType": "ESERVICE_LINK",
           },
           Object {
             "name": "Varhaiskasvatushakemus Asti-asiointipalvelussa",
+            "phone": null,
             "sectionType": "ESERVICE_LINK",
           },
         ],
@@ -351,18 +359,22 @@ Object {
         "connections": Array [
           Object {
             "name": "Päiväkodinjohtaja",
+            "phone": "+358 9 310 64132",
             "sectionType": "PHONE_OR_EMAIL",
           },
           Object {
             "name": "Hakemus kerhotoimintaan, esiopetukseen ja esiopetusta täydentävään varhaiskasvatukseen",
+            "phone": null,
             "sectionType": "ESERVICE_LINK",
           },
           Object {
             "name": "Kerhohakemus sähköisessä asioinnissa",
+            "phone": null,
             "sectionType": "ESERVICE_LINK",
           },
           Object {
             "name": "Varhaiskasvatushakemus Asti-asiointipalvelussa",
+            "phone": null,
             "sectionType": "ESERVICE_LINK",
           },
         ],

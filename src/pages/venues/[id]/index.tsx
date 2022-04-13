@@ -8,6 +8,7 @@ import {
   IconMap,
   IconAngleDown,
   IconTicket,
+  IconPhone,
 } from "hds-react";
 import React from "react";
 import classNames from "classnames";
@@ -86,6 +87,7 @@ export const VENUE_QUERY = gql`
       connections {
         sectionType
         name
+        phone
       }
     }
   }
@@ -313,6 +315,14 @@ export function VenuePageContent() {
   const connectionOpeningHoursSectionsLines =
     connectionOpeningHoursSectionsContents.join("\n\n").split("\n");
 
+  const contactDetailsSectionsContents = data?.venue?.connections?.filter(
+    (item) => item.sectionType === "PHONE_OR_EMAIL"
+  );
+
+  const hasContactDetails = Boolean(
+    email || telephone || contactDetailsSectionsContents?.length > 0
+  );
+
   // Data that can't be found from the API at this point
   const temperature = null;
   const organizer = null;
@@ -401,15 +411,30 @@ export function VenuePageContent() {
                 ]}
               />
             )}
+            {hasContactDetails && (
+              <InfoBlock
+                headingLevel="h3"
+                icon={<IconPhone aria-hidden="true" />}
+                name={t("block.contact_details.label")}
+                contents={[
+                  <InfoBlock.List
+                    key="contact-details-main"
+                    items={[telephone, email]}
+                  />,
+                  ...contactDetailsSectionsContents?.map((contact, i) => (
+                    <InfoBlock.List
+                      key={`contact-details-other-${i}`}
+                      items={[contact.name, contact.phone]}
+                    />
+                  )),
+                ]}
+              />
+            )}
             <InfoBlock
               headingLevel="h3"
               icon={<IconInfoCircle aria-hidden="true" />}
               name={t("block.other_information.label")}
               contents={[
-                <InfoBlock.List
-                  key="contact-details"
-                  items={[telephone, email]}
-                />,
                 <InfoBlock.List
                   key="social-media-links"
                   items={links.reduce((acc, link) => {

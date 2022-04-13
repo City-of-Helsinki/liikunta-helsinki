@@ -60,6 +60,7 @@ export type TprekUnit = {
     name_fi: string;
     name_en: string;
     name_sv: string;
+    phone: string;
   }>;
   ontologyword_details: TprekUnitOntologywordDetails[];
   service_descriptions: TprekUnitServiceDescriptions[];
@@ -106,6 +107,7 @@ export default class VenueTprekIntegration extends VenueResolverIntegration<Tpre
       connections: data?.connections?.map((connection) => ({
         sectionType: connection.section_type,
         name: formTranslationObject(connection, "name"),
+        phone: connection.phone,
       })),
     };
   }
