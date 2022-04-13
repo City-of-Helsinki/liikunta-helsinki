@@ -7,10 +7,11 @@ import getIsHrefExternal from "../../utils/getIsHrefExternal";
 type Props = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
   children: HDSLinkProps["children"];
   disableVisitedStyles?: HDSLinkProps["disableVisitedStyles"];
+  size?: HDSLinkProps["size"];
 };
 
 const Link = React.forwardRef<HTMLAnchorElement, Props>(
-  ({ href, target, ...delegatedProps }, ref) => {
+  ({ href, target, size = "M", ...delegatedProps }, ref) => {
     const { t } = useTranslation("link");
 
     const isOpenInNewTab = target === "_blank";
@@ -24,7 +25,7 @@ const Link = React.forwardRef<HTMLAnchorElement, Props>(
           href={href}
           openInNewTab={isOpenInNewTab}
           external={isExternal}
-          size="M"
+          size={size}
           openInExternalDomainAriaLabel={t(
             "open_in_external_domain_aria_label"
           )}
