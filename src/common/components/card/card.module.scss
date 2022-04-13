@@ -13,11 +13,12 @@
   }
 
   display: grid;
-  grid-template-columns: var(--width-image) 1fr auto;
-  grid-template-rows: min-content auto;
+  grid-template-columns: var(--width-image) 1fr;
+  grid-template-rows: min-content 1fr auto;
   grid-template-areas:
-    "bg keywords cta"
-    "bg text cta";
+    "bg keywords"
+    "bg text"
+    "bg cta";
   height: 100%;
   width: 100%;
 
@@ -212,14 +213,15 @@
 
   .cta {
     align-self: center;
-    display: flex;
-    height: 2.5rem;
-    width: 2.5rem;
-    padding: 0;
-    margin: 0 var(--content-padding) 0 0;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 0;
+    margin: 0 var(--content-padding) var(--content-padding);
 
     color: var(--color-black);
 
