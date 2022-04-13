@@ -8,7 +8,7 @@ import NextLink from "../../../domain/i18n/router/Link";
 import BaseLink from "../link/Link";
 import styles from "./footer.module.scss";
 
-type LinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, "ref"> & {
+type LinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, "ref" | "size"> & {
   locale?: React.ComponentProps<typeof NextLink>["locale"];
   lang?: string;
   external?: boolean;
