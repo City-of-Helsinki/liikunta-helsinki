@@ -2,15 +2,20 @@
 @import "variables";
 
 .box {
+  --width: 100%;
+  --max-width: 20rem;
+
   grid-row: 1;
   align-self: center;
   background-color: rgba($color-black, 70%);
-  width: 20rem;
+  width: var(--width);
+  max-width: var(--max-width);
   margin-bottom: 10rem;
   padding: $spacing-m;
 
   @include breakpoints.respond-above(m) {
-    width: 30rem;
+    --width: 30rem;
+    --max-width: unset;
   }
 }
 
