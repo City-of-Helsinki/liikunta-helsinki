@@ -61,7 +61,7 @@
 .fixed-grid-4 {
   display: grid;
 
-  @include breakpoints.respond-above(xs) {
+  @include breakpoints.respond-above(m) {
     grid-template-columns: 1fr 1fr;
 
     & > * {
