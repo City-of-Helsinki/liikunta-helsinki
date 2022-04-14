@@ -28,7 +28,7 @@ env:
   SENTRY_AUTH_TOKEN: ${{ secrets.GH_SENTRY_AUTH_TOKEN }}
   NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
   NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
-  NEXT_PUBLIC_APP_ORIGIN: https://${{ secrets.ENVIRONMENT_URL_STAGING }}/api/graphql
+  NEXT_PUBLIC_APP_ORIGIN: https://${{ secrets.ENVIRONMENT_URL_STAGING }}
 
 jobs:
   build:
