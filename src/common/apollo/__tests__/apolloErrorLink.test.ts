@@ -24,9 +24,23 @@ const networkLoggerSpy = jest
     // pass
   });
 
+let processBrowser;
+
 beforeEach(() => {
+  processBrowser = process.browser;
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  process.browser = true;
+});
+
+afterEach(() => {
   routerPushSpy.mockClear();
   networkLoggerSpy.mockClear();
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  process.browser = processBrowser;
 });
 
 test("should redirect to /error on network error", (done) => {
