@@ -88,6 +88,7 @@ export const VENUE_QUERY = gql`
         sectionType
         name
         phone
+        url
       }
     }
   }
@@ -319,6 +320,10 @@ export function VenuePageContent() {
     (item) => item.sectionType === "PHONE_OR_EMAIL"
   );
 
+  const otherInformationLinksContents = data?.venue?.connections?.filter(
+    (item) => item.url && item.sectionType === "LINK"
+  );
+
   const hasContactDetails = Boolean(
     email || telephone || contactDetailsSectionsContents?.length > 0
   );
@@ -436,21 +441,23 @@ export function VenuePageContent() {
               name={t("block.other_information.label")}
               contents={[
                 <InfoBlock.List
-                  key="social-media-links"
-                  items={links.reduce((acc, link) => {
-                    if (!link.url) {
-                      return acc;
-                    }
+                  key="other-and-social-media-links"
+                  items={otherInformationLinksContents
+                    .concat(links)
+                    .reduce((acc, link) => {
+                      if (!link.url) {
+                        return acc;
+                      }
 
-                    return [
-                      ...acc,
-                      <InfoBlock.Link
-                        key={link.id}
-                        href={link.url}
-                        label={link.name}
-                      />,
-                    ];
-                  }, [])}
+                      return [
+                        ...acc,
+                        <InfoBlock.Link
+                          key={link.id}
+                          href={link.url}
+                          label={link.name}
+                        />,
+                      ];
+                    }, [])}
                 />,
               ]}
             />

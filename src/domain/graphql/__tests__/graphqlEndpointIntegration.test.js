@@ -66,6 +66,7 @@ const GET_VENUE = gql`
         sectionType
         name
         phone
+        url
       }
     }
   }
