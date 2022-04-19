@@ -70,6 +70,7 @@ const createVenueSchema = ({ haukiEnabled }: LiikuntaServerConfig = {}) => gql`
     sectionType: String
     name: String
     phone: String
+    url: String
   }
 
   type Venue {

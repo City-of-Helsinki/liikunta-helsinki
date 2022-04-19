@@ -209,6 +209,7 @@ export type VenueDetails<T = TranslationsObject> = {
     sectionType: string;
     name: T;
     phone: string;
+    url: T | null;
   }>;
 };
 

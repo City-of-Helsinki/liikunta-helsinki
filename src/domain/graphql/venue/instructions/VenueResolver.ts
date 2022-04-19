@@ -8,7 +8,6 @@ type Config = {
 
 export default class VenueResolver {
   config: Config;
-
   constructor(config: Config) {
     this.config = config;
   }

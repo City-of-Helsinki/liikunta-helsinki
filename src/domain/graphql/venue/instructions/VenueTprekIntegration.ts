@@ -61,6 +61,9 @@ export type TprekUnit = {
     name_en: string;
     name_sv: string;
     phone: string;
+    www_fi: string;
+    www_en: string;
+    www_sv: string;
   }>;
   ontologyword_details: TprekUnitOntologywordDetails[];
   service_descriptions: TprekUnitServiceDescriptions[];
@@ -108,6 +111,7 @@ export default class VenueTprekIntegration extends VenueResolverIntegration<Tpre
         sectionType: connection.section_type,
         name: formTranslationObject(connection, "name"),
         phone: connection.phone,
+        url: formTranslationObject(connection, "www"),
       })),
     };
   }

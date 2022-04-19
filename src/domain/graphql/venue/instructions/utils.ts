@@ -95,6 +95,7 @@ export function translateVenue(
     connections: data.connections.map((connection) => ({
       ...connection,
       name: pickLocale(connection.name, language),
+      url: pickLocale(connection.url, language),
     })),
   } as VenueDetails<string>;
 }
