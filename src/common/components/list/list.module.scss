@@ -26,6 +26,12 @@
   }
 }
 
+.column {
+  grid-template-columns:
+    [column-start] 1fr
+    [column-end];
+}
+
 .collection-grid {
   --large-card-height: 37.5rem; // 600px
 

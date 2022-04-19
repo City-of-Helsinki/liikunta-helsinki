@@ -56,6 +56,7 @@ function Page({
   layoutComponent: Layout = DefaultLayout,
   showFooter,
   navigationVariant,
+  footerVariant,
   ...rest
 }: Props) {
   const { locale, defaultLocale } = useRouter();
@@ -76,6 +77,7 @@ function Page({
         languages={languages}
         navigationVariant={navigationVariant}
         showFooter={showFooter}
+        footerVariant={footerVariant}
       >
         {children}
       </Layout>

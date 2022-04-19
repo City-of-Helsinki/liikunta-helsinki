@@ -4,7 +4,7 @@
 
 .section {
   --section-padding: #{$spacing-layout-l};
-  --section-background: #{$color-black-5};
+  --section-background: #{$color-silver-light};
   --section-row-gap: #{$spacing-layout-m};
 
   grid-column: 1 / -1 !important;
