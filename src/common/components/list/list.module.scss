@@ -8,7 +8,7 @@
   padding: 0;
   display: grid;
   grid-template-columns:
-    [column-start] repeat(auto-fit, minmax(1fr, var(--base-list-item-width)))
+    [column-start] repeat(auto-fit, minmax(var(--base-list-item-width), 1fr))
     [column-end];
   grid-gap: $spacing-xs;
 
