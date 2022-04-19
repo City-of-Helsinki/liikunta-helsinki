@@ -2,7 +2,6 @@
 @import "variables";
 
 .footer {
-  --footer-background: #{$color-engel-medium-light} !important;
   grid-column: 1 / -1 !important;
 
   // koros stuff
@@ -10,19 +9,6 @@
 
   > div > svg {
     width: 100%;
-  }
-
-  a {
-    // fix link color
-    --link-color: #{$color-black-90};
-
-    // align links to be on the same level with external icon
-    align-self: center;
-
-    &:visited {
-      // Don't distinct between visited an unvisited links
-      color: var(--link-color);
-    }
   }
 
   // fix "back to top" button positioning being slightly off
@@ -38,6 +24,36 @@
       display: grid;
       justify-items: end;
       justify-content: unset;
+    }
+  }
+
+  a,
+  a:visited {
+    // align links to be on the same level with external icon
+    align-self: center;
+
+    &,
+    & svg {
+      // Don't distinct between visited an unvisited links
+      color: var(--link-color) !important;
+    }
+  }
+
+  &.default {
+    --footer-background: #{$color-engel-medium-light} !important;
+
+    a,
+    a:visited {
+      --link-color: #{$color-black-90};
+      --link-visited-color: #{$color-black-90};
+    }
+  }
+
+  &.darkGrey {
+    a,
+    a:visited {
+      --link-color: #{$color-white};
+      --link-visited-color: #{$color-white};
     }
   }
 }

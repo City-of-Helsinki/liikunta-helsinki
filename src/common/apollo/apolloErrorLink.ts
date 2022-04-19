@@ -1,4 +1,5 @@
 import { onError } from "@apollo/client/link/error";
+import Router from "next/router";
 
 import { graphqlClientLogger, networkLogger } from "../../domain/logger";
 
@@ -13,6 +14,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 
   if (networkError) {
+    Router.push("/error");
     networkLogger.error(networkError);
   }
 });

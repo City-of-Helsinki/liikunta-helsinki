@@ -1,11 +1,13 @@
 import React from "react";
 import { Footer as HDSFooter, LogoLanguage } from "hds-react";
 import { useTranslation } from "next-i18next";
+import classNames from "classnames";
 
 import { NavigationItem } from "../../../types";
 import useRouter from "../../../domain/i18n/router/useRouter";
 import NextLink from "../../../domain/i18n/router/Link";
 import BaseLink from "../link/Link";
+import { LayoutComponentProps } from "../layout/types";
 import styles from "./footer.module.scss";
 
 type LinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, "ref" | "size"> & {
@@ -27,9 +29,10 @@ const Link = ({ href, children, locale, ...rest }: LinkProps) => {
 
 type Props = {
   navigationItems: NavigationItem[];
+  variant?: LayoutComponentProps["footerVariant"];
 };
 
-function Footer({ navigationItems }: Props) {
+function Footer({ navigationItems, variant = "default" }: Props) {
   const { t: tCommon } = useTranslation("common");
   const { t } = useTranslation("footer");
   const { locale } = useRouter();
@@ -38,8 +41,9 @@ function Footer({ navigationItems }: Props) {
   return (
     <HDSFooter
       title={tCommon("site_name")}
-      className={styles.footer}
+      className={classNames(styles.footer, styles[variant])}
       logoLanguage={logoLanguage}
+      theme={variant === "darkGrey" ? "dark" : "light"}
     >
       <HDSFooter.Navigation variant="minimal">
         <HDSFooter.Item

@@ -8,6 +8,7 @@ export type LayoutComponentProps = {
   languages: Language[];
   showFooter?: boolean;
   navigationVariant?: "default" | "white";
+  footerVariant?: "default" | "darkGrey";
 };
 
 export type LayoutComponent = React.ComponentType<LayoutComponentProps>;

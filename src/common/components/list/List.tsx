@@ -16,7 +16,8 @@ type Props = {
     | "searchResult"
     | "grid-3"
     | "grid-2"
-    | "fixed-grid-4";
+    | "fixed-grid-4"
+    | "column";
   gap?: "xs" | "s" | "m" | "l";
   li?: React.ComponentType<ListItemProps>;
   listContainerRef?:
