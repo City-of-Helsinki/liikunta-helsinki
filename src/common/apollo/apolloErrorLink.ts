@@ -14,7 +14,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 
   if (networkError) {
-    Router.push("/error");
+    if (process.browser) {
+      Router.push("/error");
+    }
+
     networkLogger.error(networkError);
   }
 });
