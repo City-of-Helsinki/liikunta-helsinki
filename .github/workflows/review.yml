@@ -20,7 +20,7 @@ env:
   K8S_READINESS_PATH: /api/readiness
   NEXT_PUBLIC_SENTRY_ENVIRONMENT: "test"
   NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.GH_SENTRY_DSN }}
-  NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE: 0
+  NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE: 0 # Disabled as it affects in Sentry pricing and the current limits are reached in a day if in use.
   SENTRY_AUTH_TOKEN: ${{ secrets.GH_SENTRY_AUTH_TOKEN }}
   NEXT_PUBLIC_CMS_GRAPHQL_ENDPOINT: https://liikunta.content.api.hel.fi/graphql
   NEXT_PUBLIC_UNIFIED_SEARCH_GRAPHQL_ENDPOINT: https://unified-search.test.kuva.hel.ninja/search
@@ -46,7 +46,7 @@ jobs:
           DOCKER_BUILD_ARG_NEXT_PUBLIC_ALLOW_UNAUTHORIZED_REQUESTS: 1
           DOCKER_BUILD_ARG_NEXT_PUBLIC_SENTRY_ENVIRONMENT: "test"
           DOCKER_BUILD_ARG_NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.GH_SENTRY_DSN }}
-          DOCKER_BUILD_ARG_NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE: 0
+          DOCKER_BUILD_ARG_NEXT_PUBLIC_SENTRY_TRACE_SAMPLE_RATE: 0 # Disabled as it affects in Sentry pricing and the current limits are reached in a day if in use.
           DOCKER_BUILD_ARG_SENTRY_AUTH_TOKEN: ${{ secrets.GH_SENTRY_AUTH_TOKEN }}
           DOCKER_BUILD_ARG_NEXT_PUBLIC_DEBUG: 1
 
