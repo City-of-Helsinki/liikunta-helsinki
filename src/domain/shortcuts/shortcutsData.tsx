@@ -1,5 +1,4 @@
 import React from "react";
-import { IconPhoto } from "hds-react";
 
 import IconGyms from "../../common/icons/IconGyms";
 import IconIceSkating from "../../common/icons/IconIceSkating";
@@ -9,6 +8,7 @@ import IconOutdoorGyms from "../../common/icons/IconOutdoorGyms";
 import IconSkiing from "../../common/icons/IconSkiing";
 import IconSportsHall from "../../common/icons/IconSportsHall";
 import IconSwimming from "../../common/icons/IconSwimming";
+import IconSkateboarding from "../../common/icons/IconSkateboarding";
 import { Season } from "../season/seasonConstants";
 
 const shortcuts = [
@@ -63,7 +63,7 @@ const shortcuts = [
   },
   {
     id: "skating",
-    icon: <IconPhoto aria-hidden="true" />,
+    icon: <IconSkateboarding aria-hidden="true" />,
     ontologyTreeIds: ["652", "620"],
     seasons: [Season.Summer],
   },
