@@ -6,11 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-## [1.1.1] - 2022-05-13
+## [1.1.2] - 2022-05-13
 
 ### Added
 
 - Redirect user to error page on apollo client network errors
+
+## [1.1.1] - 2022-05-02
+
+### Fixed
+
+- Disable the Sentry transactions tracing
 
 ## [1.1.0] - 2022-04-20
 
