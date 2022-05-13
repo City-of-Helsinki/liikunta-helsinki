@@ -1,9 +1,9 @@
 {
-  "meta.title": "Missing Translation",
-  "title": "Missing Translation",
-  "description_1": "Missing Translation",
-  "description_2": "Missing Translation",
-  "link.homepage.label": "Missing Translation",
-  "link.feedback.label": "Missing Translation",
+  "meta.title": "Oj, ett fel har uppstått på sidan",
+  "title": "Oj, ett fel har uppstått på sidan",
+  "description_1": "Oj, ett fel har uppstått på sidan. Om du vill kan du gå tillbaka och försöka på nytt.",
+  "description_2": "Meddela oss ifall felet upprepas.",
+  "link.homepage.label": "Till framsidan",
+  "link.feedback.label": "Ge respons",
   "link.feedback.href": "https://www.hel.fi/helsinki/sv/stad-och-forvaltning/delta/feedback"
 }
