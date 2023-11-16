@@ -31,7 +31,7 @@
     "date-fns": "^2.25.0",
     "dompurify": "^2.3.3",
     "fast-deep-equal": "^3.1.3",
-    "graphql": "^16.0.0",
+    "graphql": "^16.8.1",
     "hds-design-tokens": "^1.6.0",
     "hds-react": "^1.6.0",
     "html-react-parser": "^1.4.0",
