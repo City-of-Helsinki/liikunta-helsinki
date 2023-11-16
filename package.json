@@ -15,7 +15,7 @@
     "extends": "react-app"
   },
   "dependencies": {
-    "@apollo/client": "^3.4.16",
+    "@apollo/client": "^3.8.6",
     "@datapunt/matomo-tracker-react": "^0.5.1",
     "@react-leaflet/core": "1.1.0",
     "@sentry/nextjs": "^6.17.6",
